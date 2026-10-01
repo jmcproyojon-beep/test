@@ -255,29 +255,87 @@ def cmd_captions(src: str, out: str, srt: str, size: int, position: str, style: 
     result(out, captions=os.path.abspath(srt))
 
 
-def cmd_title(src: str, out: str, text: str, start: float, end: float | None, size: int,
-              position: str, color: str, box: bool, fontfile: str | None) -> None:
-    info = probe(src)
-    end = end if end is not None else info["duration"]
-    y = {"top": "h*0.08", "center": "(h-text_h)/2", "bottom": "h*0.85-text_h", "lower-third": "h*0.72"}[position]
-    fd = 0.3  # fade in/out
-    alpha = (f"if(lt(t,{start}+{fd}),(t-{start})/{fd},if(gt(t,{end}-{fd}),({end}-t)/{fd},1))")
-    # Pass the text through a file with expansion off, so quotes, colons and % need no escaping.
+POSITIONS = {"top": "h*0.08", "upper": "h*0.2", "center": "(h-text_h)/2",
+             "lower-third": "h*0.72", "bottom": "h*0.85-text_h"}
+
+
+def drawtext(text: str, start: float, end: float, tmp: list[str], size: int = 96, position: str = "center",
+             color: str = "white", box: bool = False, boxcolor: str = "black@0.55", fade: float = 0.3,
+             font: str | None = None, **_) -> str:
+    """One drawtext filter. The text goes through a temp file with expansion off, so quotes,
+    colons and % need no escaping; the caller deletes the files listed in `tmp`."""
     with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8") as tf:
         tf.write(text)
+    tmp.append(tf.name)
+    y = POSITIONS.get(position, position)  # a named slot or a raw ffmpeg y expression
+    alpha = "1" if fade <= 0 else \
+        f"if(lt(t,{start}+{fade}),(t-{start})/{fade},if(gt(t,{end}-{fade}),({end}-t)/{fade},1))"
+    return (f"drawtext=fontfile='{esc_path(font or globals()['font']())}':textfile='{esc_path(tf.name)}':"
+            f"expansion=none:fontsize={size}:fontcolor={color}:x=(w-text_w)/2:y={y}:"
+            f"enable='between(t,{start},{end})':alpha='{alpha}'"
+            + (f":box=1:boxcolor={boxcolor}:boxborderw={max(12, size // 4)}" if box
+               else ":shadowcolor=black@0.7:shadowx=3:shadowy=3"))
+
+
+def burn_texts(src: str, out: str, items: list[dict]) -> None:
+    tmp: list[str] = []
     try:
-        dt = (f"drawtext=fontfile='{esc_path(fontfile or font())}':textfile='{esc_path(tf.name)}':"
-              f"expansion=none:fontsize={size}:fontcolor={color}:x=(w-text_w)/2:y={y}:"
-              f"enable='between(t,{start},{end})':alpha='{alpha}'"
-              + (":box=1:boxcolor=black@0.55:boxborderw=24" if box else ":shadowcolor=black@0.7:shadowx=3:shadowy=3"))
-        ff(["-i", src, "-vf", dt, *ENC_V, "-c:a", "copy", out])
+        vf = ",".join(drawtext(tmp=tmp, **it) for it in items)
+        ff(["-i", src, "-vf", vf, *ENC_V, "-c:a", "copy", out])
     finally:
-        os.unlink(tf.name)
+        for f in tmp:
+            os.unlink(f)
+
+
+def cmd_title(src: str, out: str, text: str, start: float, end: float | None, size: int,
+              position: str, color: str, box: bool, fontfile: str | None) -> None:
+    end = end if end is not None else probe(src)["duration"]
+    burn_texts(src, out, [dict(text=text, start=start, end=end, size=size, position=position,
+                               color=color, box=box, font=fontfile)])
     result(out, title=text, start=start, end=end)
 
 
-def cmd_music(src: str, out: str, music: str, volume: float, duck: bool, fade_out: float) -> None:
+def cmd_texts(src: str, out: str, spec: str) -> None:
+    """Many text overlays in one encode. spec is a JSON file: a list of objects with
+    text, start, end and optional size, position, color, box, boxcolor, fade, font."""
+    items = json.loads(Path(spec).read_text(encoding="utf-8"))
+    dur = probe(src)["duration"]
+    for it in items:
+        it.setdefault("end", dur)
+    burn_texts(src, out, items)
+    result(out, overlays=len(items))
+
+
+def cmd_sfx(src: str, out: str, cues: list[str]) -> None:
+    """Mix sound effects in at given times. Each cue is FILE@SECONDS or FILE@SECONDS@VOLUME."""
     info = probe(src)
+    args, parts, labels = ["-i", src], [], []
+    base = "0:a"
+    if not info["has_audio"]:
+        args += ensure_audio_args(info)
+        base = "1:a"
+    offset = args.count("-i")
+    for i, cue in enumerate(cues):
+        f, _, rest = cue.partition("@")
+        t, _, vol = rest.partition("@")
+        if not t:
+            die(f"bad cue '{cue}', expected FILE@SECONDS[@VOLUME]")
+        args += ["-i", f]
+        ms = int(float(t) * 1000)
+        parts.append(f"[{offset + i}:a]aformat=sample_rates=48000:channel_layouts=stereo,"
+                     f"volume={vol or 1},adelay={ms}|{ms}[s{i}]")
+        labels.append(f"[s{i}]")
+    graph = ";".join(parts) + f";[{base}]aformat=sample_rates=48000:channel_layouts=stereo[b];" \
+        f"[b]{''.join(labels)}amix=inputs={len(cues) + 1}:duration=first:normalize=0[a]"
+    ff([*args, "-filter_complex", graph, "-map", "0:v", "-map", "[a]", "-c:v", "copy", *ENC_A, out])
+    result(out, cues=len(cues))
+
+
+def cmd_music(src: str, out: str, music: str, volume: float, duck: bool, fade_out: float,
+              replace: bool = False) -> None:
+    info = probe(src)
+    if replace:  # drop the original sound (room noise, wind) and use only the music
+        info["has_audio"] = False
     dur = info["duration"]
     m = (f"[1:a]aloop=loop=-1:size=2e9,atrim=0:{dur},volume={volume},"
          f"afade=t=in:d=1,afade=t=out:st={max(dur - fade_out, 0)}:d={fade_out}[m]")
@@ -290,7 +348,7 @@ def cmd_music(src: str, out: str, music: str, volume: float, duck: bool, fade_ou
         graph = m.replace("[m]", "[a]")
     ff(["-i", src, "-stream_loop", "-1", "-i", music, "-filter_complex", graph,
         "-map", "0:v", "-map", "[a]", "-c:v", "copy", *ENC_A, "-t", str(dur), out])
-    result(out, music=os.path.abspath(music), ducked=bool(duck and info["has_audio"]))
+    result(out, music=os.path.abspath(music), ducked=bool(duck and info["has_audio"]), replaced=replace)
 
 
 def cmd_grade(src: str, out: str, look: str, lut: str | None) -> None:
@@ -392,16 +450,23 @@ def main() -> None:
     s.add_argument("--start", type=float, default=0.0)
     s.add_argument("--end", type=float)
     s.add_argument("--size", type=int, default=96)
-    s.add_argument("--position", choices=["top", "center", "bottom", "lower-third"], default="center")
+    s.add_argument("--position", choices=list(POSITIONS), default="center")
     s.add_argument("--color", default="white")
     s.add_argument("--box", action="store_true")
     s.add_argument("--font")
+
+    s = io("texts", "many text overlays in one encode, from a JSON list (see SKILL.md)")
+    s.add_argument("--spec", required=True)
+
+    s = io("sfx", "drop sound effects at given times")
+    s.add_argument("--cue", action="append", required=True, help="FILE@SECONDS[@VOLUME], repeatable")
 
     s = io("music", "add a music bed under the existing audio (loops to length)")
     s.add_argument("--music", required=True)
     s.add_argument("--volume", type=float, default=0.18)
     s.add_argument("--no-duck", action="store_true", help="do not lower music under speech")
     s.add_argument("--fade-out", type=float, default=2.0)
+    s.add_argument("--replace", action="store_true", help="drop the original audio, keep only the music")
 
     s = io("grade", "colour look: " + ", ".join(GRADES))
     s.add_argument("--look", choices=GRADES, default="neutral")
@@ -444,8 +509,12 @@ def main() -> None:
         cmd_captions(a.input, a.output, a.srt, a.size, a.position, a.style)
     elif a.cmd == "title":
         cmd_title(a.input, a.output, a.text, a.start, a.end, a.size, a.position, a.color, a.box, a.font)
+    elif a.cmd == "texts":
+        cmd_texts(a.input, a.output, a.spec)
+    elif a.cmd == "sfx":
+        cmd_sfx(a.input, a.output, a.cue)
     elif a.cmd == "music":
-        cmd_music(a.input, a.output, a.music, a.volume, not a.no_duck, a.fade_out)
+        cmd_music(a.input, a.output, a.music, a.volume, not a.no_duck, a.fade_out, a.replace)
     elif a.cmd == "grade":
         cmd_grade(a.input, a.output, a.look, a.lut)
     elif a.cmd == "speed":

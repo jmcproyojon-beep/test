@@ -49,8 +49,10 @@ python3 $E concat    out.mp4 a.mp4 b.mp4 c.mp4 [--aspect 16:9] [--xfade 0.5]
 python3 $E tighten   in.mp4 out.mp4 [--min 0.6 --pad 0.15 --noise -35] [--dry-run]
 python3 $E reframe   in.mp4 out.mp4 --aspect 9:16 [--mode crop|pad|blur] [--x 0.5]
 python3 $E captions  in.mp4 out.mp4 --srt subs.srt [--style clean|box|yellow] [--size 56] [--position bottom|middle]
-python3 $E title     in.mp4 out.mp4 --text "Chapter 1" --start 0 --end 3 [--position center|top|bottom|lower-third] [--box]
-python3 $E music     in.mp4 out.mp4 --music bed.mp3 [--volume 0.18] [--no-duck]
+python3 $E title     in.mp4 out.mp4 --text "Chapter 1" --start 0 --end 3 [--position center|top|upper|bottom|lower-third] [--box]
+python3 $E texts     in.mp4 out.mp4 --spec overlays.json                  # many overlays, one encode
+python3 $E sfx       in.mp4 out.mp4 --cue whoosh.mp3@4.0 --cue hit.mp3@0.1@0.3   # FILE@SECONDS[@VOLUME]
+python3 $E music     in.mp4 out.mp4 --music bed.mp3 [--volume 0.18] [--no-duck] [--replace]
 python3 $E grade     in.mp4 out.mp4 --look neutral|warm|cool|punchy|cinematic|bw|fade  [--lut file.cube]
 python3 $E speed     in.mp4 out.mp4 --factor 1.5
 python3 $E normalize in.mp4 out.mp4 [--lufs -14]
@@ -59,7 +61,21 @@ python3 $E export    in.mp4 out.mp4 --preset web|social|small|gif|audio
 
 Times are seconds or `mm:ss(.ms)`. Aspect choices: 16:9, 9:16, 1:1, 4:5, 4:3.
 
+`texts` takes a JSON list. Each item needs `text`, `start` and `end`. Optional:
+`size`, `position` (a named slot, or an ffmpeg y expression such as `"h*0.3"`),
+`color`, `box`, `boxcolor` (e.g. `"0xE8B04B@0.95"`), `fade` (seconds, 0 for hard
+cuts) and `font`. Use it whenever there is more than one overlay: every extra
+`title` pass re-encodes the video and loses quality.
+
 ## Recipes
+
+**Hook-first social reel from a walkthrough or b-roll.** Open on the single
+best-looking shot (0-3s) with the key fact in big text: size, price or
+location. Follow with a 2s flash preview of 3-4 half-second cuts, then the
+tour at 1.5-2x speed with a label on each space, and end on a strong shot with
+the call to action. Cut on the beat, put `sfx` whooshes 0.1s before the cuts,
+and use `music --replace` when the original audio is only room noise. Turn
+impact effects down (about 0.3) because they are mastered loud.
 
 **Remove filler and pauses from a talking-head clip.** Run `tighten --dry-run`
 first and show the user how much it removes. For filler words, run
