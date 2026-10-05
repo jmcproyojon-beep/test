@@ -295,15 +295,119 @@ def cmd_title(src: str, out: str, text: str, start: float, end: float | None, si
     result(out, title=text, start=start, end=end)
 
 
-def cmd_texts(src: str, out: str, spec: str) -> None:
+NAMED_COLORS = {"white": "FFFFFF", "black": "000000", "yellow": "FFE500", "red": "FF3B30",
+                "gold": "E8B04B", "gray": "808080", "grey": "808080"}
+
+
+def ass_color(spec: str) -> str:
+    """'white', '0xE8B04B' or '#E8B04B', optionally '@0.6' opacity -> ASS &HAABBGGRR."""
+    col, _, op = spec.partition("@")
+    hexrgb = NAMED_COLORS.get(col.lower(), col.lower().removeprefix("0x").removeprefix("#"))
+    if not re.fullmatch(r"[0-9a-f]{6}", hexrgb, re.I):
+        die(f"unsupported colour '{spec}' for libass; use a name or hex like 0xE8B04B")
+    r, g, b = hexrgb[0:2], hexrgb[2:4], hexrgb[4:6]
+    alpha = round((1 - float(op or 1)) * 255)
+    return f"&H{alpha:02X}{b}{g}{r}".upper()
+
+
+def needs_shaping(text: str) -> bool:
+    """True for scripts drawtext cannot shape here (Bengali, Devanagari, Arabic, Thai, ...)."""
+    return any(ord(c) >= 0x0590 and not 0x2000 <= ord(c) <= 0x2BFF for c in text)
+
+
+def pick_family(text: str) -> str:
+    if any(0x0980 <= ord(c) <= 0x09FF for c in text):
+        return "Noto Sans Bengali"
+    if any(0x0900 <= ord(c) <= 0x097F for c in text):
+        return "Noto Sans Devanagari"
+    if any(0x0600 <= ord(c) <= 0x06FF for c in text):
+        return "Noto Sans Arabic"
+    return "DejaVu Sans"
+
+
+def ass_scale(family: str) -> float:
+    """libass sizes text by the font's whole line height (ascent + descent); drawtext uses the
+    em size. Return the factor that makes `size` mean the same thing in both engines."""
+    try:
+        from PIL import ImageFont
+        path = subprocess.run(["fc-match", "-f", "%{file}", f"{family}:bold"],
+                              capture_output=True, text=True).stdout.strip()
+        asc, desc = ImageFont.truetype(path, 1000).getmetrics()
+        return max(1.0, (asc + desc) / 1000)
+    except Exception:  # no fontconfig/Pillow: fall back to the raw size
+        return 1.0
+
+
+def burn_texts_ass(src: str, out: str, items: list[dict]) -> None:
+    """Same spec as burn_texts, rendered with libass (HarfBuzz shaping) for complex scripts.
+    `font` here is a font family name, not a file path."""
+    info = probe(src)
+    W, H = info["width"], info["height"]
+
+    def ts(t: float) -> str:
+        cs = int(round(max(t, 0) * 100))
+        return f"{cs // 360000}:{cs // 6000 % 60:02d}:{cs // 100 % 60:02d}.{cs % 100:02d}"
+
+    lines = []
+    for it in items:
+        pos = it.get("position", "center")
+        frac = {"top": 0.08, "upper": 0.2, "center": 0.5, "lower-third": 0.72, "bottom": 0.85}.get(pos)
+        if frac is None:
+            m = re.fullmatch(r"\s*h\s*\*\s*([\d.]+)\s*", str(pos))
+            if not m:
+                die(f"position '{pos}' is not supported with libass text; use a slot or 'h*0.3'")
+            frac = float(m.group(1))
+        # drawtext places the text's top at y; anchor top-centre (\an8) to match, centre for 'center'.
+        an, y = (5, H * 0.5) if pos == "center" else (8, H * frac)
+        fade = int(it.get("fade", 0.3) * 1000)
+        size = it.get("size", 96)
+        family = it.get("font") or pick_family(it["text"])
+        tags = [f"\\an{an}", f"\\pos({W // 2},{int(y)})", f"\\fs{round(size * ass_scale(family))}",
+                f"\\1c{ass_color(it.get('color', 'white'))[4:]}&", f"\\fn{family}"]
+        if fade:
+            tags.append(f"\\fad({fade},{fade})")
+        if it.get("box"):
+            bc = ass_color(it.get("boxcolor", "black@0.55"))
+            tags += ["\\bord" + str(max(8, size // 4)), f"\\3c{bc[4:]}&", f"\\3a&H{bc[2:4]}&", "\\shad0"]
+            style = "Box"
+        else:
+            style = "Plain"
+        text = it["text"].replace("\n", "\\N").replace("{", "(").replace("}", ")")
+        lines.append(f"Dialogue: 0,{ts(it['start'])},{ts(it['end'])},{style},,0,0,0,,{{{''.join(tags)}}}{text}")
+    doc = f"""[Script Info]
+ScriptType: v4.00+
+PlayResX: {W}
+PlayResY: {H}
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Plain,DejaVu Sans,96,&H00FFFFFF,&H00FFFFFF,&H64000000,&H96000000,-1,0,0,0,100,100,0,0,1,2,3,8,20,20,20,1
+Style: Box,DejaVu Sans,96,&H00FFFFFF,&H00FFFFFF,&H64000000,&H00000000,-1,0,0,0,100,100,0,0,3,12,0,8,20,20,20,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+""" + "\n".join(lines) + "\n"
+    with tempfile.NamedTemporaryFile("w", suffix=".ass", delete=False, encoding="utf-8") as tf:
+        tf.write(doc)
+    try:
+        ff(["-i", src, "-vf", f"ass='{esc_path(tf.name)}'", *ENC_V, "-c:a", "copy", out])
+    finally:
+        os.unlink(tf.name)
+
+
+def cmd_texts(src: str, out: str, spec: str, engine: str) -> None:
     """Many text overlays in one encode. spec is a JSON file: a list of objects with
-    text, start, end and optional size, position, color, box, boxcolor, fade, font."""
+    text, start, end and optional size, position, color, box, boxcolor, fade, font.
+    engine 'auto' switches to libass when any text needs complex-script shaping (e.g. Bangla)."""
     items = json.loads(Path(spec).read_text(encoding="utf-8"))
     dur = probe(src)["duration"]
     for it in items:
         it.setdefault("end", dur)
-    burn_texts(src, out, items)
-    result(out, overlays=len(items))
+    use_ass = engine == "ass" or (engine == "auto" and any(needs_shaping(it["text"]) for it in items))
+    (burn_texts_ass if use_ass else burn_texts)(src, out, items)
+    result(out, overlays=len(items), engine="libass" if use_ass else "drawtext")
 
 
 def cmd_sfx(src: str, out: str, cues: list[str]) -> None:
@@ -457,6 +561,8 @@ def main() -> None:
 
     s = io("texts", "many text overlays in one encode, from a JSON list (see SKILL.md)")
     s.add_argument("--spec", required=True)
+    s.add_argument("--engine", choices=["auto", "drawtext", "ass"], default="auto",
+                   help="auto uses libass when text needs complex-script shaping (Bangla, Hindi, Arabic)")
 
     s = io("sfx", "drop sound effects at given times")
     s.add_argument("--cue", action="append", required=True, help="FILE@SECONDS[@VOLUME], repeatable")
@@ -510,7 +616,7 @@ def main() -> None:
     elif a.cmd == "title":
         cmd_title(a.input, a.output, a.text, a.start, a.end, a.size, a.position, a.color, a.box, a.font)
     elif a.cmd == "texts":
-        cmd_texts(a.input, a.output, a.spec)
+        cmd_texts(a.input, a.output, a.spec, a.engine)
     elif a.cmd == "sfx":
         cmd_sfx(a.input, a.output, a.cue)
     elif a.cmd == "music":

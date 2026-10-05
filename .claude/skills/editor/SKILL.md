@@ -67,6 +67,14 @@ Times are seconds or `mm:ss(.ms)`. Aspect choices: 16:9, 9:16, 1:1, 4:5, 4:3.
 cuts) and `font`. Use it whenever there is more than one overlay: every extra
 `title` pass re-encodes the video and loses quality.
 
+**Bangla, Hindi, Arabic and other complex scripts.** ffmpeg's drawtext cannot
+shape these here: conjuncts break apart and vowel signs land in the wrong
+place. `texts` detects such text and renders it with libass (HarfBuzz shaping)
+instead, with the same spec and sizes. Force an engine with
+`--engine drawtext|ass`. A matching font must be installed, e.g.
+`apt install fonts-noto-core` for Noto Sans Bengali. With libass, `font` is a
+family name, not a file path.
+
 ## Recipes
 
 **Hook-first social reel from a walkthrough or b-roll.** Open on the single
