@@ -91,6 +91,16 @@ Sunset architectural render of a green-façade apartment tower. Text: "AURORA �
 ### Example 5 — Facebook (quality: pre-handover thermal test)
 "হ্যান্ডওভারের আগে ৫টি Thermal Test." Five checks: পাইপ (লিকেজ আছে কি না যাচাই) · টাইলস (ফাঁপা/ডিবন্ডিং সনাক্তকরণ) · DB Board (ওভার হিটিং ঝুঁকি শনাক্ত) · AC Line (কুলিং লাইন সঠিক আছে কি না) · তাপীয় ফাঁক (ওয়াল/জয়েন্টের তাপীয় সমস্যা সনাক্ত). Supporting lines: "দেখায় যা চোখ দেখতে পায় না" · "গুণমান, নিরাপত্তা, আপনার নির্ভরতা" · "নিরাপদ বাড়ি, নিশ্চিত আগামী."
 
+### Example 6 — Facebook (floor plan series: ground, typical, 3D, rooftop)
+Project not yet named in this context — confirm which project before captioning.
+- **Ground floor**: ~11 car parking spaces, two-way driveway, generator room (16'10"×10'), guest waiting area, lift (5'3"×5'), stair, caretaker room, kitchen, two toilets, landscaped main entry with water feature.
+- **Typical floor (one unit)**: Master bed 15'×14' with attached toilet and dress area · Child-1 12'×15' with attached toilet and dress area · Child bed 11'×13' · Guest bed 12'×14' · Study 8'4"×6' · Living 13'×16' · Dining 12'6"×16'4" · Family living 11'×10'4" · Kitchen 14'8"×9' · 4 verandas (largest 12'×5') · maid's toilet · lift 5'6"×6'.
+- **3D floor view**: Same unit, furnished, top-down perspective — shows the open dining/family flow and greenery on every veranda.
+- **Rooftop**: Community seating area with tables, water feature, landscaped planters with lighting, cloth drying area, machine room.
+
+### Example 7 — Facebook (location map)
+"Location Map" — block layout with Road No-402 and Road No-505 (both 45.73 m wide), Road 504F/505E (9.14 m), plot 008 highlighted on Road 505E. Nearby: Masjid, Nursery and Primary School, Play Lot, green belt.
+
 **What makes these work**: Each post leads with one clear promise or question, backs it with specifics (numbers, measurements, named checks), and always carries the brand, tagline, and contact details. Educational posts (tax breakdown, thermal test) build trust without selling.
 
 ---
