@@ -68,13 +68,14 @@ Future consideration: YouTube for project walkthroughs (NRBs search there).
 - **Preferred formats**: Designed poster/graphic posts (branded, Bangla headline + English keyword); project renders; floor plans with labeled amenities; offer cards (down payment, monthly installment, number of shares, installment period); educational explainers; short videos/Reels (site walkthroughs, construction updates, handovers); carousels for locations and pricing; customer testimonials
 - **Per-platform preferences**: Facebook — every post has a strong visual + Bangla caption, contact line (phone, website, office address), and the tagline. Captions should end with a clear call to action (call, inbox, or book a site visit).
 - **Visual style**: Brand green + gold for educational/trust posts; dark navy + orange/gold for premium project launches; logo and tagline at the top, contact strip at the bottom
+- **Land project formats**: Drone photos with plot boundary outlines and plot numbers; fenced, branded plots; site-visit moments (buyers on site, company microbus); road access and electricity poles shown as proof of infrastructure
 - **Formats to avoid**: Memes, giveaway/engagement-bait posts, long text-only posts with no image
 
 ---
 
 ## Example Posts
 
-All current examples are designed image posts (no caption text supplied yet). Captions should be added later for voice matching.
+All examples are concept references — the kinds of image posts this page publishes (project launches, offer cards, floor plans, educational explainers, quality checks, land site photos). Use them to understand style and content types, not as fixed project facts. No caption text supplied yet.
 
 ### Example 1 — Facebook (project launch: AURORA)
 Sunset architectural render of a green-façade apartment tower. Text: "AURORA — Presented by Proyojon Abashon." Minimal, premium, elegant serif type.
@@ -92,7 +93,7 @@ Sunset architectural render of a green-façade apartment tower. Text: "AURORA �
 "হ্যান্ডওভারের আগে ৫টি Thermal Test." Five checks: পাইপ (লিকেজ আছে কি না যাচাই) · টাইলস (ফাঁপা/ডিবন্ডিং সনাক্তকরণ) · DB Board (ওভার হিটিং ঝুঁকি শনাক্ত) · AC Line (কুলিং লাইন সঠিক আছে কি না) · তাপীয় ফাঁক (ওয়াল/জয়েন্টের তাপীয় সমস্যা সনাক্ত). Supporting lines: "দেখায় যা চোখ দেখতে পায় না" · "গুণমান, নিরাপত্তা, আপনার নির্ভরতা" · "নিরাপদ বাড়ি, নিশ্চিত আগামী."
 
 ### Example 6 — Facebook (floor plan series: ground, typical, 3D, rooftop)
-Project not yet named in this context — confirm which project before captioning.
+Concept reference — not tied to a specific project.
 - **Ground floor**: ~11 car parking spaces, two-way driveway, generator room (16'10"×10'), guest waiting area, lift (5'3"×5'), stair, caretaker room, kitchen, two toilets, landscaped main entry with water feature.
 - **Typical floor (one unit)**: Master bed 15'×14' with attached toilet and dress area · Child-1 12'×15' with attached toilet and dress area · Child bed 11'×13' · Guest bed 12'×14' · Study 8'4"×6' · Living 13'×16' · Dining 12'6"×16'4" · Family living 11'×10'4" · Kitchen 14'8"×9' · 4 verandas (largest 12'×5') · maid's toilet · lift 5'6"×6'.
 - **3D floor view**: Same unit, furnished, top-down perspective — shows the open dining/family flow and greenery on every veranda.
@@ -100,6 +101,15 @@ Project not yet named in this context — confirm which project before captionin
 
 ### Example 7 — Facebook (location map)
 "Location Map" — block layout with Road No-402 and Road No-505 (both 45.73 m wide), Road 504F/505E (9.14 m), plot 008 highlighted on Road 505E. Nearby: Masjid, Nursery and Primary School, Play Lot, green belt.
+
+### Example 8 — Facebook (land project: drone site photos)
+Aerial/drone shots of land plots, each branded on site:
+- Fenced plots with white picket fencing, small Proyojon flags at the corners, and a large banner (logo, tagline, phone, website, office address).
+- Plot boundaries drawn as white outlines with plot numbers (e.g. 2, 3, 6, 10, 16, 20, 24) over a wider land block.
+- Brick boundary walls with long green Proyojon banners, red flags lining the access path.
+- Buyers on site visits walking the plots, with the company microbus parked nearby.
+- Context: green, open surroundings, trees, water body, paved road with electricity poles next to the plot.
+**Why it works**: Shows real, demarcated, branded land — "this plot exists and we're on it." Site-visit people and the company vehicle add proof. Pairs naturally with the "book a free site visit" CTA.
 
 **What makes these work**: Each post leads with one clear promise or question, backs it with specifics (numbers, measurements, named checks), and always carries the brand, tagline, and contact details. Educational posts (tax breakdown, thermal test) build trust without selling.
 
@@ -109,4 +119,4 @@ Project not yet named in this context — confirm which project before captionin
 
 - **Topics to avoid**: Politics or political parties; competitors; religion-based selling; unverified price predictions
 - **Tones to avoid**: Pushy/salesy, hype, exaggerated promises
-- **Content types to avoid**: Guaranteed-return claims; fake scarcity; stock or AI images presented as real completed projects (label renders as "Artist's impression" / "প্রস্তাবিত ডিজাইন"); designs with misspelled or garbled text (proofread every graphic before posting)
+- **Content types to avoid**: Guaranteed-return claims; fake scarcity; stock or AI images presented as real completed projects (label renders as "Artist's impression" / "প্রস্তাবিত ডিজাইন"); designs with misspelled or garbled text (proofread every graphic before posting — especially phone number, website, and address on signage); digitally added fences, signs, or banners shown as if they physically exist on site
