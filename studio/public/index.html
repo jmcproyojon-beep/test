@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proyojon Studio</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f7a3c'/><path d='M9 23V9h8a5 5 0 0 1 0 10h-4v4z' fill='white'/></svg>">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="logo">P</span>
+        <div><strong>Proyojon Studio</strong><small id="claude-status">Checking Claude Code…</small></div>
+      </div>
+      <button class="primary wide" id="new-project">+ New project</button>
+      <input class="search" id="project-search" type="search" placeholder="Search projects">
+      <nav id="project-list" aria-label="Projects"></nav>
+      <div class="side-links">
+        <button class="nav-link" data-view="activity">Activity</button>
+        <button class="nav-link" data-view="queue">Queue <span class="badge" id="queue-count">0</span></button>
+        <button class="nav-link" data-view="skills">Skills</button>
+      </div>
+    </aside>
+    <main id="main"></main>
+  </div>
+
+  <dialog id="project-dialog">
+    <form method="dialog" id="project-form">
+      <h2 id="project-dialog-title">New project</h2>
+      <label>Name<input name="name" required maxlength="120" placeholder="e.g. Proyojon Abashon"></label>
+      <div class="row">
+        <label>Type<select name="type"><option value="client">Client</option><option value="personal">Personal</option><option value="other">Other</option></select></label>
+        <label>Status<select name="status"><option value="active">Active</option><option value="paused">Paused</option><option value="done">Done</option></select></label>
+      </div>
+      <label>Website<input name="website" placeholder="https://"></label>
+      <label>Facebook page<input name="facebook" placeholder="https://facebook.com/…"></label>
+      <fieldset><legend>Main platforms</legend><div class="chips" id="project-platforms"></div></fieldset>
+      <label>Notes<textarea name="notes" rows="3" placeholder="Anything Claude should always know about this project"></textarea></label>
+      <div class="actions">
+        <button type="button" class="danger ghost" id="delete-project" hidden>Delete project</button>
+        <span class="spacer"></span>
+        <button value="cancel" formnovalidate class="ghost">Cancel</button>
+        <button value="save" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

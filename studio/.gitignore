@@ -1,0 +1,6 @@
+# Runtime state: run history and the task queue
+data/
+# Generated deliverables (may hold client material); keep the folder itself
+workspaces/*/outputs/*
+!workspaces/*/outputs/.gitkeep
+workspaces/.trash/
