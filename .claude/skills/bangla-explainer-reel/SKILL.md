@@ -29,7 +29,10 @@ If the user supplies their own script (with timestamps/visual notes), keep their
 - Use the **ElevenLabs connector** (`creative_generate_speech`): voice **"Adam - Dominant, Firm"** `pNInz6obpgDQGcFmaJgB` (find it via `creative_list_voices`, search "Adam"), model `eleven_v4`.
 - **TTS text = spoken words only.** Never include line numbers, "[HOOK]"/"Point 1"/"Payoff" labels or markdown — ElevenLabs reads them aloud (happened once; we had to cut 28 junk segments).
 - Generate the whole script in one call so the tone is consistent. Download the `content_url` (storage.googleapis.com is reachable) with curl.
-- If ElevenLabs fails (the account showed "Free Tier access has been disabled… upgrade" once), tell the user plainly and ask them to upload an MP3 (their own ElevenLabs export works) — do not fake a voice.
+- **Fallback chain if ElevenLabs fails** (the account showed "Free Tier access has been disabled… upgrade" once) — the user has asked that a voice always gets made:
+  1. Google Cloud Text-to-Speech via the repo tool `tools/audio/google_tts.py` (reads `GOOGLE_TTS_API_KEY` / `GOOGLE_API_KEY` / `GEMINI_API_KEY`; texttospeech.googleapis.com is reachable). Bangla voices: `bn-IN-Chirp3-HD-*`, `bn-IN-Wavenet-*`. Free tier covers a few reels a month.
+  2. Free keyless gTTS (`pip install gTTS`, `gtts-cli -l bn`) — only works if `translate.google.com` is allowed in Network access (it is blocked by default here). Robotic; last resort.
+  3. Otherwise tell the user what is missing (key or allowed host) and ask for an MP3 — never fake a voice.
 
 ## 3. Align voice → lines
 - Split at pauses: `ffmpeg -af silencedetect=n=-40dB:d=0.15`, transcribe each piece with local Whisper-small (`kit/transcribe_segments.mjs`; model from npm package `sts-whisper-small`, runtime `@huggingface/transformers@3` — huggingface.co itself is blocked).
