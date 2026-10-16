@@ -7,7 +7,9 @@ description: The channel's default video format. Use whenever the user gives a t
 
 The user runs a Bangladeshi AI/tech channel (Facebook/Instagram Reels, YouTube Shorts, TikTok; viewers 18–35).
 **They give only a prompt. You do everything else, end to end:** script → voice → animated video → MP4.
-Reference build of a finished reel: `kit/` (built for "OpenAI's 6 AI incidents", Oct 2026).
+**Start from `kit/reel_template.py`** — one self-contained file: line table (speech segments → caption chunks → sfx), tight-VO assembly, word-pop captions, `@scene(i)` functions, end card, template CSS. Copy it to `projects/<slug>/reel.py` with `kit/soundbed.py`, rewrite `LINES` + scenes for the new topic, run `python reel.py && python soundbed.py`, render. (`kit/build*.py`/`voice_edit.py` = the older first reel, for reference.)
+
+If the user supplies their own script (with timestamps/visual notes), keep their wording; split it into short caption lines; use their visual notes and on-screen text (e.g. end card text).
 
 ## Output spec (always)
 - 1080×1920, 30 fps, H.264 ~14 Mbps (`-b:v 14M -maxrate 16M`), AAC 256k/48 kHz, `+faststart`; final loudness ≈ −14 LUFS.
