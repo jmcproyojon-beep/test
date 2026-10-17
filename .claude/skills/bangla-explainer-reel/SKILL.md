@@ -60,3 +60,8 @@ If the user supplies their own script (with timestamps/visual notes), keep their
 
 ## News-format reels
 `kit/news_reel_template.py` adds broadcast chrome: LIVE badge, scrolling red ticker, per-section lower-third headline bars (the user's on-screen text), 2.5D cards (rotationY + transformPerspective), CSS 3D cube, processor chip, API flow, repo card, comparison with ≠. It runs without a voice (paced at CPS=14) and switches to real timing once `voice/segs.json` + `VOICE_MAP` are filled. Verify news facts with WebSearch before building; soften any claim you cannot confirm and tell the user.
+
+## Themes
+- **Dark neon** (`kit/news_reel_template.py`): dark background, section-coloured glow, neon accents, punchy back.out pops, shakes, white flashes.
+- **Light editorial** (`kit/news_reel_editorial.py`): cream paper (#F4F1EA) with dot grid, bold black type, electric-blue (#2D5BFF) caption highlight pills, hard offset shadows, rotating accent ring per section; animations are expo.out rises, word slides, gentle punches, parallax drift, and full-screen colour wipes between sections (no flashes/shakes).
+Ask nothing — use the theme the user last chose; offer the other when they ask for a change.
