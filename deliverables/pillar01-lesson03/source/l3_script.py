@@ -1,0 +1,193 @@
+"""PILLAR 01 · Lesson 03 — Essential AI Tools & Platforms. Narration + storyboard data."""
+
+SCENES = [
+ dict(id="s01", num="০১", title="স্বাগতম", type="intro",
+  objective="Recall Lessons 01–02 and preview the tool map, the big three assistants, pricing and the hands-on test.",
+  visual="Instructor (lip-synced talking portrait) left; right: lesson title and a 6-item roadmap ticking in.",
+  camera="Slow push-in on the presenter frame.",
+  animation="Title rises; roadmap chips slide in on the matching sentence.",
+  onscreen=["লেসন ০৩ · প্রয়োজনীয় AI টুল ও প্ল্যাটফর্ম", "ছয় ধরনের AI টুল", "ChatGPT · Gemini · Claude", "ফ্রি বনাম পেইড", "সঠিক টুল বাছাইয়ের ৪ প্রশ্ন", "হাতে-কলমে তুলনা", "অ্যাসাইনমেন্ট"],
+  sound="Logo sting; soft pop per roadmap item.",
+  lines=[
+  "স্বাগতম PILLAR 01-এর তৃতীয় লেসনে।",
+  "আগের দুই লেসনে আমরা জেনেছি AI কী, আর Machine Learning, Deep Learning ও Generative AI কীভাবে একটির ভেতরে আরেকটি।",
+  "আজ আমরা হাতে-কলমের দিকে যাব — কোন কাজের জন্য কোন AI টুল, আর কীভাবে সঠিকটি বেছে নেবেন।",
+  "দেখব ছয় ধরনের AI টুল, তিনটি জনপ্রিয় অ্যাসিস্ট্যান্ট — ChatGPT, Gemini আর Claude — আর ফ্রি ও পেইড প্ল্যানের পার্থক্য।",
+  "শেষে একই প্রম্পট তিনটি টুলে দিয়ে তুলনা করার একটি অ্যাসাইনমেন্ট থাকবে।",
+  "আজকের লেসন শেষে আপনি নিজের পড়াশোনা, কাজ বা ব্যবসার জন্য সঠিক AI টুল বেছে নিতে পারবেন।"]),
+
+ dict(id="s02", num="০২", title="AI টুলের ছয়টি পরিবার", type="families",
+  objective="Give a mental map of six tool families by output type.",
+  visual="Hexagonal grid of six family tiles (লেখা, ছবি, ভিডিও, অডিও, কোডিং, গবেষণা) with an icon each; a warning ribbon 'নাম ও দাম দ্রুত বদলায় — অফিশিয়াল সাইটে মিলিয়ে নিন'.",
+  camera="Static wide; gentle zoom as each tile lights.",
+  animation="Tiles flip in one by one on their word; ribbon slides up last.",
+  onscreen=["লেখা", "ছবি", "ভিডিও", "অডিও", "কোডিং", "গবেষণা", "টুলের নাম ও দাম দ্রুত বদলায়"],
+  sound="Pop per tile.",
+  lines=[
+  "শুরুতে একটি মানচিত্র। কাজ অনুযায়ী AI টুলগুলোকে মোটামুটি ছয়টি পরিবারে ভাগ করা যায়।",
+  "লেখার AI, ছবির AI, ভিডিওর AI, অডিওর AI, কোডিংয়ের AI, আর গবেষণার AI।",
+  "অনেক টুল একসাথে কয়েকটি কাজ পারে — যেমন একটি চ্যাট অ্যাসিস্ট্যান্ট লিখতেও পারে, ছবিও বানাতে পারে।",
+  "যেমন একজন ফ্রিল্যান্সার লেখার AI দিয়ে প্রপোজাল লেখেন, ছবির AI দিয়ে থাম্বনেইল বানান, আর অডিওর AI দিয়ে ভিডিওর ভয়েসওভার তৈরি করেন।",
+  "আর একটি জরুরি কথা — AI টুলের নাম, ফিচার আর দাম খুব দ্রুত বদলায়। তাই আজ যে টুলগুলোর নাম বলব, সেগুলো উদাহরণ মাত্র। ব্যবহারের আগে সবসময় অফিশিয়াল ওয়েবসাইটে মিলিয়ে নিন।"]),
+
+ dict(id="s03", num="০৩", title="লেখা ও গবেষণার AI", type="textresearch",
+  objective="Show what text AI and research AI do, with examples and the 'sources' distinction.",
+  visual="Left card 'লেখার AI' with use chips (ইমেইল, গিগ ডেসক্রিপশন, ফেসবুক পোস্ট, অনুবাদ, সারসংক্ষেপ) and example names; right card 'গবেষণার AI' with Perplexity (উৎসসহ উত্তর), NotebookLM (আপনার ডকুমেন্ট থেকে), Deep Research; footer 'উৎস খুলে যাচাই করুন'.",
+  camera="Static; slight push on each card in turn.",
+  animation="Use chips pop; example name pills slide in; source-link icons pulse.",
+  onscreen=["লেখার AI: ChatGPT · Gemini · Claude", "গবেষণার AI: Perplexity · NotebookLM · Deep Research", "উৎসের লিংক খুলে যাচাই করুন"],
+  sound="Pop per chip.",
+  lines=[
+  "প্রথমে লেখার AI — সবচেয়ে বেশি ব্যবহৃত পরিবার।",
+  "ইমেইল, ফ্রিল্যান্সিং গিগের বর্ণনা, ফেসবুক পেজের পোস্ট, অনুবাদ কিংবা বড় লেখার সারসংক্ষেপ — এসব কাজে ChatGPT, Gemini বা Claude-এর মতো অ্যাসিস্ট্যান্ট দারুণ সাহায্য করে।",
+  "তবে AI-এর লেখা সরাসরি কপি না করে নিজের ভাষায় সম্পাদনা করুন — তাহলে লেখা আপনার মতো শোনাবে, আর ভুলও ধরা পড়বে।",
+  "এবার গবেষণার AI। এগুলো প্রশ্নের উত্তরের সাথে উৎসের লিংক দেখানোর দিকে বেশি মনোযোগ দেয়।",
+  "যেমন Perplexity ওয়েব খুঁজে উৎসসহ উত্তর দেয়। Google-এর NotebookLM আপনার আপলোড করা ডকুমেন্ট থেকেই উত্তর খোঁজে — নোট বা পাঠ্যবই পড়ার জন্য বেশ কাজের।",
+  "অনেক অ্যাসিস্ট্যান্টে এখন Deep Research নামের ফিচারও আছে, যা অনেকগুলো ওয়েবপেজ পড়ে একটি রিপোর্ট বানায়।",
+  "তবে মনে রাখুন — উৎস দেখানো মানেই উত্তর নির্ভুল নয়। লিংক খুলে নিজে মিলিয়ে নিন।"]),
+
+ dict(id="s04", num="০৪", title="ছবি ও ভিডিওর AI", type="imagevideo",
+  objective="Explain image and video generation/editing tools, typical uses and the cost/limit reality.",
+  visual="Left: image card — prompt bar '“সবুজ ধানক্ষেতে সূর্যাস্ত, জলরং স্টাইল”' → four generated-thumbnail placeholders (abstract gradient art, labelled প্রতীকী); example pills ChatGPT · Gemini · Canva AI · Adobe Firefly. Right: video card — film strip with play icon; pills Google Veo · Runway · CapCut (অটো সাবটাইটেল). Amber note 'ভিডিও জেনারেশন সাধারণত সীমিত বা পেইড'.",
+  camera="Slow lateral move left→right.",
+  animation="Prompt types in; thumbnails resolve from blur; film strip scrolls.",
+  onscreen=["ছবির AI: ChatGPT · Gemini · Canva AI · Adobe Firefly", "ভিডিওর AI: Google Veo · Runway · CapCut", "ভিডিও জেনারেশন সাধারণত সীমিত বা পেইড"],
+  sound="Shutter click on thumbnails; soft whoosh on film strip.",
+  lines=[
+  "এবার ছবির AI। লেখা দিয়ে বর্ণনা করলেই নতুন ছবি তৈরি হয় — যেমন, সবুজ ধানক্ষেতে সূর্যাস্ত, জলরং স্টাইলে।",
+  "ChatGPT আর Gemini-তেই এখন ছবি বানানো যায়। আর Canva-র AI ফিচার বা Adobe Firefly দিয়ে পোস্টার, থাম্বনেইল কিংবা ছবি এডিটিংয়ের কাজ সহজ হয়।",
+  "ভিডিওর AI দুই রকম। কিছু টুল লেখা বা ছবি থেকে নতুন ভিডিও ক্লিপ তৈরি করে — যেমন Google-এর Veo বা Runway।",
+  "আর কিছু টুল এডিটিং সহজ করে — যেমন CapCut-এর মতো অ্যাপে অটো সাবটাইটেল বা ব্যাকগ্রাউন্ড সরানো।",
+  "মনে রাখবেন, ভিডিও তৈরি অনেক খরচের কাজ, তাই এসব টুলে সাধারণত ফ্রি ব্যবহার খুব সীমিত, অথবা পেইড প্ল্যান লাগে।",
+  "আরেকটি বিষয় — AI দিয়ে বানানো ছবি বা ভিডিও বাস্তব মানুষের মতো দেখাতে পারে। কাউকে হেয় করতে বা ভুয়া খবর ছড়াতে এমন কনটেন্ট বানানো অন্যায়, আর অনেক প্ল্যাটফর্ম বাস্তবসম্মত AI কনটেন্টে লেবেল দিতে বলে।"]),
+
+ dict(id="s05", num="০৫", title="অডিও ও কোডিংয়ের AI", type="audiocode",
+  objective="Cover voice/audio AI (TTS, transcription, cleanup, music) with consent ethics, and coding assistants.",
+  visual="Left: waveform card with four rows (লেখা → কণ্ঠ, কথা → লেখা, নয়েজ দূর করা, মিউজিক) and pills ElevenLabs · Adobe Podcast · Suno; red consent banner 'অনুমতি ছাড়া কারো কণ্ঠ ক্লোন নয়'. Right: code editor mock with an AI suggestion ghost-text line; pills GitHub Copilot · Cursor · Claude Code · ChatGPT.",
+  camera="Static; zoom on the code suggestion.",
+  animation="Waveform animates; ghost text types in and turns solid on 'Tab'.",
+  onscreen=["অডিও: ElevenLabs · Adobe Podcast · Suno", "অনুমতি ছাড়া কারো কণ্ঠ ক্লোন করবেন না", "কোডিং: GitHub Copilot · Cursor · Claude Code · ChatGPT"],
+  sound="Soft tone under the waveform; keyboard ticks.",
+  lines=[
+  "অডিওর AI দিয়ে লেখা থেকে কণ্ঠ তৈরি করা যায়, কথা থেকে লেখা বানানো যায়, রেকর্ডিংয়ের নয়েজ দূর করা যায়, এমনকি মিউজিকও তৈরি করা যায়।",
+  "যেমন ElevenLabs কৃত্রিম কণ্ঠের জন্য, Adobe Podcast রেকর্ডিং পরিষ্কার করার জন্য, আর Suno মিউজিক তৈরির জন্য পরিচিত।",
+  "তবে একটি নৈতিক নিয়ম — কারো অনুমতি ছাড়া তার কণ্ঠ ক্লোন করবেন না। এটা প্রতারণা আর আইনি ঝামেলার কারণ হতে পারে।",
+  "কোডিংয়ের AI প্রোগ্রামারদের সহকারী। GitHub Copilot বা Cursor কোড লেখার সময় পরের অংশ সাজেস্ট করে, আর Claude Code বা ChatGPT কোড ব্যাখ্যা করা আর ভুল খোঁজায় সাহায্য করে।",
+  "নতুনদের জন্য পরামর্শ — AI-এর লেখা কোড না বুঝে কপি করবেন না। প্রতিটি লাইন কী করছে, তা জিজ্ঞেস করে শিখুন।"]),
+
+ dict(id="s06", num="০৬", title="ChatGPT", type="assistant",
+  objective="Profile ChatGPT: maker, access, core capabilities, good uses.",
+  visual="Assistant profile card (brand-neutral glyph, no logo): নির্মাতা OpenAI · chatgpt.com ও অফিশিয়াল অ্যাপ; capability chips (লেখা ও চ্যাট, ছবি তৈরি, ফাইল ও ছবি বোঝা, ভয়েস কথোপকথন, ওয়েব সার্চ); 'ভালো যেখানে' list.",
+  camera="Static; push-in on capability chips.",
+  animation="Card slides in; chips pop in order of mention.",
+  onscreen=["নির্মাতা: OpenAI", "chatgpt.com · অফিশিয়াল অ্যাপ", "লেখা · ছবি তৈরি · ফাইল বোঝা · ভয়েস · ওয়েব সার্চ"],
+  sound="Pop per chip.",
+  lines=[
+  "এবার তিনটি জনপ্রিয় অ্যাসিস্ট্যান্ট, প্রথমে ChatGPT।",
+  "ChatGPT তৈরি করেছে OpenAI। এটি chatgpt.com ওয়েবসাইটে আর অফিশিয়াল মোবাইল অ্যাপে পাওয়া যায়।",
+  "ChatGPT দিয়ে লেখা আর প্রশ্নোত্তর তো আছেই, সাথে ছবি তৈরি, ফাইল বা ছবি আপলোড করে বিশ্লেষণ, ভয়েসে কথা বলা আর ওয়েব সার্চ করে উত্তর দেওয়ার সুবিধাও আছে।",
+  "সব ধরনের কাজে মোটামুটি ভালো বলে নতুনদের শুরু করার জন্য এটি সহজ — যেমন সাধারণ প্রশ্ন, লেখার খসড়া বা কোনো বিষয় বুঝে নেওয়া।",
+  "ধরুন আপনি একজন ফ্রিল্যান্সার। ক্লায়েন্টের ইংরেজি মেসেজের একটি ভদ্র উত্তর, বা আপনার গিগের আরও আকর্ষণীয় বর্ণনা লিখতে ChatGPT-কে বলতে পারেন — তারপর নিজের মতো করে সম্পাদনা করুন।",
+  "তবে ফ্রি প্ল্যানে ব্যবহারের সীমা আছে, আর সীমা পেরোলে হালকা মডেলে চলে যেতে পারে।"]),
+
+ dict(id="s07", num="০৭", title="Google Gemini", type="assistant",
+  objective="Profile Gemini: maker, access, Google integration, good uses.",
+  visual="Profile card: নির্মাতা Google · gemini.google.com ও অ্যাপ (অনেক Android ফোনে); capability chips (লেখা ও চ্যাট, ছবি তৈরি, Gmail · Docs · Drive-এর সাথে কাজ, Deep Research); Google-services orbit around the card.",
+  camera="Slow orbit feel (icons rotate around card).",
+  animation="Orbit icons fade in; chips pop.",
+  onscreen=["নির্মাতা: Google", "gemini.google.com · অ্যাপ", "Gmail · Docs · Drive-এর সাথে কাজ"],
+  sound="Soft chime per orbit icon.",
+  lines=[
+  "দ্বিতীয় — Google Gemini।",
+  "Gemini তৈরি করেছে Google। এটি gemini.google.com-এ আর মোবাইল অ্যাপে পাওয়া যায়, আর অনেক Android ফোনে সহকারী হিসেবেও থাকে।",
+  "Gemini-এর বড় সুবিধা Google-এর অন্যান্য সার্ভিসের সাথে সংযোগ। অনুমতি দিলে এটি Gmail, Google Docs বা Drive-এর তথ্য নিয়েও কাজ করতে পারে।",
+  "লেখা, ছবি তৈরি আর Deep Research-এর মতো ফিচারও আছে।",
+  "যাঁরা আগে থেকেই Gmail আর Google Docs-এ কাজ করেন, তাঁদের জন্য Gemini বেশ সুবিধাজনক।",
+  "ধরুন Gmail-এ এক সপ্তাহের অনেক ইমেইল জমেছে। Gemini-কে বলতে পারেন জরুরি ইমেইলগুলোর সারসংক্ষেপ দিতে, অথবা একটি Google Doc-এর খসড়া আরও সহজ ভাষায় লিখে দিতে।"]),
+
+ dict(id="s08", num="০৮", title="Claude", type="assistant",
+  objective="Profile Claude: maker, access, strengths (long documents, writing, coding), availability in Bangladesh.",
+  visual="Profile card: নির্মাতা Anthropic · claude.ai ও অ্যাপ; capability chips (লম্বা ডকুমেন্ট পড়া ও সারসংক্ষেপ, গোছানো লেখা, কোডিং ও বিশ্লেষণ); green tag 'বাংলাদেশে অফিশিয়ালি সাপোর্টেড'; a long PDF icon flowing into a short summary card.",
+  camera="Static; slight push on the PDF → summary animation.",
+  animation="PDF pages stack and compress into a summary card.",
+  onscreen=["নির্মাতা: Anthropic", "claude.ai · অ্যাপ", "লম্বা ডকুমেন্ট · গোছানো লেখা · কোডিং", "বাংলাদেশে অফিশিয়ালি সাপোর্টেড"],
+  sound="Paper rustle on the PDF stack.",
+  lines=[
+  "তৃতীয় — Claude।",
+  "Claude তৈরি করেছে Anthropic। এটি claude.ai ওয়েবসাইটে আর অফিশিয়াল অ্যাপে পাওয়া যায়, আর Anthropic-এর অফিশিয়াল তালিকা অনুযায়ী বাংলাদেশ থেকেও ব্যবহার করা যায়।",
+  "Claude লম্বা ডকুমেন্ট পড়ে সারসংক্ষেপ করা, গোছানো ও বিস্তারিত লেখা, আর কোডিং ও বিশ্লেষণের কাজের জন্য বেশ পরিচিত।",
+  "যেমন একটি বড় রিপোর্ট বা গবেষণাপত্র আপলোড করে মূল পয়েন্টগুলো জানতে চাইলে এটি কাজে আসে।",
+  "কিংবা একজন শিক্ষার্থী নিজের লেখা একটি অধ্যায় দিয়ে জিজ্ঞেস করতে পারে, কোথায় যুক্তি দুর্বল। তবে অফিসের গোপন ডকুমেন্ট আপলোডের আগে প্রতিষ্ঠানের নিয়ম জেনে নিন।",
+  "এখানেও ফ্রি প্ল্যানে ব্যবহারের সীমা আছে, যা কিছু সময় পর আবার রিসেট হয়।"]),
+
+ dict(id="s09", num="০৯", title="ফ্রি বনাম পেইড", type="pricing",
+  objective="Explain free vs paid tiers honestly, give dated reference prices, and warn about shared-account scams.",
+  visual="Two columns: ফ্রি (সীমিত ব্যবহার · অনেক সময় হালকা মডেল · মূল ফিচার) vs পেইড (বেশি ব্যবহার · শক্তিশালী মডেল · বাড়তি ফিচার). Reference strip: 'যুক্তরাষ্ট্রে মূল পেইড প্ল্যান: ChatGPT Plus ~$20 · Google AI Pro ~$19.99 · Claude Pro ~$20 / মাস (অক্টোবর ২০২৬; দেশভেদে ভিন্ন)'. Red banner: 'ফেসবুকে \"শেয়ার্ড অ্যাকাউন্ট\" কিনবেন না'.",
+  camera="Static; push on the price strip.",
+  animation="Columns build row by row; strip slides; red banner shakes once.",
+  onscreen=["ফ্রি: সীমিত ব্যবহার", "পেইড: বেশি ব্যবহার, শক্তিশালী মডেল", "যুক্তরাষ্ট্রে ~$২০/মাস (অক্টোবর ২০২৬, দেশভেদে ভিন্ন)", "শুধু অফিশিয়াল সাইট বা অ্যাপ থেকে কিনুন"],
+  sound="Cash-register-free soft click per row; low tone on the warning.",
+  lines=[
+  "এবার সবচেয়ে বেশি জিজ্ঞাসিত প্রশ্ন — ফ্রি নাকি পেইড?",
+  "তিনটি অ্যাসিস্ট্যান্টেরই ফ্রি প্ল্যান আছে। ফ্রিতে মূল ফিচার ব্যবহার করা যায়, তবে ব্যবহারের সীমা থাকে, আর অনেক সময় তুলনামূলক হালকা মডেল দেওয়া হয়।",
+  "পেইড প্ল্যানে ব্যবহারের সীমা বেশি, শক্তিশালী মডেল আর কিছু বাড়তি ফিচার পাওয়া যায়।",
+  "রেফারেন্স হিসেবে, অক্টোবর ২০২৬-এ যুক্তরাষ্ট্রে এই তিনটির মূল পেইড প্ল্যান মাসে প্রায় বিশ ডলার। তবে দেশভেদে দাম ভিন্ন হতে পারে, আর দাম প্রায়ই বদলায় — কেনার আগে অফিশিয়াল প্রাইসিং পেজ দেখুন।",
+  "শুরুতে ফ্রি প্ল্যানই যথেষ্ট। নিয়মিত কাজে সীমা বারবার শেষ হলে তখন পেইড ভাবুন।",
+  "আর সাবধান — ফেসবুকে কম দামে শেয়ার্ড অ্যাকাউন্ট বিক্রি হয়। এতে আপনার তথ্য অন্যরা দেখতে পারে, আর এটি নিয়মবিরুদ্ধ। শুধু অফিশিয়াল সাইট বা অ্যাপ থেকে কিনুন।"]),
+
+ dict(id="s10", num="১০", title="সঠিক টুল বাছাইয়ের ৪ প্রশ্ন", type="choose",
+  objective="Give a reusable four-question decision rule for picking a tool.",
+  visual="Four numbered question cards in a 2×2 grid: ১ কী তৈরি করতে চাই? ২ বাংলায় মান কেমন? ৩ সাম্প্রতিক তথ্য/উৎস লাগবে? ৪ বাজেট ও প্রাইভেসি; below: example flow 'ফেসবুক পোস্ট → লেখার AI → তিনটিতে ট্রাই → সেরাটি বাছাই'.",
+  camera="Static; zoom on each card as asked.",
+  animation="Cards flip; example flow pills connect with arrows.",
+  onscreen=["১ কী তৈরি করতে চাই?", "২ বাংলায় মান কেমন?", "৩ সাম্প্রতিক তথ্য বা উৎস লাগবে?", "৪ বাজেট ও প্রাইভেসি"],
+  sound="Pop per card; soft whoosh on arrows.",
+  lines=[
+  "তাহলে এত টুলের মধ্যে কোনটি বেছে নেবেন? চারটি প্রশ্ন নিজেকে করুন।",
+  "এক — আমি কী তৈরি করতে চাই? লেখা, ছবি, ভিডিও, অডিও, কোড, নাকি তথ্য খোঁজা? এতেই টুলের পরিবার ঠিক হয়ে যায়।",
+  "দুই — বাংলায় এর মান কেমন? একই বাংলা প্রম্পট দিয়ে দু-তিনটি টুল পরীক্ষা করে দেখুন।",
+  "তিন — সাম্প্রতিক তথ্য বা উৎস লাগবে কি? লাগলে ওয়েব সার্চ বা উৎস দেখায় এমন টুল নিন, আর আসল উৎস মিলিয়ে নিন।",
+  "চার — বাজেট আর প্রাইভেসি। ফ্রিতে কাজ চলবে কি না, আর কাজের তথ্য গোপন হলে তা আদৌ AI-তে দেওয়া ঠিক কি না, ভাবুন।",
+  "একটি উদাহরণ দেখি। আপনি দোকানের জন্য ফেসবুক পোস্ট লিখতে চান। কাজটা লেখা, তাই লেখার AI। বাংলার মান দেখতে তিনটিতেই একই প্রম্পট দিন। সাম্প্রতিক তথ্য লাগছে না, আর কাজটা ফ্রিতেই চলে। তাহলে যার বাংলা আপনার সবচেয়ে ভালো লাগে, সেটিই আপনার টুল।"]),
+
+ dict(id="s11", num="১১", title="হাতে-কলমে তুলনা ও অ্যাসাইনমেন্ট", type="compare",
+  objective="Model a fair three-tool comparison and set the assignment.",
+  visual="Prompt card at top with the exact Bangla prompt; three illustrated chat panels (ChatGPT · Gemini · Claude), each labelled 'প্রতীকী চিত্র — আসল স্ক্রিনশট নয়', showing placeholder answer lines; scoring table (বাংলার মান · নির্দেশনা মানা · সৃজনশীলতা · ভুল তথ্য) with 1–5 dots; deliverable chips.",
+  camera="Static wide; push on the scoring table.",
+  animation="Prompt types in; three panels fill in parallel; score dots fill row by row.",
+  onscreen=["একই প্রম্পট · তিনটি টুল", "বাংলার মান · নির্দেশনা মানা · সৃজনশীলতা · ভুল তথ্য (১–৫)", "জমা: স্ক্রিনশট + স্কোর টেবিল + কোনটি কেন"],
+  sound="Keyboard ticks on the prompt; pop per score dot.",
+  lines=[
+  "এবার হাতে-কলমে তুলনা — আর এটাই আপনার অ্যাসাইনমেন্ট।",
+  "এই প্রম্পটটি হুবহু তিনটি টুলেই দিন: আমি ঢাকার একটি ছোট অনলাইন পোশাকের দোকান চালাই। ঈদের অফারের জন্য একটি ফেসবুক পোস্ট লিখুন — পঞ্চাশ শব্দের মধ্যে, সহজ বাংলায়, শেষে একটি কল-টু-অ্যাকশনসহ।",
+  "প্রতিটি উত্তরকে চারটি বিষয়ে এক থেকে পাঁচ নম্বর দিন — বাংলার মান, নির্দেশনা মানা, যেমন শব্দসীমা ঠিক আছে কি না, সৃজনশীলতা, আর কোনো ভুল বা বানানো তথ্য আছে কি না।",
+  "সবার জন্য একই প্রম্পট আর নতুন চ্যাট ব্যবহার করুন, তাহলেই তুলনাটা ন্যায্য হবে।",
+  "জমা দিন — তিনটি উত্তরের স্ক্রিনশট, আপনার স্কোর টেবিল, আর দুই লাইনে লিখুন কোন টুলটি আপনার কাজে সেরা মনে হলো, এবং কেন।",
+  "আর স্ক্রিনশটে আপনার নাম বা ইমেইল দেখা গেলে ঢেকে দিন।",
+  "চাইলে চতুর্থ একটি টুল, যেমন Perplexity-ও যোগ করতে পারেন — তবে মূল তিনটির তুলনা অবশ্যই করবেন।"]),
+
+ dict(id="s12", num="১২", title="সারসংক্ষেপ", type="recap",
+  objective="Consolidate and preview Lesson 04 (prompt engineering).",
+  visual="Lip-synced presenter returns; checklist of six ideas; next-lesson card: প্রম্পট ইঞ্জিনিয়ারিংয়ের মূল কথা.",
+  camera="Slow pull-back to the end frame.",
+  animation="Checks tick in sequence; next card slides in; end card.",
+  onscreen=["✓ ছয় ধরনের AI টুল", "✓ ChatGPT · Gemini · Claude", "✓ ফ্রি বনাম পেইড", "✓ বাছাইয়ের ৪ প্রশ্ন", "✓ ন্যায্য তুলনার নিয়ম", "পরের লেসন: প্রম্পট ইঞ্জিনিয়ারিংয়ের মূল কথা"],
+  sound="Success chime; music swells and fades.",
+  lines=[
+  "আজ আমরা দেখলাম ছয় ধরনের AI টুল — লেখা, ছবি, ভিডিও, অডিও, কোডিং আর গবেষণা।",
+  "চিনলাম ChatGPT, Gemini আর Claude-কে, আর বুঝলাম ফ্রি আর পেইড প্ল্যানের পার্থক্য।",
+  "শিখলাম চারটি প্রশ্ন দিয়ে সঠিক টুল বেছে নেওয়ার নিয়ম, আর একই প্রম্পটে টুলগুলো ন্যায্যভাবে তুলনা করার উপায়।",
+  "মনে রাখবেন, সেরা টুল সেটিই যা আপনার কাজ নির্ভুলভাবে আর নিরাপদে করে দেয় — সবচেয়ে দামি বা সবচেয়ে জনপ্রিয়টি নয়।",
+  "পরের লেসনে আমরা শিখব প্রম্পট ইঞ্জিনিয়ারিংয়ের মূল কথা — কীভাবে প্রম্পট লিখলে AI থেকে আরও ভালো উত্তর পাওয়া যায়।",
+  "অ্যাসাইনমেন্টটি শেষ করে চলে আসুন পরের লেসনে। দেখা হবে!"]),
+]
+
+PROMPT = "আমি ঢাকার একটি ছোট অনলাইন পোশাকের দোকান চালাই। ঈদের অফারের জন্য একটি ফেসবুক পোস্ট লিখুন — ৫০ শব্দের মধ্যে, সহজ বাংলায়, শেষে একটি কল-টু-অ্যাকশনসহ।"
+
+if __name__ == "__main__":
+    import re
+    tot = 0
+    for s in SCENES:
+        c = sum(len(re.sub(r"\s", "", l)) for l in s["lines"]); tot += c
+        print(s["id"], c, round(c / 12.0, 1), "s")
+    print("total chars", tot, "≈", round(tot / 12.0 / 60, 2), "min raw")
