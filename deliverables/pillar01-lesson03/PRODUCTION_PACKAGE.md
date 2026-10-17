@@ -1,11 +1,11 @@
 # PILLAR 01 · LESSON 03 — Essential AI Tools & Platforms
 ## Production Package · AI Fundamentals & Digital Literacy (বাংলা)
 
-**Rendered file:** `pillar01-lesson03_final.mp4` (master, 70 MB) · **Measured duration:** 09:54.8 (594.8 s) · 1920×1080 · 30 fps · H.264 + AAC
+**Rendered file:** `pillar01-lesson03_final.mp4` (master, 69 MB) · **Measured duration:** 09:54.8 (594.8 s) · 1920×1080 · 30 fps · H.264 + AAC
 
 > **What's real here:** the MP4 was actually rendered and checked.
 > - **Narration:** Gemini text-to-speech `gemini-3.1-flash-tts-preview`, prebuilt male voice **Orus**, one model for all 12 scenes. Each take was transcribed with Gemini and compared to the script (scores in Section G).
-> - **Instructor:** your new photo as a still portrait with a slow push-in (intro and recap). It is **not lip-synced**: commercial lip-sync services are blocked in this production environment. See Section G for how to add lip-sync.
+> - **Instructor:** your new photo, animated with the open-source SadTalker model to lip-sync the narration in scenes 01, 12 (labelled "AI লিপ-সিঙ্ক" on screen). Other scenes use motion graphics only.
 > - **Tool demo (scene 11):** the three chat panels are labelled illustrations ("প্রতীকী — আসল স্ক্রিনশট নয়"), and the score table is labelled as an example. This environment can't reach chatgpt.com, gemini.google.com or claude.ai. Record the real comparison with Section E and replace the panels before publishing.
 > - **Prices:** quoted only as an October 2026 US reference (~$20/month for each main paid plan, from multiple pricing guides that agree). Model names and limits are deliberately not quoted, because sources disagree and they change often. Check the official pricing pages before publishing.
 
@@ -155,7 +155,7 @@ Times are measured from the rendered timeline. From scene 02 on, each scene open
 ### Scene ০১ — স্বাগতম  ·  00:00.0 → 00:38.0
 
 - **Teaching objective:** Recall Lessons 01–02 and preview the tool map, the big three assistants, pricing and the hands-on test.
-- **Visual:** Instructor (still portrait, slow push-in) left; right: lesson title and a 6-item roadmap ticking in.
+- **Visual:** Instructor (lip-synced talking portrait) left; right: lesson title and a 6-item roadmap ticking in.
 - **Camera:** Slow push-in on the presenter frame.
 - **Animation:** Title rises; roadmap chips slide in on the matching sentence.
 - **On-screen text:** "লেসন ০৩ · প্রয়োজনীয় AI টুল ও প্ল্যাটফর্ম" · "ছয় ধরনের AI টুল" · "ChatGPT · Gemini · Claude" · "ফ্রি বনাম পেইড" · "সঠিক টুল বাছাইয়ের ৪ প্রশ্ন" · "হাতে-কলমে তুলনা" · "অ্যাসাইনমেন্ট"
@@ -375,7 +375,7 @@ Times are measured from the rendered timeline. From scene 02 on, each scene open
 ### Scene ১২ — সারসংক্ষেপ  ·  09:10.8 → 09:54.8
 
 - **Teaching objective:** Consolidate and preview Lesson 04 (prompt engineering).
-- **Visual:** Presenter photo returns; checklist of six ideas; next-lesson card: প্রম্পট ইঞ্জিনিয়ারিংয়ের মূল কথা.
+- **Visual:** Lip-synced presenter returns; checklist of six ideas; next-lesson card: প্রম্পট ইঞ্জিনিয়ারিংয়ের মূল কথা.
 - **Camera:** Slow pull-back to the end frame.
 - **Animation:** Checks tick in sequence; next card slides in; end card.
 - **On-screen text:** "✓ ছয় ধরনের AI টুল" · "✓ ChatGPT · Gemini · Claude" · "✓ ফ্রি বনাম পেইড" · "✓ বাছাইয়ের ৪ প্রশ্ন" · "✓ ন্যায্য তুলনার নিয়ম" · "পরের লেসন: প্রম্পট ইঞ্জিনিয়ারিংয়ের মূল কথা"
@@ -543,7 +543,7 @@ Raw-take figures. In the edit every take was time-stretched ×0.95 (slightly slo
 
 **Highlights and zooms:** typed prompt and blur-to-sharp image reveal (04), ghost-text code completion (05), orbiting Google apps (07), document-to-summary compression (08), price strip and red caution shake (09), decision-path pills (10), filling score dots (11).
 
-**Lip-sync (not included):** HeyGen, fal and similar services are blocked by this environment's network policy. To add it later, run the intro (01) and recap (12) narration through a lip-sync tool you have access to (e.g. HeyGen Avatar/Photo or SadTalker on a GPU), using your photo, then drop the clips into the presenter card. The composition already supports `assets/talk_s01.mp4` and `assets/talk_s12.mp4` automatically.
+**Lip-sync:** scenes 01, 12 use SadTalker (open source, run locally on CPU) driven by the actual narration track, pasted back into your full photo. It's labelled "AI লিপ-সিঙ্ক" on screen. Check mouth shapes on close viewing before publishing, and disclose AI-generated presenter footage per platform rules.
 
 **Thumbnail title:** "কোন কাজে কোন AI টুল?" · subline "ChatGPT · Gemini · Claude — লেসন ০৩". Layout: your new photo on the left 40%, three brand-neutral badges (GPT · Gem · Cl) on the right, warm amber glow.
 
@@ -575,8 +575,8 @@ Raw-take figures. In the edit every take was time-stretched ×0.95 (slightly slo
 
 **Export settings:** H.264 High, 1920×1080, 30 fps CFR, yuv420p (master CRF 18), AAC-LC 192 kbps 48 kHz stereo, fast-start; −14 LUFS integrated, true peak ≤ −1 dBTP.
 
-**Measured QC on the delivered file:** Duration: 09:54.8 (594.8 s) · Video: H.264 High, 1920×1080, 30 fps, yuv420p, CRF 18 · Audio: AAC-LC 192 kbps 48 kHz stereo · Integrated loudness: −14.0 LUFS · True peak: −2.1 dBTP · HyperFrames lint: 0 errors · Frames reviewed: end-of-scene frame for all 12 scenes (4 layout issues found and fixed) + final-file contact sheet · Narration takes verified: 12/12 on one model (script similarity 0.89–0.99; lowest two checked by eye)
+**Measured QC on the delivered file:** Duration: 09:54.8 (594.8 s) · Video: H.264 High, 1920×1080, 30 fps, yuv420p, CRF 18 · Audio: AAC-LC 192 kbps 48 kHz stereo · Integrated loudness: −14.0 LUFS · True peak: −2.1 dBTP · HyperFrames lint: 0 errors · Frames reviewed: end-of-scene frame for all 12 scenes (4 layout issues found and fixed) + lip-sync face strip across scenes 01 and 12 from the final file · Narration takes verified: 12/12 on one model (script similarity 0.89–0.99; lowest two checked by eye) · Lip-sync: SadTalker (CPU) on scenes 01 and 12, driven by the exact narration audio; clip lengths match the narration (36.3 s / 39.6 s)
 
 **Fact notes (checked 17 Oct 2026):** Claude: Anthropic's official supported-countries page lists Bangladesh. Pricing: multiple October 2026 pricing guides agree on ~$20/month for ChatGPT Plus, $19.99 for Google AI Pro and $20 for Claude Pro in the US. Free tiers exist for all three, with usage limits. Model names and exact limits differ between sources and are deliberately not stated. Re-check `openai.com/chatgpt/pricing`, `gemini.google/subscriptions` and `claude.com/pricing` (or their current equivalents) before publishing.
 
-**Before publishing:** replace the scene 11 panels with your real capture (Section E) · re-check the three pricing pages · listen once for pronunciation of tool names (Perplexity, NotebookLM, Firefly, Copilot, Cursor) · turn on the platform's AI-generated content label (AI narration) · add the SRT as Bangla captions.
+**Before publishing:** replace the scene 11 panels with your real capture (Section E) · re-check the three pricing pages · listen once for pronunciation of tool names (Perplexity, NotebookLM, Firefly, Copilot, Cursor) · turn on the platform's AI-generated content label (AI narration and AI lip-sync) · add the SRT as Bangla captions.

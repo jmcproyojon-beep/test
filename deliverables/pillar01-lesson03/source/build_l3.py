@@ -68,6 +68,11 @@ def talk(sid, left, top, w, h, track):
     st, du = s["narr_start"], s["narr_end"] - s["narr_start"]
     media_html.append(f'<video id="v{sid}" class="clip talkv" data-start="{st:.3f}" data-duration="{du:.3f}" data-track-index="{track}" src="{f}" muted playsinline '
                       f'style="left:{left}px;top:{top}px;width:{w}px;height:{h}px"></video>')
+    tag = "AI শেখার সঙ্গী · বাংলায়" if sid == "s01" else "দেখা হবে পরের লেসনে!"
+    media_html.append(f'<div id="o{sid}" class="clip talko" data-start="{st:.3f}" data-duration="{du:.3f}" data-track-index="12" '
+                      f'style="left:{left}px;top:{top}px;width:{w}px;height:{h}px"><div class="lipbadge">AI লিপ-সিঙ্ক</div><div class="tag">{tag}</div></div>')
+    js.append(f'tl.from("#o{sid}",{{opacity:0,duration:0.4}},{st:.3f});')
+    js.append(f'tl.to("#o{sid}",{{opacity:0,duration:0.3}},{st + du - 0.3:.3f});')
     js.append(f'tl.from("#v{sid}",{{opacity:0,duration:0.4}},{st:.3f});')
     js.append(f'tl.to("#v{sid}",{{opacity:0,duration:0.3}},{st + du - 0.3:.3f});')
     js.append(f'tl.set("#v{sid}",{{opacity:0}},{st + du:.3f});')
@@ -341,7 +346,7 @@ for i, c in enumerate(T["cues"]):
     cap_html.append(f'<div id="cap{i}" class="clip cap" data-start="{st:.3f}" data-duration="{du:.3f}" data-track-index="{10 + i % 2}"><div class="capbox">{spans}</div></div>')
     cap_js.append(f'tl.from("#cap{i} .capbox",{{opacity:0,duration:0.15}},{st:.3f});')
 
-CSS = open(f"{HERE}/style_l3.css").read() + "\n.talkv { position: absolute; object-fit: cover; border-radius: 25px; }\n"
+CSS = open(f"{HERE}/style_l3.css").read() + "\n.talkv { position: absolute; object-fit: cover; border-radius: 25px; }\n.talko { position: absolute; pointer-events: none; }\n.talko .tag { position: absolute; left: 24px; bottom: 24px; padding: 10px 18px; border-radius: 12px; background: rgba(14,11,9,.78); border-left: 6px solid var(--cyan); font: 700 24px/1.2 var(--bn); }\n"
 page = f"""<!doctype html>
 <html lang="bn"><head><meta charset="UTF-8" /><meta name="viewport" content="width=1920, height=1080" />
 <title>PILLAR 01 · Lesson 03 — Essential AI Tools & Platforms</title>
