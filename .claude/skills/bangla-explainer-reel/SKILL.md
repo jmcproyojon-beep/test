@@ -26,7 +26,7 @@ If the user supplies their own script (with timestamps/visual notes), keep their
 - Show the script to the user only if they ask; otherwise proceed.
 
 ## 2. Voice — generate it yourself
-- Use the **ElevenLabs connector** (`creative_generate_speech`): voice **"Adam - Dominant, Firm"** `pNInz6obpgDQGcFmaJgB` (find it via `creative_list_voices`, search "Adam"), model `eleven_v4`.
+- Use the **ElevenLabs connector** (`creative_generate_speech`): for news reels prefer **"Tanvir - Confident, Upbeat, Deep"** `SamfdZr6Xh6ZtPUGZUhg` (native Dhaka Bangla, male); otherwise **"Adam - Dominant, Firm"** `pNInz6obpgDQGcFmaJgB`. For a Bangla voice write brand/version names phonetically in the TTS text (ডিপসিক, ভি ফোর পয়েন্ট ওয়ান) and keep Latin in captions (find it via `creative_list_voices`, search "Adam"), model `eleven_v4`.
 - **TTS text = spoken words only.** Never include line numbers, "[HOOK]"/"Point 1"/"Payoff" labels or markdown — ElevenLabs reads them aloud (happened once; we had to cut 28 junk segments).
 - Generate the whole script in one call so the tone is consistent. Download the `content_url` (storage.googleapis.com is reachable) with curl.
 - **Fallback chain if ElevenLabs fails** (the account showed "Free Tier access has been disabled… upgrade" once) — the user has asked that a voice always gets made:
@@ -55,3 +55,6 @@ If the user supplies their own script (with timestamps/visual notes), keep their
 ## Optional upgrades (need keys the user adds in environment settings)
 - Realistic images/video: `FAL_KEY` (FLUX/Seedream + Kling) or `GEMINI_API_KEY`; host must be allowed in Network access.
 - Lip-synced presenter: `KLING_API_KEY`.
+
+## News-format reels
+`kit/news_reel_template.py` adds broadcast chrome: LIVE badge, scrolling red ticker, per-section lower-third headline bars (the user's on-screen text), 2.5D cards (rotationY + transformPerspective), CSS 3D cube, processor chip, API flow, repo card, comparison with ≠. It runs without a voice (paced at CPS=14) and switches to real timing once `voice/segs.json` + `VOICE_MAP` are filled. Verify news facts with WebSearch before building; soften any claim you cannot confirm and tell the user.
