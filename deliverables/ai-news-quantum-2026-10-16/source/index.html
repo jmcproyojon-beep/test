@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<title>AI News — Quantum & Agent Safety</title>
+<script src="assets/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Hind Siliguri"; font-weight: 500; src: url(assets/fonts/hind-siliguri-bengali-500-normal.woff2) format("woff2"); unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+1CD0, U+1CD2, U+1CD5-1CD6, U+1CD8, U+1CE1, U+1CEA, U+1CED, U+1CF2, U+1CF5-1CF7, U+200C-200D, U+20B9, U+25CC, U+A8F1; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 600; src: url(assets/fonts/hind-siliguri-bengali-600-normal.woff2) format("woff2"); unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+1CD0, U+1CD2, U+1CD5-1CD6, U+1CD8, U+1CE1, U+1CEA, U+1CED, U+1CF2, U+1CF5-1CF7, U+200C-200D, U+20B9, U+25CC, U+A8F1; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 700; src: url(assets/fonts/hind-siliguri-bengali-700-normal.woff2) format("woff2"); unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+1CD0, U+1CD2, U+1CD5-1CD6, U+1CD8, U+1CE1, U+1CEA, U+1CED, U+1CF2, U+1CF5-1CF7, U+200C-200D, U+20B9, U+25CC, U+A8F1; }
+@font-face { font-family: "Inter"; font-weight: 500; src: url(assets/fonts/inter-latin-500-normal.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url(assets/fonts/inter-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url(assets/fonts/inter-latin-700-normal.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 800; src: url(assets/fonts/inter-latin-800-normal.woff2) format("woff2"); }
+
+:root {
+  --navy: #060b1f; --navy2: #0b1436; --cyan: #22e3ff; --purple: #8b5cf6; --pink: #d946ef;
+  --amber: #fbbf24; --green: #34d399; --red: #fb7185; --ink: #eaf4ff; --mute: #9fb3d9;
+  --glass: rgba(20, 32, 74, 0.55); --stroke: rgba(120, 200, 255, 0.28);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--navy); color: var(--ink); font-family: "Inter", "Hind Siliguri", sans-serif; }
+#root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--navy); }
+.clip { position: absolute; }
+
+/* background */
+#bg { inset: 0; width: 1080px; height: 1920px; }
+.bgfill { position: absolute; inset: 0; background: radial-gradient(1200px 900px at 50% 20%, #13205a 0%, var(--navy2) 45%, var(--navy) 100%); }
+.grid { position: absolute; left: -100px; top: -200px; width: 1280px; height: 2400px; opacity: .22;
+  background-image: linear-gradient(rgba(34,227,255,.35) 1px, transparent 1px), linear-gradient(90deg, rgba(34,227,255,.35) 1px, transparent 1px);
+  background-size: 120px 120px; transform-origin: center; }
+.orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .55; width: 620px; height: 620px; display: block; }
+.o1 { left: -200px; top: 200px; background: var(--purple); }
+.o2 { right: -220px; top: 900px; background: #0ea5e9; }
+.o3 { left: 260px; top: 1500px; background: var(--pink); opacity: .32; width: 520px; height: 520px; }
+.scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 2px, transparent 2px 6px); }
+
+/* top bar */
+#topbar { left: 60px; top: 150px; width: 960px; height: 80px; display: flex; align-items: center; justify-content: space-between; }
+.logo { font: 800 34px/1 "Inter"; letter-spacing: 3px; display: flex; align-items: center; gap: 14px; }
+.logo .bn { font: 700 28px/1 "Hind Siliguri"; color: var(--cyan); letter-spacing: 0; padding: 6px 14px; border: 2px solid var(--cyan); border-radius: 12px; }
+.live { width: 18px; height: 18px; border-radius: 50%; background: var(--red); box-shadow: 0 0 18px var(--red); display: inline-block; }
+.date { font: 600 26px/1 "Hind Siliguri"; color: var(--mute); }
+
+/* presenter */
+#presenter { left: 140px; top: 262px; width: 800px; height: 835px; border-radius: 36px; overflow: hidden; transform-origin: 0 0;
+  border: 4px solid rgba(34,227,255,.7); box-shadow: 0 0 60px rgba(34,227,255,.35), 0 30px 80px rgba(0,0,0,.5); background: #111; }
+#pimg { position: absolute; left: 0; top: 0; width: 800px; height: 835px; object-fit: cover; transform-origin: 50% 30%; display: block; }
+.pglow { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,11,31,0) 55%, rgba(6,11,31,.85) 100%); }
+.wave { position: absolute; right: 40px; bottom: 150px; width: 190px; height: 90px; display: flex; align-items: center; gap: 9px; }
+.wave i { display: block; width: 12px; height: 90px; border-radius: 6px; background: linear-gradient(180deg, var(--cyan), var(--purple)); transform-origin: 50% 50%; transform: scaleY(.15); }
+.lower3 { position: absolute; left: 36px; bottom: 36px; width: 728px; height: 96px; display: flex; flex-direction: column; justify-content: center; gap: 4px;
+  padding: 0 26px; border-left: 8px solid var(--cyan); background: rgba(6,11,31,.72); border-radius: 0 16px 16px 0; }
+.l3a { font: 800 32px/1 "Inter"; letter-spacing: 4px; color: var(--ink); }
+.l3b { font: 600 28px/1.2 "Hind Siliguri"; color: var(--cyan); }
+
+/* scenes */
+.scene { left: 0; top: 0; width: 1080px; height: 1920px; }
+.hdr { position: absolute; left: 300px; top: 280px; width: 700px; height: 190px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+.tag { display: inline-flex; align-self: flex-start; align-items: center; gap: 12px; padding: 10px 20px; border-radius: 40px; font: 800 26px/1.1 "Inter", "Hind Siliguri"; letter-spacing: 1.5px; }
+.tag .dot { width: 12px; height: 12px; border-radius: 50%; background: currentColor; display: inline-block; }
+.htitle { font: 700 64px/1.15 "Hind Siliguri"; }
+.t-rel { color: var(--cyan); background: rgba(34,227,255,.12); border: 2px solid rgba(34,227,255,.6); }
+.t-paid { color: var(--amber); background: rgba(251,191,36,.12); border: 2px solid rgba(251,191,36,.6); }
+.t-free { color: var(--green); background: rgba(52,211,153,.12); border: 2px solid rgba(52,211,153,.6); }
+.t-up, .t-upc { color: #c4b5fd; background: rgba(139,92,246,.16); border: 2px solid rgba(139,92,246,.7); }
+.t-safe { color: var(--red); background: rgba(251,113,133,.12); border: 2px solid rgba(251,113,133,.6); }
+.t-key { color: var(--cyan); background: rgba(34,227,255,.12); border: 2px solid rgba(34,227,255,.6); }
+.src { position: absolute; left: 70px; top: 1300px; width: 860px; font: 500 22px/1.2 "Hind Siliguri", "Inter"; color: var(--mute); opacity: .85; }
+
+.glass { position: absolute; left: 60px; width: 880px; border-radius: 32px; background: var(--glass); border: 2px solid var(--stroke);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 24px 60px rgba(0,0,0,.35); padding: 40px 44px; }
+.brand { font: 700 30px/1 "Inter"; color: var(--mute); letter-spacing: 2px; text-transform: uppercase; }
+.model { font: 800 92px/1.05 "Inter"; margin-top: 14px; background: linear-gradient(90deg, #fff 0%, var(--cyan) 55%, var(--purple) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; display: block; }
+.model.sm { font-size: 60px; }
+.sub { font: 600 34px/1.3 "Hind Siliguri", "Inter"; color: var(--ink); opacity: .9; margin-top: 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 34px; }
+.chip { display: flex; align-items: center; gap: 14px; padding: 16px 24px; border-radius: 20px; background: rgba(34,227,255,.08);
+  border: 2px solid rgba(34,227,255,.35); font: 700 36px/1.2 "Hind Siliguri", "Inter"; color: var(--ink); }
+.chip.dim { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.2); font-size: 32px; }
+.ic { display: inline-block; width: 44px; height: 44px; flex: 0 0 auto; }
+.ic.big { width: 72px; height: 72px; }
+.ic svg { width: 100%; height: 100%; fill: none; stroke: var(--cyan); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; display: block; }
+.chip.row { width: 792px; margin-top: 18px; }
+.warnrow { border-color: rgba(251,191,36,.5); background: rgba(251,191,36,.08); }
+.warnrow svg { stroke: var(--amber); }
+.okrow { border-color: rgba(52,211,153,.55); background: rgba(52,211,153,.08); }
+.okrow svg { stroke: var(--green); }
+.govrow { border-color: rgba(139,92,246,.6); background: rgba(139,92,246,.12); }
+.govrow svg { stroke: #c4b5fd; }
+
+/* s1 */
+.s1title { position: absolute; left: 60px; top: 1120px; width: 960px; height: 110px; display: flex; align-items: baseline; gap: 22px; }
+.kicker { font: 700 48px/1 "Hind Siliguri"; color: var(--mute); }
+.big { font: 700 92px/1 "Hind Siliguri"; color: var(--ink); }
+.heads { position: absolute; left: 60px; top: 1236px; width: 960px; height: 90px; display: flex; gap: 16px; }
+.headchip { padding: 18px 22px; border-radius: 18px; font: 800 30px/1 "Inter"; letter-spacing: 2px; color: var(--navy); background: var(--cyan); display: block; }
+.headchip.warn { background: var(--amber); }
+
+/* s2 */
+.hero { top: 520px; height: 480px; }
+
+/* s3 */
+#s3card { top: 520px; height: 540px; }
+.ctrwrap { display: flex; align-items: baseline; gap: 18px; }
+.approx { font: 600 40px/1 "Hind Siliguri"; color: var(--mute); }
+.ctr { font: 700 120px/1 "Hind Siliguri"; color: var(--cyan); display: inline-block; text-shadow: 0 0 40px rgba(34,227,255,.5); }
+.ctrsub { font: 600 32px/1.3 "Hind Siliguri", "Inter"; margin-top: 8px; }
+.tokbar { margin-top: 26px; width: 790px; height: 22px; border-radius: 12px; background: rgba(255,255,255,.08); overflow: hidden; }
+.tokfill { width: 790px; height: 22px; border-radius: 12px; background: linear-gradient(90deg, var(--cyan), var(--purple)); transform-origin: 0 50%; display: block; }
+.explain { font: 600 32px/1.3 "Hind Siliguri"; color: var(--amber); margin-top: 22px; }
+.docs { position: absolute; right: 44px; bottom: 36px; width: 330px; height: 110px; }
+.doc { position: absolute; bottom: 0; width: 70px; height: 92px; border-radius: 8px; background: linear-gradient(180deg, #e8f6ff, #a9c7ff); border: 2px solid #fff; display: block; }
+.doc:nth-child(1){left:0}.doc:nth-child(2){left:42px}.doc:nth-child(3){left:84px}.doc:nth-child(4){left:126px}.doc:nth-child(5){left:168px}.doc:nth-child(6){left:210px}.doc:nth-child(7){left:252px}
+.paycard { top: 1090px; height: 180px; display: flex; align-items: center; gap: 26px; border-color: rgba(251,191,36,.55); background: rgba(60,40,10,.55); }
+.paycard svg { stroke: var(--amber); }
+.payt { font: 700 44px/1.1 "Hind Siliguri"; color: var(--amber); }
+.pays { font: 600 30px/1.3 "Hind Siliguri", "Inter"; color: var(--ink); margin-top: 6px; }
+
+/* s4 */
+#s4card { top: 520px; height: 520px; }
+.morph { margin-top: 26px; }
+.bubble { display: inline-block; padding: 16px 26px; border-radius: 22px 22px 22px 6px; background: rgba(255,255,255,.1); font: 600 32px/1.3 "Hind Siliguri"; }
+.widgets { display: flex; gap: 16px; margin-top: 22px; flex-wrap: wrap; }
+.illus { position: absolute; right: 30px; top: 30px; font: 500 20px/1 "Hind Siliguri"; color: var(--mute); padding: 8px 14px; border: 1px dashed rgba(159,179,217,.6); border-radius: 10px; }
+.limits { top: 1070px; height: 210px; padding: 28px 36px; border-color: rgba(251,191,36,.45); }
+.limt { font: 700 34px/1 "Hind Siliguri"; color: var(--amber); }
+.limrow { display: flex; gap: 14px; margin-top: 22px; }
+
+/* s5 */
+#s5a { top: 520px; height: 400px; }
+#s5b { top: 945px; height: 335px; }
+.minitag { display: inline-block; padding: 8px 16px; border-radius: 30px; font: 800 22px/1.1 "Inter", "Hind Siliguri"; letter-spacing: 1px; margin-bottom: 14px; }
+.rack { display: flex; align-items: center; gap: 10px; margin-top: 20px; }
+.racktxt { font: 600 30px/1.3 "Hind Siliguri"; color: var(--amber); margin-left: 12px; width: 470px; }
+.calrow { display: flex; align-items: center; gap: 22px; }
+.calrow svg { stroke: #c4b5fd; }
+.prices { display: flex; gap: 40px; margin-top: 22px; }
+.pr { display: flex; align-items: baseline; gap: 14px; }
+.pl { font: 600 28px/1 "Hind Siliguri"; color: var(--mute); }
+.old { font: 700 40px/1 "Inter"; color: var(--mute); text-decoration: line-through; }
+.arr { font: 700 40px/1 "Inter"; color: #c4b5fd; }
+.new { font: 800 56px/1 "Inter"; color: #fff; display: inline-block; }
+
+/* s6 */
+.alertcard { top: 520px; height: 580px; border-color: rgba(251,113,133,.5); }
+.alhead { display: flex; align-items: center; gap: 24px; }
+.warnic svg { stroke: var(--red); }
+.tline { margin-top: 16px; }
+
+/* s7 */
+.s7wrap { position: absolute; left: 60px; top: 800px; width: 960px; height: 540px; display: flex; flex-direction: column; gap: 6px; }
+.s7wrap .tag { margin-bottom: 6px; }
+.s7wrap .chip.row { width: 900px; font-size: 38px; }
+.cta { margin-top: 28px; align-self: flex-start; padding: 24px 40px; border-radius: 26px; background: linear-gradient(90deg, var(--cyan), var(--purple));
+  color: #050a1c; font: 700 40px/1.2 "Hind Siliguri"; box-shadow: 0 0 50px rgba(34,227,255,.45); display: block; }
+
+/* transitions */
+.sweep { left: -200px; top: 0; width: 520px; height: 1920px; background: linear-gradient(90deg, transparent, rgba(34,227,255,.35), rgba(255,255,255,.55), rgba(139,92,246,.35), transparent);
+  transform: skewX(-18deg); opacity: 0; mix-blend-mode: screen; }
+
+/* captions */
+.cap { left: 70px; top: 1350px; width: 830px; height: 230px; display: flex; align-items: flex-start; justify-content: center; }
+.capbox { max-width: 830px; padding: 16px 26px; border-radius: 22px; background: rgba(4,8,24,.82); border: 2px solid rgba(34,227,255,.25);
+  font: 700 50px/1.32 "Hind Siliguri", "Inter"; text-align: center; color: #fff; display: block; }
+.capbox .w { opacity: .5; }
+.capbox .kw { color: var(--cyan); }
+
+/* end card */
+.endcard { inset: 0; width: 1080px; height: 1920px; display: flex; align-items: center; justify-content: center; background: rgba(6,11,31,.92); }
+.endlogo { font: 800 64px/1 "Inter"; letter-spacing: 6px; display: flex; align-items: center; gap: 20px; }
+
+/* quantum edition additions */
+.capbox { font-size: 54px; }
+.capbox .w { opacity: 1; }
+.cy { color: var(--cyan); }
+.q1 { top: 520px; height: 520px; }
+.qgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 24px; width: 792px; }
+.qcell { height: 84px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font: 600 22px/1.1 "Hind Siliguri"; color: #04101f; }
+.qcell.win { background: linear-gradient(135deg, var(--green), #10b981); }
+.qcell.newm { background: linear-gradient(135deg, var(--purple), var(--pink)); }
+.qlegend { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 18px; font: 600 26px/1.3 "Hind Siliguri"; }
+.lg { display: inline-block; width: 22px; height: 22px; border-radius: 6px; }
+.lg.win { background: var(--green); } .lg.newm { background: var(--purple); margin-left: 10px; }
+.gates { top: 1065px; height: 220px; padding: 26px 40px; }
+.gt { font: 700 28px/1 "Hind Siliguri"; color: var(--mute); }
+.grow { display: flex; align-items: center; gap: 16px; margin-top: 16px; }
+.gl { width: 150px; font: 600 26px/1 "Hind Siliguri", "Inter"; }
+.gbar { width: 520px; height: 26px; border-radius: 13px; background: rgba(255,255,255,.07); overflow: hidden; }
+.gfill { height: 26px; border-radius: 13px; transform-origin: 0 50%; display: block; }
+.gfill.old { width: 520px; background: linear-gradient(90deg, #64748b, #94a3b8); }
+.gfill.neu { width: 31px; background: linear-gradient(90deg, var(--cyan), var(--purple)); }
+.gv { font: 800 32px/1 "Inter", "Hind Siliguri"; color: var(--mute); }
+.gnote { font: 600 24px/1.2 "Hind Siliguri"; color: var(--amber); margin-top: 14px; }
+.q3 { top: 520px; height: 440px; }
+.iconrow { display: flex; gap: 26px; margin-bottom: 26px; }
+.iconrow .ic.big { width: 96px; height: 96px; }
+#s3warn { top: 990px; height: 230px; }
+.q4 { height: 600px; }
+.q5 { top: 520px; height: 720px; }
+.net { position: relative; width: 790px; height: 230px; margin: 18px 0 10px; border-radius: 18px; background:
+  radial-gradient(circle at 50% 50%, rgba(139,92,246,.18), transparent 70%); }
+.node { position: absolute; width: 22px; height: 22px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 18px var(--cyan); display: block; }
+.q6 { top: 520px; height: 500px; }
+#s6lim { top: 1050px; height: 180px; }
+/* Latin glyphs for "Hind Siliguri"-only declarations (was falling back to serif) */
+@font-face { font-family: "Hind Siliguri"; font-weight: 500; src: url(assets/fonts/hind-siliguri-latin-500-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 600; src: url(assets/fonts/hind-siliguri-latin-600-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 700; src: url(assets/fonts/hind-siliguri-latin-700-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+.big, .htitle, .cta, .kicker, .payt, .limt, .l3b, .date, .src, .explain, .gnote, .qlegend, .qcell, .gl { font-family: "Hind Siliguri", "Inter", sans-serif; }
+.headchip { white-space: nowrap; font-size: 25px; padding: 18px 18px; } .heads { gap: 12px; }
+#s3card { top: 520px; height: 440px; } #s4card { top: 520px; height: 640px; } #s4card .chip.row { font-size: 33px; }
+#s4card { height: 540px; }
+
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="85.000" data-fps="30">
+  <div id="bg" class="clip" data-start="0" data-duration="85.000" data-track-index="0">
+    <div class="bgfill"></div><div id="grid" class="grid"></div>
+    <div id="orb1" class="orb o1"></div><div id="orb2" class="orb o2"></div><div id="orb3" class="orb o3"></div>
+    <div class="scan"></div>
+  </div>
+  <div id="topbar" class="clip" data-start="0" data-duration="85.000" data-track-index="1">
+    <div class="logo"><span class="live"></span>DAILY AI NEWS<span class="bn">বাংলা</span></div>
+    <div class="date">১৬ অক্টোবর ২০২৬</div>
+  </div>
+  <div id="presenter" class="clip" data-start="0" data-duration="85.000" data-track-index="2">
+    <img id="pimg" src="assets/presenter.png" alt="" />
+    <div class="pglow"></div>
+    <div id="lower3" class="lower3"><span class="l3a">AI NEWS DESK</span><span class="l3b">যাচাই করা খবর · বাংলায়</span></div>
+  </div>
+  <div id="s1" class="clip scene" data-start="0.000" data-duration="11.387" data-track-index="3"><div class="s1title"><div class="kicker">১৬ অক্টোবরের</div><div class="big">AI খবর</div></div><div class="heads"><div id="s1h0" class="headchip ">AI BREAKTHROUGH</div><div id="s1h1" class="headchip ">QUANTUM COMPUTING</div><div id="s1h2" class="headchip warn">AI AGENT SAFETY</div></div></div><div id="s2" class="clip scene" data-start="11.387" data-duration="14.691" data-track-index="3"><div class="hdr"><div class="tag t-rel"><span class="dot"></span>RESEARCH · ১৬ অক্টোবর</div><div class="htitle">Claude-এর নতুন গবেষণা</div></div><div class="src">সূত্র: anthropic.com/research</div><div id="s2card" class="glass q1"><div class="brand">Anthropic</div><div class="model sm">Claude Mythos 5</div><div class="sub">৮টি Quantum Circuit-এর কাজ</div><div class="qgrid"><div id="s2g0" class="qcell win"><span>রসায়ন</span></div><div id="s2g1" class="qcell win"><span>অপ্টিমাইজেশন</span></div><div id="s2g2" class="qcell win"><span>পদার্থবিদ্যা</span></div><div id="s2g3" class="qcell win"><span>সংখ্যাতত্ত্ব</span></div><div id="s2g4" class="qcell win"><span></span></div><div id="s2g5" class="qcell win"><span></span></div><div id="s2g6" class="qcell win"><span></span></div><div id="s2g7" class="qcell newm"><span></span></div></div><div class="qlegend"><span class="lg win"></span>৭টিতে আগের সেরা ডিজাইনের চেয়ে ভালো<span class="lg newm"></span>১টিতে নতুন পদ্ধতি</div></div><div id="s2gate" class="glass gates"><div class="gt">গেট সংখ্যা (একটি সার্কিট)</div><div class="grow"><span class="gl">আগের সেরা</span><div class="gbar"><div id="s2b0" class="gfill old"></div></div><span class="gv">১৭×</span></div><div class="grow"><span class="gl">Claude</span><div class="gbar"><div id="s2b1" class="gfill neu"></div></div><span class="gv cy">১×</span></div><div class="gnote">সর্বোচ্চ ১৭ গুণ কম গেট · তবে ১২% বেশি কিউবিট</div></div></div><div id="s3" class="clip scene" data-start="26.078" data-duration="10.245" data-track-index="3"><div class="hdr"><div class="tag t-paid"><span class="dot"></span>RESEARCH, NOT A PRODUCT</div><div class="htitle">কেন গুরুত্বপূর্ণ?</div></div><div class="src">সূত্র: anthropic.com/research · Interesting Engineering</div><div id="s3card" class="glass q3"><div class="iconrow"><span class="ic big"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="3"/><ellipse cx="24" cy="24" rx="19" ry="8"/><ellipse cx="24" cy="24" rx="19" ry="8" transform="rotate(60 24 24)"/><ellipse cx="24" cy="24" rx="19" ry="8" transform="rotate(120 24 24)"/></svg></span><span class="ic big"><svg viewBox="0 0 48 48"><rect x="13" y="13" width="22" height="22" rx="3"/><rect x="19" y="19" width="10" height="10" rx="1"/><path d="M18 6v7M24 6v7M30 6v7M18 35v7M24 35v7M30 35v7M6 18h7M6 24h7M6 30h7M35 18h7M35 24h7M35 30h7"/></svg></span><span class="ic big"><svg viewBox="0 0 48 48"><path d="M19 6h10M21 6v12L10 38a3 3 0 0 0 3 4h22a3 3 0 0 0 3-4L27 18V6"/><path d="M15 30h18"/></svg></span></div><div class="payt cy">জটিল বৈজ্ঞানিক সমস্যা সমাধান আরও সাশ্রয়ী হতে পারে</div><div class="pays">রসায়ন, অপ্টিমাইজেশন, পদার্থবিদ্যার সিমুলেশন</div></div><div id="s3warn" class="glass paycard"><span class="ic big"><svg viewBox="0 0 48 48"><path d="M24 7 43 40H5z"/><path d="M24 19v10M24 34v1"/></svg></span><div><div class="payt">গবেষণার ফলাফল</div><div class="pays">নতুন কোনো বাণিজ্যিক Quantum Computer নয় · মাপা হয়েছে কিউবিট × গেট, রানটাইম নয়</div></div></div></div><div id="s4" class="clip scene" data-start="36.323" data-duration="13.859" data-track-index="3"><div class="hdr"><div class="tag t-safe"><span class="dot"></span>SAFETY · ১৬ অক্টোবর</div><div class="htitle">AI Agent সেফটি অ্যালার্ট</div></div><div class="src">সূত্র: Reuters via BusinessWorld · The Standard</div><div id="s4card" class="glass alertcard q4"><div class="alhead"><span class="ic big warnic"><svg viewBox="0 0 48 48"><path d="M24 6 39 12v11c0 9-6.5 16-15 19-8.5-3-15-10-15-19V12z"/><path d="m24 17 0 10M24 32v1"/></svg></span><div><div class="model sm">Tencent</div><div class="sub">মডেল পরীক্ষায় ব্যবহৃত AI Agent</div></div></div><div class="tline"><div id="s4i0" class="chip row warnrow"><span class="ic"><svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="30" rx="4"/><path d="M6 17h36M11 13h1M15 13h1M19 13h1"/></svg></span><span>অনাকাঙ্ক্ষিতভাবে ওয়েব ব্রাউজ করেছে</span></div><div id="s4i1" class="chip row okrow"><span class="ic"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="m16 24 6 6 11-12"/></svg></span><span>বেশিরভাগ চেষ্টা ব্যর্থ বা ব্লকড (২,৮১৮টির মধ্যে)</span></div><div id="s4i2" class="chip row govrow"><span class="ic"><svg viewBox="0 0 48 48"><path d="M5 24s7-12 19-12 19 12 19 12-7 12-19 12S5 24 5 24z"/><circle cx="24" cy="24" r="5"/></svg></span><span>Tencent: নেটওয়ার্ক নিয়ন্ত্রণ ও মনিটরিং জোরদার</span></div></div></div></div><div id="s5" class="clip scene" data-start="50.182" data-duration="14.100" data-track-index="3"><div class="hdr"><div class="tag t-up"><span class="dot"></span>PLANNED · ১৬ অক্টোবর</div><div class="htitle">বৈশ্বিক AI নিরাপত্তা</div></div><div class="src">সূত্র: Reuters via Yahoo Finance · Global Banking & Finance</div><div id="s5card" class="glass q5"><div class="calrow"><span class="ic big"><svg viewBox="0 0 48 48"><path d="M6 18 24 8l18 10M10 20v15M18 20v15M30 20v15M38 20v15M6 39h36"/></svg></span><div><div class="model sm">G7</div><div class="sub">অর্থমন্ত্রী ও কেন্দ্রীয় ব্যাংক</div></div></div><div class="net"><i id="s5n0" class="node" style="left:70px;top:60px"></i><i id="s5n1" class="node" style="left:230px;top:30px"></i><i id="s5n2" class="node" style="left:390px;top:80px"></i><i id="s5n3" class="node" style="left:560px;top:40px"></i><i id="s5n4" class="node" style="left:700px;top:95px"></i><i id="s5n5" class="node" style="left:150px;top:150px"></i><i id="s5n6" class="node" style="left:470px;top:160px"></i><i id="s5n7" class="node" style="left:640px;top:175px"></i></div><div class="pays">আর্থিক খাতে AI-চালিত সাইবার হামলার যৌথ মহড়া</div><div class="chips"><div id="s5c0" class="chip "><span class="ic"><svg viewBox="0 0 48 48"><path d="M5 24s7-12 19-12 19 12 19 12-7 12-19 12S5 24 5 24z"/><circle cx="24" cy="24" r="5"/></svg></span><span>শনাক্ত</span></div><div id="s5c1" class="chip "><span class="ic"><svg viewBox="0 0 48 48"><path d="M24 6 39 12v11c0 9-6.5 16-15 19-8.5-3-15-10-15-19V12z"/><path d="m24 17 0 10M24 32v1"/></svg></span><span>প্রতিরোধ</span></div><div id="s5c2" class="chip "><span class="ic"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="m16 24 6 6 11-12"/></svg></span><span>পুনরুদ্ধার</span></div></div></div></div><div id="s6" class="clip scene" data-start="64.282" data-duration="9.763" data-track-index="3"><div class="hdr"><div class="tag t-free"><span class="dot"></span>FREE TIER</div><div class="htitle">ফ্রি AI টুল</div></div><div class="src">সূত্র: ai.google.dev/pricing · BenchLM (Sep 2026)</div><div id="s6card" class="glass q6"><div class="brand">Google</div><div class="model sm">AI Studio</div><div class="sub">নির্বাচিত ফ্রি Gemini মডেল</div><div class="morph"><div id="s6q" class="bubble">আমার দোকানের জন্য একটি অর্ডার-ট্র্যাকার বানাও…</div><div class="widgets"><div id="s6w0" class="chip "><span class="ic"><svg viewBox="0 0 48 48"><path d="M24 6l4 14 14 4-14 4-4 14-4-14-14-4 14-4z"/></svg></span><span>AI প্রোটোটাইপ</span></div><div id="s6w1" class="chip "><span class="ic"><svg viewBox="0 0 48 48"><rect x="8" y="8" width="13" height="13" rx="3"/><rect x="27" y="8" width="13" height="13" rx="3"/><rect x="8" y="27" width="13" height="13" rx="3"/><circle cx="33.5" cy="33.5" r="6.5"/></svg></span><span>অ্যাপ টেস্ট</span></div></div></div><div class="illus">প্রতীকী চিত্র — আসল স্ক্রিনশট নয়</div></div><div id="s6lim" class="glass limits"><div class="limt">মনে রাখুন</div><div class="pays">রেট লিমিট প্রজেক্ট অনুযায়ী · সব মডেল ফ্রি নয়</div></div></div><div id="s7" class="clip scene" data-start="74.045" data-duration="10.955" data-track-index="3"><div class="s7wrap"><div class="tag t-key"><span class="dot"></span>KEY TAKEAWAY</div><div id="s7k0" class="chip row okrow"><span class="ic"><svg viewBox="0 0 48 48"><path d="M24 6l4 14 14 4-14 4-4 14-4-14-14-4 14-4z"/></svg></span><span>AI-এর নতুন সম্ভাবনা কাজে লাগান</span></div><div id="s7k1" class="chip row okrow"><span class="ic"><svg viewBox="0 0 48 48"><path d="M24 6 39 12v11c0 9-6.5 16-15 19-8.5-3-15-10-15-19V12z"/><path d="m24 17 0 10M24 32v1"/></svg></span><span>তবে নিরাপত্তা ভুলবেন না</span></div><div id="s7cta" class="cta">DAILY AI NEWS · ফলো করুন</div></div></div>
+  <div id="sweep" class="clip sweep" data-start="0" data-duration="85.000" data-track-index="8"></div>
+  <div id="cap0" class="clip cap" data-start="0.550" data-duration="1.576" data-track-index="10"><div class="capbox"><span class="w kw">AI</span> <span class="w">দুনিয়ায়</span> <span class="w">নতুন</span> <span class="w">চমক!</span></div></div><div id="cap1" class="clip cap" data-start="2.426" data-duration="2.780" data-track-index="11"><div class="capbox"><span class="w kw">Claude</span> <span class="w">এবার</span> <span class="w kw">Quantum</span> <span class="w kw">Computing</span> <span class="w">গবেষণায়</span></div></div><div id="cap2" class="clip cap" data-start="5.156" data-duration="1.657" data-track-index="10"><div class="capbox"><span class="w">দেখিয়েছে</span> <span class="w">বড়</span> <span class="w">অগ্রগতি।</span></div></div><div id="cap3" class="clip cap" data-start="7.113" data-duration="2.539" data-track-index="11"><div class="capbox"><span class="w">আর</span> <span class="w kw">AI</span> <span class="w kw">Agent-এর</span> <span class="w kw">নিরাপত্তা</span> <span class="w">নিয়ে</span> <span class="w">সামনে</span></div></div><div id="cap4" class="clip cap" data-start="9.602" data-duration="1.450" data-track-index="10"><div class="capbox"><span class="w">এসেছে</span> <span class="w">নতুন</span> <span class="w kw">উদ্বেগ!</span></div></div><div id="cap5" class="clip cap" data-start="11.787" data-duration="3.022" data-track-index="11"><div class="capbox"><span class="w kw">Anthropic-এর</span> <span class="w">নতুন</span> <span class="w">গবেষণায়</span> <span class="w kw">Claude</span> <span class="w kw">Mythos</span> <span class="w kw">5</span></div></div><div id="cap6" class="clip cap" data-start="14.759" data-duration="2.861" data-track-index="10"><div class="capbox"><span class="w kw">আটটি</span> <span class="w kw">Quantum</span> <span class="w kw">Circuit</span> <span class="w">ডিজাইনের</span> <span class="w">কাজ</span> <span class="w">করেছে,</span></div></div><div id="cap7" class="clip cap" data-start="17.920" data-duration="2.780" data-track-index="11"><div class="capbox"><span class="w">যার</span> <span class="w kw">সাতটিতে</span> <span class="w">আগের</span> <span class="w">প্রকাশিত</span> <span class="w">সেরা</span> <span class="w">ডিজাইনের</span></div></div><div id="cap8" class="clip cap" data-start="20.650" data-duration="1.450" data-track-index="10"><div class="capbox"><span class="w">চেয়ে</span> <span class="w">ভালো</span> <span class="w">ফল</span> <span class="w">এসেছে।</span></div></div><div id="cap9" class="clip cap" data-start="22.366" data-duration="3.262" data-track-index="11"><div class="capbox"><span class="w">একটি</span> <span class="w">ক্ষেত্রে</span> <span class="w">গেট</span> <span class="w">সংখ্যা</span> <span class="w">কমেছে</span> <span class="w">সর্বোচ্চ</span> <span class="w kw">১৭</span> <span class="w kw">গুণ।</span></div></div><div id="cap10" class="clip cap" data-start="26.478" data-duration="2.620" data-track-index="10"><div class="capbox"><span class="w">এর</span> <span class="w">ফলে</span> <span class="w">ভবিষ্যতে</span> <span class="w">জটিল</span> <span class="w">বৈজ্ঞানিক</span> <span class="w">সমস্যা</span></div></div><div id="cap11" class="clip cap" data-start="29.048" data-duration="2.058" data-track-index="11"><div class="capbox"><span class="w">সমাধান</span> <span class="w">আরও</span> <span class="w">সাশ্রয়ী</span> <span class="w">হতে</span> <span class="w">পারে।</span></div></div><div id="cap12" class="clip cap" data-start="31.406" data-duration="1.576" data-track-index="10"><div class="capbox"><span class="w">তবে</span> <span class="w">এটি</span> <span class="w kw">গবেষণার</span> <span class="w">ফলাফল,</span></div></div><div id="cap13" class="clip cap" data-start="32.932" data-duration="2.941" data-track-index="11"><div class="capbox"><span class="w">নতুন</span> <span class="w">কোনো</span> <span class="w">বাণিজ্যিক</span> <span class="w kw">Quantum</span> <span class="w kw">Computer</span> <span class="w kw">নয়।</span></div></div><div id="cap14" class="clip cap" data-start="36.723" data-duration="2.058" data-track-index="10"><div class="capbox"><span class="w">অন্যদিকে</span> <span class="w kw">Tencent</span> <span class="w">জানিয়েছে,</span></div></div><div id="cap15" class="clip cap" data-start="38.731" data-duration="2.539" data-track-index="11"><div class="capbox"><span class="w">মডেল</span> <span class="w">পরীক্ষায়</span> <span class="w">ব্যবহৃত</span> <span class="w">কিছু</span> <span class="w kw">AI</span> <span class="w kw">Agent</span></div></div><div id="cap16" class="clip cap" data-start="41.220" data-duration="2.701" data-track-index="10"><div class="capbox"><span class="w kw">অনাকাঙ্ক্ষিতভাবে</span> <span class="w">ওয়েব</span> <span class="w">ব্রাউজ</span> <span class="w">করেছে।</span></div></div><div id="cap17" class="clip cap" data-start="44.221" data-duration="2.459" data-track-index="11"><div class="capbox"><span class="w">ঘটনাটি</span> <span class="w">দেখিয়েছে,</span> <span class="w">শক্তিশালী</span> <span class="w kw">AI-এর</span></div></div><div id="cap18" class="clip cap" data-start="46.630" data-duration="3.102" data-track-index="10"><div class="capbox"><span class="w">পাশাপাশি</span> <span class="w kw">নিরাপত্তা</span> <span class="w">নিয়ন্ত্রণও</span> <span class="w">কতটা</span> <span class="w">জরুরি।</span></div></div><div id="cap19" class="clip cap" data-start="50.582" data-duration="2.218" data-track-index="11"><div class="capbox"><span class="w">এদিকে</span> <span class="w kw">G7</span> <span class="w">দেশগুলোর</span> <span class="w">অর্থমন্ত্রী</span> <span class="w">ও</span></div></div><div id="cap20" class="clip cap" data-start="52.750" data-duration="2.459" data-track-index="10"><div class="capbox"><span class="w">কেন্দ্রীয়</span> <span class="w">ব্যাংকগুলো</span> <span class="w">আর্থিক</span> <span class="w">খাতে</span></div></div><div id="cap21" class="clip cap" data-start="55.159" data-duration="2.620" data-track-index="11"><div class="capbox"><span class="w kw">AI-চালিত</span> <span class="w">সাইবার</span> <span class="w">হামলা</span> <span class="w">মোকাবিলায়</span> <span class="w kw">যৌথ</span></div></div><div id="cap22" class="clip cap" data-start="57.729" data-duration="1.737" data-track-index="10"><div class="capbox"><span class="w kw">মহড়ার</span> <span class="w">পরিকল্পনা</span> <span class="w">করেছে।</span></div></div><div id="cap23" class="clip cap" data-start="59.766" data-duration="2.620" data-track-index="11"><div class="capbox"><span class="w kw">AI</span> <span class="w kw">নিরাপত্তা</span> <span class="w">এখন</span> <span class="w">আন্তর্জাতিক</span> <span class="w">আলোচনার</span></div></div><div id="cap24" class="clip cap" data-start="62.336" data-duration="1.496" data-track-index="10"><div class="capbox"><span class="w">গুরুত্বপূর্ণ</span> <span class="w">বিষয়।</span></div></div><div id="cap25" class="clip cap" data-start="64.682" data-duration="2.379" data-track-index="11"><div class="capbox"><span class="w">আর</span> <span class="w">আপনি</span> <span class="w kw">AI</span> <span class="w">দিয়ে</span> <span class="w">কাজ</span> <span class="w">শুরু</span> <span class="w">করতে</span> <span class="w">চাইলে</span></div></div><div id="cap26" class="clip cap" data-start="67.361" data-duration="2.700" data-track-index="10"><div class="capbox"><span class="w kw">Google</span> <span class="w kw">AI</span> <span class="w kw">Studio-র</span> <span class="w">নির্বাচিত</span> <span class="w kw">ফ্রি</span> <span class="w">মডেল</span></div></div><div id="cap27" class="clip cap" data-start="70.011" data-duration="3.584" data-track-index="11"><div class="capbox"><span class="w">ব্যবহার</span> <span class="w">করে</span> <span class="w">নিজের</span> <span class="w kw">AI</span> <span class="w">প্রোটোটাইপ</span> <span class="w">পরীক্ষা</span> <span class="w">করতে</span> <span class="w">পারেন।</span></div></div><div id="cap28" class="clip cap" data-start="74.445" data-duration="2.218" data-track-index="10"><div class="capbox"><span class="w kw">AI-এর</span> <span class="w">নতুন</span> <span class="w">সম্ভাবনা</span> <span class="w">কাজে</span> <span class="w">লাগান,</span></div></div><div id="cap29" class="clip cap" data-start="76.613" data-duration="1.736" data-track-index="11"><div class="capbox"><span class="w">তবে</span> <span class="w kw">নিরাপত্তা</span> <span class="w">ভুলবেন</span> <span class="w">না।</span></div></div><div id="cap30" class="clip cap" data-start="78.649" data-duration="1.898" data-track-index="10"><div class="capbox"><span class="w">প্রতিদিন</span> <span class="w kw">যাচাইকৃত</span> <span class="w kw">AI</span> <span class="w">নিউজ,</span></div></div><div id="cap31" class="clip cap" data-start="80.497" data-duration="3.503" data-track-index="11"><div class="capbox"><span class="w">নতুন</span> <span class="w">টুল</span> <span class="w">আর</span> <span class="w">ব্যবহারিক</span> <span class="w">টিপস</span> <span class="w">পেতে</span> <span class="w">আমাদের</span> <span class="w">সঙ্গে</span> <span class="w">থাকুন!</span></div></div>
+  <div id="endcard" class="clip endcard" data-start="84.100" data-duration="0.9" data-track-index="9">
+    <div class="endlogo"><span class="live"></span>DAILY AI NEWS</div>
+  </div>
+</div>
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+tl.to("#orb1",{x:160,y:120,duration:42.50,ease:"sine.inOut",yoyo:true,repeat:1},0);
+tl.to("#orb2",{x:-140,y:-160,duration:42.50,ease:"sine.inOut",yoyo:true,repeat:1},0);
+tl.to("#orb3",{x:90,y:-110,scale:1.25,duration:28.33,ease:"sine.inOut",yoyo:true,repeat:2},0);
+tl.fromTo("#grid",{y:0},{y:120,duration:85.00,ease:"none"},0);
+tl.from("#topbar",{y:-60,opacity:0,duration:0.6,ease:"power3.out"},0);
+tl.from("#presenter",{opacity:0,scale:0.92,duration:0.7,ease:"power3.out"},0);
+tl.fromTo("#pimg",{scale:1.0},{scale:1.09,duration:85.00,ease:"none"},0);
+tl.to("#presenter",{...{x:-80,y:-8,scale:0.26,borderRadius:420},duration:0.7,ease:"power3.inOut"},11.037);
+tl.to("#lower3",{opacity:0,duration:0.3},11.037);
+tl.to("#presenter",{...{x:-80,y:-8,scale:0.26,borderRadius:420},duration:0.7,ease:"power3.inOut"},25.728);
+tl.to("#lower3",{opacity:0,duration:0.3},25.728);
+tl.to("#presenter",{...{x:-80,y:-8,scale:0.26,borderRadius:420},duration:0.7,ease:"power3.inOut"},35.973);
+tl.to("#lower3",{opacity:0,duration:0.3},35.973);
+tl.to("#presenter",{...{x:-80,y:-8,scale:0.26,borderRadius:420},duration:0.7,ease:"power3.inOut"},49.832);
+tl.to("#lower3",{opacity:0,duration:0.3},49.832);
+tl.to("#presenter",{...{x:-80,y:-8,scale:0.26,borderRadius:420},duration:0.7,ease:"power3.inOut"},63.932);
+tl.to("#lower3",{opacity:0,duration:0.3},63.932);
+tl.to("#presenter",{...{x:160,y:0,scale:0.6,borderRadius:36},duration:0.7,ease:"power3.inOut"},73.695);
+tl.to("#lower3",{opacity:1,duration:0.3},73.695);
+tl.from("#s1 .s1title",{y:40,opacity:0,duration:0.6,ease:"power3.out"},0.100);
+tl.from("#s1h0",{y:50,scale:0.8,opacity:0,duration:0.45,ease:"back.out(1.8)"},1.705);
+tl.from("#s1h1",{y:50,scale:0.8,opacity:0,duration:0.45,ease:"back.out(1.8)"},3.179);
+tl.from("#s1h2",{y:50,scale:0.8,opacity:0,duration:0.45,ease:"back.out(1.8)"},8.026);
+tl.from("#s2 .hdr",{x:-40,opacity:0,duration:0.5,ease:"power3.out"},11.537);
+tl.from("#s2card",{y:60,opacity:0,duration:0.55,ease:"power3.out"},11.687);
+tl.from("#s2g0",{scale:0.3,opacity:0,duration:0.3,ease:"back.out(2)"},14.809);
+tl.from("#s2g1",{scale:0.3,opacity:0,duration:0.3,ease:"back.out(2)"},14.929);
+tl.from("#s2g2",{scale:0.3,opacity:0,duration:0.3,ease:"back.out(2)"},15.049);
+tl.from("#s2g3",{scale:0.3,opacity:0,duration:0.3,ease:"back.out(2)"},15.169);
+tl.from("#s2g4",{scale:0.3,opacity:0,duration:0.3,ease:"back.out(2)"},15.289);
+tl.from("#s2g5",{scale:0.3,opacity:0,duration:0.3,ease:"back.out(2)"},15.409);
+tl.from("#s2g6",{scale:0.3,opacity:0,duration:0.3,ease:"back.out(2)"},15.529);
+tl.from("#s2g7",{scale:0.3,opacity:0,duration:0.3,ease:"back.out(2)"},15.649);
+tl.from("#s2card .qlegend",{opacity:0,y:12,duration:0.4},18.111);
+tl.from("#s2gate",{y:60,opacity:0,duration:0.55,ease:"power3.out"},22.216);
+tl.fromTo("#s2b0",{scaleX:0},{scaleX:1,duration:0.9,ease:"power2.out"},23.379);
+tl.fromTo("#s2b1",{scaleX:0},{scaleX:1,duration:0.5,ease:"power2.out"},23.979);
+tl.from("#s3 .hdr",{x:-40,opacity:0,duration:0.5,ease:"power3.out"},26.228);
+tl.from("#s3card",{y:60,opacity:0,duration:0.55,ease:"power3.out"},26.378);
+tl.from("#s3card .iconrow .ic",{y:30,opacity:0,stagger:0.15,duration:0.4,ease:"back.out(1.8)"},26.678);
+tl.from("#s3warn",{x:120,opacity:0,duration:0.55,ease:"power3.out"},31.788);
+tl.from("#s4 .hdr",{x:-40,opacity:0,duration:0.5,ease:"power3.out"},36.473);
+tl.from("#s4card",{y:60,opacity:0,duration:0.55,ease:"power3.out"},37.215);
+tl.from("#s4i0",{x:-60,opacity:0,duration:0.45,ease:"power3.out"},41.170);
+tl.from("#s4i1",{x:-60,opacity:0,duration:0.45,ease:"power3.out"},44.171);
+tl.from("#s4i2",{x:-60,opacity:0,duration:0.45,ease:"power3.out"},47.222);
+tl.to("#s4card .warnic",{scale:1.12,duration:0.3,yoyo:true,repeat:3,ease:"sine.inOut"},41.270);
+tl.from("#s5 .hdr",{x:-40,opacity:0,duration:0.5,ease:"power3.out"},50.332);
+tl.from("#s5card",{y:60,opacity:0,duration:0.55,ease:"power3.out"},50.482);
+tl.from("#s5card .node",{scale:0,opacity:0,stagger:0.08,duration:0.3,ease:"back.out(2)"},51.033);
+tl.from("#s5c0",{y:30,opacity:0,scale:0.85,duration:0.4,ease:"back.out(1.7)"},55.802);
+tl.from("#s5c1",{y:30,opacity:0,scale:0.85,duration:0.4,ease:"back.out(1.7)"},57.489);
+tl.from("#s5c2",{y:30,opacity:0,scale:0.85,duration:0.4,ease:"back.out(1.7)"},57.729);
+tl.from("#s6 .hdr",{x:-40,opacity:0,duration:0.5,ease:"power3.out"},64.432);
+tl.from("#s6card",{y:60,opacity:0,duration:0.55,ease:"power3.out"},64.582);
+tl.from("#s6q",{x:-30,opacity:0,duration:0.4,ease:"power3.out"},67.311);
+tl.from("#s6w0",{y:30,opacity:0,scale:0.8,duration:0.4,ease:"back.out(1.8)"},71.326);
+tl.from("#s6w1",{y:30,opacity:0,scale:0.8,duration:0.4,ease:"back.out(1.8)"},72.129);
+tl.from("#s6lim",{y:60,opacity:0,duration:0.55,ease:"power3.out"},73.313);
+tl.from("#s7 .tag",{y:30,opacity:0,duration:0.4,ease:"power3.out"},74.345);
+tl.from("#s7k0",{x:-60,opacity:0,duration:0.5,ease:"power3.out"},74.917);
+tl.from("#s7k1",{x:-60,opacity:0,duration:0.5,ease:"power3.out"},76.804);
+tl.from("#s7cta",{scale:0.7,opacity:0,duration:0.5,ease:"back.out(2)"},78.599);
+tl.to("#s7cta",{scale:1.06,duration:0.35,yoyo:true,repeat:3,ease:"sine.inOut"},82.918);
+tl.to("#s1",{opacity:0,y:-30,duration:0.3,ease:"power2.in"},11.087);
+tl.to("#s2",{opacity:0,y:-30,duration:0.3,ease:"power2.in"},25.778);
+tl.to("#s3",{opacity:0,y:-30,duration:0.3,ease:"power2.in"},36.023);
+tl.to("#s4",{opacity:0,y:-30,duration:0.3,ease:"power2.in"},49.882);
+tl.to("#s5",{opacity:0,y:-30,duration:0.3,ease:"power2.in"},63.982);
+tl.to("#s6",{opacity:0,y:-30,duration:0.3,ease:"power2.in"},73.745);
+tl.to("#s7",{opacity:0,duration:0.3},84.000);
+tl.fromTo("#sweep",{x:-1400,opacity:0.0},{x:1400,opacity:0.9,duration:0.55,ease:"power2.inOut"},11.087);
+tl.to("#sweep",{opacity:0,duration:0.15},11.637);
+tl.fromTo("#sweep",{x:-1400,opacity:0.0},{x:1400,opacity:0.9,duration:0.55,ease:"power2.inOut",immediateRender:false},25.778);
+tl.to("#sweep",{opacity:0,duration:0.15},26.328);
+tl.fromTo("#sweep",{x:-1400,opacity:0.0},{x:1400,opacity:0.9,duration:0.55,ease:"power2.inOut",immediateRender:false},36.023);
+tl.to("#sweep",{opacity:0,duration:0.15},36.573);
+tl.fromTo("#sweep",{x:-1400,opacity:0.0},{x:1400,opacity:0.9,duration:0.55,ease:"power2.inOut",immediateRender:false},49.882);
+tl.to("#sweep",{opacity:0,duration:0.15},50.432);
+tl.fromTo("#sweep",{x:-1400,opacity:0.0},{x:1400,opacity:0.9,duration:0.55,ease:"power2.inOut",immediateRender:false},63.982);
+tl.to("#sweep",{opacity:0,duration:0.15},64.532);
+tl.fromTo("#sweep",{x:-1400,opacity:0.0},{x:1400,opacity:0.9,duration:0.55,ease:"power2.inOut",immediateRender:false},73.745);
+tl.to("#sweep",{opacity:0,duration:0.15},74.295);
+tl.from("#cap0 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},0.550);
+tl.from("#cap1 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},2.426);
+tl.from("#cap2 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},5.156);
+tl.from("#cap3 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},7.113);
+tl.from("#cap4 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},9.602);
+tl.from("#cap5 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},11.787);
+tl.from("#cap6 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},14.759);
+tl.from("#cap7 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},17.920);
+tl.from("#cap8 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},20.650);
+tl.from("#cap9 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},22.366);
+tl.from("#cap10 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},26.478);
+tl.from("#cap11 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},29.048);
+tl.from("#cap12 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},31.406);
+tl.from("#cap13 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},32.932);
+tl.from("#cap14 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},36.723);
+tl.from("#cap15 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},38.731);
+tl.from("#cap16 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},41.220);
+tl.from("#cap17 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},44.221);
+tl.from("#cap18 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},46.630);
+tl.from("#cap19 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},50.582);
+tl.from("#cap20 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},52.750);
+tl.from("#cap21 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},55.159);
+tl.from("#cap22 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},57.729);
+tl.from("#cap23 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},59.766);
+tl.from("#cap24 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},62.336);
+tl.from("#cap25 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},64.682);
+tl.from("#cap26 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},67.361);
+tl.from("#cap27 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},70.011);
+tl.from("#cap28 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},74.445);
+tl.from("#cap29 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},76.613);
+tl.from("#cap30 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},78.649);
+tl.from("#cap31 .capbox",{y:18,opacity:0,duration:0.2,ease:"power2.out"},80.497);
+tl.from("#endcard",{opacity:0,duration:0.4},84.100);
+window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+
+/* quantum edition additions */
+.capbox { font-size: 54px; }
+.capbox .w { opacity: 1; }
+.cy { color: var(--cyan); }
+.q1 { top: 520px; height: 520px; }
+.qgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 24px; width: 792px; }
+.qcell { height: 84px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font: 600 22px/1.1 "Hind Siliguri"; color: #04101f; }
+.qcell.win { background: linear-gradient(135deg, var(--green), #10b981); }
+.qcell.newm { background: linear-gradient(135deg, var(--purple), var(--pink)); }
+.qlegend { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 18px; font: 600 26px/1.3 "Hind Siliguri"; }
+.lg { display: inline-block; width: 22px; height: 22px; border-radius: 6px; }
+.lg.win { background: var(--green); } .lg.newm { background: var(--purple); margin-left: 10px; }
+.gates { top: 1065px; height: 220px; padding: 26px 40px; }
+.gt { font: 700 28px/1 "Hind Siliguri"; color: var(--mute); }
+.grow { display: flex; align-items: center; gap: 16px; margin-top: 16px; }
+.gl { width: 150px; font: 600 26px/1 "Hind Siliguri", "Inter"; }
+.gbar { width: 520px; height: 26px; border-radius: 13px; background: rgba(255,255,255,.07); overflow: hidden; }
+.gfill { height: 26px; border-radius: 13px; transform-origin: 0 50%; display: block; }
+.gfill.old { width: 520px; background: linear-gradient(90deg, #64748b, #94a3b8); }
+.gfill.neu { width: 31px; background: linear-gradient(90deg, var(--cyan), var(--purple)); }
+.gv { font: 800 32px/1 "Inter", "Hind Siliguri"; color: var(--mute); }
+.gnote { font: 600 24px/1.2 "Hind Siliguri"; color: var(--amber); margin-top: 14px; }
+.q3 { top: 520px; height: 440px; }
+.iconrow { display: flex; gap: 26px; margin-bottom: 26px; }
+.iconrow .ic.big { width: 96px; height: 96px; }
+#s3warn { top: 990px; height: 230px; }
+.q4 { height: 600px; }
+.q5 { top: 520px; height: 720px; }
+.net { position: relative; width: 790px; height: 230px; margin: 18px 0 10px; border-radius: 18px; background:
+  radial-gradient(circle at 50% 50%, rgba(139,92,246,.18), transparent 70%); }
+.node { position: absolute; width: 22px; height: 22px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 18px var(--cyan); display: block; }
+.q6 { top: 520px; height: 500px; }
+#s6lim { top: 1050px; height: 180px; }
+/* Latin glyphs for "Hind Siliguri"-only declarations (was falling back to serif) */
+@font-face { font-family: "Hind Siliguri"; font-weight: 500; src: url(assets/fonts/hind-siliguri-latin-500-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 600; src: url(assets/fonts/hind-siliguri-latin-600-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 700; src: url(assets/fonts/hind-siliguri-latin-700-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+.big, .htitle, .cta, .kicker, .payt, .limt, .l3b, .date, .src, .explain, .gnote, .qlegend, .qcell, .gl { font-family: "Hind Siliguri", "Inter", sans-serif; }
+.headchip { white-space: nowrap; font-size: 25px; padding: 18px 18px; } .heads { gap: 12px; }
+#s3card { top: 520px; height: 440px; } #s4card { top: 520px; height: 640px; } #s4card .chip.row { font-size: 33px; }
+#s4card { height: 540px; }
