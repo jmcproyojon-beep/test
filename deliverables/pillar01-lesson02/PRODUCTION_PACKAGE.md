@@ -1,10 +1,10 @@
 # PILLAR 01 · LESSON 02 — AI, Machine Learning, Deep Learning & Generative AI
 ## Production Package · AI Fundamentals & Digital Literacy (বাংলা)
 
-**Rendered file:** `pillar01-lesson02_final.mp4` (master, 78 MB) · **Measured duration:** 09:59.5 (599.5 s) · 1920×1080 · 30 fps · H.264 + AAC
+**Rendered file:** `pillar01-lesson02_final.mp4` (master, 78 MB) · **Measured duration:** 10:03.3 (603.3 s) · 1920×1080 · 30 fps · H.264 + AAC
 
 > **What's real here:** the MP4 was actually rendered and checked.
-> - **Narration:** Gemini text-to-speech, prebuilt male voice **Orus** (scenes 01, 02: `gemini-3.8-flash-tts`; scenes 03, 04, 05, 06: `gemini-3.1-flash-tts-preview`; scenes 07, 08, 09, 10, 11: `gemini-2.5-flash-preview-tts`). Each take was transcribed with Gemini and compared to the script (similarity scores in Section G).
+> - **Narration:** Gemini text-to-speech `gemini-3.8-flash-tts`, prebuilt male voice **Orus**, one model for all 11 scenes. Each take was transcribed with Gemini and compared to the script (similarity scores in Section G).
 > - **Search vs assistant comparison (scene 09):** both panels are clearly labelled illustrations ("প্রতীকী চিত্র — আসল স্ক্রিনশট নয়"), because this production environment can't reach chatgpt.com. Record the real side-by-side capture with Section E and replace the two panels before publishing.
 > - **Token splits (scene 08)** are illustrative, and the video says so. Real tokenizers split text differently per model. Section E shows how to get real counts from OpenAI's official Tokenizer page.
 > - **Instructor:** the photo is the channel owner's own image. It is a still, not lip-synced.
@@ -16,7 +16,7 @@
 |---|---|
 | Lesson | PILLAR 01 · Lesson 02 — AI, Machine Learning, Deep Learning & Generative AI |
 | Planned duration | 10:00 |
-| Rendered duration | **09:59.5** (spoken narration plus chapter cards, pauses and end card) |
+| Rendered duration | **10:03.3** (spoken narration plus chapter cards, pauses and end card) |
 | Format | 16:9 · 1920×1080 · 30 fps · H.264 MP4 · Bangla burned-in subtitles + SRT |
 | Audience | Absolute beginners: students, content creators, freelancers, job seekers, small business owners in Bangladesh |
 | Language | Bangla (standard Bangladeshi), English technical terms explained |
@@ -57,7 +57,7 @@ Machine Learning-এর ভেতরে Deep Learning — যেখানে অ
 আর Generative AI হলো এমন AI, যা নতুন কনটেন্ট তৈরি করতে পারে। আজকের বেশিরভাগ Generative AI, যেমন ChatGPT-এর মতো চ্যাটবট, Deep Learning-এর ওপর ভিত্তি করে তৈরি।  
 মনে রাখার সহজ উপায় — প্রতিটি ভেতরের বৃত্ত বাইরের বৃত্তের একটি অংশ। সব Deep Learning-ই Machine Learning, কিন্তু সব Machine Learning, Deep Learning নয়।  
 
-### ০৩ · Machine Learning  `01:24.3–02:18.0`
+### ০৩ · Machine Learning  `01:24.3–02:22.3`
 
 এবার Machine Learning। সাধারণ প্রোগ্রামে আমরা নিয়ম লিখে দিই, আর Machine Learning-এ কম্পিউটার উদাহরণ দেখে নিজেই প্যাটার্ন শেখে।  
 Machine Learning-এর প্রধান তিনটি ধরন আছে।  
@@ -66,7 +66,7 @@ Machine Learning-এর প্রধান তিনটি ধরন আছে�
 তৃতীয় — Reinforcement Learning। এখানে মডেল চেষ্টা আর ভুলের মাধ্যমে শেখে — ভালো কাজে পুরস্কার, খারাপ কাজে শাস্তি। গেম খেলা বা রোবট নিয়ন্ত্রণ শেখাতে এই পদ্ধতি বেশ ব্যবহৃত হয়।  
 মূল কথা — Machine Learning-এর শক্তি আসে ডেটা থেকে। ডেটা যত ভালো, শেখাও তত ভালো।  
 
-### ০৪ · Neural Network ও Deep Learning  `02:19.9–03:20.1`
+### ০৪ · Neural Network ও Deep Learning  `02:24.2–03:27.5`
 
 এবার Deep Learning আর Artificial Neural Network।  
 Artificial Neural Network বা কৃত্রিম নিউরাল নেটওয়ার্কের ধারণা এসেছে মানুষের মস্তিষ্কের নিউরন থেকে। তবে এটি মস্তিষ্কের হুবহু নকল নয়, বরং অনেক সরল একটি গাণিতিক মডেল।  
@@ -76,7 +76,7 @@ Artificial Neural Network বা কৃত্রিম নিউরাল নে
 প্রথম দিকের স্তর হয়তো শুধু রেখা আর কোণ চেনে, পরের স্তর চোখ বা কান, আর শেষের দিকের স্তর পুরো মুখ।  
 ছবি চেনা, বাংলা ভয়েস টাইপিং, অনুবাদ — আজকের এসব প্রযুক্তির বড় অংশ Deep Learning-এর ওপর চলে।  
 
-### ০৫ · Generative AI  `03:22.0–04:13.4`
+### ০৫ · Generative AI  `03:29.4–04:19.8`
 
 এবার Generative AI — আজ যেটি নিয়ে সবচেয়ে বেশি আলোচনা।  
 আগের অনেক AI কাজ করত চেনা বা বাছাই করার জন্য — যেমন, এটা স্প্যাম কি না, কিংবা এটা আম না কাঁঠাল। এগুলো বিদ্যমান তথ্য দেখে সিদ্ধান্ত দেয়।  
@@ -84,7 +84,7 @@ Generative AI এক ধাপ এগিয়ে নতুন কনটেন�
 লেখা — যেমন ইমেইল, রিপোর্ট বা গল্প। ছবি — বর্ণনা দিলেই নতুন ছবি। অডিও — কৃত্রিম কণ্ঠ বা মিউজিক। ভিডিও — ছোট ক্লিপ। আর কোড — প্রোগ্রামের অংশ। আগের লেসনে ChatGPT-তে প্রম্পট লিখে যে উত্তর পেয়েছিলেন, সেটিও Generative AI-এর একটি উদাহরণ।  
 তবে নতুন তৈরি মানেই সঠিক বা নিরাপদ নয়। Generative AI ভুল তথ্য বানাতে পারে, আর এর তৈরি কনটেন্টের কপিরাইট ও নৈতিকতা নিয়েও প্রশ্ন আছে — যা আমরা ষষ্ঠ লেসনে বিস্তারিত দেখব।  
 
-### ০৬ · Large Language Model (LLM)  `04:15.3–05:07.8`
+### ০৬ · Large Language Model (LLM)  `04:21.7–05:14.7`
 
 Generative AI-এর সবচেয়ে পরিচিত রূপ হলো Large Language Model, সংক্ষেপে LLM।  
 LLM হলো বিপুল পরিমাণ লেখা দিয়ে ট্রেনিং দেওয়া একটি বড় নিউরাল নেটওয়ার্ক, যা ভাষা বুঝে প্রশ্নের উত্তর দিতে আর নতুন লেখা তৈরি করতে পারে।  
@@ -94,7 +94,7 @@ ChatGPT, Google Gemini বা Claude-এর মতো AI অ্যাসিস�
 দ্বিতীয় ধাপে ফাইন-টিউনিং — নির্দেশনা মানা, প্রশ্নের কাজের উত্তর দেওয়া, আর ক্ষতিকর অনুরোধ এড়ানো শেখানো হয়। অনেক ক্ষেত্রে মানুষের মূল্যায়ন বা ফিডব্যাক দিয়েও উত্তর উন্নত করা হয়।  
 মনে রাখবেন, LLM কোনো তথ্যভান্ডার থেকে উত্তর খুঁজে আনে না। শেখা প্যাটার্ন থেকে সম্ভাব্য উত্তর তৈরি করে — এজন্যই মাঝে মাঝে আত্মবিশ্বাসের সাথে ভুলও বলে।  
 
-### ০৭ · ট্রেনিং ডেটা  `05:09.7–06:01.6`
+### ০৭ · ট্রেনিং ডেটা  `05:16.6–06:09.4`
 
 AI-এর মান অনেকটাই নির্ভর করে তার ট্রেনিং ডেটার ওপর।  
 ট্রেনিং ডেটা হলো সেই সব উদাহরণ, যা দেখে মডেল শেখে — লেখা, ছবি, শব্দ, কিংবা টেবিলের সংখ্যা। যেমন, বাংলা হাতের লেখা চেনার মডেল বানাতে হাজারো মানুষের হাতের লেখার ছবি লাগে, প্রতিটির সাথে সঠিক অক্ষরের লেবেল।  
@@ -103,7 +103,7 @@ AI-এর মান অনেকটাই নির্ভর করে তার
 ডেটার সময়সীমাও গুরুত্বপূর্ণ। ট্রেনিংয়ের পরে যা ঘটেছে, তা মডেল নিজে থেকে জানে না — এজন্য কিছু অ্যাসিস্ট্যান্ট আলাদা করে ওয়েব সার্চের সুবিধা ব্যবহার করে।  
 আর বাংলার মতো ভাষায় ইংরেজির তুলনায় অনলাইনে ডেটা কম, তাই অনেক মডেল বাংলায় তুলনামূলক কম দক্ষ হতে পারে — যদিও এই অবস্থা দ্রুত উন্নত হচ্ছে।  
 
-### ০৮ · টোকেন ও ইনফারেন্স  `06:03.5–07:01.5`
+### ০৮ · টোকেন ও ইনফারেন্স  `06:11.3–07:06.0`
 
 এবার দুটি গুরুত্বপূর্ণ শব্দ — টোকেন আর ইনফারেন্স।  
 LLM সরাসরি পুরো শব্দ বা বাক্য পড়ে না। লেখাকে সে ছোট ছোট টুকরোয় ভাঙে — এগুলোকে বলে টোকেন। একটি টোকেন হতে পারে একটি পুরো শব্দ, শব্দের অংশ, এমনকি একটি চিহ্ন।  
@@ -113,7 +113,7 @@ OpenAI-এর দেওয়া একটি মোটা হিসাবে, �
 ট্রেনিং হয় একবার, অনেক সময় আর খরচে। আর ইনফারেন্স ঘটে প্রতিবার, যখনই কেউ প্রশ্ন করে।  
 আর যেহেতু প্রতিবার সম্ভাবনা থেকে টোকেন বাছাই হয়, তাই একই প্রশ্নে প্রতিবার হুবহু একই উত্তর না-ও আসতে পারে।  
 
-### ০৯ · সার্চ ইঞ্জিন বনাম AI অ্যাসিস্ট্যান্ট  `07:03.4–08:22.9`
+### ০৯ · সার্চ ইঞ্জিন বনাম AI অ্যাসিস্ট্যান্ট  `07:07.9–08:23.6`
 
 এবার একটি বাস্তব প্রশ্ন — Google-এর মতো সার্চ ইঞ্জিন আর ChatGPT-এর মতো AI অ্যাসিস্ট্যান্টের মধ্যে পার্থক্য কী?  
 সার্চ ইঞ্জিন ইন্টারনেটে আগে থেকে থাকা ওয়েবপেজ খুঁজে দেয়, আর আপনাকে লিংকের তালিকা দেখায়। কোন উৎস বিশ্বাসযোগ্য, তা বাছাই করে পড়ার দায়িত্ব আপনার।  
@@ -124,7 +124,7 @@ AI অ্যাসিস্ট্যান্টের শক্তি — ব�
 একটি উদাহরণ দেখি — প্রশ্ন: এসএসসি পরীক্ষার ফলাফল কবে প্রকাশ হবে? এমন সাম্প্রতিক আর অফিশিয়াল তথ্যের জন্য সার্চ ইঞ্জিনে খুঁজে শিক্ষা বোর্ডের অফিশিয়াল ওয়েবসাইটই ভরসা।  
 আর প্রশ্ন যদি হয় — সালোকসংশ্লেষণ সহজ বাংলায় বুঝিয়ে দিন, তাহলে AI অ্যাসিস্ট্যান্ট দারুণ কাজে আসে। তবে পরীক্ষার আগে পাঠ্যবইয়ের সাথে মিলিয়ে নিন।  
 
-### ১০ · আপনার অনুশীলন  `08:24.8–09:16.4`
+### ১০ · আপনার অনুশীলন  `08:25.5–09:18.1`
 
 এবার আপনার অনুশীলন — দুটি অংশে।  
 প্রথম অংশ — একই তিনটি প্রশ্ন একবার Google সার্চে, আরেকবার ChatGPT বা Gemini-তে করুন। যেমন — বাংলাদেশের জাতীয় ফলের নাম কী, ইমেইল লেখার সময় কোন পাঁচটি বিষয় খেয়াল রাখবেন, আর এই সপ্তাহে ঢাকার আবহাওয়া কেমন থাকবে।  
@@ -133,7 +133,7 @@ AI অ্যাসিস্ট্যান্টের শক্তি — ব�
 প্রতিটি উদাহরণ চারটি বৃত্তের সবচেয়ে ভেতরের কোনটিতে পড়ে — AI, Machine Learning, Deep Learning নাকি Generative AI — লিখুন, আর এক লাইনে কারণ দিন।  
 আপনার টেবিল আর উত্তরগুলো একটি ডকুমেন্টে লিখে সংরক্ষণ করুন — পরের লেসনগুলোতেও কাজে লাগবে।  
 
-### ১১ · সারসংক্ষেপ  `09:18.3–09:56.5`
+### ১১ · সারসংক্ষেপ  `09:20.0–10:00.3`
 
 আজ আমরা দেখলাম — AI, Machine Learning, Deep Learning আর Generative AI একটির ভেতরে আরেকটি।  
 শিখলাম নিউরাল নেটওয়ার্ক কীভাবে স্তরে স্তরে শেখে, LLM কী, আর ট্রেনিং ডেটা কেন এত গুরুত্বপূর্ণ।  
@@ -186,7 +186,7 @@ Times are measured from the rendered timeline. From scene 02 on, each scene open
 | 01:02.9–01:13.5 | আর Generative AI হলো এমন AI, যা নতুন কনটেন্ট তৈরি করতে পারে। আজকের বেশিরভাগ Generative AI, যেমন ChatGPT-এর মতো চ্যাটবট, Deep Learning-এর ওপর ভিত্তি করে তৈরি। |
 | 01:13.6–01:22.4 | মনে রাখার সহজ উপায় — প্রতিটি ভেতরের বৃত্ত বাইরের বৃত্তের একটি অংশ। সব Deep Learning-ই Machine Learning, কিন্তু সব Machine Learning, Deep Learning নয়। |
 
-### Scene ০৩ — Machine Learning  ·  01:22.9 → 02:18.5
+### Scene ০৩ — Machine Learning  ·  01:22.9 → 02:22.8
 
 - **Teaching objective:** Define ML and distinguish supervised, unsupervised and reinforcement learning with local examples.
 - **Visual:** Header strip 'নিয়ম লেখা নয় — উদাহরণ থেকে শেখা'; three cards: Supervised (labelled emails ✓/✗), Unsupervised (customer dots forming clusters), Reinforcement (agent + reward star); footer 'শক্তি আসে ডেটা থেকে'.
@@ -199,14 +199,14 @@ Times are measured from the rendered timeline. From scene 02 on, each scene open
 
 | Time | Voiceover (spoken) |
 |---|---|
-| 01:24.3–01:32.2 | এবার Machine Learning। সাধারণ প্রোগ্রামে আমরা নিয়ম লিখে দিই, আর Machine Learning-এ কম্পিউটার উদাহরণ দেখে নিজেই প্যাটার্ন শেখে। |
-| 01:32.3–01:35.7 | Machine Learning-এর প্রধান তিনটি ধরন আছে। |
-| 01:35.8–01:49.0 | প্রথম — Supervised Learning, বা তত্ত্বাবধানে শেখা। এখানে প্রতিটি উদাহরণের সাথে সঠিক উত্তর বা লেবেল দেওয়া থাকে। যেমন হাজারো ইমেইল, প্রতিটিতে লেখা স্প্যাম নাকি স্প্যাম নয় — দেখে দেখে মডেল নতুন ইমেইল চিনতে শেখে। |
-| 01:49.1–02:01.7 | দ্বিতীয় — Unsupervised Learning। এখানে কোনো লেবেল থাকে না; মডেল নিজেই ডেটার মধ্যে মিল খুঁজে দল বানায়। যেমন, একটি অনলাইন দোকান কেনাকাটার ধরন দেখে কাস্টমারদের কয়েকটি দলে ভাগ করতে পারে। |
-| 02:01.8–02:12.5 | তৃতীয় — Reinforcement Learning। এখানে মডেল চেষ্টা আর ভুলের মাধ্যমে শেখে — ভালো কাজে পুরস্কার, খারাপ কাজে শাস্তি। গেম খেলা বা রোবট নিয়ন্ত্রণ শেখাতে এই পদ্ধতি বেশ ব্যবহৃত হয়। |
-| 02:12.6–02:18.0 | মূল কথা — Machine Learning-এর শক্তি আসে ডেটা থেকে। ডেটা যত ভালো, শেখাও তত ভালো। |
+| 01:24.3–01:33.1 | এবার Machine Learning। সাধারণ প্রোগ্রামে আমরা নিয়ম লিখে দিই, আর Machine Learning-এ কম্পিউটার উদাহরণ দেখে নিজেই প্যাটার্ন শেখে। |
+| 01:33.2–01:36.5 | Machine Learning-এর প্রধান তিনটি ধরন আছে। |
+| 01:36.6–01:51.2 | প্রথম — Supervised Learning, বা তত্ত্বাবধানে শেখা। এখানে প্রতিটি উদাহরণের সাথে সঠিক উত্তর বা লেবেল দেওয়া থাকে। যেমন হাজারো ইমেইল, প্রতিটিতে লেখা স্প্যাম নাকি স্প্যাম নয় — দেখে দেখে মডেল নতুন ইমেইল চিনতে শেখে। |
+| 01:51.4–02:03.9 | দ্বিতীয় — Unsupervised Learning। এখানে কোনো লেবেল থাকে না; মডেল নিজেই ডেটার মধ্যে মিল খুঁজে দল বানায়। যেমন, একটি অনলাইন দোকান কেনাকাটার ধরন দেখে কাস্টমারদের কয়েকটি দলে ভাগ করতে পারে। |
+| 02:04.0–02:15.9 | তৃতীয় — Reinforcement Learning। এখানে মডেল চেষ্টা আর ভুলের মাধ্যমে শেখে — ভালো কাজে পুরস্কার, খারাপ কাজে শাস্তি। গেম খেলা বা রোবট নিয়ন্ত্রণ শেখাতে এই পদ্ধতি বেশ ব্যবহৃত হয়। |
+| 02:16.0–02:22.3 | মূল কথা — Machine Learning-এর শক্তি আসে ডেটা থেকে। ডেটা যত ভালো, শেখাও তত ভালো। |
 
-### Scene ০৪ — Neural Network ও Deep Learning  ·  02:18.5 → 03:20.6
+### Scene ০৪ — Neural Network ও Deep Learning  ·  02:22.8 → 03:28.0
 
 - **Teaching objective:** Explain an artificial neural network (layers, weights, training) and why many layers = deep learning.
 - **Visual:** Animated network diagram: input layer (pixels) → two hidden layers → output ('বিড়াল'); one connection labelled 'weight'; a feature strip below: রেখা ও কোণ → চোখ, কান → পুরো মুখ; side note 'মস্তিষ্কের হুবহু নকল নয় — সরল গাণিতিক মডেল'.
@@ -219,15 +219,15 @@ Times are measured from the rendered timeline. From scene 02 on, each scene open
 
 | Time | Voiceover (spoken) |
 |---|---|
-| 02:19.9–02:23.7 | এবার Deep Learning আর Artificial Neural Network। |
-| 02:23.8–02:35.5 | Artificial Neural Network বা কৃত্রিম নিউরাল নেটওয়ার্কের ধারণা এসেছে মানুষের মস্তিষ্কের নিউরন থেকে। তবে এটি মস্তিষ্কের হুবহু নকল নয়, বরং অনেক সরল একটি গাণিতিক মডেল। |
-| 02:35.6–02:49.8 | একটি নিউরাল নেটওয়ার্কে থাকে কয়েকটি স্তর। ইনপুট স্তরে ডেটা ঢোকে — যেমন একটি ছবির পিক্সেল। মাঝের লুকানো স্তরগুলো ধাপে ধাপে প্যাটার্ন খোঁজে। আর আউটপুট স্তর ফলাফল দেয় — যেমন, এটি একটি বিড়ালের ছবি। |
-| 02:50.0–02:59.3 | প্রতিটি সংযোগের একটি ওজন বা weight থাকে। ট্রেনিংয়ের সময় মডেল নিজের ভুল দেখে এই ওজনগুলো একটু একটু করে ঠিক করে, যতক্ষণ না উত্তর ভালো হয়। |
-| 02:59.4–03:06.4 | যখন এই মাঝের স্তর অনেকগুলো হয়, তখন তাকে বলে Deep Learning। deep মানে গভীর — অর্থাৎ অনেক স্তর। |
-| 03:06.5–03:13.5 | প্রথম দিকের স্তর হয়তো শুধু রেখা আর কোণ চেনে, পরের স্তর চোখ বা কান, আর শেষের দিকের স্তর পুরো মুখ। |
-| 03:13.6–03:20.1 | ছবি চেনা, বাংলা ভয়েস টাইপিং, অনুবাদ — আজকের এসব প্রযুক্তির বড় অংশ Deep Learning-এর ওপর চলে। |
+| 02:24.2–02:27.9 | এবার Deep Learning আর Artificial Neural Network। |
+| 02:28.1–02:39.7 | Artificial Neural Network বা কৃত্রিম নিউরাল নেটওয়ার্কের ধারণা এসেছে মানুষের মস্তিষ্কের নিউরন থেকে। তবে এটি মস্তিষ্কের হুবহু নকল নয়, বরং অনেক সরল একটি গাণিতিক মডেল। |
+| 02:39.8–02:57.3 | একটি নিউরাল নেটওয়ার্কে থাকে কয়েকটি স্তর। ইনপুট স্তরে ডেটা ঢোকে — যেমন একটি ছবির পিক্সেল। মাঝের লুকানো স্তরগুলো ধাপে ধাপে প্যাটার্ন খোঁজে। আর আউটপুট স্তর ফলাফল দেয় — যেমন, এটি একটি বিড়ালের ছবি। |
+| 02:57.4–03:06.2 | প্রতিটি সংযোগের একটি ওজন বা weight থাকে। ট্রেনিংয়ের সময় মডেল নিজের ভুল দেখে এই ওজনগুলো একটু একটু করে ঠিক করে, যতক্ষণ না উত্তর ভালো হয়। |
+| 03:06.3–03:12.2 | যখন এই মাঝের স্তর অনেকগুলো হয়, তখন তাকে বলে Deep Learning। deep মানে গভীর — অর্থাৎ অনেক স্তর। |
+| 03:12.3–03:20.3 | প্রথম দিকের স্তর হয়তো শুধু রেখা আর কোণ চেনে, পরের স্তর চোখ বা কান, আর শেষের দিকের স্তর পুরো মুখ। |
+| 03:20.4–03:27.5 | ছবি চেনা, বাংলা ভয়েস টাইপিং, অনুবাদ — আজকের এসব প্রযুক্তির বড় অংশ Deep Learning-এর ওপর চলে। |
 
-### Scene ০৫ — Generative AI  ·  03:20.6 → 04:13.9
+### Scene ০৫ — Generative AI  ·  03:28.0 → 04:20.3
 
 - **Teaching objective:** Contrast recognising/classifying AI with AI that generates new content; flag accuracy and copyright caveats.
 - **Visual:** Left card 'চেনা ও বাছাই' (spam? mango/jackfruit?) vs right card 'নতুন তৈরি'; five output chips: লেখা · ছবি · অডিও · ভিডিও · কোড; amber banner 'নতুন মানেই সঠিক নয় · কপিরাইট ও নৈতিকতা → লেসন ০৬'.
@@ -240,13 +240,13 @@ Times are measured from the rendered timeline. From scene 02 on, each scene open
 
 | Time | Voiceover (spoken) |
 |---|---|
-| 03:22.0–03:26.5 | এবার Generative AI — আজ যেটি নিয়ে সবচেয়ে বেশি আলোচনা। |
-| 03:26.6–03:36.7 | আগের অনেক AI কাজ করত চেনা বা বাছাই করার জন্য — যেমন, এটা স্প্যাম কি না, কিংবা এটা আম না কাঁঠাল। এগুলো বিদ্যমান তথ্য দেখে সিদ্ধান্ত দেয়। |
-| 03:36.8–03:42.9 | Generative AI এক ধাপ এগিয়ে নতুন কনটেন্ট তৈরি করে — যা আগে হুবহু ছিল না। |
-| 03:43.1–04:01.5 | লেখা — যেমন ইমেইল, রিপোর্ট বা গল্প। ছবি — বর্ণনা দিলেই নতুন ছবি। অডিও — কৃত্রিম কণ্ঠ বা মিউজিক। ভিডিও — ছোট ক্লিপ। আর কোড — প্রোগ্রামের অংশ। আগের লেসনে ChatGPT-তে প্রম্পট লিখে যে উত্তর পেয়েছিলেন, সেটিও Generative AI-এর একটি উদাহরণ। |
-| 04:01.6–04:13.4 | তবে নতুন তৈরি মানেই সঠিক বা নিরাপদ নয়। Generative AI ভুল তথ্য বানাতে পারে, আর এর তৈরি কনটেন্টের কপিরাইট ও নৈতিকতা নিয়েও প্রশ্ন আছে — যা আমরা ষষ্ঠ লেসনে বিস্তারিত দেখব। |
+| 03:29.4–03:33.3 | এবার Generative AI — আজ যেটি নিয়ে সবচেয়ে বেশি আলোচনা। |
+| 03:33.5–03:43.9 | আগের অনেক AI কাজ করত চেনা বা বাছাই করার জন্য — যেমন, এটা স্প্যাম কি না, কিংবা এটা আম না কাঁঠাল। এগুলো বিদ্যমান তথ্য দেখে সিদ্ধান্ত দেয়। |
+| 03:44.0–03:49.7 | Generative AI এক ধাপ এগিয়ে নতুন কনটেন্ট তৈরি করে — যা আগে হুবহু ছিল না। |
+| 03:49.8–04:05.9 | লেখা — যেমন ইমেইল, রিপোর্ট বা গল্প। ছবি — বর্ণনা দিলেই নতুন ছবি। অডিও — কৃত্রিম কণ্ঠ বা মিউজিক। ভিডিও — ছোট ক্লিপ। আর কোড — প্রোগ্রামের অংশ। আগের লেসনে ChatGPT-তে প্রম্পট লিখে যে উত্তর পেয়েছিলেন, সেটিও Generative AI-এর একটি উদাহরণ। |
+| 04:06.0–04:19.8 | তবে নতুন তৈরি মানেই সঠিক বা নিরাপদ নয়। Generative AI ভুল তথ্য বানাতে পারে, আর এর তৈরি কনটেন্টের কপিরাইট ও নৈতিকতা নিয়েও প্রশ্ন আছে — যা আমরা ষষ্ঠ লেসনে বিস্তারিত দেখব। |
 
-### Scene ০৬ — Large Language Model (LLM)  ·  04:13.9 → 05:08.3
+### Scene ০৬ — Large Language Model (LLM)  ·  04:20.3 → 05:15.2
 
 - **Teaching objective:** Define an LLM, how it is built (pre-training, fine-tuning/feedback) and why it can be confidently wrong.
 - **Visual:** Definition card; assistant chips 'ChatGPT · Gemini · Claude' with 'পেছনে LLM' arrow; two-step flow: ১ প্রি-ট্রেনিং (book/web icons) → ২ ফাইন-টিউনিং (checklist + people-feedback icon); amber note 'তথ্যভান্ডার নয় — প্যাটার্ন থেকে তৈরি'.
@@ -259,15 +259,15 @@ Times are measured from the rendered timeline. From scene 02 on, each scene open
 
 | Time | Voiceover (spoken) |
 |---|---|
-| 04:15.3–04:20.6 | Generative AI-এর সবচেয়ে পরিচিত রূপ হলো Large Language Model, সংক্ষেপে LLM। |
-| 04:20.7–04:29.6 | LLM হলো বিপুল পরিমাণ লেখা দিয়ে ট্রেনিং দেওয়া একটি বড় নিউরাল নেটওয়ার্ক, যা ভাষা বুঝে প্রশ্নের উত্তর দিতে আর নতুন লেখা তৈরি করতে পারে। |
-| 04:29.7–04:36.6 | ChatGPT, Google Gemini বা Claude-এর মতো AI অ্যাসিস্ট্যান্টের পেছনে মূল ইঞ্জিন হিসেবে কাজ করে এমন LLM। |
-| 04:36.7–04:39.3 | একটি LLM সাধারণত দুই ধাপে তৈরি হয়। |
-| 04:39.4–04:44.4 | প্রথম ধাপে প্রি-ট্রেনিং — বই, ওয়েবসাইট আর নানা লেখা থেকে মডেল শেখে, কোন শব্দের পরে কোন শব্দ আসার সম্ভাবনা বেশি। |
-| 04:44.5–04:58.2 | দ্বিতীয় ধাপে ফাইন-টিউনিং — নির্দেশনা মানা, প্রশ্নের কাজের উত্তর দেওয়া, আর ক্ষতিকর অনুরোধ এড়ানো শেখানো হয়। অনেক ক্ষেত্রে মানুষের মূল্যায়ন বা ফিডব্যাক দিয়েও উত্তর উন্নত করা হয়। |
-| 04:58.3–05:07.8 | মনে রাখবেন, LLM কোনো তথ্যভান্ডার থেকে উত্তর খুঁজে আনে না। শেখা প্যাটার্ন থেকে সম্ভাব্য উত্তর তৈরি করে — এজন্যই মাঝে মাঝে আত্মবিশ্বাসের সাথে ভুলও বলে। |
+| 04:21.7–04:26.6 | Generative AI-এর সবচেয়ে পরিচিত রূপ হলো Large Language Model, সংক্ষেপে LLM। |
+| 04:26.7–04:35.1 | LLM হলো বিপুল পরিমাণ লেখা দিয়ে ট্রেনিং দেওয়া একটি বড় নিউরাল নেটওয়ার্ক, যা ভাষা বুঝে প্রশ্নের উত্তর দিতে আর নতুন লেখা তৈরি করতে পারে। |
+| 04:35.2–04:42.3 | ChatGPT, Google Gemini বা Claude-এর মতো AI অ্যাসিস্ট্যান্টের পেছনে মূল ইঞ্জিন হিসেবে কাজ করে এমন LLM। |
+| 04:42.4–04:45.0 | একটি LLM সাধারণত দুই ধাপে তৈরি হয়। |
+| 04:45.1–04:53.3 | প্রথম ধাপে প্রি-ট্রেনিং — বই, ওয়েবসাইট আর নানা লেখা থেকে মডেল শেখে, কোন শব্দের পরে কোন শব্দ আসার সম্ভাবনা বেশি। |
+| 04:53.4–05:04.9 | দ্বিতীয় ধাপে ফাইন-টিউনিং — নির্দেশনা মানা, প্রশ্নের কাজের উত্তর দেওয়া, আর ক্ষতিকর অনুরোধ এড়ানো শেখানো হয়। অনেক ক্ষেত্রে মানুষের মূল্যায়ন বা ফিডব্যাক দিয়েও উত্তর উন্নত করা হয়। |
+| 05:05.0–05:14.7 | মনে রাখবেন, LLM কোনো তথ্যভান্ডার থেকে উত্তর খুঁজে আনে না। শেখা প্যাটার্ন থেকে সম্ভাব্য উত্তর তৈরি করে — এজন্যই মাঝে মাঝে আত্মবিশ্বাসের সাথে ভুলও বলে। |
 
-### Scene ০৭ — ট্রেনিং ডেটা  ·  05:08.3 → 06:02.1
+### Scene ০৭ — ট্রেনিং ডেটা  ·  05:15.2 → 06:09.9
 
 - **Teaching objective:** Show why training data quality, bias, cut-off and language coverage shape AI behaviour.
 - **Visual:** Left card 'ট্রেনিং ডেটা = শেখার উদাহরণ' with icons (লেখা, ছবি, শব্দ, সংখ্যা); right: four rows — Garbage in, garbage out · পক্ষপাত (Bias) · সময়সীমা (Cut-off) · বাংলা ডেটা কম.
@@ -280,14 +280,14 @@ Times are measured from the rendered timeline. From scene 02 on, each scene open
 
 | Time | Voiceover (spoken) |
 |---|---|
-| 05:09.7–05:13.1 | AI-এর মান অনেকটাই নির্ভর করে তার ট্রেনিং ডেটার ওপর। |
-| 05:13.2–05:27.3 | ট্রেনিং ডেটা হলো সেই সব উদাহরণ, যা দেখে মডেল শেখে — লেখা, ছবি, শব্দ, কিংবা টেবিলের সংখ্যা। যেমন, বাংলা হাতের লেখা চেনার মডেল বানাতে হাজারো মানুষের হাতের লেখার ছবি লাগে, প্রতিটির সাথে সঠিক অক্ষরের লেবেল। |
-| 05:27.4–05:34.0 | ইংরেজিতে একটা কথা আছে — garbage in, garbage out। ভুল বা নিম্নমানের ডেটা দিলে ফলাফলও খারাপ হয়। |
-| 05:34.2–05:43.3 | ডেটায় পক্ষপাত থাকলে মডেলও পক্ষপাতী হয়। যেমন, কোনো ছবি চেনার মডেল যদি শুধু এক ধরনের মানুষের ছবিতে শেখে, অন্যদের ক্ষেত্রে সে বেশি ভুল করতে পারে। |
-| 05:43.4–05:52.3 | ডেটার সময়সীমাও গুরুত্বপূর্ণ। ট্রেনিংয়ের পরে যা ঘটেছে, তা মডেল নিজে থেকে জানে না — এজন্য কিছু অ্যাসিস্ট্যান্ট আলাদা করে ওয়েব সার্চের সুবিধা ব্যবহার করে। |
-| 05:52.4–06:01.6 | আর বাংলার মতো ভাষায় ইংরেজির তুলনায় অনলাইনে ডেটা কম, তাই অনেক মডেল বাংলায় তুলনামূলক কম দক্ষ হতে পারে — যদিও এই অবস্থা দ্রুত উন্নত হচ্ছে। |
+| 05:16.6–05:20.0 | AI-এর মান অনেকটাই নির্ভর করে তার ট্রেনিং ডেটার ওপর। |
+| 05:20.1–05:33.7 | ট্রেনিং ডেটা হলো সেই সব উদাহরণ, যা দেখে মডেল শেখে — লেখা, ছবি, শব্দ, কিংবা টেবিলের সংখ্যা। যেমন, বাংলা হাতের লেখা চেনার মডেল বানাতে হাজারো মানুষের হাতের লেখার ছবি লাগে, প্রতিটির সাথে সঠিক অক্ষরের লেবেল। |
+| 05:33.8–05:39.3 | ইংরেজিতে একটা কথা আছে — garbage in, garbage out। ভুল বা নিম্নমানের ডেটা দিলে ফলাফলও খারাপ হয়। |
+| 05:39.4–05:50.1 | ডেটায় পক্ষপাত থাকলে মডেলও পক্ষপাতী হয়। যেমন, কোনো ছবি চেনার মডেল যদি শুধু এক ধরনের মানুষের ছবিতে শেখে, অন্যদের ক্ষেত্রে সে বেশি ভুল করতে পারে। |
+| 05:50.3–05:59.4 | ডেটার সময়সীমাও গুরুত্বপূর্ণ। ট্রেনিংয়ের পরে যা ঘটেছে, তা মডেল নিজে থেকে জানে না — এজন্য কিছু অ্যাসিস্ট্যান্ট আলাদা করে ওয়েব সার্চের সুবিধা ব্যবহার করে। |
+| 05:59.5–06:09.4 | আর বাংলার মতো ভাষায় ইংরেজির তুলনায় অনলাইনে ডেটা কম, তাই অনেক মডেল বাংলায় তুলনামূলক কম দক্ষ হতে পারে — যদিও এই অবস্থা দ্রুত উন্নত হচ্ছে। |
 
-### Scene ০৮ — টোকেন ও ইনফারেন্স  ·  06:02.1 → 07:02.0
+### Scene ০৮ — টোকেন ও ইনফারেন্স  ·  06:09.9 → 07:06.5
 
 - **Teaching objective:** Explain tokens, context windows and token-based cost, and inference versus training.
 - **Visual:** Two sentences split into coloured token chips (English: fewer chips; Bangla: more chips), labelled 'উদাহরণ — আসল ভাঙন মডেলভেদে আলাদা'; a context-window bar filling up; bottom comparison: ট্রেনিং (একবার, অনেক সময় ও খরচ) vs ইনফারেন্স (প্রতিবার প্রশ্নে).
@@ -300,15 +300,15 @@ Times are measured from the rendered timeline. From scene 02 on, each scene open
 
 | Time | Voiceover (spoken) |
 |---|---|
-| 06:03.5–06:06.9 | এবার দুটি গুরুত্বপূর্ণ শব্দ — টোকেন আর ইনফারেন্স। |
-| 06:07.0–06:16.8 | LLM সরাসরি পুরো শব্দ বা বাক্য পড়ে না। লেখাকে সে ছোট ছোট টুকরোয় ভাঙে — এগুলোকে বলে টোকেন। একটি টোকেন হতে পারে একটি পুরো শব্দ, শব্দের অংশ, এমনকি একটি চিহ্ন। |
-| 06:17.0–06:27.8 | OpenAI-এর দেওয়া একটি মোটা হিসাবে, ইংরেজিতে গড়ে প্রায় চার অক্ষরে এক টোকেন হয়। আর বাংলার মতো অনেক ভাষায় একই কথা বলতে সাধারণত বেশি টোকেন লাগে। |
-| 06:28.0–06:38.1 | টোকেন কেন জানা দরকার? কারণ প্রতিটি মডেল একবারে নির্দিষ্ট পরিমাণ টোকেনই মাথায় রাখতে পারে — একে বলে কনটেক্সট উইন্ডো। আর অনেক পেইড সার্ভিসে খরচও হয় টোকেনের হিসাবে। |
-| 06:38.3–06:49.0 | আর ইনফারেন্স মানে হলো ট্রেনিং শেষ হওয়া মডেলকে ব্যবহার করে উত্তর তৈরি করা। আপনি যখন প্রশ্ন পাঠান, মডেল একটার পর একটা টোকেন অনুমান করে উত্তর গড়ে তোলে — এটাই ইনফারেন্স। |
-| 06:49.1–06:53.6 | ট্রেনিং হয় একবার, অনেক সময় আর খরচে। আর ইনফারেন্স ঘটে প্রতিবার, যখনই কেউ প্রশ্ন করে। |
-| 06:53.8–07:01.5 | আর যেহেতু প্রতিবার সম্ভাবনা থেকে টোকেন বাছাই হয়, তাই একই প্রশ্নে প্রতিবার হুবহু একই উত্তর না-ও আসতে পারে। |
+| 06:11.3–06:14.7 | এবার দুটি গুরুত্বপূর্ণ শব্দ — টোকেন আর ইনফারেন্স। |
+| 06:14.9–06:23.0 | LLM সরাসরি পুরো শব্দ বা বাক্য পড়ে না। লেখাকে সে ছোট ছোট টুকরোয় ভাঙে — এগুলোকে বলে টোকেন। একটি টোকেন হতে পারে একটি পুরো শব্দ, শব্দের অংশ, এমনকি একটি চিহ্ন। |
+| 06:23.1–06:33.8 | OpenAI-এর দেওয়া একটি মোটা হিসাবে, ইংরেজিতে গড়ে প্রায় চার অক্ষরে এক টোকেন হয়। আর বাংলার মতো অনেক ভাষায় একই কথা বলতে সাধারণত বেশি টোকেন লাগে। |
+| 06:33.9–06:43.1 | টোকেন কেন জানা দরকার? কারণ প্রতিটি মডেল একবারে নির্দিষ্ট পরিমাণ টোকেনই মাথায় রাখতে পারে — একে বলে কনটেক্সট উইন্ডো। আর অনেক পেইড সার্ভিসে খরচও হয় টোকেনের হিসাবে। |
+| 06:43.2–06:53.9 | আর ইনফারেন্স মানে হলো ট্রেনিং শেষ হওয়া মডেলকে ব্যবহার করে উত্তর তৈরি করা। আপনি যখন প্রশ্ন পাঠান, মডেল একটার পর একটা টোকেন অনুমান করে উত্তর গড়ে তোলে — এটাই ইনফারেন্স। |
+| 06:54.0–06:59.2 | ট্রেনিং হয় একবার, অনেক সময় আর খরচে। আর ইনফারেন্স ঘটে প্রতিবার, যখনই কেউ প্রশ্ন করে। |
+| 06:59.3–07:06.0 | আর যেহেতু প্রতিবার সম্ভাবনা থেকে টোকেন বাছাই হয়, তাই একই প্রশ্নে প্রতিবার হুবহু একই উত্তর না-ও আসতে পারে। |
 
-### Scene ০৯ — সার্চ ইঞ্জিন বনাম AI অ্যাসিস্ট্যান্ট  ·  07:02.0 → 08:23.4
+### Scene ০৯ — সার্চ ইঞ্জিন বনাম AI অ্যাসিস্ট্যান্ট  ·  07:06.5 → 08:24.1
 
 - **Teaching objective:** Compare search engines and generative assistants and decide which to use for which question.
 - **Visual:** Two browser-style panels side by side, both labelled 'প্রতীকী চিত্র — আসল স্ক্রিনশট নয়': left 'সার্চ ইঞ্জিন' shows a list of three link results; right 'AI অ্যাসিস্ট্যান্ট' shows a single composed answer bubble. Under each: strengths (green) and weaknesses (amber). Bottom: two example questions with the recommended tool tag.
@@ -321,16 +321,16 @@ Times are measured from the rendered timeline. From scene 02 on, each scene open
 
 | Time | Voiceover (spoken) |
 |---|---|
-| 07:03.4–07:10.4 | এবার একটি বাস্তব প্রশ্ন — Google-এর মতো সার্চ ইঞ্জিন আর ChatGPT-এর মতো AI অ্যাসিস্ট্যান্টের মধ্যে পার্থক্য কী? |
-| 07:10.5–07:20.8 | সার্চ ইঞ্জিন ইন্টারনেটে আগে থেকে থাকা ওয়েবপেজ খুঁজে দেয়, আর আপনাকে লিংকের তালিকা দেখায়। কোন উৎস বিশ্বাসযোগ্য, তা বাছাই করে পড়ার দায়িত্ব আপনার। |
-| 07:20.9–07:28.9 | AI অ্যাসিস্ট্যান্ট নিজের শেখা প্যাটার্ন থেকে সরাসরি একটি গোছানো উত্তর লিখে দেয়। আপনি চাইলে একই আলোচনায় ফলো-আপ প্রশ্নও করতে পারেন। |
-| 07:29.1–07:39.3 | সার্চ ইঞ্জিনের শক্তি — সাম্প্রতিক তথ্য, আসল উৎসের লিংক, আর অফিশিয়াল ওয়েবসাইট খুঁজে পাওয়া। দুর্বলতা — অনেক লিংক ঘেঁটে নিজেকেই উত্তর জোড়া দিতে হয়। |
-| 07:39.4–07:50.4 | AI অ্যাসিস্ট্যান্টের শক্তি — ব্যাখ্যা, সারসংক্ষেপ, লেখার খসড়া আর ধাপে ধাপে বুঝিয়ে দেওয়া। দুর্বলতা — ভুল তথ্য বানাতে পারে, আর অনেক সময় উৎস দেখায় না। |
-| 07:50.5–08:02.6 | এখন অনেক অ্যাসিস্ট্যান্ট ওয়েব সার্চ করে উৎসের লিংকও দেখায়, আর অনেক সার্চ ইঞ্জিনেও AI-তৈরি সারাংশ আসে। তবুও নিয়মটা একই — গুরুত্বপূর্ণ তথ্যের জন্য আসল উৎস খুলে মিলিয়ে নিন। |
-| 08:02.7–08:13.2 | একটি উদাহরণ দেখি — প্রশ্ন: এসএসসি পরীক্ষার ফলাফল কবে প্রকাশ হবে? এমন সাম্প্রতিক আর অফিশিয়াল তথ্যের জন্য সার্চ ইঞ্জিনে খুঁজে শিক্ষা বোর্ডের অফিশিয়াল ওয়েবসাইটই ভরসা। |
-| 08:13.4–08:22.9 | আর প্রশ্ন যদি হয় — সালোকসংশ্লেষণ সহজ বাংলায় বুঝিয়ে দিন, তাহলে AI অ্যাসিস্ট্যান্ট দারুণ কাজে আসে। তবে পরীক্ষার আগে পাঠ্যবইয়ের সাথে মিলিয়ে নিন। |
+| 07:07.9–07:14.5 | এবার একটি বাস্তব প্রশ্ন — Google-এর মতো সার্চ ইঞ্জিন আর ChatGPT-এর মতো AI অ্যাসিস্ট্যান্টের মধ্যে পার্থক্য কী? |
+| 07:14.6–07:23.5 | সার্চ ইঞ্জিন ইন্টারনেটে আগে থেকে থাকা ওয়েবপেজ খুঁজে দেয়, আর আপনাকে লিংকের তালিকা দেখায়। কোন উৎস বিশ্বাসযোগ্য, তা বাছাই করে পড়ার দায়িত্ব আপনার। |
+| 07:23.7–07:32.9 | AI অ্যাসিস্ট্যান্ট নিজের শেখা প্যাটার্ন থেকে সরাসরি একটি গোছানো উত্তর লিখে দেয়। আপনি চাইলে একই আলোচনায় ফলো-আপ প্রশ্নও করতে পারেন। |
+| 07:33.0–07:42.7 | সার্চ ইঞ্জিনের শক্তি — সাম্প্রতিক তথ্য, আসল উৎসের লিংক, আর অফিশিয়াল ওয়েবসাইট খুঁজে পাওয়া। দুর্বলতা — অনেক লিংক ঘেঁটে নিজেকেই উত্তর জোড়া দিতে হয়। |
+| 07:42.8–07:51.0 | AI অ্যাসিস্ট্যান্টের শক্তি — ব্যাখ্যা, সারসংক্ষেপ, লেখার খসড়া আর ধাপে ধাপে বুঝিয়ে দেওয়া। দুর্বলতা — ভুল তথ্য বানাতে পারে, আর অনেক সময় উৎস দেখায় না। |
+| 07:51.1–08:02.5 | এখন অনেক অ্যাসিস্ট্যান্ট ওয়েব সার্চ করে উৎসের লিংকও দেখায়, আর অনেক সার্চ ইঞ্জিনেও AI-তৈরি সারাংশ আসে। তবুও নিয়মটা একই — গুরুত্বপূর্ণ তথ্যের জন্য আসল উৎস খুলে মিলিয়ে নিন। |
+| 08:02.6–08:13.9 | একটি উদাহরণ দেখি — প্রশ্ন: এসএসসি পরীক্ষার ফলাফল কবে প্রকাশ হবে? এমন সাম্প্রতিক আর অফিশিয়াল তথ্যের জন্য সার্চ ইঞ্জিনে খুঁজে শিক্ষা বোর্ডের অফিশিয়াল ওয়েবসাইটই ভরসা। |
+| 08:14.1–08:23.6 | আর প্রশ্ন যদি হয় — সালোকসংশ্লেষণ সহজ বাংলায় বুঝিয়ে দিন, তাহলে AI অ্যাসিস্ট্যান্ট দারুণ কাজে আসে। তবে পরীক্ষার আগে পাঠ্যবইয়ের সাথে মিলিয়ে নিন। |
 
-### Scene ১০ — আপনার অনুশীলন  ·  08:23.4 → 09:16.9
+### Scene ১০ — আপনার অনুশীলন  ·  08:24.1 → 09:18.6
 
 - **Teaching objective:** Practise the comparison and the four-circle classification.
 - **Visual:** Left: comparison worksheet (3 question rows × columns নির্ভুলতা · উৎস · সাম্প্রতিক · সহজবোধ্য, for Search vs AI). Right: six example cards to classify (স্প্যাম ফিল্টার, ফোনের ফেস আনলক, ChatGPT দিয়ে ইমেইল, হাতে লেখা নিয়মের দাবা প্রোগ্রাম, কাস্টমারদের দলে ভাগ, বর্ণনা থেকে ছবি) each with a '?' badge.
@@ -343,14 +343,14 @@ Times are measured from the rendered timeline. From scene 02 on, each scene open
 
 | Time | Voiceover (spoken) |
 |---|---|
-| 08:24.8–08:27.2 | এবার আপনার অনুশীলন — দুটি অংশে। |
-| 08:27.3–08:41.9 | প্রথম অংশ — একই তিনটি প্রশ্ন একবার Google সার্চে, আরেকবার ChatGPT বা Gemini-তে করুন। যেমন — বাংলাদেশের জাতীয় ফলের নাম কী, ইমেইল লেখার সময় কোন পাঁচটি বিষয় খেয়াল রাখবেন, আর এই সপ্তাহে ঢাকার আবহাওয়া কেমন থাকবে। |
-| 08:42.0–08:48.2 | প্রতিটির জন্য একটি টেবিলে লিখুন — কোনটির উত্তর বেশি নির্ভুল, কোনটি উৎস দেখিয়েছে, কোনটি সাম্প্রতিক, আর কোনটি বুঝতে সহজ। |
-| 08:48.3–09:00.3 | দ্বিতীয় অংশ — স্ক্রিনের ছয়টি উদাহরণ দেখুন: স্প্যাম ফিল্টার, ফোনের ফেস আনলক, ChatGPT দিয়ে ইমেইল লেখা, হাতে লেখা নিয়মের দাবা প্রোগ্রাম, কাস্টমারদের দলে ভাগ করা, আর বর্ণনা থেকে ছবি তৈরি। |
-| 09:00.4–09:11.2 | প্রতিটি উদাহরণ চারটি বৃত্তের সবচেয়ে ভেতরের কোনটিতে পড়ে — AI, Machine Learning, Deep Learning নাকি Generative AI — লিখুন, আর এক লাইনে কারণ দিন। |
-| 09:11.4–09:16.4 | আপনার টেবিল আর উত্তরগুলো একটি ডকুমেন্টে লিখে সংরক্ষণ করুন — পরের লেসনগুলোতেও কাজে লাগবে। |
+| 08:25.5–08:27.9 | এবার আপনার অনুশীলন — দুটি অংশে। |
+| 08:28.0–08:42.1 | প্রথম অংশ — একই তিনটি প্রশ্ন একবার Google সার্চে, আরেকবার ChatGPT বা Gemini-তে করুন। যেমন — বাংলাদেশের জাতীয় ফলের নাম কী, ইমেইল লেখার সময় কোন পাঁচটি বিষয় খেয়াল রাখবেন, আর এই সপ্তাহে ঢাকার আবহাওয়া কেমন থাকবে। |
+| 08:42.2–08:50.4 | প্রতিটির জন্য একটি টেবিলে লিখুন — কোনটির উত্তর বেশি নির্ভুল, কোনটি উৎস দেখিয়েছে, কোনটি সাম্প্রতিক, আর কোনটি বুঝতে সহজ। |
+| 08:50.5–09:03.0 | দ্বিতীয় অংশ — স্ক্রিনের ছয়টি উদাহরণ দেখুন: স্প্যাম ফিল্টার, ফোনের ফেস আনলক, ChatGPT দিয়ে ইমেইল লেখা, হাতে লেখা নিয়মের দাবা প্রোগ্রাম, কাস্টমারদের দলে ভাগ করা, আর বর্ণনা থেকে ছবি তৈরি। |
+| 09:03.1–09:12.4 | প্রতিটি উদাহরণ চারটি বৃত্তের সবচেয়ে ভেতরের কোনটিতে পড়ে — AI, Machine Learning, Deep Learning নাকি Generative AI — লিখুন, আর এক লাইনে কারণ দিন। |
+| 09:12.6–09:18.1 | আপনার টেবিল আর উত্তরগুলো একটি ডকুমেন্টে লিখে সংরক্ষণ করুন — পরের লেসনগুলোতেও কাজে লাগবে। |
 
-### Scene ১১ — সারসংক্ষেপ  ·  09:16.9 → 09:59.5
+### Scene ১১ — সারসংক্ষেপ  ·  09:18.6 → 10:03.3
 
 - **Teaching objective:** Consolidate and preview Lesson 03 (tools and platforms).
 - **Visual:** Instructor photo returns; checklist of six ideas ticks green; next-lesson card: লেখা · ছবি · ভিডিও · অডিও · কোডিং টুল · সঠিক টুল বাছাই.
@@ -363,12 +363,12 @@ Times are measured from the rendered timeline. From scene 02 on, each scene open
 
 | Time | Voiceover (spoken) |
 |---|---|
-| 09:18.3–09:24.4 | আজ আমরা দেখলাম — AI, Machine Learning, Deep Learning আর Generative AI একটির ভেতরে আরেকটি। |
-| 09:24.6–09:31.2 | শিখলাম নিউরাল নেটওয়ার্ক কীভাবে স্তরে স্তরে শেখে, LLM কী, আর ট্রেনিং ডেটা কেন এত গুরুত্বপূর্ণ। |
-| 09:31.3–09:37.7 | জানলাম টোকেন আর ইনফারেন্স মানে কী, আর কখন সার্চ ইঞ্জিন আর কখন AI অ্যাসিস্ট্যান্ট ব্যবহার করবেন। |
-| 09:37.9–09:46.8 | পরের লেসনে আমরা দেখব প্রয়োজনীয় AI টুলগুলো — লেখা, ছবি, ভিডিও, অডিও আর কোডিংয়ের জন্য — আর কীভাবে সঠিক টুল বেছে নেবেন। |
-| 09:46.9–09:53.1 | মনে রাখবেন, AI একটি শক্তিশালী সহকারী, কিন্তু যাচাই আর শেষ সিদ্ধান্তের দায়িত্ব সবসময় আপনার। |
-| 09:53.2–09:56.5 | অনুশীলনটি শেষ করে চলে আসুন পরের লেসনে। দেখা হবে! |
+| 09:20.0–09:26.4 | আজ আমরা দেখলাম — AI, Machine Learning, Deep Learning আর Generative AI একটির ভেতরে আরেকটি। |
+| 09:26.5–09:33.0 | শিখলাম নিউরাল নেটওয়ার্ক কীভাবে স্তরে স্তরে শেখে, LLM কী, আর ট্রেনিং ডেটা কেন এত গুরুত্বপূর্ণ। |
+| 09:33.2–09:39.7 | জানলাম টোকেন আর ইনফারেন্স মানে কী, আর কখন সার্চ ইঞ্জিন আর কখন AI অ্যাসিস্ট্যান্ট ব্যবহার করবেন। |
+| 09:39.8–09:49.2 | পরের লেসনে আমরা দেখব প্রয়োজনীয় AI টুলগুলো — লেখা, ছবি, ভিডিও, অডিও আর কোডিংয়ের জন্য — আর কীভাবে সঠিক টুল বেছে নেবেন। |
+| 09:49.3–09:56.3 | মনে রাখবেন, AI একটি শক্তিশালী সহকারী, কিন্তু যাচাই আর শেষ সিদ্ধান্তের দায়িত্ব সবসময় আপনার। |
+| 09:56.5–10:00.3 | অনুশীলনটি শেষ করে চলে আসুন পরের লেসনে। দেখা হবে! |
 
 ---
 ## SECTION D — Animation prompts (AI video generation, optional B-roll / upgrades)
@@ -379,23 +379,23 @@ Times are measured from the rendered timeline. From scene 02 on, each scene open
 
 **০২ · বড় ছবি: চারটি বৃত্ত (00:31.6–01:22.9):** Four translucent concentric glass rings float in dark space, largest cyan, then purple, magenta and a small glowing amber core; each ring scales in from the outside inward and glows as it lands; slow push-in toward the amber core.
 
-**০৩ · Machine Learning (01:22.9–02:18.5):** Three glass panels side by side. Left: small envelope cards sliding in and receiving red or green tags. Centre: a cloud of grey dots drifting and gathering into three coloured clusters. Right: a small friendly robot cube moving and receiving a green star, then a red cross. Static camera with subtle parallax.
+**০৩ · Machine Learning (01:22.9–02:22.8):** Three glass panels side by side. Left: small envelope cards sliding in and receiving red or green tags. Centre: a cloud of grey dots drifting and gathering into three coloured clusters. Right: a small friendly robot cube moving and receiving a green star, then a red cross. Static camera with subtle parallax.
 
-**০৪ · Neural Network ও Deep Learning (02:18.5–03:20.6):** A clean 3D neural network: a column of input nodes, two hidden columns, two output nodes, all joined by thin glowing lines; pulses of light travel left to right layer by layer; one connection thickens and glows amber as if being tuned; slow lateral camera move along the signal.
+**০৪ · Neural Network ও Deep Learning (02:22.8–03:28.0):** A clean 3D neural network: a column of input nodes, two hidden columns, two output nodes, all joined by thin glowing lines; pulses of light travel left to right layer by layer; one connection thickens and glows amber as if being tuned; slow lateral camera move along the signal.
 
-**০৫ · Generative AI (03:20.6–04:13.9):** Left: a calm sorting machine places items into two bins. Right: a glowing amber spark bursts into five floating cards (a page of text, a picture frame, a sound wave, a film strip, code brackets) arranged in a row; light sparkles; slight push toward the right.
+**০৫ · Generative AI (03:28.0–04:20.3):** Left: a calm sorting machine places items into two bins. Right: a glowing amber spark bursts into five floating cards (a page of text, a picture frame, a sound wave, a film strip, code brackets) arranged in a row; light sparkles; slight push toward the right.
 
-**০৬ · Large Language Model (LLM) (04:13.9–05:08.3):** A vast library of floating pages streams into a large crystalline neural core (pre-training), then a second stage where small human-hand icons place check marks on output cards that feed back into the core (fine-tuning with feedback); calm push-in.
+**০৬ · Large Language Model (LLM) (04:20.3–05:15.2):** A vast library of floating pages streams into a large crystalline neural core (pre-training), then a second stage where small human-hand icons place check marks on output cards that feed back into the core (fine-tuning with feedback); calm push-in.
 
-**০৭ · ট্রেনিং ডেটা (05:08.3–06:02.1):** A conveyor of example cards (text, images, sound waves, numbers) flows into a model core. Some cards are cracked and grey and come out as cracked results; a balance scale tips to one side; an hourglass marks a cut-off line. Steady camera, gentle zoom on each idea.
+**০৭ · ট্রেনিং ডেটা (05:15.2–06:09.9):** A conveyor of example cards (text, images, sound waves, numbers) flows into a model core. Some cards are cracked and grey and come out as cracked results; a balance scale tips to one side; an hourglass marks a cut-off line. Steady camera, gentle zoom on each idea.
 
-**০৮ · টোকেন ও ইনফারেন্স (06:02.1–07:02.0):** A sentence of light breaks into coloured chip-shaped pieces with a gentle slicing motion; a horizontal window bar fills up with chips; chips then appear one after another to build a reply. Close, clean macro framing.
+**০৮ · টোকেন ও ইনফারেন্স (06:09.9–07:06.5):** A sentence of light breaks into coloured chip-shaped pieces with a gentle slicing motion; a horizontal window bar fills up with chips; chips then appear one after another to build a reply. Close, clean macro framing.
 
-**০৯ · সার্চ ইঞ্জিন বনাম AI অ্যাসিস্ট্যান্ট (07:02.0–08:23.4):** Two floating glass browser-like panels with no brand and no readable text: the left shows three stacked link rows dropping in, the right shows one long answer bubble writing itself; small green and amber badges appear under each; static wide shot.
+**০৯ · সার্চ ইঞ্জিন বনাম AI অ্যাসিস্ট্যান্ট (07:06.5–08:24.1):** Two floating glass browser-like panels with no brand and no readable text: the left shows three stacked link rows dropping in, the right shows one long answer bubble writing itself; small green and amber badges appear under each; static wide shot.
 
-**১০ · আপনার অনুশীলন (08:23.4–09:16.9):** A glass worksheet table assembles row by row on a dark desk while six small cards flip in on the right, each with an amber question badge; slow push-in.
+**১০ · আপনার অনুশীলন (08:24.1–09:18.6):** A glass worksheet table assembles row by row on a dark desk while six small cards flip in on the right, each with an amber question badge; slow push-in.
 
-**১১ · সারসংক্ষেপ (09:16.9–09:59.5):** Six green check marks light up in a vertical list, then the camera pulls back to reveal a glowing doorway suggesting the next lesson; music swell, gentle fade to the course end card.
+**১১ · সারসংক্ষেপ (09:18.6–10:03.3):** Six green check marks light up in a vertical list, then the camera pulls back to reveal a glowing doorway suggesting the next lesson; music swell, gentle fade to the course end card.
 
 ---
 ## SECTION E — Screen recording guide
@@ -526,17 +526,17 @@ For each of the six examples, write the innermost circle it belongs to (AI, Mach
 |---|---|---|---|---|
 | s01_c0 | gemini-3.8-flash-tts | 31.4 s | 12.2 | 1.00 |
 | s02_c0 | gemini-3.8-flash-tts | 51.9 s | 12.9 | 1.00 |
-| s03_c0 | gemini-3.1-flash-tts-preview | 56.3 s | 12.3 | 0.90 |
-| s04_c0 | gemini-3.1-flash-tts-preview | 63.2 s | 11.0 | 0.98 |
-| s05_c0 | gemini-3.1-flash-tts-preview | 54.0 s | 10.1 | 0.98 |
-| s06_c0 | gemini-3.1-flash-tts-preview | 55.1 s | 12.1 | 1.00 |
-| s07_c0 | gemini-2.5-flash-preview-tts | 54.4 s | 12.0 | 0.97 |
-| s08_c0 | gemini-2.5-flash-preview-tts | 60.9 s | 11.9 | 0.97 |
-| s09_c0 | gemini-2.5-flash-preview-tts | 83.5 s | 11.9 | 0.98 |
-| s10_c0 | gemini-2.5-flash-preview-tts | 54.2 s | 12.1 | 0.95 |
-| s11_c0 | gemini-2.5-flash-preview-tts | 40.0 s | 11.3 | 0.82 |
+| s03_c0 | gemini-3.8-flash-tts | 60.9 s | 11.3 | 0.99 |
+| s04_c0 | gemini-3.8-flash-tts | 66.4 s | 10.4 | 1.00 |
+| s05_c0 | gemini-3.8-flash-tts | 53.0 s | 10.3 | 0.88 |
+| s06_c0 | gemini-3.8-flash-tts | 55.6 s | 12.0 | 0.92 |
+| s07_c0 | gemini-3.8-flash-tts | 55.5 s | 11.8 | 0.94 |
+| s08_c0 | gemini-3.8-flash-tts | 57.4 s | 12.6 | 0.92 |
+| s09_c0 | gemini-3.8-flash-tts | 79.5 s | 12.5 | 0.96 |
+| s10_c0 | gemini-3.8-flash-tts | 55.2 s | 11.9 | 0.91 |
+| s11_c0 | gemini-3.8-flash-tts | 42.4 s | 10.7 | 0.90 |
 
-Durations and pace above are for the raw takes. In the edit every take was time-stretched ×1.05 (pitch preserved) to fit the 10:00 plan and normalized to the same loudness (−18 LUFS per take before the mix). All takes use the same Orus voice. Several TTS models were used because each free daily quota ran out (scenes 01, 02: `gemini-3.8-flash-tts`; scenes 03, 04, 05, 06: `gemini-3.1-flash-tts-preview`; scenes 07, 08, 09, 10, 11: `gemini-2.5-flash-preview-tts`), so the timbre can shift slightly where the model changes. To make it uniform, regenerate those scenes on one model after the quota resets and re-run the timing script; nothing else changes.
+Durations and pace above are for the raw takes. In the edit every take was time-stretched ×1.05 (pitch preserved) to fit the 10:00 plan and normalized to the same loudness (−18 LUFS per take before the mix). All 11 takes come from one model (scenes 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11: `gemini-3.8-flash-tts`) with the same Orus voice, so the timbre is consistent across the whole lesson. Scene 09's raw match is lower only because the transcriber spelled English terms (Search Engine, Assistant, Official, SSC) in Latin script; normalized it scores 0.96 and the transcript was checked by eye: complete and verbatim.
 
 Target pace is 11–14 characters per second. Match is the Gemini transcript's similarity to the script, where 1.00 means identical. Small gaps come from spelling variants of English terms.
 
@@ -559,14 +559,14 @@ AI, Machine Learning, Deep Learning ও Generative AI — পার্থক্�
 00:00 স্বাগতম
 00:31 বড় ছবি: চারটি বৃত্ত
 01:22 Machine Learning
-02:18 Neural Network ও Deep Learning
-03:20 Generative AI
-04:13 Large Language Model (LLM)
-05:08 ট্রেনিং ডেটা
-06:02 টোকেন ও ইনফারেন্স
-07:02 সার্চ ইঞ্জিন বনাম AI অ্যাসিস্ট্যান্ট
-08:23 আপনার অনুশীলন
-09:16 সারসংক্ষেপ
+02:22 Neural Network ও Deep Learning
+03:28 Generative AI
+04:20 Large Language Model (LLM)
+05:15 ট্রেনিং ডেটা
+06:09 টোকেন ও ইনফারেন্স
+07:06 সার্চ ইঞ্জিন বনাম AI অ্যাসিস্ট্যান্ট
+08:24 আপনার অনুশীলন
+09:18 সারসংক্ষেপ
 
 অনুশীলন: একই ৩টি প্রশ্ন Google আর ChatGPT/Gemini-তে করে তুলনা করুন, আর ৬টি উদাহরণ কোন বৃত্তে পড়ে লিখুন।
 নিরাপত্তা: ব্যক্তিগত তথ্য AI চ্যাটে দেবেন না। গুরুত্বপূর্ণ তথ্য আসল উৎসে যাচাই করুন।
@@ -579,7 +579,7 @@ Chapter times in the description come from the rendered timeline. YouTube needs 
 
 **Export settings:** H.264 High profile, 1920×1080, 30 fps constant frame rate, yuv420p (the delivered master uses CRF 18). AAC-LC 192 kbps, 48 kHz stereo. Fast-start for web playback. Loudness −14 LUFS integrated, true peak ≤ −1 dBTP.
 
-**Measured QC on the delivered file:** Duration: 09:59.5 (599.5 s) · Video: H.264 High, 1920×1080, 30 fps, yuv420p, CRF 18 · Audio: AAC-LC 192 kbps 48 kHz stereo · Integrated loudness: −14.0 LUFS · True peak: −2.3 dBTP · HyperFrames lint: 0 errors · Frames reviewed: end-of-scene frame for all 11 scenes (6 layout issues found and fixed) + final-file contact sheet · Narration takes verified: 11/11 (script similarity 0.83–1.00; lowest scores are Latin-vs-Bangla spellings of English terms, transcripts checked by eye)
+**Measured QC on the delivered file:** Duration: 10:03.3 (603.3 s) · Video: H.264 High, 1920×1080, 30 fps, yuv420p, CRF 18 · Audio: AAC-LC 192 kbps 48 kHz stereo · Integrated loudness: −14.0 LUFS · True peak: −2.2 dBTP · HyperFrames lint: 0 errors · Frames reviewed: end-of-scene frame for all 11 scenes (6 layout issues found and fixed earlier) + re-check on the v2 timeline · Narration takes verified: 11/11 on one model (script similarity 0.88–1.00 after normalizing English-term spellings; scene 09 transcript checked by eye)
 
 **Accuracy notes (checked for this lesson):** OpenAI's help article on tokens gives the rule of thumb that 1 token is about 4 characters of English text. Bangla generally needs more tokens per word in common tokenizers, but exact counts vary by model (see the Section E part 2 insert). SSC results are published by Bangladesh's education boards on their official sites. Bangladesh's national fruit is the jackfruit (কাঁঠাল).
 
