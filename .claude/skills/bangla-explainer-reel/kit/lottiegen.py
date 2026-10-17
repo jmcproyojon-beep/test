@@ -100,7 +100,7 @@ def check_badge(t0, op, size=260, color="#00A86B"):
     return comp(size, size, op, [layer([tick, ring, disc], op, 1, squash_scale(t0, c, c))])
 
 
-def burst(t0, op, size=560, color="#FFB800", rays=12):
+def burst(t0, op, size=560, color="#FFB800", color2="#111111", rays=12):
     c = size / 2
     shapes = []
     for k in range(rays):
@@ -108,7 +108,7 @@ def burst(t0, op, size=560, color="#FFB800", rays=12):
         r0, r1 = size * .16, size * .46
         p0 = (c + r0 * math.cos(a), c + r0 * math.sin(a)); p1 = (c + r1 * math.cos(a), c + r1 * math.sin(a))
         # leading edge shoots out, trailing edge follows a beat later (follow-through)
-        shapes.append(group([path([p0, p1]), stroke(color if k % 2 else "#111111", size * .022),
+        shapes.append(group([path([p0, p1]), stroke(color if k % 2 else color2, size * .022),
                              trim(anim_prop([(t0 + .06, 0), (t0 + .42, 100)]), anim_prop([(t0, 0), (t0 + .26, 100)]))]))
     dots = []
     for k in range(rays):
