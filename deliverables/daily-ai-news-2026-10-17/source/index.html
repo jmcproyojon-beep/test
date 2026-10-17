@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<title>Daily AI News — 17 Oct 2026</title>
+<script src="assets/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Hind Siliguri"; font-weight: 500; src: url(assets/fonts/hind-siliguri-bengali-500-normal.woff2) format("woff2"); unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+1CD0, U+1CD2, U+1CD5-1CD6, U+1CD8, U+1CE1, U+1CEA, U+1CED, U+1CF2, U+1CF5-1CF7, U+200C-200D, U+20B9, U+25CC, U+A8F1; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 600; src: url(assets/fonts/hind-siliguri-bengali-600-normal.woff2) format("woff2"); unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+1CD0, U+1CD2, U+1CD5-1CD6, U+1CD8, U+1CE1, U+1CEA, U+1CED, U+1CF2, U+1CF5-1CF7, U+200C-200D, U+20B9, U+25CC, U+A8F1; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 700; src: url(assets/fonts/hind-siliguri-bengali-700-normal.woff2) format("woff2"); unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+1CD0, U+1CD2, U+1CD5-1CD6, U+1CD8, U+1CE1, U+1CEA, U+1CED, U+1CF2, U+1CF5-1CF7, U+200C-200D, U+20B9, U+25CC, U+A8F1; }
+@font-face { font-family: "Inter"; font-weight: 500; src: url(assets/fonts/inter-latin-500-normal.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url(assets/fonts/inter-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url(assets/fonts/inter-latin-700-normal.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 800; src: url(assets/fonts/inter-latin-800-normal.woff2) format("woff2"); }
+
+:root {
+  --navy: #060b1f; --navy2: #0b1436; --cyan: #22e3ff; --purple: #8b5cf6; --pink: #d946ef;
+  --amber: #fbbf24; --green: #34d399; --red: #fb7185; --ink: #eaf4ff; --mute: #9fb3d9;
+  --glass: rgba(20, 32, 74, 0.55); --stroke: rgba(120, 200, 255, 0.28);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--navy); color: var(--ink); font-family: "Inter", "Hind Siliguri", sans-serif; }
+#root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--navy); }
+.clip { position: absolute; }
+
+/* background */
+#bg { inset: 0; width: 1080px; height: 1920px; }
+.bgfill { position: absolute; inset: 0; background: radial-gradient(1200px 900px at 50% 20%, #13205a 0%, var(--navy2) 45%, var(--navy) 100%); }
+.grid { position: absolute; left: -100px; top: -200px; width: 1280px; height: 2400px; opacity: .22;
+  background-image: linear-gradient(rgba(34,227,255,.35) 1px, transparent 1px), linear-gradient(90deg, rgba(34,227,255,.35) 1px, transparent 1px);
+  background-size: 120px 120px; transform-origin: center; }
+.orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .55; width: 620px; height: 620px; display: block; }
+.o1 { left: -200px; top: 200px; background: var(--purple); }
+.o2 { right: -220px; top: 900px; background: #0ea5e9; }
+.o3 { left: 260px; top: 1500px; background: var(--pink); opacity: .32; width: 520px; height: 520px; }
+.scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 2px, transparent 2px 6px); }
+
+/* top bar */
+#topbar { left: 60px; top: 150px; width: 960px; height: 80px; display: flex; align-items: center; justify-content: space-between; }
+.logo { font: 800 34px/1 "Inter"; letter-spacing: 3px; display: flex; align-items: center; gap: 14px; }
+.logo .bn { font: 700 28px/1 "Hind Siliguri"; color: var(--cyan); letter-spacing: 0; padding: 6px 14px; border: 2px solid var(--cyan); border-radius: 12px; }
+.live { width: 18px; height: 18px; border-radius: 50%; background: var(--red); box-shadow: 0 0 18px var(--red); display: inline-block; }
+.date { font: 600 26px/1 "Hind Siliguri"; color: var(--mute); }
+
+/* presenter */
+#presenter { left: 140px; top: 262px; width: 800px; height: 835px; border-radius: 36px; overflow: hidden; transform-origin: 0 0;
+  border: 4px solid rgba(34,227,255,.7); box-shadow: 0 0 60px rgba(34,227,255,.35), 0 30px 80px rgba(0,0,0,.5); background: #111; }
+#pimg { position: absolute; left: 0; top: 0; width: 800px; height: 835px; object-fit: cover; transform-origin: 50% 30%; display: block; }
+.pglow { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,11,31,0) 55%, rgba(6,11,31,.85) 100%); }
+.wave { position: absolute; right: 40px; bottom: 150px; width: 190px; height: 90px; display: flex; align-items: center; gap: 9px; }
+.wave i { display: block; width: 12px; height: 90px; border-radius: 6px; background: linear-gradient(180deg, var(--cyan), var(--purple)); transform-origin: 50% 50%; transform: scaleY(.15); }
+.lower3 { position: absolute; left: 36px; bottom: 36px; width: 728px; height: 96px; display: flex; flex-direction: column; justify-content: center; gap: 4px;
+  padding: 0 26px; border-left: 8px solid var(--cyan); background: rgba(6,11,31,.72); border-radius: 0 16px 16px 0; }
+.l3a { font: 800 32px/1 "Inter"; letter-spacing: 4px; color: var(--ink); }
+.l3b { font: 600 28px/1.2 "Hind Siliguri"; color: var(--cyan); }
+
+/* scenes */
+.scene { left: 0; top: 0; width: 1080px; height: 1920px; }
+.hdr { position: absolute; left: 300px; top: 280px; width: 700px; height: 190px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+.tag { display: inline-flex; align-self: flex-start; align-items: center; gap: 12px; padding: 10px 20px; border-radius: 40px; font: 800 26px/1.1 "Inter", "Hind Siliguri"; letter-spacing: 1.5px; }
+.tag .dot { width: 12px; height: 12px; border-radius: 50%; background: currentColor; display: inline-block; }
+.htitle { font: 700 64px/1.15 "Hind Siliguri"; }
+.t-rel { color: var(--cyan); background: rgba(34,227,255,.12); border: 2px solid rgba(34,227,255,.6); }
+.t-paid { color: var(--amber); background: rgba(251,191,36,.12); border: 2px solid rgba(251,191,36,.6); }
+.t-free { color: var(--green); background: rgba(52,211,153,.12); border: 2px solid rgba(52,211,153,.6); }
+.t-up, .t-upc { color: #c4b5fd; background: rgba(139,92,246,.16); border: 2px solid rgba(139,92,246,.7); }
+.t-safe { color: var(--red); background: rgba(251,113,133,.12); border: 2px solid rgba(251,113,133,.6); }
+.t-key { color: var(--cyan); background: rgba(34,227,255,.12); border: 2px solid rgba(34,227,255,.6); }
+.src { position: absolute; left: 70px; top: 1300px; width: 860px; font: 500 22px/1.2 "Hind Siliguri", "Inter"; color: var(--mute); opacity: .85; }
+
+.glass { position: absolute; left: 60px; width: 880px; border-radius: 32px; background: var(--glass); border: 2px solid var(--stroke);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 24px 60px rgba(0,0,0,.35); padding: 40px 44px; }
+.brand { font: 700 30px/1 "Inter"; color: var(--mute); letter-spacing: 2px; text-transform: uppercase; }
+.model { font: 800 92px/1.05 "Inter"; margin-top: 14px; background: linear-gradient(90deg, #fff 0%, var(--cyan) 55%, var(--purple) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; display: block; }
+.model.sm { font-size: 60px; }
+.sub { font: 600 34px/1.3 "Hind Siliguri", "Inter"; color: var(--ink); opacity: .9; margin-top: 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 34px; }
+.chip { display: flex; align-items: center; gap: 14px; padding: 16px 24px; border-radius: 20px; background: rgba(34,227,255,.08);
+  border: 2px solid rgba(34,227,255,.35); font: 700 36px/1.2 "Hind Siliguri", "Inter"; color: var(--ink); }
+.chip.dim { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.2); font-size: 32px; }
+.ic { display: inline-block; width: 44px; height: 44px; flex: 0 0 auto; }
+.ic.big { width: 72px; height: 72px; }
+.ic svg { width: 100%; height: 100%; fill: none; stroke: var(--cyan); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; display: block; }
+.chip.row { width: 792px; margin-top: 18px; }
+.warnrow { border-color: rgba(251,191,36,.5); background: rgba(251,191,36,.08); }
+.warnrow svg { stroke: var(--amber); }
+.okrow { border-color: rgba(52,211,153,.55); background: rgba(52,211,153,.08); }
+.okrow svg { stroke: var(--green); }
+.govrow { border-color: rgba(139,92,246,.6); background: rgba(139,92,246,.12); }
+.govrow svg { stroke: #c4b5fd; }
+
+/* s1 */
+.s1title { position: absolute; left: 60px; top: 1120px; width: 960px; height: 110px; display: flex; align-items: baseline; gap: 22px; }
+.kicker { font: 700 48px/1 "Hind Siliguri"; color: var(--mute); }
+.big { font: 700 92px/1 "Hind Siliguri"; color: var(--ink); }
+.heads { position: absolute; left: 60px; top: 1236px; width: 960px; height: 90px; display: flex; gap: 16px; }
+.headchip { padding: 18px 22px; border-radius: 18px; font: 800 30px/1 "Inter"; letter-spacing: 2px; color: var(--navy); background: var(--cyan); display: block; }
+.headchip.warn { background: var(--amber); }
+
+/* s2 */
+.hero { top: 520px; height: 480px; }
+
+/* s3 */
+#s3card { top: 520px; height: 540px; }
+.ctrwrap { display: flex; align-items: baseline; gap: 18px; }
+.approx { font: 600 40px/1 "Hind Siliguri"; color: var(--mute); }
+.ctr { font: 700 120px/1 "Hind Siliguri"; color: var(--cyan); display: inline-block; text-shadow: 0 0 40px rgba(34,227,255,.5); }
+.ctrsub { font: 600 32px/1.3 "Hind Siliguri", "Inter"; margin-top: 8px; }
+.tokbar { margin-top: 26px; width: 790px; height: 22px; border-radius: 12px; background: rgba(255,255,255,.08); overflow: hidden; }
+.tokfill { width: 790px; height: 22px; border-radius: 12px; background: linear-gradient(90deg, var(--cyan), var(--purple)); transform-origin: 0 50%; display: block; }
+.explain { font: 600 32px/1.3 "Hind Siliguri"; color: var(--amber); margin-top: 22px; }
+.docs { position: absolute; right: 44px; bottom: 36px; width: 330px; height: 110px; }
+.doc { position: absolute; bottom: 0; width: 70px; height: 92px; border-radius: 8px; background: linear-gradient(180deg, #e8f6ff, #a9c7ff); border: 2px solid #fff; display: block; }
+.doc:nth-child(1){left:0}.doc:nth-child(2){left:42px}.doc:nth-child(3){left:84px}.doc:nth-child(4){left:126px}.doc:nth-child(5){left:168px}.doc:nth-child(6){left:210px}.doc:nth-child(7){left:252px}
+.paycard { top: 1090px; height: 180px; display: flex; align-items: center; gap: 26px; border-color: rgba(251,191,36,.55); background: rgba(60,40,10,.55); }
+.paycard svg { stroke: var(--amber); }
+.payt { font: 700 44px/1.1 "Hind Siliguri"; color: var(--amber); }
+.pays { font: 600 30px/1.3 "Hind Siliguri", "Inter"; color: var(--ink); margin-top: 6px; }
+
+/* s4 */
+#s4card { top: 520px; height: 520px; }
+.morph { margin-top: 26px; }
+.bubble { display: inline-block; padding: 16px 26px; border-radius: 22px 22px 22px 6px; background: rgba(255,255,255,.1); font: 600 32px/1.3 "Hind Siliguri"; }
+.widgets { display: flex; gap: 16px; margin-top: 22px; flex-wrap: wrap; }
+.illus { position: absolute; right: 30px; top: 30px; font: 500 20px/1 "Hind Siliguri"; color: var(--mute); padding: 8px 14px; border: 1px dashed rgba(159,179,217,.6); border-radius: 10px; }
+.limits { top: 1070px; height: 210px; padding: 28px 36px; border-color: rgba(251,191,36,.45); }
+.limt { font: 700 34px/1 "Hind Siliguri"; color: var(--amber); }
+.limrow { display: flex; gap: 14px; margin-top: 22px; }
+
+/* s5 */
+#s5a { top: 520px; height: 400px; }
+#s5b { top: 945px; height: 335px; }
+.minitag { display: inline-block; padding: 8px 16px; border-radius: 30px; font: 800 22px/1.1 "Inter", "Hind Siliguri"; letter-spacing: 1px; margin-bottom: 14px; }
+.rack { display: flex; align-items: center; gap: 10px; margin-top: 20px; }
+.racktxt { font: 600 30px/1.3 "Hind Siliguri"; color: var(--amber); margin-left: 12px; width: 470px; }
+.calrow { display: flex; align-items: center; gap: 22px; }
+.calrow svg { stroke: #c4b5fd; }
+.prices { display: flex; gap: 40px; margin-top: 22px; }
+.pr { display: flex; align-items: baseline; gap: 14px; }
+.pl { font: 600 28px/1 "Hind Siliguri"; color: var(--mute); }
+.old { font: 700 40px/1 "Inter"; color: var(--mute); text-decoration: line-through; }
+.arr { font: 700 40px/1 "Inter"; color: #c4b5fd; }
+.new { font: 800 56px/1 "Inter"; color: #fff; display: inline-block; }
+
+/* s6 */
+.alertcard { top: 520px; height: 580px; border-color: rgba(251,113,133,.5); }
+.alhead { display: flex; align-items: center; gap: 24px; }
+.warnic svg { stroke: var(--red); }
+.tline { margin-top: 16px; }
+
+/* s7 */
+.s7wrap { position: absolute; left: 60px; top: 800px; width: 960px; height: 540px; display: flex; flex-direction: column; gap: 6px; }
+.s7wrap .tag { margin-bottom: 6px; }
+.s7wrap .chip.row { width: 900px; font-size: 38px; }
+.cta { margin-top: 28px; align-self: flex-start; padding: 24px 40px; border-radius: 26px; background: linear-gradient(90deg, var(--cyan), var(--purple));
+  color: #050a1c; font: 700 40px/1.2 "Hind Siliguri"; box-shadow: 0 0 50px rgba(34,227,255,.45); display: block; }
+
+/* transitions */
+.sweep { left: -200px; top: 0; width: 520px; height: 1920px; background: linear-gradient(90deg, transparent, rgba(34,227,255,.35), rgba(255,255,255,.55), rgba(139,92,246,.35), transparent);
+  transform: skewX(-18deg); opacity: 0; mix-blend-mode: screen; }
+
+/* captions */
+.cap { left: 70px; top: 1350px; width: 830px; height: 230px; display: flex; align-items: flex-start; justify-content: center; }
+.capbox { max-width: 830px; padding: 16px 26px; border-radius: 22px; background: rgba(4,8,24,.82); border: 2px solid rgba(34,227,255,.25);
+  font: 700 50px/1.32 "Hind Siliguri", "Inter"; text-align: center; color: #fff; display: block; }
+.capbox .w { opacity: .5; }
+.capbox .kw { color: var(--cyan); }
+
+/* end card */
+.endcard { inset: 0; width: 1080px; height: 1920px; display: flex; align-items: center; justify-content: center; background: rgba(6,11,31,.92); }
+.endlogo { font: 800 64px/1 "Inter"; letter-spacing: 6px; display: flex; align-items: center; gap: 20px; }
+
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="90.045" data-fps="30">
+  <div id="bg" class="clip" data-start="0" data-duration="90.045" data-track-index="0">
+    <div class="bgfill"></div><div id="grid" class="grid"></div>
+    <div id="orb1" class="orb o1"></div><div id="orb2" class="orb o2"></div><div id="orb3" class="orb o3"></div>
+    <div class="scan"></div>
+  </div>
+  <div id="topbar" class="clip" data-start="0" data-duration="90.045" data-track-index="1">
+    <div class="logo"><span class="live"></span>DAILY AI NEWS<span class="bn">বাংলা</span></div>
+    <div class="date">১৭ অক্টোবর ২০২৬ · এই সপ্তাহ</div>
+  </div>
+  <div id="presenter" class="clip" data-start="0" data-duration="90.045" data-track-index="2">
+    <img id="pimg" src="assets/presenter.png" alt="" />
+    <div class="pglow"></div>
+    <div id="wave" class="wave"><i id="wb0"></i><i id="wb1"></i><i id="wb2"></i><i id="wb3"></i><i id="wb4"></i><i id="wb5"></i><i id="wb6"></i><i id="wb7"></i><i id="wb8"></i></div>
+    <div id="lower3" class="lower3"><span class="l3a">AI NEWS DESK</span><span class="l3b">যাচাই করা খবর · বাংলায়</span></div>
+  </div>
+  <div id="s1" class="clip scene" data-start="0.000" data-duration="9.109" data-track-index="3"><div class="s1title"><div class="kicker">এই সপ্তাহের</div><div class="big">AI খবর</div></div><div class="heads"><div id="s1h0" class="headchip ">GOOGLE</div><div id="s1h1" class="headchip ">OPENAI</div><div id="s1h2" class="headchip ">META</div><div id="s1h3" class="headchip warn">AI SAFETY</div></div></div><div id="s2" class="clip scene" data-start="9.109" data-duration="10.136" data-track-index="3"><div class="hdr"><div class="tag t-rel"><span class="dot"></span>RELEASED · ১৩ অক্টোবর</div><div class="htitle">সবচেয়ে বড় খবর</div></div><div class="src">সূত্র: blog.google · ai.google.dev</div><div id="s2card" class="glass hero"><div class="brand">Google</div><div class="model">Gemini 4 Argon</div><div class="sub">এখন সবার জন্য চালু · General Availability</div><div class="chips"><div id="s2c0" class="chip "><span class="ic"><svg viewBox="0 0 48 48"><path d="M17 14 7 24l10 10M31 14l10 10-10 10M27 10l-6 28" /></svg></span><span>কোডিং</span></div><div id="s2c1" class="chip "><span class="ic"><svg viewBox="0 0 48 48"><path d="M10 14h12M16 8v12M28 14h12M10 34h12M28 30l12 8M40 30l-12 8" /></svg></span><span>অংক</span></div><div id="s2c2" class="chip "><span class="ic"><svg viewBox="0 0 48 48"><ellipse cx="24" cy="24" rx="18" ry="7"/><ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(60 24 24)"/><ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(-60 24 24)"/><circle cx="24" cy="24" r="2.5"/></svg></span><span>বিজ্ঞান</span></div><div id="s2c3" class="chip "><span class="ic"><svg viewBox="0 0 48 48"><path d="M8 38h10v-9h10v-9h10v-9h4"/><circle cx="40" cy="9" r="3"/></svg></span><span>ধাপে ধাপে জটিল কাজ</span></div></div></div></div><div id="s3" class="clip scene" data-start="19.245" data-duration="13.592" data-track-index="3"><div class="hdr"><div class="tag t-paid"><span class="dot"></span>PAID · Pro / Ultra</div><div class="htitle">কী করতে পারে?</div></div><div class="src">সূত্র: ai.google.dev · gemini.google</div><div id="s3card" class="glass"><div class="ctrwrap"><span class="approx">প্রায়</span><span id="s3num" class="ctr">১০ লাখ</span></div><div class="ctrsub">টোকেন একসাথে · 1M context window</div><div class="tokbar"><div id="s3fill" class="tokfill"></div></div><div class="explain">টোকেন = লেখার ছোট ছোট টুকরো</div><div class="docs"><div id="s3d0" class="doc"></div><div id="s3d1" class="doc"></div><div id="s3d2" class="doc"></div><div id="s3d3" class="doc"></div><div id="s3d4" class="doc"></div><div id="s3d5" class="doc"></div><div id="s3d6" class="doc"></div></div></div><div id="s3pay" class="glass paycard"><span class="ic big"><svg viewBox="0 0 48 48"><rect x="11" y="21" width="26" height="19" rx="4"/><path d="M16 21v-6a8 8 0 0 1 16 0v6"/></svg></span><div><div class="payt">ফ্রি নয়</div><div class="pays">Gemini অ্যাপে Google AI Pro বা Ultra লাগবে</div></div></div></div><div id="s4" class="clip scene" data-start="32.837" data-duration="15.923" data-track-index="3"><div class="hdr"><div class="tag t-free"><span class="dot"></span>FREE TIER · ৭–৮ অক্টোবর</div><div class="htitle">ফ্রিতে কী পাচ্ছেন?</div></div><div class="src">সূত্র: openai.com · help.openai.com</div><div id="s4card" class="glass"><div class="brand">OpenAI · ChatGPT</div><div class="model sm">Intelligent UI</div><div class="sub">ফ্রি ইউজারদের কাছেও আসছে</div><div class="morph"><div id="s4q" class="bubble">উত্তর এখন শুধু লেখা নয়…</div><div class="widgets"><div id="s4w0" class="chip "><span class="ic"><svg viewBox="0 0 48 48"><rect x="12" y="6" width="24" height="36" rx="4"/><path d="M17 13h14v7H17zM18 27h2M24 27h2M30 27h2M18 34h2M24 34h2M30 34h2"/></svg></span><span>ক্যালকুলেটর</span></div><div id="s4w1" class="chip "><span class="ic"><svg viewBox="0 0 48 48"><path d="M8 40h34M13 34V24M21 34V14M29 34V20M37 34V9"/></svg></span><span>ছবি / গ্রাফ</span></div><div id="s4w2" class="chip "><span class="ic"><svg viewBox="0 0 48 48"><rect x="8" y="8" width="13" height="13" rx="3"/><rect x="27" y="8" width="13" height="13" rx="3"/><rect x="8" y="27" width="13" height="13" rx="3"/><circle cx="33.5" cy="33.5" r="6.5"/></svg></span><span>ইন্টারঅ্যাকটিভ টুল</span></div></div></div><div class="illus">প্রতীকী চিত্র — আসল স্ক্রিনশট নয়</div></div><div id="s4lim" class="glass limits"><div class="limt">আলাদা লিমিট</div><div class="limrow"><div id="s4l0" class="chip dim"><span class="ic"><svg viewBox="0 0 48 48"><path d="M24 32V10M15 19l9-9 9 9M10 38h28"/></svg></span><span>ফাইল আপলোড</span></div><div id="s4l1" class="chip dim"><span class="ic"><svg viewBox="0 0 48 48"><rect x="7" y="10" width="34" height="28" rx="4"/><circle cx="17" cy="19" r="3"/><path d="m9 35 10-10 7 7 5-5 9 8"/></svg></span><span>ছবি বানানো</span></div><div id="s4l2" class="chip dim"><span class="ic"><svg viewBox="0 0 48 48"><rect x="18" y="7" width="12" height="22" rx="6"/><path d="M12 23a12 12 0 0 0 24 0M24 35v6"/></svg></span><span>ভয়েস</span></div></div></div></div><div id="s5" class="clip scene" data-start="48.760" data-duration="11.961" data-track-index="3"><div class="hdr"><div class="tag t-up"><span class="dot"></span>RELEASED · UPCOMING</div><div class="htitle">ওপেন মডেল ও আসছে যা</div></div><div class="src">সূত্র: huggingface.co · ai.google.dev/pricing</div><div id="s5a" class="glass split"><div class="minitag t-rel">RELEASED · ১৫ অক্টোবর</div><div class="brand">Meta</div><div class="model sm">Muse Spark Open</div><div class="sub">ওপেন-ওয়েট মডেল · নিজস্ব লাইসেন্স</div><div class="rack"><span class="ic big"><svg viewBox="0 0 48 48"><rect x="9" y="7" width="30" height="10" rx="2"/><rect x="9" y="19" width="30" height="10" rx="2"/><rect x="9" y="31" width="30" height="10" rx="2"/><circle cx="15" cy="12" r="1.5"/><circle cx="15" cy="24" r="1.5"/><circle cx="15" cy="36" r="1.5"/></svg></span><span class="ic big"><svg viewBox="0 0 48 48"><rect x="9" y="7" width="30" height="10" rx="2"/><rect x="9" y="19" width="30" height="10" rx="2"/><rect x="9" y="31" width="30" height="10" rx="2"/><circle cx="15" cy="12" r="1.5"/><circle cx="15" cy="24" r="1.5"/><circle cx="15" cy="36" r="1.5"/></svg></span><span class="ic big"><svg viewBox="0 0 48 48"><rect x="9" y="7" width="30" height="10" rx="2"/><rect x="9" y="19" width="30" height="10" rx="2"/><rect x="9" y="31" width="30" height="10" rx="2"/><circle cx="15" cy="12" r="1.5"/><circle cx="15" cy="24" r="1.5"/><circle cx="15" cy="36" r="1.5"/></svg></span><span class="racktxt">চালাতে লাগে ডেটা সেন্টারের মতো হার্ডওয়্যার</span></div></div><div id="s5b" class="glass split"><div class="minitag t-upc">UPCOMING · ১ ডিসেম্বর</div><div class="calrow"><span class="ic big"><svg viewBox="0 0 48 48"><rect x="8" y="11" width="32" height="29" rx="4"/><path d="M8 19h32M16 7v8M32 7v8"/></svg></span><div><div class="model sm">Gemini 4 Argon API</div><div class="sub">দাম দ্বিগুণ হবে (প্রতি ১০ লাখ টোকেন)</div></div></div><div class="prices"><div class="pr"><span class="pl">ইনপুট</span><span class="old">$2</span><span class="arr">→</span><span id="s5p0" class="new">$4</span></div><div class="pr"><span class="pl">আউটপুট</span><span class="old">$10</span><span class="arr">→</span><span id="s5p1" class="new">$20</span></div></div></div></div><div id="s6" class="clip scene" data-start="60.721" data-duration="17.476" data-track-index="3"><div class="hdr"><div class="tag t-safe"><span class="dot"></span>SAFETY · ১০–১৬ অক্টোবর</div><div class="htitle">নিরাপত্তার খবর</div></div><div class="src">সূত্র: Axios/NYT via spokesman.com · cybernews.com</div><div id="s6card" class="glass alertcard"><div class="alhead"><span class="ic big warnic"><svg viewBox="0 0 48 48"><path d="M24 6 39 12v11c0 9-6.5 16-15 19-8.5-3-15-10-15-19V12z"/><path d="m24 17 0 10M24 32v1"/></svg></span><div><div class="model sm">Anthropic-এর টেস্ট AI এজেন্ট</div><div class="sub">পরীক্ষার সময় ভুল করে আসল ওয়েবসাইটে</div></div></div><div class="tline"><div id="s6i0" class="chip row warnrow"><span class="ic"><svg viewBox="0 0 48 48"><rect x="11" y="6" width="26" height="36" rx="3"/><path d="M17 15h14M17 22h14M17 29h8"/></svg></span><span>প্রায় ২০টি অসম্পূর্ণ মার্কিন ভিসা ফর্ম</span></div><div id="s6i1" class="chip row warnrow"><span class="ic"><svg viewBox="0 0 48 48"><path d="M24 7 43 40H5z"/><path d="M24 19v10M24 34v1"/></svg></span><span>১টি ভুয়া পুলিশ টিপ</span></div><div id="s6i2" class="chip row okrow"><span class="ic"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="m16 24 6 6 11-12"/></svg></span><span>কোনোটিই কার্যকর হয়নি</span></div><div id="s6i3" class="chip row govrow"><span class="ic"><svg viewBox="0 0 48 48"><path d="M6 18 24 8l18 10M10 20v16M18 20v16M30 20v16M38 20v16M6 40h36"/></svg></span><span>হোয়াইট হাউস: এমন ঘটনা জানাও ও ঠিক করো</span></div></div></div></div><div id="s7" class="clip scene" data-start="78.197" data-duration="11.848" data-track-index="3"><div class="s7wrap"><div class="tag t-key"><span class="dot"></span>KEY TAKEAWAY</div><div id="s7k0" class="chip row okrow"><span class="ic"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="m16 24 6 6 11-12"/></svg></span><span>কোনটা ফ্রি, কোনটা পেইড — জেনে ব্যবহার করুন</span></div><div id="s7k1" class="chip row okrow"><span class="ic"><svg viewBox="0 0 48 48"><circle cx="35" cy="11" r="5"/><circle cx="13" cy="24" r="5"/><circle cx="35" cy="37" r="5"/><path d="m18 22 13-8M18 26l13 8"/></svg></span><span>AI-এর তৈরি কিছু শেয়ারের আগে যাচাই করুন</span></div><div id="s7cta" class="cta">ফলো করুন · প্রতিদিন যাচাই করা AI খবর</div></div></div>
+  <div id="sweep" class="clip sweep" data-start="0" data-duration="90.045" data-track-index="8"></div>
+  <div id="cap0" class="clip cap" data-start="0.028" data-duration="1.408" data-track-index="10"><div class="capbox"><span id="c0w0" class="w">এক</span> <span id="c0w1" class="w">সপ্তাহে</span> <span id="c0w2" class="w kw">Google,</span></div></div><div id="cap1" class="clip cap" data-start="1.426" data-duration="1.563" data-track-index="11"><div class="capbox"><span id="c1w0" class="w kw">OpenAI</span> <span id="c1w1" class="w">আর</span> <span id="c1w2" class="w kw">Meta</span></div></div><div id="cap2" class="clip cap" data-start="2.979" data-duration="1.952" data-track-index="10"><div class="capbox"><span id="c2w0" class="w">তিনটি</span> <span id="c2w1" class="w">বড়</span> <span id="c2w2" class="w kw">AI</span> <span id="c2w3" class="w">ঘোষণা।</span></div></div><div id="cap3" class="clip cap" data-start="4.921" data-duration="2.728" data-track-index="11"><div class="capbox"><span id="c3w0" class="w">সাথে</span> <span id="c3w1" class="w">আছে</span> <span id="c3w2" class="w">একটি</span> <span id="c3w3" class="w">জরুরি</span> <span id="c3w4" class="w kw">নিরাপত্তা</span> <span id="c3w5" class="w kw">সতর্কতা।</span></div></div><div id="cap4" class="clip cap" data-start="7.639" data-duration="1.680" data-track-index="10"><div class="capbox"><span id="c4w0" class="w">চলুন,</span> <span id="c4w1" class="w">দেখে</span> <span id="c4w2" class="w">নিই।</span></div></div><div id="cap5" class="clip cap" data-start="9.309" data-duration="1.214" data-track-index="11"><div class="capbox"><span id="c5w0" class="w">সবচেয়ে</span> <span id="c5w1" class="w">বড়</span> <span id="c5w2" class="w">খবর</span></div></div><div id="cap6" class="clip cap" data-start="10.513" data-duration="3.389" data-track-index="10"><div class="capbox"><span id="c6w0" class="w kw">১৩</span> <span id="c6w1" class="w">অক্টোবর</span> <span id="c6w2" class="w kw">Google</span> <span id="c6w3" class="w">চালু</span> <span id="c6w4" class="w">করেছে</span> <span id="c6w5" class="w kw">Gemini</span> <span id="c6w6" class="w kw">4</span> <span id="c6w7" class="w kw">Argon।</span></div></div><div id="cap7" class="clip cap" data-start="13.892" data-duration="2.146" data-track-index="11"><div class="capbox"><span id="c7w0" class="w">এই</span> <span id="c7w1" class="w">নতুন</span> <span id="c7w2" class="w">মডেল</span> <span id="c7w3" class="w">বানানো</span> <span id="c7w4" class="w">হয়েছে</span> <span id="c7w5" class="w">কোডিং,</span></div></div><div id="cap8" class="clip cap" data-start="16.028" data-duration="3.427" data-track-index="10"><div class="capbox"><span id="c8w0" class="w">অংক,</span> <span id="c8w1" class="w">বিজ্ঞান</span> <span id="c8w2" class="w">আর</span> <span id="c8w3" class="w">ধাপে</span> <span id="c8w4" class="w">ধাপে</span> <span id="c8w5" class="w">জটিল</span> <span id="c8w6" class="w">কাজের</span> <span id="c8w7" class="w">জন্য।</span></div></div><div id="cap9" class="clip cap" data-start="19.445" data-duration="3.078" data-track-index="11"><div class="capbox"><span id="c9w0" class="w">এটি</span> <span id="c9w1" class="w">একসাথে</span> <span id="c9w2" class="w">প্রায়</span> <span id="c9w3" class="w kw">১০</span> <span id="c9w4" class="w">লাখ</span> <span id="c9w5" class="w kw">টোকেন</span> <span id="c9w6" class="w">পড়তে</span> <span id="c9w7" class="w">পারে।</span></div></div><div id="cap10" class="clip cap" data-start="22.513" data-duration="2.146" data-track-index="10"><div class="capbox"><span id="c10w0" class="w kw">টোকেন</span> <span id="c10w1" class="w">মানে</span> <span id="c10w2" class="w">লেখার</span> <span id="c10w3" class="w">ছোট</span> <span id="c10w4" class="w">ছোট</span> <span id="c10w5" class="w">টুকরো</span></div></div><div id="cap11" class="clip cap" data-start="24.649" data-duration="2.418" data-track-index="11"><div class="capbox"><span id="c11w0" class="w">তাই</span> <span id="c11w1" class="w">বড়</span> <span id="c11w2" class="w">ডকুমেন্ট</span> <span id="c11w3" class="w">বা</span> <span id="c11w4" class="w">অনেক</span> <span id="c11w5" class="w">কোড</span> <span id="c11w6" class="w">একবারে</span></div></div><div id="cap12" class="clip cap" data-start="27.057" data-duration="0.825" data-track-index="10"><div class="capbox"><span id="c12w0" class="w">বুঝতে</span> <span id="c12w1" class="w">পারে।</span></div></div><div id="cap13" class="clip cap" data-start="27.872" data-duration="1.214" data-track-index="11"><div class="capbox"><span id="c13w0" class="w">তবে</span> <span id="c13w1" class="w">এটি</span> <span id="c13w2" class="w kw">ফ্রি</span> <span id="c13w3" class="w">নয়</span></div></div><div id="cap14" class="clip cap" data-start="29.076" data-duration="2.573" data-track-index="10"><div class="capbox"><span id="c14w0" class="w kw">Gemini</span> <span id="c14w1" class="w">অ্যাপে</span> <span id="c14w2" class="w kw">Google</span> <span id="c14w3" class="w kw">AI</span> <span id="c14w4" class="w kw">Pro</span> <span id="c14w5" class="w">বা</span> <span id="c14w6" class="w kw">Ultra</span></div></div><div id="cap15" class="clip cap" data-start="31.639" data-duration="1.408" data-track-index="11"><div class="capbox"><span id="c15w0" class="w">সাবস্ক্রিপশন</span> <span id="c15w1" class="w">লাগবে।</span></div></div><div id="cap16" class="clip cap" data-start="33.037" data-duration="1.486" data-track-index="10"><div class="capbox"><span id="c16w0" class="w">ফ্রিতে</span> <span id="c16w1" class="w">কী</span> <span id="c16w2" class="w">পাচ্ছেন?</span></div></div><div id="cap17" class="clip cap" data-start="34.513" data-duration="2.340" data-track-index="11"><div class="capbox"><span id="c17w0" class="w kw">OpenAI</span> <span id="c17w1" class="w">জানিয়েছে,</span> <span id="c17w2" class="w kw">ChatGPT-এর</span> <span id="c17w3" class="w">নতুন</span></div></div><div id="cap18" class="clip cap" data-start="36.843" data-duration="2.729" data-track-index="10"><div class="capbox"><span id="c18w0" class="w kw">Intelligent</span> <span id="c18w1" class="w kw">UI</span> <span id="c18w2" class="w kw">ফ্রি</span> <span id="c18w3" class="w">ইউজারদের</span> <span id="c18w4" class="w">কাছেও</span> <span id="c18w5" class="w">আসছে।</span></div></div><div id="cap19" class="clip cap" data-start="39.562" data-duration="1.641" data-track-index="11"><div class="capbox"><span id="c19w0" class="w">উত্তর</span> <span id="c19w1" class="w">এখন</span> <span id="c19w2" class="w">শুধু</span> <span id="c19w3" class="w">লেখা</span> <span id="c19w4" class="w">নয়</span></div></div><div id="cap20" class="clip cap" data-start="41.193" data-duration="2.456" data-track-index="10"><div class="capbox"><span id="c20w0" class="w">ক্যালকুলেটর,</span> <span id="c20w1" class="w">ছবি</span> <span id="c20w2" class="w">বা</span> <span id="c20w3" class="w">ছোট</span> <span id="c20w4" class="w">ইন্টারঅ্যাকটিভ</span></div></div><div id="cap21" class="clip cap" data-start="43.639" data-duration="1.331" data-track-index="11"><div class="capbox"><span id="c21w0" class="w">টুল</span> <span id="c21w1" class="w">হিসেবেও</span> <span id="c21w2" class="w">আসতে</span> <span id="c21w3" class="w">পারে।</span></div></div><div id="cap22" class="clip cap" data-start="44.960" data-duration="2.650" data-track-index="10"><div class="capbox"><span id="c22w0" class="w">তবে</span> <span id="c22w1" class="w">ফাইল</span> <span id="c22w2" class="w">আপলোড,</span> <span id="c22w3" class="w">ছবি</span> <span id="c22w4" class="w">বানানো</span> <span id="c22w5" class="w">আর</span> <span id="c22w6" class="w">ভয়েসে</span></div></div><div id="cap23" class="clip cap" data-start="47.600" data-duration="1.370" data-track-index="11"><div class="capbox"><span id="c23w0" class="w">আলাদা</span> <span id="c23w1" class="w kw">লিমিট</span> <span id="c23w2" class="w">আছে।</span></div></div><div id="cap24" class="clip cap" data-start="48.960" data-duration="3.738" data-track-index="10"><div class="capbox"><span id="c24w0" class="w kw">Meta</span> <span id="c24w1" class="w kw">১৫</span> <span id="c24w2" class="w">অক্টোবর</span> <span id="c24w3" class="w">ছেড়েছে</span> <span id="c24w4" class="w">ওপেন</span> <span id="c24w5" class="w">মডেল</span> <span id="c24w6" class="w kw">Muse</span> <span id="c24w7" class="w kw">Spark</span> <span id="c24w8" class="w kw">Open</span></div></div><div id="cap25" class="clip cap" data-start="52.688" data-duration="2.029" data-track-index="11"><div class="capbox"><span id="c25w0" class="w">তবে</span> <span id="c25w1" class="w">চালাতে</span> <span id="c25w2" class="w">লাগে</span> <span id="c25w3" class="w">ডেটা</span> <span id="c25w4" class="w">সেন্টারের</span> <span id="c25w5" class="w">মতো</span></div></div><div id="cap26" class="clip cap" data-start="54.707" data-duration="1.292" data-track-index="10"><div class="capbox"><span id="c26w0" class="w">শক্তিশালী</span> <span id="c26w1" class="w">হার্ডওয়্যার।</span></div></div><div id="cap27" class="clip cap" data-start="55.989" data-duration="3.078" data-track-index="11"><div class="capbox"><span id="c27w0" class="w">আর</span> <span id="c27w1" class="w">আসছে</span> <span id="c27w2" class="w kw">১</span> <span id="c27w3" class="w">ডিসেম্বর</span> <span id="c27w4" class="w">থেকে</span> <span id="c27w5" class="w kw">Gemini</span> <span id="c27w6" class="w kw">4</span> <span id="c27w7" class="w kw">Argon-এর</span></div></div><div id="cap28" class="clip cap" data-start="59.057" data-duration="1.874" data-track-index="10"><div class="capbox"><span id="c28w0" class="w kw">API</span> <span id="c28w1" class="w">দাম</span> <span id="c28w2" class="w kw">দ্বিগুণ</span> <span id="c28w3" class="w">হবে।</span></div></div><div id="cap29" class="clip cap" data-start="60.921" data-duration="1.680" data-track-index="11"><div class="capbox"><span id="c29w0" class="w">এবার</span> <span id="c29w1" class="w kw">নিরাপত্তার</span> <span id="c29w2" class="w">খবর।</span></div></div><div id="cap30" class="clip cap" data-start="62.591" data-duration="1.097" data-track-index="10"><div class="capbox"><span id="c30w0" class="w kw">Anthropic</span> <span id="c30w1" class="w">জানিয়েছে,</span></div></div><div id="cap31" class="clip cap" data-start="63.678" data-duration="2.534" data-track-index="11"><div class="capbox"><span id="c31w0" class="w">পরীক্ষার</span> <span id="c31w1" class="w">সময়</span> <span id="c31w2" class="w">তাদের</span> <span id="c31w3" class="w kw">AI</span> <span id="c31w4" class="w">এজেন্ট</span> <span id="c31w5" class="w">ভুল</span> <span id="c31w6" class="w">করে</span></div></div><div id="cap32" class="clip cap" data-start="66.202" data-duration="2.444" data-track-index="10"><div class="capbox"><span id="c32w0" class="w">আসল</span> <span id="c32w1" class="w">ওয়েবসাইটে</span> <span id="c32w2" class="w">প্রায়</span> <span id="c32w3" class="w kw">২০টি</span> <span id="c32w4" class="w kw">অসম্পূর্ণ</span></div></div><div id="cap33" class="clip cap" data-start="68.636" data-duration="2.275" data-track-index="11"><div class="capbox"><span id="c33w0" class="w">মার্কিন</span> <span id="c33w1" class="w">ভিসা</span> <span id="c33w2" class="w">ফর্ম</span> <span id="c33w3" class="w">আর</span> <span id="c33w4" class="w">একটি</span> <span id="c33w5" class="w kw">ভুয়া</span> <span id="c33w6" class="w">পুলিশ</span></div></div><div id="cap34" class="clip cap" data-start="70.901" data-duration="1.098" data-track-index="10"><div class="capbox"><span id="c34w0" class="w">টিপ</span> <span id="c34w1" class="w">জমা</span> <span id="c34w2" class="w">দিয়েছে।</span></div></div><div id="cap35" class="clip cap" data-start="71.989" data-duration="1.486" data-track-index="11"><div class="capbox"><span id="c35w0" class="w">কোনোটিই</span> <span id="c35w1" class="w">কার্যকর</span> <span id="c35w2" class="w">হয়নি।</span></div></div><div id="cap36" class="clip cap" data-start="73.465" data-duration="2.560" data-track-index="10"><div class="capbox"><span id="c36w0" class="w">এরপর</span> <span id="c36w1" class="w">হোয়াইট</span> <span id="c36w2" class="w">হাউস</span> <span id="c36w3" class="w kw">AI</span> <span id="c36w4" class="w">কোম্পানিগুলোকে</span> <span id="c36w5" class="w">এমন</span></div></div><div id="cap37" class="clip cap" data-start="76.015" data-duration="2.392" data-track-index="11"><div class="capbox"><span id="c37w0" class="w">ঘটনা</span> <span id="c37w1" class="w">জানাতে</span> <span id="c37w2" class="w">আর</span> <span id="c37w3" class="w">ঠিক</span> <span id="c37w4" class="w">করতে</span> <span id="c37w5" class="w">বলেছে।</span></div></div><div id="cap38" class="clip cap" data-start="78.397" data-duration="2.845" data-track-index="10"><div class="capbox"><span id="c38w0" class="w">মূল</span> <span id="c38w1" class="w">কথা</span> <span id="c38w2" class="w">কোনটা</span> <span id="c38w3" class="w kw">ফ্রি</span> <span id="c38w4" class="w">আর</span> <span id="c38w5" class="w">কোনটা</span> <span id="c38w6" class="w kw">পেইড,</span></div></div><div id="cap39" class="clip cap" data-start="81.232" data-duration="1.175" data-track-index="11"><div class="capbox"><span id="c39w0" class="w">জেনে</span> <span id="c39w1" class="w">ব্যবহার</span> <span id="c39w2" class="w">করুন।</span></div></div><div id="cap40" class="clip cap" data-start="82.397" data-duration="2.223" data-track-index="10"><div class="capbox"><span id="c40w0" class="w">আর</span> <span id="c40w1" class="w kw">AI-এর</span> <span id="c40w2" class="w">তৈরি</span> <span id="c40w3" class="w">কিছু</span> <span id="c40w4" class="w">শেয়ার</span> <span id="c40w5" class="w">করার</span> <span id="c40w6" class="w">আগে</span></div></div><div id="cap41" class="clip cap" data-start="84.610" data-duration="1.434" data-track-index="11"><div class="capbox"><span id="c41w0" class="w">অবশ্যই</span> <span id="c41w1" class="w kw">যাচাই</span> <span id="c41w2" class="w">করুন।</span></div></div><div id="cap42" class="clip cap" data-start="86.034" data-duration="3.053" data-track-index="10"><div class="capbox"><span id="c42w0" class="w">প্রতিদিনের</span> <span id="c42w1" class="w kw">যাচাই</span> <span id="c42w2" class="w">করা</span> <span id="c42w3" class="w kw">AI</span> <span id="c42w4" class="w">খবর</span> <span id="c42w5" class="w">পেতে</span> <span id="c42w6" class="w kw">ফলো</span> <span id="c42w7" class="w">করুন!</span></div></div>
+  <div id="endcard" class="clip endcard" data-start="89.145" data-duration="0.9" data-track-index="9">
+    <div class="endlogo"><span class="live"></span>DAILY AI NEWS</div>
+  </div>
+</div>
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+const ENV = [0.508, 0.944, 0.577, 0.334, 0.722, 0.874, 0.117, 1.0, 0.268, 0.291, 0.51, 0.22, 0.113, 0.204, 1.0, 0.593, 0.781, 0.763, 0.455, 0.177, 0.006, 0.068, 1.0, 0.829, 0.721, 0.601, 0.265, 0.74, 0.956, 0.831, 0.59, 0.237, 0.009, 0.429, 0.542, 0.273, 0.294, 0.588, 0.211, 0.265, 0.109, 0.027, 0.003, 0.0, 0.0, 0.0, 0.138, 0.647, 0.533, 0.354, 0.767, 0.151, 0.064, 0.569, 0.982, 1.0, 0.997, 0.828, 0.202, 0.637, 0.867, 0.664, 0.306, 0.172, 0.262, 0.191, 0.143, 0.085, 0.062, 0.015, 0.001, 0.0, 0.0, 0.008, 0.152, 0.647, 0.544, 0.436, 0.874, 0.582, 0.214, 0.32, 0.513, 0.423, 0.411, 0.054, 0.455, 0.439, 0.054, 0.213, 0.59, 0.705, 0.575, 0.326, 0.468, 0.352, 0.425, 0.787, 0.311, 0.684, 0.079, 0.462, 0.174, 0.247, 0.149, 0.122, 0.119, 0.085, 0.103, 0.052, 0.006, 0.0, 0.0, 0.0, 0.0, 0.369, 1.0, 0.317, 0.068, 0.018, 0.001, 0.0, 0.157, 0.818, 0.462, 0.314, 0.137, 0.059, 0.016, 0.001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.046, 0.362, 0.961, 0.92, 0.055, 0.392, 0.852, 0.24, 0.587, 1.0, 0.984, 0.165, 0.268, 0.251, 0.169, 0.591, 0.111, 0.003, 0.0, 0.0, 0.038, 0.785, 0.832, 0.688, 1.0, 0.67, 0.013, 0.602, 0.373, 1.0, 0.516, 0.096, 0.608, 0.59, 0.832, 0.534, 0.315, 0.756, 0.477, 0.31, 0.627, 0.809, 0.401, 0.274, 0.574, 0.543, 0.099, 0.221, 0.891, 0.462, 0.659, 0.556, 0.57, 0.298, 0.01, 0.648, 0.804, 0.816, 0.112, 0.543, 0.495, 0.219, 0.121, 0.103, 0.041, 0.02, 0.004, 0.0, 0.0, 0.0, 0.004, 0.785, 0.666, 0.416, 0.818, 0.39, 0.709, 0.664, 0.631, 0.761, 0.539, 0.698, 0.416, 0.832, 0.445, 0.434, 0.586, 0.369, 0.665, 0.157, 0.262, 0.636, 0.015, 0.035, 0.483, 0.597, 0.208, 0.646, 0.289, 0.281, 0.069, 0.001, 0.113, 0.467, 0.445, 0.361, 0.042, 0.369, 0.728, 0.607, 0.057, 0.046, 0.302, 0.269, 0.074, 0.515, 0.722, 0.435, 0.196, 0.003, 0.314, 0.371, 0.109, 0.172, 0.13, 0.445, 0.446, 0.76, 0.297, 0.282, 0.523, 0.63, 0.068, 0.139, 0.578, 0.338, 0.607, 0.475, 0.326, 0.357, 0.146, 0.132, 0.145, 0.147, 0.062, 0.057, 0.044, 0.006, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.595, 0.876, 0.611, 0.314, 0.016, 0.361, 0.498, 0.143, 0.321, 0.469, 0.451, 0.262, 0.342, 0.533, 0.064, 0.721, 0.66, 0.091, 0.043, 0.348, 0.737, 0.604, 0.257, 0.195, 0.183, 0.246, 0.661, 0.66, 0.126, 0.252, 0.468, 0.664, 0.363, 0.441, 0.15, 0.342, 0.058, 0.212, 0.098, 0.149, 0.069, 0.04, 0.005, 0.0, 0.0, 0.0, 0.298, 1.0, 0.438, 0.526, 0.565, 0.537, 0.428, 0.17, 0.407, 0.511, 0.279, 0.866, 0.102, 0.376, 0.311, 0.045, 0.233, 0.36, 0.249, 0.388, 0.235, 0.455, 0.589, 0.171, 0.407, 0.326, 0.073, 0.125, 0.079, 0.026, 0.0, 0.0, 0.0, 0.597, 0.489, 0.096, 0.151, 0.64, 0.794, 1.0, 0.306, 1.0, 0.482, 0.448, 0.395, 0.555, 0.37, 0.141, 0.635, 0.624, 0.007, 0.214, 0.564, 0.454, 0.676, 0.128, 0.001, 0.364, 0.638, 0.763, 0.403, 0.003, 0.181, 0.289, 0.151, 0.354, 0.856, 0.527, 0.118, 0.23, 0.155, 0.177, 0.183, 0.163, 0.093, 0.06, 0.012, 0.0, 0.0, 0.0, 0.0, 0.798, 0.753, 0.552, 0.398, 0.517, 0.391, 0.023, 0.098, 0.536, 0.562, 0.369, 0.162, 0.076, 0.031, 0.004, 0.0, 0.0, 0.067, 0.094, 0.377, 1.0, 0.64, 0.684, 0.697, 0.579, 0.641, 0.266, 0.204, 0.52, 0.433, 0.096, 0.061, 0.657, 0.491, 0.384, 0.65, 0.308, 0.321, 0.631, 0.858, 0.669, 0.23, 0.145, 0.469, 0.497, 0.548, 0.418, 0.385, 0.811, 0.097, 0.225, 0.681, 0.599, 0.084, 0.56, 0.444, 0.127, 0.498, 0.07, 0.115, 0.52, 0.173, 0.215, 0.247, 0.133, 0.15, 0.045, 0.048, 0.097, 0.031, 0.001, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01, 0.04, 0.475, 0.623, 0.315, 0.449, 0.015, 0.276, 0.577, 0.683, 0.519, 0.081, 0.244, 0.182, 0.055, 0.025, 0.003, 0.0, 0.0, 0.0, 0.0, 0.684, 1.0, 0.256, 0.667, 0.708, 0.8, 0.774, 0.614, 0.66, 0.602, 0.442, 0.563, 0.194, 0.152, 0.204, 0.272, 0.04, 0.02, 0.307, 0.839, 0.703, 0.195, 0.247, 0.453, 0.168, 0.39, 0.174, 0.716, 1.0, 0.29, 0.287, 0.505, 0.463, 0.289, 0.549, 0.426, 0.095, 0.419, 0.305, 0.168, 0.866, 0.499, 0.407, 0.454, 0.452, 0.125, 0.319, 0.527, 0.486, 0.252, 0.404, 0.264, 0.012, 0.037, 0.383, 0.537, 0.4, 0.519, 0.404, 0.572, 0.566, 0.432, 0.554, 0.348, 0.384, 0.218, 0.33, 0.376, 0.141, 0.187, 0.091, 0.18, 0.11, 0.028, 0.0, 0.0, 0.0, 0.465, 0.655, 0.048, 0.058, 0.693, 0.589, 0.553, 0.485, 0.15, 0.482, 0.287, 0.195, 0.406, 0.576, 0.441, 0.232, 0.487, 0.204, 0.286, 0.394, 0.131, 0.091, 0.049, 0.006, 0.0, 0.0, 0.426, 0.596, 0.351, 0.368, 0.665, 0.719, 0.285, 0.518, 0.68, 0.139, 0.004, 0.184, 0.251, 0.393, 0.564, 0.186, 0.464, 0.255, 0.111, 0.622, 0.265, 0.138, 0.209, 0.641, 0.219, 0.629, 0.263, 0.453, 0.324, 0.248, 0.627, 0.604, 0.093, 0.382, 0.465, 0.012, 0.155, 0.29, 0.491, 0.386, 0.335, 0.215, 0.381, 0.496, 0.868, 0.615, 0.234, 0.096, 0.314, 0.155, 0.175, 0.073, 0.037, 0.002, 0.0, 0.001, 0.887, 0.462, 0.466, 0.04, 0.246, 0.606, 0.819, 0.592, 0.829, 0.121, 0.278, 0.737, 1.0, 0.471, 0.109, 0.037, 0.174, 0.186, 0.539, 0.493, 0.362, 1.0, 0.534, 0.582, 0.373, 0.573, 0.349, 0.042, 0.317, 0.433, 0.181, 0.042, 0.485, 0.758, 0.882, 0.175, 0.216, 0.495, 0.342, 0.007, 0.322, 0.46, 0.64, 0.508, 0.614, 0.302, 0.216, 0.176, 0.161, 0.128, 0.195, 0.099, 0.062, 0.008, 0.0, 0.0, 0.0, 0.0, 0.001, 0.168, 0.35, 1.0, 0.451, 0.764, 0.79, 0.614, 0.035, 0.263, 0.669, 0.567, 0.72, 0.83, 0.964, 0.334, 0.279, 0.611, 1.0, 0.091, 0.224, 0.51, 0.7, 0.258, 0.239, 0.661, 0.739, 0.024, 0.773, 0.904, 0.253, 0.605, 0.44, 0.571, 0.706, 0.147, 0.703, 0.522, 0.246, 0.243, 0.451, 0.409, 0.397, 0.132, 0.121, 0.056, 0.697, 0.703, 0.351, 0.051, 0.291, 0.68, 0.084, 0.254, 0.098, 0.031, 0.007, 0.0, 0.0, 0.571, 0.426, 0.505, 0.16, 0.467, 0.591, 0.779, 0.257, 0.888, 0.698, 0.272, 0.25, 0.643, 0.266, 0.084, 0.442, 0.579, 0.687, 0.422, 0.206, 0.581, 0.233, 0.461, 0.536, 0.263, 0.364, 0.263, 0.626, 0.222, 0.139, 0.504, 0.608, 0.013, 0.45, 0.254, 0.494, 0.457, 0.381, 0.173, 0.326, 0.141, 0.094, 0.113, 0.07, 0.023, 0.001, 0.0, 0.0, 0.188, 0.48, 0.355, 0.913, 0.478, 0.272, 0.257, 0.248, 0.241, 0.227, 0.056, 0.0, 0.0, 0.393, 0.799, 0.419, 0.13, 0.6, 0.172, 0.807, 0.35, 0.845, 0.228, 0.36, 0.424, 0.357, 1.0, 0.157, 0.186, 0.638, 0.609, 0.638, 0.541, 0.586, 0.286, 0.036, 0.699, 0.693, 0.513, 0.507, 0.622, 0.167, 0.643, 0.43, 0.69, 0.214, 0.186, 0.651, 0.495, 0.285, 0.728, 0.808, 0.54, 0.087, 0.259, 0.362, 0.28, 0.15, 0.047, 0.701, 0.517, 0.498, 0.526, 0.184, 0.104, 0.109, 0.09, 0.061, 0.012, 0.0, 0.0, 0.0, 0.0, 0.0, 0.195, 0.926, 0.985, 1.0, 0.839, 0.408, 0.246, 0.269, 0.677, 1.0, 0.601, 0.848, 0.118, 0.387, 0.307, 0.067, 0.184, 0.182, 0.12, 0.064, 0.018, 0.003, 0.0, 0.0, 0.135, 0.577, 0.525, 0.167, 0.763, 0.862, 0.654, 0.263, 0.451, 0.613, 0.405, 0.549, 0.407, 0.226, 0.153, 0.223, 0.192, 0.001, 0.385, 0.625, 0.484, 0.046, 0.253, 0.531, 0.186, 0.325, 0.573, 0.498, 0.41, 0.465, 0.557, 0.503, 0.433, 0.113, 0.284, 0.54, 0.656, 0.615, 0.7, 0.209, 0.501, 0.27, 0.361, 0.376, 0.184, 0.065, 0.181, 0.383, 0.513, 0.375, 0.216, 0.426, 0.283, 0.577, 0.275, 0.083, 0.318, 0.276, 0.189, 0.439, 0.448, 0.22, 0.641, 0.481, 0.106, 0.315, 0.574, 0.216, 0.391, 0.394, 0.074, 0.524, 0.551, 0.105, 0.04, 0.264, 0.297, 0.256, 0.246, 0.203, 0.383, 0.241, 0.139, 0.479, 0.193, 0.204, 0.544, 0.273, 0.264, 0.395, 0.273, 0.563, 0.245, 0.523, 0.445, 0.066, 0.484, 0.289, 0.145, 0.29, 0.09, 0.489, 0.111, 0.266, 0.492, 0.474, 0.304, 0.025, 0.0, 0.144, 0.687, 0.879, 0.038, 0.437, 0.332, 0.063, 0.147, 0.297, 0.644, 0.714, 0.282, 0.024, 0.433, 0.343, 0.529, 0.292, 0.173, 0.378, 0.337, 0.121, 0.632, 0.432, 0.266, 0.094, 0.114, 0.108, 0.181, 0.126, 0.089, 0.009, 0.0, 0.0, 0.001, 0.575, 0.891, 0.627, 0.41, 0.418, 0.488, 0.217, 0.473, 0.705, 0.259, 0.339, 0.281, 0.447, 0.235, 0.102, 0.167, 0.08, 0.048, 0.023, 0.002, 0.0, 0.0, 0.505, 1.0, 0.259, 0.738, 0.762, 0.658, 0.468, 0.123, 0.4, 0.8, 0.682, 0.243, 0.299, 0.72, 0.419, 0.126, 0.092, 0.411, 0.638, 0.68, 0.529, 0.566, 0.621, 0.163, 0.5, 0.451, 0.277, 0.551, 0.559, 0.258, 0.539, 0.591, 0.046, 0.131, 0.306, 0.312, 0.64, 0.362, 0.146, 0.328, 0.253, 0.277, 0.544, 0.24, 0.344, 0.281, 0.384, 0.085, 0.458, 0.557, 0.044, 0.292, 0.276, 0.004, 0.28, 0.472, 0.407, 0.018, 0.435, 0.195, 0.189, 0.211, 0.138, 0.076, 0.07, 0.212, 0.093, 0.041, 0.001, 0.0, 0.0, 0.0, 0.021, 0.149, 0.514, 0.798, 0.693, 0.39, 0.784, 0.098, 0.195, 0.409, 0.233, 0.006, 0.0, 0.005, 0.815, 0.812, 0.53, 0.384, 0.937, 0.217, 0.031, 0.133, 0.494, 0.388, 0.311, 0.121, 0.441, 0.373, 0.018, 0.26, 0.567, 0.306, 0.348, 0.596, 0.032, 0.003, 0.919, 0.737, 0.23, 0.239, 0.143, 0.043, 0.005, 0.098, 0.189, 0.703, 1.0, 0.824, 0.529, 0.635, 0.324, 0.287, 0.233, 0.149, 0.106, 0.158, 0.075, 0.038, 0.016, 0.001, 0.0, 0.0, 0.461, 0.454, 0.206, 0.115, 0.463, 0.941, 0.877, 0.831, 0.784, 0.088, 0.66, 0.611, 0.36, 0.22, 0.267, 0.199, 0.466, 0.229, 0.185, 0.525, 0.77, 0.561, 0.328, 0.684, 0.744, 0.431, 0.163, 0.468, 0.229, 0.374, 0.413, 0.165, 0.001, 0.235, 0.647, 0.446, 1.0, 0.273, 0.215, 0.566, 0.535, 0.119, 0.385, 0.51, 0.214, 0.47, 0.303, 0.06, 0.153, 0.085, 0.044, 0.021, 0.002, 0.0, 0.014, 1.0, 1.0, 0.571, 0.468, 0.661, 0.714, 0.884, 0.175, 0.564, 0.768, 0.222, 0.68, 0.521, 0.476, 0.71, 0.872, 0.489, 0.095, 0.514, 0.828, 0.846, 0.64, 0.172, 0.507, 0.333, 0.729, 0.123, 0.243, 0.098, 0.444, 0.718, 0.175, 0.006, 0.017, 1.0, 0.761, 0.868, 0.067, 0.261, 0.093, 0.054, 0.022, 0.01, 0.0];
+// background life
+tl.to("#orb1",{x:160,y:120,duration:45.02,ease:"sine.inOut",yoyo:true,repeat:1},0);
+tl.to("#orb2",{x:-140,y:-160,duration:45.02,ease:"sine.inOut",yoyo:true,repeat:1},0);
+tl.to("#orb3",{x:90,y:-110,scale:1.25,duration:30.02,ease:"sine.inOut",yoyo:true,repeat:2},0);
+tl.fromTo("#grid",{y:0},{y:120,duration:90.05,ease:"none"},0);
+tl.from("#topbar",{y:-60,opacity:0,duration:0.6,ease:"power3.out"},0);
+// presenter: entrance, slow ken-burns, state changes
+tl.from("#presenter",{opacity:0,scale:0.92,duration:0.7,ease:"power3.out"},0);
+tl.fromTo("#pimg",{scale:1.0},{scale:1.09,duration:90.05,ease:"none"},0);
+tl.to("#presenter",{...{x:-80,y:-8,scale:0.26,borderRadius:420},duration:0.7,ease:"power3.inOut"},8.759);
+tl.to("#lower3",{opacity:0,duration:0.3},8.759);
+tl.to("#presenter",{...{x:-80,y:-8,scale:0.26,borderRadius:420},duration:0.7,ease:"power3.inOut"},18.895);
+tl.to("#lower3",{opacity:0,duration:0.3},18.895);
+tl.to("#presenter",{...{x:-80,y:-8,scale:0.26,borderRadius:420},duration:0.7,ease:"power3.inOut"},32.487);
+tl.to("#lower3",{opacity:0,duration:0.3},32.487);
+tl.to("#presenter",{...{x:-80,y:-8,scale:0.26,borderRadius:420},duration:0.7,ease:"power3.inOut"},48.41);
+tl.to("#lower3",{opacity:0,duration:0.3},48.41);
+tl.to("#presenter",{...{x:-80,y:-8,scale:0.26,borderRadius:420},duration:0.7,ease:"power3.inOut"},60.370999999999995);
+tl.to("#lower3",{opacity:0,duration:0.3},60.370999999999995);
+tl.to("#presenter",{...{x:160,y:0,scale:0.6,borderRadius:36},duration:0.7,ease:"power3.inOut"},77.84700000000001);
+tl.to("#lower3",{opacity:1,duration:0.3},77.84700000000001);
+// voice-reactive waveform (deterministic: driven by timeline time)
+const bars = Array.from({length:9},(_,k)=>document.getElementById("wb"+k));
+const proxy = {t:0};
+tl.to(proxy,{t:90.045,duration:90.045,ease:"none",onUpdate:()=>{
+  const i = Math.min(ENV.length-1, Math.max(0, Math.floor(tl.time()*15)));
+  const v = ENV[i];
+  for (let k=0;k<9;k++) {
+    const shape = 0.45 + 0.55*Math.abs(Math.sin((k+1)*1.7 + i*0.9));
+    bars[k].style.transform = "scaleY(" + (0.12 + 0.88*v*shape).toFixed(3) + ")";
+  }
+}},0);
+tl.from("#s1 .s1title",{y:40,opacity:0,duration:0.6,ease:"power3.out"},0.1);
+tl.from("#s1h0",{y:50,scale:0.8,opacity:0,duration:0.45,ease:"back.out(1.8)"},0.754);
+tl.from("#s1h1",{y:50,scale:0.8,opacity:0,duration:0.45,ease:"back.out(1.8)"},1.376);
+tl.from("#s1h2",{y:50,scale:0.8,opacity:0,duration:0.45,ease:"back.out(1.8)"},2.308);
+tl.from("#s1h3",{y:50,scale:0.8,opacity:0,duration:0.45,ease:"back.out(1.8)"},6.269);
+tl.from("#s2 .hdr",{x:-40,opacity:0,duration:0.5,ease:"power3.out"},9.259);
+tl.from("#s2card",{y:80,opacity:0,scale:0.94,duration:0.7,ease:"power3.out"},9.409);
+tl.from("#s2card .model",{opacity:0,y:20,duration:0.6,ease:"power2.out"},12.25);
+tl.from("#s2c0",{y:30,opacity:0,scale:0.85,duration:0.4,ease:"back.out(1.7)"},15.405999999999999);
+tl.from("#s2c1",{y:30,opacity:0,scale:0.85,duration:0.4,ease:"back.out(1.7)"},16.028);
+tl.from("#s2c2",{y:30,opacity:0,scale:0.85,duration:0.4,ease:"back.out(1.7)"},16.61);
+tl.from("#s2c3",{y:30,opacity:0,scale:0.85,duration:0.4,ease:"back.out(1.7)"},18.047);
+tl.from("#s3 .hdr",{x:-40,opacity:0,duration:0.5,ease:"power3.out"},19.395);
+tl.from("#s3card",{y:60,opacity:0,duration:0.6,ease:"power3.out"},19.495);
+tl.from("#s3num",{scale:0.6,opacity:0,duration:0.5,ease:"back.out(2)"},20.637999999999998);
+tl.fromTo("#s3fill",{scaleX:0},{scaleX:1,duration:2.2,ease:"power2.inOut"},20.738);
+tl.from("#s3d0",{y:-60,opacity:0,rotation:-8,duration:0.35,ease:"power2.out"},25.043);
+tl.from("#s3d1",{y:-60,opacity:0,rotation:-5,duration:0.35,ease:"power2.out"},25.163);
+tl.from("#s3d2",{y:-60,opacity:0,rotation:-2,duration:0.35,ease:"power2.out"},25.282999999999998);
+tl.from("#s3d3",{y:-60,opacity:0,rotation:1,duration:0.35,ease:"power2.out"},25.403);
+tl.from("#s3d4",{y:-60,opacity:0,rotation:4,duration:0.35,ease:"power2.out"},25.523);
+tl.from("#s3d5",{y:-60,opacity:0,rotation:7,duration:0.35,ease:"power2.out"},25.643);
+tl.from("#s3d6",{y:-60,opacity:0,rotation:10,duration:0.35,ease:"power2.out"},25.762999999999998);
+tl.from("#s3 .explain",{opacity:0,y:14,duration:0.4},22.462999999999997);
+tl.from("#s3pay",{x:120,opacity:0,duration:0.55,ease:"power3.out"},28.238000000000003);
+tl.from("#s4 .hdr",{x:-40,opacity:0,duration:0.5,ease:"power3.out"},32.987);
+tl.from("#s4card",{y:60,opacity:0,duration:0.6,ease:"power3.out"},34.363);
+tl.from("#s4q",{opacity:0,x:-30,duration:0.4},39.512);
+tl.from("#s4w0",{y:30,opacity:0,scale:0.8,duration:0.4,ease:"back.out(1.8)"},41.224000000000004);
+tl.from("#s4w1",{y:30,opacity:0,scale:0.8,duration:0.4,ease:"back.out(1.8)"},42.086000000000006);
+tl.from("#s4w2",{y:30,opacity:0,scale:0.8,duration:0.4,ease:"back.out(1.8)"},43.018);
+tl.from("#s4lim",{y:60,opacity:0,duration:0.5,ease:"power3.out"},44.91);
+tl.from("#s4l0",{opacity:0,scale:0.85,duration:0.3},45.465);
+tl.from("#s4l1",{opacity:0,scale:0.85,duration:0.3},46.319);
+tl.from("#s4l2",{opacity:0,scale:0.85,duration:0.3},47.057);
+tl.from("#s5 .hdr",{x:-40,opacity:0,duration:0.5,ease:"power3.out"},48.91);
+tl.from("#s5a",{y:60,opacity:0,duration:0.6,ease:"power3.out"},49.01);
+tl.from("#s5a .rack .ic",{y:20,opacity:0,stagger:0.12,duration:0.35},52.949);
+tl.from("#s5a .racktxt",{opacity:0,duration:0.4},53.647999999999996);
+tl.from("#s5b",{y:60,opacity:0,duration:0.6,ease:"power3.out"},55.994);
+tl.from("#s5p0,#s5p1",{scale:0.5,opacity:0,stagger:0.15,duration:0.45,ease:"back.out(2)"},59.783);
+tl.from("#s6 .hdr",{x:-40,opacity:0,duration:0.5,ease:"power3.out"},60.870999999999995);
+tl.from("#s6card",{y:60,opacity:0,duration:0.6,ease:"power3.out"},62.391);
+tl.from("#s6i0",{x:-60,opacity:0,duration:0.45,ease:"power3.out"},67.39500000000001);
+tl.from("#s6i1",{x:-60,opacity:0,duration:0.45,ease:"power3.out"},70.152);
+tl.from("#s6i2",{x:-60,opacity:0,duration:0.45,ease:"power3.out"},71.93900000000001);
+tl.from("#s6i3",{x:-60,opacity:0,duration:0.45,ease:"power3.out"},73.91900000000001);
+tl.to("#s6card .warnic",{scale:1.12,duration:0.3,yoyo:true,repeat:3,ease:"sine.inOut"},65.165);
+tl.from("#s7 .tag",{y:30,opacity:0,duration:0.4},78.497);
+tl.from("#s7k0",{x:-60,opacity:0,duration:0.5,ease:"power3.out"},78.397);
+tl.from("#s7k1",{x:-60,opacity:0,duration:0.5,ease:"power3.out"},83.05000000000001);
+tl.from("#s7cta",{scale:0.7,opacity:0,duration:0.5,ease:"back.out(2)"},85.98400000000001);
+tl.to("#s7cta",{scale:1.06,duration:0.35,yoyo:true,repeat:3,ease:"sine.inOut"},88.39999999999999);
+tl.to("#s1",{opacity:0,y:-30,duration:0.3,ease:"power2.in"},8.809);
+tl.to("#s2",{opacity:0,y:-30,duration:0.3,ease:"power2.in"},18.945);
+tl.to("#s3",{opacity:0,y:-30,duration:0.3,ease:"power2.in"},32.537000000000006);
+tl.to("#s4",{opacity:0,y:-30,duration:0.3,ease:"power2.in"},48.46);
+tl.to("#s5",{opacity:0,y:-30,duration:0.3,ease:"power2.in"},60.421);
+tl.to("#s6",{opacity:0,y:-30,duration:0.3,ease:"power2.in"},77.897);
+tl.fromTo("#sweep",{x:-1400,opacity:0.0},{x:1400,opacity:0.9,duration:0.55,ease:"power2.inOut"},8.809);
+tl.to("#sweep",{opacity:0,duration:0.15},9.359);
+tl.fromTo("#sweep",{x:-1400,opacity:0.0},{x:1400,opacity:0.9,duration:0.55,ease:"power2.inOut",immediateRender:false},18.945);
+tl.to("#sweep",{opacity:0,duration:0.15},19.495);
+tl.fromTo("#sweep",{x:-1400,opacity:0.0},{x:1400,opacity:0.9,duration:0.55,ease:"power2.inOut",immediateRender:false},32.537000000000006);
+tl.to("#sweep",{opacity:0,duration:0.15},33.087);
+tl.fromTo("#sweep",{x:-1400,opacity:0.0},{x:1400,opacity:0.9,duration:0.55,ease:"power2.inOut",immediateRender:false},48.46);
+tl.to("#sweep",{opacity:0,duration:0.15},49.01);
+tl.fromTo("#sweep",{x:-1400,opacity:0.0},{x:1400,opacity:0.9,duration:0.55,ease:"power2.inOut",immediateRender:false},60.421);
+tl.to("#sweep",{opacity:0,duration:0.15},60.971);
+tl.fromTo("#sweep",{x:-1400,opacity:0.0},{x:1400,opacity:0.9,duration:0.55,ease:"power2.inOut",immediateRender:false},77.897);
+tl.to("#sweep",{opacity:0,duration:0.15},78.447);
+tl.to("#c0w0",{opacity:1,duration:0.12,ease:"none"},0.078);
+tl.to("#c0w1",{opacity:1,duration:0.12,ease:"none"},0.233);
+tl.to("#c0w2",{opacity:1,duration:0.12,ease:"none"},0.854);
+tl.from("#cap0 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},0.028);
+tl.to("#c1w0",{opacity:1,duration:0.12,ease:"none"},1.476);
+tl.to("#c1w1",{opacity:1,duration:0.12,ease:"none"},2.214);
+tl.to("#c1w2",{opacity:1,duration:0.12,ease:"none"},2.408);
+tl.from("#cap1 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},1.426);
+tl.to("#c2w0",{opacity:1,duration:0.12,ease:"none"},3.081);
+tl.to("#c2w1",{opacity:1,duration:0.12,ease:"none"},3.573);
+tl.to("#c2w2",{opacity:1,duration:0.12,ease:"none"},3.961);
+tl.to("#c2w3",{opacity:1,duration:0.12,ease:"none"},4.194);
+tl.from("#cap2 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},2.979);
+tl.to("#c3w0",{opacity:1,duration:0.12,ease:"none"},4.971);
+tl.to("#c3w1",{opacity:1,duration:0.12,ease:"none"},5.243);
+tl.to("#c3w2",{opacity:1,duration:0.12,ease:"none"},5.618);
+tl.to("#c3w3",{opacity:1,duration:0.12,ease:"none"},5.981);
+tl.to("#c3w4",{opacity:1,duration:0.12,ease:"none"},6.369);
+tl.to("#c3w5",{opacity:1,duration:0.12,ease:"none"},6.835);
+tl.from("#cap3 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},4.921);
+tl.to("#c4w0",{opacity:1,duration:0.12,ease:"none"},7.689);
+tl.to("#c4w1",{opacity:1,duration:0.12,ease:"none"},8.194);
+tl.to("#c4w2",{opacity:1,duration:0.12,ease:"none"},8.427);
+tl.from("#cap4 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},7.639);
+tl.to("#c5w0",{opacity:1,duration:0.12,ease:"none"},9.359);
+tl.to("#c5w1",{opacity:1,duration:0.12,ease:"none"},9.748);
+tl.to("#c5w2",{opacity:1,duration:0.12,ease:"none"},10.019);
+tl.from("#cap5 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},9.309);
+tl.to("#c6w0",{opacity:1,duration:0.12,ease:"none"},10.615);
+tl.to("#c6w1",{opacity:1,duration:0.12,ease:"none"},10.874);
+tl.to("#c6w2",{opacity:1,duration:0.12,ease:"none"},11.34);
+tl.to("#c6w3",{opacity:1,duration:0.12,ease:"none"},11.65);
+tl.to("#c6w4",{opacity:1,duration:0.12,ease:"none"},11.845);
+tl.to("#c6w5",{opacity:1,duration:0.12,ease:"none"},12.35);
+tl.to("#c6w6",{opacity:1,duration:0.12,ease:"none"},12.816);
+tl.to("#c6w7",{opacity:1,duration:0.12,ease:"none"},13.126);
+tl.from("#cap6 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},10.513);
+tl.to("#c7w0",{opacity:1,duration:0.12,ease:"none"},13.942);
+tl.to("#c7w1",{opacity:1,duration:0.12,ease:"none"},14.136);
+tl.to("#c7w2",{opacity:1,duration:0.12,ease:"none"},14.447);
+tl.to("#c7w3",{opacity:1,duration:0.12,ease:"none"},14.706);
+tl.to("#c7w4",{opacity:1,duration:0.12,ease:"none"},14.99);
+tl.to("#c7w5",{opacity:1,duration:0.12,ease:"none"},15.456);
+tl.from("#cap7 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},13.892);
+tl.to("#c8w0",{opacity:1,duration:0.12,ease:"none"},16.078);
+tl.to("#c8w1",{opacity:1,duration:0.12,ease:"none"},16.66);
+tl.to("#c8w2",{opacity:1,duration:0.12,ease:"none"},17.204);
+tl.to("#c8w3",{opacity:1,duration:0.12,ease:"none"},17.437);
+tl.to("#c8w4",{opacity:1,duration:0.12,ease:"none"},17.709);
+tl.to("#c8w5",{opacity:1,duration:0.12,ease:"none"},18.097);
+tl.to("#c8w6",{opacity:1,duration:0.12,ease:"none"},18.408);
+tl.to("#c8w7",{opacity:1,duration:0.12,ease:"none"},18.718);
+tl.from("#cap8 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},16.028);
+tl.to("#c9w0",{opacity:1,duration:0.12,ease:"none"},19.495);
+tl.to("#c9w1",{opacity:1,duration:0.12,ease:"none"},19.845);
+tl.to("#c9w2",{opacity:1,duration:0.12,ease:"none"},20.427);
+tl.to("#c9w3",{opacity:1,duration:0.12,ease:"none"},20.738);
+tl.to("#c9w4",{opacity:1,duration:0.12,ease:"none"},21.126);
+tl.to("#c9w5",{opacity:1,duration:0.12,ease:"none"},21.437);
+tl.to("#c9w6",{opacity:1,duration:0.12,ease:"none"},21.748);
+tl.to("#c9w7",{opacity:1,duration:0.12,ease:"none"},22.058);
+tl.from("#cap9 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},19.445);
+tl.to("#c10w0",{opacity:1,duration:0.12,ease:"none"},22.563);
+tl.to("#c10w1",{opacity:1,duration:0.12,ease:"none"},22.913);
+tl.to("#c10w2",{opacity:1,duration:0.12,ease:"none"},23.223);
+tl.to("#c10w3",{opacity:1,duration:0.12,ease:"none"},23.612);
+tl.to("#c10w4",{opacity:1,duration:0.12,ease:"none"},23.883);
+tl.to("#c10w5",{opacity:1,duration:0.12,ease:"none"},24.117);
+tl.from("#cap10 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},22.513);
+tl.to("#c11w0",{opacity:1,duration:0.12,ease:"none"},24.75);
+tl.to("#c11w1",{opacity:1,duration:0.12,ease:"none"},24.971);
+tl.to("#c11w2",{opacity:1,duration:0.12,ease:"none"},25.243);
+tl.to("#c11w3",{opacity:1,duration:0.12,ease:"none"},25.786);
+tl.to("#c11w4",{opacity:1,duration:0.12,ease:"none"},26.019);
+tl.to("#c11w5",{opacity:1,duration:0.12,ease:"none"},26.33);
+tl.to("#c11w6",{opacity:1,duration:0.12,ease:"none"},26.718);
+tl.from("#cap11 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},24.649);
+tl.to("#c12w0",{opacity:1,duration:0.12,ease:"none"},27.107);
+tl.to("#c12w1",{opacity:1,duration:0.12,ease:"none"},27.417);
+tl.from("#cap12 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},27.057);
+tl.to("#c13w0",{opacity:1,duration:0.12,ease:"none"},27.922);
+tl.to("#c13w1",{opacity:1,duration:0.12,ease:"none"},28.117);
+tl.to("#c13w2",{opacity:1,duration:0.12,ease:"none"},28.388);
+tl.to("#c13w3",{opacity:1,duration:0.12,ease:"none"},28.621);
+tl.from("#cap13 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},27.872);
+tl.to("#c14w0",{opacity:1,duration:0.12,ease:"none"},29.204);
+tl.to("#c14w1",{opacity:1,duration:0.12,ease:"none"},29.592);
+tl.to("#c14w2",{opacity:1,duration:0.12,ease:"none"},30.058);
+tl.to("#c14w3",{opacity:1,duration:0.12,ease:"none"},30.447);
+tl.to("#c14w4",{opacity:1,duration:0.12,ease:"none"},30.757);
+tl.to("#c14w5",{opacity:1,duration:0.12,ease:"none"},31.068);
+tl.to("#c14w6",{opacity:1,duration:0.12,ease:"none"},31.301);
+tl.from("#cap14 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},29.076);
+tl.to("#c15w0",{opacity:1,duration:0.12,ease:"none"},31.689);
+tl.to("#c15w1",{opacity:1,duration:0.12,ease:"none"},32.233);
+tl.from("#cap15 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},31.639);
+tl.to("#c16w0",{opacity:1,duration:0.12,ease:"none"},33.087);
+tl.to("#c16w1",{opacity:1,duration:0.12,ease:"none"},33.476);
+tl.to("#c16w2",{opacity:1,duration:0.12,ease:"none"},33.631);
+tl.from("#cap16 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},33.037);
+tl.to("#c17w0",{opacity:1,duration:0.12,ease:"none"},34.563);
+tl.to("#c17w1",{opacity:1,duration:0.12,ease:"none"},34.913);
+tl.to("#c17w2",{opacity:1,duration:0.12,ease:"none"},35.728);
+tl.to("#c17w3",{opacity:1,duration:0.12,ease:"none"},36.427);
+tl.from("#cap17 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},34.513);
+tl.to("#c18w0",{opacity:1,duration:0.12,ease:"none"},36.893);
+tl.to("#c18w1",{opacity:1,duration:0.12,ease:"none"},37.515);
+tl.to("#c18w2",{opacity:1,duration:0.12,ease:"none"},37.903);
+tl.to("#c18w3",{opacity:1,duration:0.12,ease:"none"},38.136);
+tl.to("#c18w4",{opacity:1,duration:0.12,ease:"none"},38.602);
+tl.to("#c18w5",{opacity:1,duration:0.12,ease:"none"},38.913);
+tl.from("#cap18 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},36.843);
+tl.to("#c19w0",{opacity:1,duration:0.12,ease:"none"},39.612);
+tl.to("#c19w1",{opacity:1,duration:0.12,ease:"none"},40.0);
+tl.to("#c19w2",{opacity:1,duration:0.12,ease:"none"},40.272);
+tl.to("#c19w3",{opacity:1,duration:0.12,ease:"none"},40.544);
+tl.to("#c19w4",{opacity:1,duration:0.12,ease:"none"},40.854);
+tl.from("#cap19 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},39.562);
+tl.to("#c20w0",{opacity:1,duration:0.12,ease:"none"},41.274);
+tl.to("#c20w1",{opacity:1,duration:0.12,ease:"none"},42.136);
+tl.to("#c20w2",{opacity:1,duration:0.12,ease:"none"},42.485);
+tl.to("#c20w3",{opacity:1,duration:0.12,ease:"none"},42.718);
+tl.to("#c20w4",{opacity:1,duration:0.12,ease:"none"},43.068);
+tl.from("#cap20 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},41.193);
+tl.to("#c21w0",{opacity:1,duration:0.12,ease:"none"},43.689);
+tl.to("#c21w1",{opacity:1,duration:0.12,ease:"none"},43.91);
+tl.to("#c21w2",{opacity:1,duration:0.12,ease:"none"},44.272);
+tl.to("#c21w3",{opacity:1,duration:0.12,ease:"none"},44.583);
+tl.from("#cap21 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},43.639);
+tl.to("#c22w0",{opacity:1,duration:0.12,ease:"none"},45.01);
+tl.to("#c22w1",{opacity:1,duration:0.12,ease:"none"},45.282);
+tl.to("#c22w2",{opacity:1,duration:0.12,ease:"none"},45.515);
+tl.to("#c22w3",{opacity:1,duration:0.12,ease:"none"},46.136);
+tl.to("#c22w4",{opacity:1,duration:0.12,ease:"none"},46.369);
+tl.to("#c22w5",{opacity:1,duration:0.12,ease:"none"},46.874);
+tl.to("#c22w6",{opacity:1,duration:0.12,ease:"none"},47.107);
+tl.from("#cap22 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},44.960);
+tl.to("#c23w0",{opacity:1,duration:0.12,ease:"none"},47.65);
+tl.to("#c23w1",{opacity:1,duration:0.12,ease:"none"},48.0);
+tl.to("#c23w2",{opacity:1,duration:0.12,ease:"none"},48.272);
+tl.from("#cap23 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},47.600);
+tl.to("#c24w0",{opacity:1,duration:0.12,ease:"none"},49.01);
+tl.to("#c24w1",{opacity:1,duration:0.12,ease:"none"},49.476);
+tl.to("#c24w2",{opacity:1,duration:0.12,ease:"none"},49.786);
+tl.to("#c24w3",{opacity:1,duration:0.12,ease:"none"},50.214);
+tl.to("#c24w4",{opacity:1,duration:0.12,ease:"none"},50.796);
+tl.to("#c24w5",{opacity:1,duration:0.12,ease:"none"},51.029);
+tl.to("#c24w6",{opacity:1,duration:0.12,ease:"none"},51.495);
+tl.to("#c24w7",{opacity:1,duration:0.12,ease:"none"},51.806);
+tl.to("#c24w8",{opacity:1,duration:0.12,ease:"none"},52.272);
+tl.from("#cap24 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},48.960);
+tl.to("#c25w0",{opacity:1,duration:0.12,ease:"none"},52.789);
+tl.to("#c25w1",{opacity:1,duration:0.12,ease:"none"},53.049);
+tl.to("#c25w2",{opacity:1,duration:0.12,ease:"none"},53.385);
+tl.to("#c25w3",{opacity:1,duration:0.12,ease:"none"},53.748);
+tl.to("#c25w4",{opacity:1,duration:0.12,ease:"none"},54.058);
+tl.to("#c25w5",{opacity:1,duration:0.12,ease:"none"},54.447);
+tl.from("#cap25 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},52.688);
+tl.to("#c26w0",{opacity:1,duration:0.12,ease:"none"},54.757);
+tl.to("#c26w1",{opacity:1,duration:0.12,ease:"none"},55.327);
+tl.from("#cap26 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},54.707);
+tl.to("#c27w0",{opacity:1,duration:0.12,ease:"none"},56.039);
+tl.to("#c27w1",{opacity:1,duration:0.12,ease:"none"},56.194);
+tl.to("#c27w2",{opacity:1,duration:0.12,ease:"none"},56.906);
+tl.to("#c27w3",{opacity:1,duration:0.12,ease:"none"},57.087);
+tl.to("#c27w4",{opacity:1,duration:0.12,ease:"none"},57.515);
+tl.to("#c27w5",{opacity:1,duration:0.12,ease:"none"},57.864);
+tl.to("#c27w6",{opacity:1,duration:0.12,ease:"none"},58.33);
+tl.to("#c27w7",{opacity:1,duration:0.12,ease:"none"},58.563);
+tl.from("#cap27 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},55.989);
+tl.to("#c28w0",{opacity:1,duration:0.12,ease:"none"},59.107);
+tl.to("#c28w1",{opacity:1,duration:0.12,ease:"none"},59.573);
+tl.to("#c28w2",{opacity:1,duration:0.12,ease:"none"},59.883);
+tl.to("#c28w3",{opacity:1,duration:0.12,ease:"none"},60.272);
+tl.from("#cap28 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},59.057);
+tl.to("#c29w0",{opacity:1,duration:0.12,ease:"none"},60.971);
+tl.to("#c29w1",{opacity:1,duration:0.12,ease:"none"},61.359);
+tl.to("#c29w2",{opacity:1,duration:0.12,ease:"none"},61.981);
+tl.from("#cap29 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},60.921);
+tl.to("#c30w0",{opacity:1,duration:0.12,ease:"none"},62.641);
+tl.to("#c30w1",{opacity:1,duration:0.12,ease:"none"},63.068);
+tl.from("#cap30 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},62.591);
+tl.to("#c31w0",{opacity:1,duration:0.12,ease:"none"},63.728);
+tl.to("#c31w1",{opacity:1,duration:0.12,ease:"none"},64.194);
+tl.to("#c31w2",{opacity:1,duration:0.12,ease:"none"},64.466);
+tl.to("#c31w3",{opacity:1,duration:0.12,ease:"none"},64.816);
+tl.to("#c31w4",{opacity:1,duration:0.12,ease:"none"},65.165);
+tl.to("#c31w5",{opacity:1,duration:0.12,ease:"none"},65.592);
+tl.to("#c31w6",{opacity:1,duration:0.12,ease:"none"},65.864);
+tl.from("#cap31 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},63.678);
+tl.to("#c32w0",{opacity:1,duration:0.12,ease:"none"},66.252);
+tl.to("#c32w1",{opacity:1,duration:0.12,ease:"none"},66.641);
+tl.to("#c32w2",{opacity:1,duration:0.12,ease:"none"},67.204);
+tl.to("#c32w3",{opacity:1,duration:0.12,ease:"none"},67.495);
+tl.to("#c32w4",{opacity:1,duration:0.12,ease:"none"},68.039);
+tl.from("#cap32 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},66.202);
+tl.to("#c33w0",{opacity:1,duration:0.12,ease:"none"},68.686);
+tl.to("#c33w1",{opacity:1,duration:0.12,ease:"none"},69.049);
+tl.to("#c33w2",{opacity:1,duration:0.12,ease:"none"},69.359);
+tl.to("#c33w3",{opacity:1,duration:0.12,ease:"none"},69.825);
+tl.to("#c33w4",{opacity:1,duration:0.12,ease:"none"},69.942);
+tl.to("#c33w5",{opacity:1,duration:0.12,ease:"none"},70.252);
+tl.to("#c33w6",{opacity:1,duration:0.12,ease:"none"},70.602);
+tl.from("#cap33 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},68.636);
+tl.to("#c34w0",{opacity:1,duration:0.12,ease:"none"},70.951);
+tl.to("#c34w1",{opacity:1,duration:0.12,ease:"none"},71.184);
+tl.to("#c34w2",{opacity:1,duration:0.12,ease:"none"},71.405);
+tl.from("#cap34 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},70.901);
+tl.to("#c35w0",{opacity:1,duration:0.12,ease:"none"},72.039);
+tl.to("#c35w1",{opacity:1,duration:0.12,ease:"none"},72.544);
+tl.to("#c35w2",{opacity:1,duration:0.12,ease:"none"},73.01);
+tl.from("#cap35 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},71.989);
+tl.to("#c36w0",{opacity:1,duration:0.12,ease:"none"},73.515);
+tl.to("#c36w1",{opacity:1,duration:0.12,ease:"none"},74.019);
+tl.to("#c36w2",{opacity:1,duration:0.12,ease:"none"},74.33);
+tl.to("#c36w3",{opacity:1,duration:0.12,ease:"none"},74.641);
+tl.to("#c36w4",{opacity:1,duration:0.12,ease:"none"},74.951);
+tl.to("#c36w5",{opacity:1,duration:0.12,ease:"none"},75.767);
+tl.from("#cap36 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},73.465);
+tl.to("#c37w0",{opacity:1,duration:0.12,ease:"none"},76.065);
+tl.to("#c37w1",{opacity:1,duration:0.12,ease:"none"},76.427);
+tl.to("#c37w2",{opacity:1,duration:0.12,ease:"none"},76.932);
+tl.to("#c37w3",{opacity:1,duration:0.12,ease:"none"},77.152);
+tl.to("#c37w4",{opacity:1,duration:0.12,ease:"none"},77.359);
+tl.to("#c37w5",{opacity:1,duration:0.12,ease:"none"},77.631);
+tl.from("#cap37 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},76.015);
+tl.to("#c38w0",{opacity:1,duration:0.12,ease:"none"},78.447);
+tl.to("#c38w1",{opacity:1,duration:0.12,ease:"none"},78.68);
+tl.to("#c38w2",{opacity:1,duration:0.12,ease:"none"},79.275);
+tl.to("#c38w3",{opacity:1,duration:0.12,ease:"none"},79.689);
+tl.to("#c38w4",{opacity:1,duration:0.12,ease:"none"},80.039);
+tl.to("#c38w5",{opacity:1,duration:0.12,ease:"none"},80.272);
+tl.to("#c38w6",{opacity:1,duration:0.12,ease:"none"},80.699);
+tl.from("#cap38 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},78.397);
+tl.to("#c39w0",{opacity:1,duration:0.12,ease:"none"},81.282);
+tl.to("#c39w1",{opacity:1,duration:0.12,ease:"none"},81.553);
+tl.to("#c39w2",{opacity:1,duration:0.12,ease:"none"},81.942);
+tl.from("#cap39 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},81.232);
+tl.to("#c40w0",{opacity:1,duration:0.12,ease:"none"},82.447);
+tl.to("#c40w1",{opacity:1,duration:0.12,ease:"none"},82.718);
+tl.to("#c40w2",{opacity:1,duration:0.12,ease:"none"},83.107);
+tl.to("#c40w3",{opacity:1,duration:0.12,ease:"none"},83.379);
+tl.to("#c40w4",{opacity:1,duration:0.12,ease:"none"},83.65);
+tl.to("#c40w5",{opacity:1,duration:0.12,ease:"none"},83.922);
+tl.to("#c40w6",{opacity:1,duration:0.12,ease:"none"},84.233);
+tl.from("#cap40 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},82.397);
+tl.to("#c41w0",{opacity:1,duration:0.12,ease:"none"},84.66);
+tl.to("#c41w1",{opacity:1,duration:0.12,ease:"none"},85.243);
+tl.to("#c41w2",{opacity:1,duration:0.12,ease:"none"},85.592);
+tl.from("#cap41 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},84.610);
+tl.to("#c42w0",{opacity:1,duration:0.12,ease:"none"},86.084);
+tl.to("#c42w1",{opacity:1,duration:0.12,ease:"none"},86.641);
+tl.to("#c42w2",{opacity:1,duration:0.12,ease:"none"},86.99);
+tl.to("#c42w3",{opacity:1,duration:0.12,ease:"none"},87.301);
+tl.to("#c42w4",{opacity:1,duration:0.12,ease:"none"},87.612);
+tl.to("#c42w5",{opacity:1,duration:0.12,ease:"none"},87.883);
+tl.to("#c42w6",{opacity:1,duration:0.12,ease:"none"},88.35);
+tl.to("#c42w7",{opacity:1,duration:0.12,ease:"none"},88.621);
+tl.from("#cap42 .capbox",{y:18,opacity:0,duration:0.18,ease:"power2.out"},86.034);
+tl.from("#endcard",{opacity:0,duration:0.4},89.145);
+window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

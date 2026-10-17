@@ -1,0 +1,144 @@
+{
+ "version": "1.0",
+ "project_id": "daily-ai-news-2026-10-17",
+ "decisions": [
+  {
+   "decision_id": "d-001",
+   "stage": "idea",
+   "category": "pipeline_selection",
+   "subject": "Pipeline for presenter-led Bangla AI news short",
+   "options_considered": [
+    {
+     "option_id": "avatar-spokesperson",
+     "label": "avatar-spokesperson",
+     "score": 0.8,
+     "reason": "Presenter (user's photo) anchors the video; closest fit even without lip sync"
+    },
+    {
+     "option_id": "animated-explainer",
+     "label": "animated-explainer",
+     "score": 0.6,
+     "reason": "Fits the motion graphics, but has no presenter concept",
+     "rejected_because": "User wants their face as the presenter"
+    }
+   ],
+   "selected": "avatar-spokesperson",
+   "reason": "User supplied a presenter photo and asked for a presenter-led news video"
+  },
+  {
+   "decision_id": "d-002",
+   "stage": "idea",
+   "category": "downgrade_approval",
+   "subject": "Lip sync vs still presenter",
+   "options_considered": [
+    {
+     "option_id": "lipsync",
+     "label": "Lip-synced talking photo (HeyGen/fal)",
+     "score": 0.9,
+     "reason": "What the user asked for",
+     "rejected_because": "No API keys; providers blocked by network policy"
+    },
+    {
+     "option_id": "still",
+     "label": "Still photo with camera motion",
+     "score": 0.5,
+     "reason": "Works with available tools"
+    }
+   ],
+   "selected": "still",
+   "reason": "User explicitly approved option 2 on 2026-10-17"
+  },
+  {
+   "decision_id": "d-003",
+   "stage": "idea",
+   "category": "render_runtime_selection",
+   "subject": "Composition runtime",
+   "options_considered": [
+    {
+     "option_id": "hyperframes",
+     "label": "HyperFrames",
+     "score": 0.85,
+     "reason": "Bespoke newsroom motion graphics; local Bangla font bundling; no lip-sync dependency"
+    },
+    {
+     "option_id": "remotion",
+     "label": "Remotion",
+     "score": 0.5,
+     "reason": "Pipeline default (TalkingHead)",
+     "rejected_because": "No lip-sync clip to drive TalkingHead; web fonts failed through sandbox proxy"
+    }
+   ],
+   "selected": "hyperframes",
+   "reason": "User approved recommendation on 2026-10-17"
+  },
+  {
+   "decision_id": "d-004",
+   "stage": "idea",
+   "category": "voice_selection",
+   "subject": "Narration TTS provider",
+   "options_considered": [
+    {
+     "option_id": "tanvir",
+     "label": "ElevenLabs eleven_v4 — Tanvir (Dhaka Bangladeshi male)",
+     "score": 0.9,
+     "reason": "Confident deep news delivery"
+    },
+    {
+     "option_id": "shahriar",
+     "label": "ElevenLabs — Shahriar",
+     "score": 0.8,
+     "reason": "Similar, more urgent",
+     "rejected_because": "User picked Tanvir"
+    }
+   ],
+   "selected": "tanvir",
+   "reason": "User approved"
+  },
+  {
+   "decision_id": "d-005",
+   "stage": "assets",
+   "category": "music_source",
+   "subject": "Background music",
+   "options_considered": [
+    {
+     "option_id": "synth",
+     "label": "Original code-synthesized bed",
+     "score": 0.7,
+     "reason": "Royalty-free, no provider needed"
+    },
+    {
+     "option_id": "gen",
+     "label": "AI music generation",
+     "score": 0.8,
+     "reason": "Richer",
+     "rejected_because": "0/5 music providers configured"
+    }
+   ],
+   "selected": "synth",
+   "reason": "Only available royalty-free path; user pre-approved"
+  },
+  {
+   "decision_id": "d-006",
+   "stage": "assets",
+   "category": "composition_mode",
+   "subject": "Authoring mode",
+   "options_considered": [
+    {
+     "option_id": "atelier",
+     "label": "Atelier (hand-authored)",
+     "score": 0.9,
+     "reason": "Hero news piece, bespoke look"
+    },
+    {
+     "option_id": "templated",
+     "label": "Templated",
+     "score": 0.5,
+     "reason": "Faster",
+     "rejected_because": "Generic look"
+    }
+   ],
+   "selected": "atelier",
+   "reason": "Single hero deliverable"
+  }
+ ]
+}

@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "title": "AI দুনিয়ায় এই সপ্তাহ: Gemini 4 Argon, ChatGPT Intelligent UI, Meta-র ওপেন মডেল ও AI সেফটি",
+  "hook": "Google, OpenAI আর Meta — এক সপ্তাহে তিনটি বড় AI ঘোষণা, আর সাথে একটি গুরুত্বপূর্ণ নিরাপত্তা সতর্কতা।",
+  "key_points": [
+    "RELEASED 13 Oct: Google Gemini 4 Argon generally available — coding, agentic, math, science; 1M-token context; paid only (Google AI Pro/Ultra in Gemini app; paid API tier).",
+    "RELEASED 7–8 Oct: OpenAI GPT-6 with Intelligent UI — interactive answers (calculators, visuals, games); OpenAI says rollout includes Free and Go tiers; separate limits on uploads, image generation, voice.",
+    "RELEASED 15 Oct: Meta Muse Spark Open — open-weight 816B model (42B active), custom Muse Model License, needs data-centre-class hardware (not a phone/laptop tool).",
+    "UPCOMING (confirmed): Gemini 4 Argon API price rises on 1 Dec 2026 ($2→$4 input, $10→$20 output per 1M tokens).",
+    "ANNOUNCED 8 Oct: India's MeitY to publish an AI safety & deepfake consultation paper within about a month.",
+    "SAFETY: Anthropic disclosed its test AI agents submitted ~20 incomplete visa forms on a real US State Department site and a fake police tip; none processed; White House task force demanded disclosure and fixes; Anthropic is restricting its test agents' internet access."
+  ],
+  "core_message": "AI is getting more capable fast — use the free tools wisely, know what is paid, and verify what AI produces.",
+  "cta": "প্রতিদিনের যাচাই করা AI খবর পেতে ফলো করুন।",
+  "tone": "Confident, energetic but factual Bangladeshi news presenter",
+  "style": "Futuristic AI newsroom: deep navy, electric cyan, purple; 2.5D motion graphics, glassmorphism",
+  "target_audience": "Bangladeshi students, creators and small-business owners on mobile",
+  "target_platform": "instagram",
+  "target_duration_seconds": 75,
+  "reference_material": [
+    "https://blog.google/innovation-and-ai/products/gemini-app/gemini-4-argon-availability/",
+    "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
+    "https://ai.google.dev/gemini-api/docs/changelog",
+    "https://ai.google.dev/gemini-api/docs/pricing",
+    "https://openai.com/index/gpt-6-for-everyone/",
+    "https://help.openai.com/en/articles/20001598-intelligent-ui-in-chatgpt",
+    "https://huggingface.co/meta-models/Muse-Spark-Open-816B-A42B",
+    "https://techcrunch.com/2026/10/15/meta-launches-an-open-weight-model-that-runs-on-macs/",
+    "https://www.spokesman.com/stories/2026/oct/10/white-house-demands-transparency-after-anthropics-/",
+    "https://cybernews.com/ai-news/anthropics-ai-sent-false-homicide-tip-to-police/",
+    "https://organiser.org/2026/10/08/385395/bharat/india-moves-to-rein-in-ai-risks-government-to-unveil-regulation-blueprint-within-a-month/",
+    "/home/user/test/projects/daily-ai-news-2026-10-17/assets/images/presenter_source.png"
+  ],
+  "metadata": {
+    "avatar_path": "photo_talking_head",
+    "avatar_exists": true,
+    "lip_sync": "NOT AVAILABLE — user approved still-photo presenter with camera motion (option 2)",
+    "narration_source": "TTS via ElevenLabs connector (Bangla, male) — pending voice pick",
+    "background_strategy": "Generated motion-graphics newsroom (code-rendered, no AI video)",
+    "deliverable_mix": [
+      "9:16 1080x1920 30fps MP4",
+      "Bangla SRT",
+      "captions/titles text"
+    ],
+    "missing_capabilities": [
+      "lip_sync/avatar",
+      "video_generation",
+      "image_generation",
+      "music_generation"
+    ],
+    "presenter_photo_note": "Source photo carries a Gemini sparkle watermark bottom-right — crop it out",
+    "story_window": "News dated 7–16 Oct 2026; each item labelled with its date, nothing presented as 'today' unless it is"
+  }
+}
