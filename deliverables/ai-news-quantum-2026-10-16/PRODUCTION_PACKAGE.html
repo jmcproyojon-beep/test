@@ -12,10 +12,11 @@ table{border-collapse:collapse;width:100%;display:block;overflow-x:auto;font-siz
 th{background:var(--card)} code{background:var(--card);padding:1px 5px;border-radius:5px;font-size:.9em} hr{border:0;border-top:1px solid var(--line)}
 </style></head><body><main><h1>DAILY AI NEWS — বাংলা | Quantum &amp; AI Safety Edition</h1>
 <p><strong>News date:</strong> 16 October 2026 (all four stories). Labelled with that date, not as "today".
-<strong>Format:</strong> 9:16 · 1080×1920 · 30 fps · H.264 + AAC · <strong>85.0 s</strong>
+<strong>Format:</strong> 9:16 · 1080×1920 · 30 fps · H.264 + AAC · <strong>83.8 s</strong>
+<strong>Voice:</strong> Gemini TTS (<code>gemini-3.8-flash-tts</code>, prebuilt male voice <strong>Orus</strong>), Bangla, one take per scene, each verified by transcription
 <strong>Final video:</strong> <code>ai-news-quantum-2026-10-16_final.mp4</code> · <strong>Subtitles:</strong> <code>ai-news-quantum-2026-10-16.bn.srt</code></p>
 <blockquote>
-<p>⚠ <strong>This is the no-voiceover version you chose.</strong> ElevenLabs has 0 credits left this month and no other voice provider is configured. The Bangla text on screen carries the whole script, timed at about 12.5 characters per second. When you have a voice (a <code>GEMINI_API_KEY</code>, an ElevenLabs top-up or your own recording), I'll add the narration and re-time the graphics to it. The presenter is your photo (watermark cropped), with no lip sync.</p>
+<p><strong>Narrated version.</strong> Narration comes from Gemini text-to-speech, using the key you provided. I transcribed every take with Gemini and compared it to the script. I trimmed four takes where the voice read my style instruction aloud, cut two sentences the model invented at the start of scene 7, and regenerated scene 6 because it dropped words. The final takes match the script; differences are spelling only (e.g. কোয়ান্টাম). The presenter is your photo (watermark cropped), with no lip sync. Sentence timing is snapped to pauses in the audio (within about 0.25 s of Gemini's transcript timestamps).</p>
 </blockquote>
 <hr />
 <h2>Fact sheet</h2>
@@ -67,7 +68,7 @@ th{background:var(--card)} code{background:var(--card);padding:1px 5px;border-ra
 - Scene 5 said "G7 countries". The video now specifies the finance ministers and central banks, and the financial sector.</p>
 <p><strong>Disclosure:</strong> stories 1–2 are Anthropic's research about Claude. I'm Claude, made by Anthropic, so I kept these stories strictly to the published findings and caveats.</p>
 <hr />
-<h2>1. Final Bangla script (on-screen text; also the voiceover script when you record)</h2>
+<h2>1. Final Bangla voiceover script</h2>
 <table>
 <thead>
 <tr>
@@ -206,12 +207,11 @@ th{background:var(--card)} code{background:var(--card);padding:1px 5px;border-ra
 - [ ] A screenshot of the Anthropic research post's results chart, if its licence permits.</p>
 <h2>5. Subtitles</h2>
 <ul>
-<li><code>ai-news-quantum-2026-10-16.bn.srt</code> has 32 cues, at most about 40 characters each, product names never split, and each on screen for at least 1.4 s.</li>
+<li><code>ai-news-quantum-2026-10-16.bn.srt</code> has 32 cues, timed to the narration, at most about 40 characters each, with product names never split.</li>
 <li>They're burned in at 54 px. Upload the SRT as optional captions.</li>
-<li>If a voice is added later, the SRT will be re-timed to it.</li>
 </ul>
 <h2>6. Sound design</h2>
-<p><strong>Music:</strong> original synthesized 104 BPM bed (A minor → F → C → G). Without narration it's the main track, so it isn't ducked.</p>
+<p><strong>Music:</strong> original synthesized 104 BPM bed (A minor → F → C → G), about 17 dB under the voice and sidechain-ducked while the narrator speaks.</p>
 <table>
 <thead>
 <tr>
@@ -290,7 +290,7 @@ th{background:var(--card)} code{background:var(--card);padding:1px 5px;border-ra
 </tr>
 </tbody>
 </table>
-<p><strong>Master:</strong> compressor, then limiter, then two-pass EBU R128. <strong>−14.0 LUFS integrated, −2.4 dBTP true peak (measured on the final AAC file).</strong> Fades: 0.5 s in, 1.8 s out.</p>
+<p><strong>Master:</strong> voice high-pass at 80 Hz, then 3:1 compression; music ducking; EBU R128. <strong>−14.0 LUFS integrated, −1.9 dBTP true peak (measured on the final MP4).</strong> Fades: 0.3 s in, 1.5 s out.</p>
 <h2>7. Editing notes</h2>
 <ul>
 <li>Same motion language as the first video:</li>
@@ -298,7 +298,7 @@ th{background:var(--card)} code{background:var(--card);padding:1px 5px;border-ra
 <li>A light sweep and a presenter morph (0.7 s) at every scene change.</li>
 <li>Slow Ken Burns on the presenter.</li>
 <li>No voice-reactive waveform, since there's no narration to react to.</li>
-<li><strong>Adding a voice later:</strong> record or generate the script in section 1, then I'll replace the reading-paced timing with word timestamps from the recording. Graphics and captions move with it automatically.</li>
+<li><strong>Swapping the voice:</strong> if you record your own voice later, send the file. Graphics and captions are driven by the timing data, so they re-time automatically.</li>
 <li><strong>Re-render:</strong> run <code>npx hyperframes render --quality high --fps 30</code> in <code>projects/ai-news-quantum-2026-10-16/hf/</code>, then mux with <code>final_mix.wav</code>.</li>
 </ul>
 <h2>8. Title &amp; thumbnail</h2>
@@ -334,17 +334,18 @@ th{background:var(--card)} code{background:var(--card);padding:1px 5px;border-ra
 00:00 হুক · 00:11 Claude Mythos 5-এর Quantum গবেষণা · 00:26 কেন গুরুত্বপূর্ণ · 00:36 Tencent AI Agent সেফটি · 00:50 G7 AI সাইবার মহড়া · 01:04 ফ্রি টুল: Google AI Studio · 01:14 মূল কথা
 সূত্র: anthropic.com/research/designing-efficient-quantum-circuits · Reuters (Tencent, G7) · ai.google.dev/gemini-api/docs/pricing</p>
 </blockquote>
-<p><strong>AI-content label:</strong> the graphics are made with code and the presenter is a still of your own photo, so an AI label is only needed if your platform asks about AI-generated visuals. Once AI narration is added, turn on the label.</p>
+<p><strong>AI-content label:</strong> the narration is AI-generated (Gemini TTS), so turn on each platform's AI-generated content label.</p>
 <h2>10. QC checklist</h2>
 <p><strong>Verified by me:</strong>
-- [x] 85.0 s; 1080×1920; 30 fps; H.264 + AAC 48 kHz.
-- [x] −14.0 LUFS integrated; −2.4 dBTP true peak, measured on the final MP4 (first pass measured −0.8 after AAC encoding, so I re-mastered it).
+- [x] 83.8 s; 1080×1920; 30 fps; H.264 + AAC 48 kHz.
+- [x] −14.0 LUFS integrated; −1.9 dBTP true peak, measured on the final MP4.
+- [x] Every narration take transcribed and checked against the script; invented and leaked lines removed.
 - [x] Every claim matches its source, and the three overstatements from your draft are corrected. Each story carries its date (16 Oct) and a status tag.
 - [x] HyperFrames check: lint 0 errors, runtime 0 errors, layout 0 errors, contrast 82/82 pass.
 - [x] Latin-in-Bangla font fallback fixed; text renders in one typeface.
-- [x] Captions inside safe zones; each cue shown at least 1.4 s.
+- [x] Captions inside safe zones and synced to the narration's sentences.
 - [x] Frames from every scene checked visually.</p>
 <p><strong>Before you post:</strong>
-- [ ] Watch it on a phone. With no voice, check the captions are comfortable to read at this pace.
+- [ ] Listen once: check the Orus voice's pronunciation (Anthropic, Mythos Five, Tencent, G Seven).
 - [ ] Recheck the AI Studio free-model list on posting day.
 - [ ] Pin the source links in a comment.</p></main></body></html>

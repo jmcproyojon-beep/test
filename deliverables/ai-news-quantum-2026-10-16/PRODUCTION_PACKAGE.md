@@ -1,10 +1,11 @@
 # DAILY AI NEWS — বাংলা | Quantum & AI Safety Edition
 
 **News date:** 16 October 2026 (all four stories). Labelled with that date, not as "today".
-**Format:** 9:16 · 1080×1920 · 30 fps · H.264 + AAC · **85.0 s**
+**Format:** 9:16 · 1080×1920 · 30 fps · H.264 + AAC · **83.8 s**
+**Voice:** Gemini TTS (`gemini-3.8-flash-tts`, prebuilt male voice **Orus**), Bangla, one take per scene, each verified by transcription
 **Final video:** `ai-news-quantum-2026-10-16_final.mp4` · **Subtitles:** `ai-news-quantum-2026-10-16.bn.srt`
 
-> ⚠ **This is the no-voiceover version you chose.** ElevenLabs has 0 credits left this month and no other voice provider is configured. The Bangla text on screen carries the whole script, timed at about 12.5 characters per second. When you have a voice (a `GEMINI_API_KEY`, an ElevenLabs top-up or your own recording), I'll add the narration and re-time the graphics to it. The presenter is your photo (watermark cropped), with no lip sync.
+> **Narrated version.** Narration comes from Gemini text-to-speech, using the key you provided. I transcribed every take with Gemini and compared it to the script. I trimmed four takes where the voice read my style instruction aloud, cut two sentences the model invented at the start of scene 7, and regenerated scene 6 because it dropped words. The final takes match the script; differences are spelling only (e.g. কোয়ান্টাম). The presenter is your photo (watermark cropped), with no lip sync. Sentence timing is snapped to pauses in the audio (within about 0.25 s of Gemini's transcript timestamps).
 
 ---
 
@@ -27,7 +28,7 @@
 
 ---
 
-## 1. Final Bangla script (on-screen text; also the voiceover script when you record)
+## 1. Final Bangla voiceover script
 
 | Scene | Time | Text |
 |---|---|---|
@@ -87,13 +88,12 @@ Shared rules for every prompt: 9:16, 5–10 s, navy, cyan and purple palette, no
 
 ## 5. Subtitles
 
-- `ai-news-quantum-2026-10-16.bn.srt` has 32 cues, at most about 40 characters each, product names never split, and each on screen for at least 1.4 s.
+- `ai-news-quantum-2026-10-16.bn.srt` has 32 cues, timed to the narration, at most about 40 characters each, with product names never split.
 - They're burned in at 54 px. Upload the SRT as optional captions.
-- If a voice is added later, the SRT will be re-timed to it.
 
 ## 6. Sound design
 
-**Music:** original synthesized 104 BPM bed (A minor → F → C → G). Without narration it's the main track, so it isn't ducked.
+**Music:** original synthesized 104 BPM bed (A minor → F → C → G), about 17 dB under the voice and sidechain-ducked while the narrator speaks.
 
 | Time | Cue |
 |---|---|
@@ -115,7 +115,7 @@ Shared rules for every prompt: 9:16, 5–10 s, navy, cyan and purple palette, no
 | 01:15.2 / 16.9 | Pops for the takeaway rows |
 | 01:18.7 | Ding (CTA) |
 
-**Master:** compressor, then limiter, then two-pass EBU R128. **−14.0 LUFS integrated, −2.4 dBTP true peak (measured on the final AAC file).** Fades: 0.5 s in, 1.8 s out.
+**Master:** voice high-pass at 80 Hz, then 3:1 compression; music ducking; EBU R128. **−14.0 LUFS integrated, −1.9 dBTP true peak (measured on the final MP4).** Fades: 0.3 s in, 1.5 s out.
 
 ## 7. Editing notes
 
@@ -124,7 +124,7 @@ Shared rules for every prompt: 9:16, 5–10 s, navy, cyan and purple palette, no
   - A light sweep and a presenter morph (0.7 s) at every scene change.
   - Slow Ken Burns on the presenter.
 - No voice-reactive waveform, since there's no narration to react to.
-- **Adding a voice later:** record or generate the script in section 1, then I'll replace the reading-paced timing with word timestamps from the recording. Graphics and captions move with it automatically.
+- **Swapping the voice:** if you record your own voice later, send the file. Graphics and captions are driven by the timing data, so they re-time automatically.
 - **Re-render:** run `npx hyperframes render --quality high --fps 30` in `projects/ai-news-quantum-2026-10-16/hf/`, then mux with `final_mix.wav`.
 
 ## 8. Title & thumbnail
@@ -158,20 +158,21 @@ Shared rules for every prompt: 9:16, 5–10 s, navy, cyan and purple palette, no
 > 00:00 হুক · 00:11 Claude Mythos 5-এর Quantum গবেষণা · 00:26 কেন গুরুত্বপূর্ণ · 00:36 Tencent AI Agent সেফটি · 00:50 G7 AI সাইবার মহড়া · 01:04 ফ্রি টুল: Google AI Studio · 01:14 মূল কথা
 > সূত্র: anthropic.com/research/designing-efficient-quantum-circuits · Reuters (Tencent, G7) · ai.google.dev/gemini-api/docs/pricing
 
-**AI-content label:** the graphics are made with code and the presenter is a still of your own photo, so an AI label is only needed if your platform asks about AI-generated visuals. Once AI narration is added, turn on the label.
+**AI-content label:** the narration is AI-generated (Gemini TTS), so turn on each platform's AI-generated content label.
 
 ## 10. QC checklist
 
 **Verified by me:**
-- [x] 85.0 s; 1080×1920; 30 fps; H.264 + AAC 48 kHz.
-- [x] −14.0 LUFS integrated; −2.4 dBTP true peak, measured on the final MP4 (first pass measured −0.8 after AAC encoding, so I re-mastered it).
+- [x] 83.8 s; 1080×1920; 30 fps; H.264 + AAC 48 kHz.
+- [x] −14.0 LUFS integrated; −1.9 dBTP true peak, measured on the final MP4.
+- [x] Every narration take transcribed and checked against the script; invented and leaked lines removed.
 - [x] Every claim matches its source, and the three overstatements from your draft are corrected. Each story carries its date (16 Oct) and a status tag.
 - [x] HyperFrames check: lint 0 errors, runtime 0 errors, layout 0 errors, contrast 82/82 pass.
 - [x] Latin-in-Bangla font fallback fixed; text renders in one typeface.
-- [x] Captions inside safe zones; each cue shown at least 1.4 s.
+- [x] Captions inside safe zones and synced to the narration's sentences.
 - [x] Frames from every scene checked visually.
 
 **Before you post:**
-- [ ] Watch it on a phone. With no voice, check the captions are comfortable to read at this pace.
+- [ ] Listen once: check the Orus voice's pronunciation (Anthropic, Mythos Five, Tencent, G Seven).
 - [ ] Recheck the AI Studio free-model list on posting day.
 - [ ] Pin the source links in a comment.
