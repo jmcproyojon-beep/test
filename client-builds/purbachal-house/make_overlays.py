@@ -21,7 +21,8 @@ LOWER_THIRDS = [
     ("lt-04-parking", "ঘরের নিচেই গাড়ি পার্কিং",       "Covered car parking under the house"),
     ("lt-05-entry",   "প্রশস্ত প্রবেশপথ",               "Wide entrance"),
     ("lt-06-living",  "বিশাল ড্রয়িং ও ডাইনিং",         "Large drawing and dining space"),
-    ("lt-07-stair",   "অভ্যন্তরীণ সিঁড়ি · টাইলস মেঝে",  "Internal staircase · tiled floors"),
+    # NOTE: no U+00B7 in the Bengali face — a middle dot renders as tofu. Use "ও".
+    ("lt-07-stair",   "অভ্যন্তরীণ সিঁড়ি ও টাইলস মেঝে",  "Internal staircase and tiled floors"),
 ]
 
 def pill(draw, cx, cy, text, font, pad_x=40, pad_y=22, fill=GREEN_S, color=WHITE):

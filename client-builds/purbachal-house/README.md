@@ -24,11 +24,12 @@ python3 -I client-builds/purbachal-house/make_overlays.py   # Bengali lower thir
 python3 -I client-builds/purbachal-house/make_cards.py      # title overlay + end card
 python3 -I client-builds/purbachal-house/build_promo.py     # trim, stabilise, overlay every beat
 python3 -I client-builds/purbachal-house/fix_stills.py      # rebuild the still beats only
+python3 -I client-builds/purbachal-house/stitch.py          # xfade dissolves, audio mux, delivery encode
 python3 -I client-builds/purbachal-house/artifacts_purbachal.py
 ```
 
-Then stitch the beats with 0.35s `xfade` dissolves, mux the cleaned ambience bed
-and write `renders/purbachal-house-promo.mp4` (1080x1920, 30 fps).
+`stitch.py` writes `renders/purbachal-house-promo.mp4` at 1080x1920 / 30 fps,
+capped near 3 Mbps so the 42-second cut stays under WhatsApp's 16 MB limit.
 
 ## Requirements
 
@@ -45,6 +46,9 @@ and write `renders/purbachal-house-promo.mp4` (1080x1920, 30 fps).
   is one frame at t=0; `fade=...:alpha=1` starting later leaves that frame fully
   transparent and `overlay` repeats it. Loop the overlay input **and** bound it
   with `-t`, or the filtergraph never ends.
+- **The Bengali face has no U+00B7.** A middle dot in a Bengali caption renders
+  as tofu; use `ও` between clauses instead. (The English glosses use DejaVu,
+  which does have it.)
 - Captions state only what is visible on screen. No floor area, room count or
   price was supplied by the client, so none appears in the video.
 
