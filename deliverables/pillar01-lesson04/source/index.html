@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="bn"><head><meta charset="UTF-8" /><meta name="viewport" content="width=1920, height=1080" />
+<title>Lesson 04 — Writing, Content & Communication</title>
+<script src="assets/gsap.min.js"></script><style>@font-face { font-family: "Hind Siliguri"; font-weight: 500; src: url(assets/fonts/hind-siliguri-bengali-500-normal.woff2) format("woff2"); unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+200C-200D, U+25CC; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 600; src: url(assets/fonts/hind-siliguri-bengali-600-normal.woff2) format("woff2"); unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+200C-200D, U+25CC; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 700; src: url(assets/fonts/hind-siliguri-bengali-700-normal.woff2) format("woff2"); unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+200C-200D, U+25CC; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 500; src: url(assets/fonts/hind-siliguri-latin-500-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 600; src: url(assets/fonts/hind-siliguri-latin-600-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 700; src: url(assets/fonts/hind-siliguri-latin-700-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212; }
+@font-face { font-family: "Inter"; font-weight: 600; src: url(assets/fonts/inter-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url(assets/fonts/inter-latin-700-normal.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 800; src: url(assets/fonts/inter-latin-800-normal.woff2) format("woff2"); }
+
+:root { --navy:#0e0b09; --navy2:#1a1410; --cyan:#ffa24c; --purple:#2dd4bf; --pink:#f472b6; --amber:#fde047; --green:#4ade80; --red:#f87171;
+  --ink:#fff4e8; --mute:#c8b6a2; --glass:rgba(44,33,26,.66); --stroke:rgba(255,190,130,.24); --bn:"Hind Siliguri","Inter",sans-serif; --en:"Inter","Hind Siliguri",sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--navy); color: var(--ink); font-family: var(--bn); }
+#root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--navy); }
+.clip { position: absolute; }
+#bg { inset: 0; width: 1920px; height: 1080px; }
+.bgfill { position: absolute; inset: 0; background: radial-gradient(1400px 900px at 30% 10%, #3a2617 0%, var(--navy2) 45%, var(--navy) 100%); }
+.grid { position: absolute; left: -100px; top: -200px; width: 2200px; height: 1600px; opacity: .16;
+  background-image: linear-gradient(rgba(255,162,76,.35) 1px, transparent 1px), linear-gradient(90deg, rgba(255,162,76,.35) 1px, transparent 1px); background-size: 96px 96px; }
+.orb { position: absolute; border-radius: 50%; filter: blur(110px); opacity: .45; width: 700px; height: 700px; display: block; }
+.o1 { left: -260px; top: 120px; background: var(--purple); } .o2 { right: -260px; top: 380px; background: #14b8a6; } .o3 { left: 760px; top: 760px; background: var(--pink); opacity: .22; }
+
+#topbar { left: 80px; top: 34px; width: 1760px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+.brand { font: 800 26px/1 var(--en); letter-spacing: 3px; display: flex; align-items: center; gap: 14px; }
+.brand .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 14px var(--cyan); display: inline-block; }
+.brand .pill { font: 700 20px/1 var(--bn); letter-spacing: 0; color: var(--cyan); border: 2px solid var(--cyan); border-radius: 10px; padding: 6px 12px; }
+.lesson { font: 600 24px/1 var(--bn); color: var(--mute); }
+#prog { left: 80px; top: 104px; width: 1760px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.08); overflow: hidden; }
+#progfill { width: 1760px; height: 6px; background: linear-gradient(90deg, var(--cyan), var(--purple)); transform-origin: 0 50%; transform: scaleX(0); display: block; }
+
+.scene { left: 0; top: 0; width: 1920px; height: 1080px; }
+.chap { position: absolute; left: 80px; top: 136px; width: 1760px; height: 80px; display: flex; align-items: center; gap: 22px; }
+.chap .n { font: 800 26px/1 var(--en); color: var(--navy); background: var(--cyan); border-radius: 12px; padding: 12px 16px; }
+.chap .t { font: 700 50px/1.1 var(--bn); }
+.flash { left: 0; top: 0; width: 1920px; height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: rgba(14,11,9,.86); }
+.flash .fn { font: 800 140px/1 var(--en); background: linear-gradient(90deg, var(--cyan), var(--purple)); -webkit-background-clip: text; background-clip: text; color: transparent; display: block; }
+.flash .ft { font: 700 72px/1.15 var(--bn); }
+.flash .fl { width: 520px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--cyan), var(--purple)); display: block; }
+
+.card { position: absolute; border-radius: 28px; background: var(--glass); border: 2px solid var(--stroke); box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 20px 60px rgba(0,0,0,.35); padding: 34px 38px; }
+.lbl { font: 700 22px/1 var(--en); letter-spacing: 2px; color: var(--mute); text-transform: uppercase; }
+.h { font: 700 44px/1.2 var(--bn); margin-top: 10px; }
+.p { font: 600 30px/1.4 var(--bn); color: var(--ink); opacity: .92; margin-top: 10px; }
+.cy { color: var(--cyan); } .am { color: var(--amber); } .gr { color: var(--green); } .rd { color: var(--red); } .pu { color: #5eead4; }
+.chip { display: inline-flex; align-items: center; gap: 12px; padding: 12px 20px; border-radius: 16px; background: rgba(255,162,76,.08); border: 2px solid rgba(255,162,76,.32); font: 600 28px/1.2 var(--bn); }
+.chips { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 20px; }
+.ic { display: inline-block; width: 40px; height: 40px; flex: 0 0 auto; }
+.ic.lg { width: 76px; height: 76px; }
+.ic svg { width: 100%; height: 100%; fill: none; stroke: var(--cyan); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; display: block; }
+.am svg, .ic.am svg { stroke: var(--amber); } .gr svg { stroke: var(--green); } .rd svg { stroke: var(--red); } .pu svg { stroke: #5eead4; }
+
+/* intro */
+.photo { position: absolute; left: 80px; top: 236px; width: 560px; height: 610px; border-radius: 28px; overflow: hidden; border: 3px solid rgba(255,162,76,.7); box-shadow: 0 0 60px rgba(255,162,76,.3); }
+.photo img { width: 560px; height: 610px; object-fit: cover; object-position: 50% 20%; display: block; transform-origin: 50% 30%; }
+.photo .tag { position: absolute; left: 24px; bottom: 24px; padding: 10px 18px; border-radius: 12px; background: rgba(14,11,9,.78); border-left: 6px solid var(--cyan); font: 700 24px/1.2 var(--bn); }
+.introR { position: absolute; left: 700px; top: 236px; width: 1140px; height: 620px; }
+.kicker { font: 700 26px/1 var(--en); letter-spacing: 3px; color: var(--cyan); }
+.bigt { font: 700 74px/1.12 var(--bn); margin-top: 16px; }
+.sub { font: 600 32px/1.3 var(--bn); color: var(--mute); margin-top: 14px; }
+.road { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; margin-top: 34px; }
+.road .chip { font-size: 27px; }
+.road .num { font: 800 22px/1 var(--en); color: var(--navy); background: var(--cyan); border-radius: 8px; padding: 6px 9px; }
+
+/* what */
+#s02def { left: 80px; top: 236px; width: 1760px; height: 236px; }
+.tiles { position: absolute; left: 80px; top: 496px; width: 1760px; height: 200px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.tile { border-radius: 24px; background: var(--glass); border: 2px solid var(--stroke); padding: 24px; display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+.tile .tt { font: 700 30px/1.25 var(--bn); }
+.tile .ts { font: 500 23px/1.3 var(--bn); color: var(--mute); }
+.note { position: absolute; top: 716px; height: 150px; width: 868px; border-radius: 22px; padding: 22px 28px; display: flex; align-items: center; gap: 20px; font: 600 27px/1.35 var(--bn); }
+.note.l { left: 80px; background: rgba(45,212,191,.14); border: 2px solid rgba(45,212,191,.55); }
+.note.r { left: 972px; background: rgba(253,224,71,.10); border: 2px solid rgba(253,224,71,.5); }
+
+/* compare */
+.col { position: absolute; top: 236px; width: 860px; height: 470px; }
+#s03L { left: 80px; } #s03R { left: 980px; }
+.flow { display: flex; align-items: center; gap: 14px; margin-top: 26px; flex-wrap: wrap; }
+.pill { padding: 14px 22px; border-radius: 16px; font: 700 30px/1.1 var(--bn); background: rgba(255,255,255,.07); border: 2px solid rgba(255,255,255,.2); }
+.pill.k { background: rgba(255,162,76,.14); border-color: rgba(255,162,76,.6); }
+.arrow { font: 800 40px/1 var(--en); color: var(--cyan); }
+.ex { margin-top: 26px; font: 700 52px/1 var(--en); color: var(--green); }
+.fruits { display: flex; gap: 18px; margin-top: 22px; }
+.fruit { width: 128px; height: 108px; border-radius: 18px; background: rgba(255,255,255,.06); border: 2px solid rgba(255,255,255,.18); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font: 600 22px/1 var(--bn); }
+.fruit svg { width: 54px; height: 54px; display: block; }
+#s03hard { position: absolute; left: 1430px; top: 420px; width: 380px; padding: 14px 18px; border-radius: 16px; background: rgba(248,113,113,.14); border: 2px solid rgba(248,113,113,.6); font: 600 24px/1.3 var(--bn); }
+#s03spam { left: 80px; top: 726px; width: 1760px; height: 64px; display: flex; align-items: center; gap: 16px; padding: 0 26px; border-radius: 18px; background: rgba(255,255,255,.05); border: 2px solid rgba(255,255,255,.14); font: 600 26px/1.2 var(--bn); }
+.strip { position: absolute; top: 806px; width: 868px; height: 64px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font: 700 28px/1 var(--bn); }
+#s03b1 { left: 80px; background: rgba(74,222,128,.12); border: 2px solid rgba(74,222,128,.55); color: var(--green); }
+#s03b2 { left: 972px; background: rgba(253,224,71,.12); border: 2px solid rgba(253,224,71,.55); color: var(--amber); }
+
+/* timeline */
+#s04line { left: 140px; top: 556px; width: 1640px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--cyan), var(--purple)); transform-origin: 0 50%; display: block; }
+.node { position: absolute; top: 541px; width: 36px; height: 36px; border-radius: 50%; background: var(--navy); border: 6px solid var(--cyan); box-shadow: 0 0 20px var(--cyan); display: block; }
+.ev { position: absolute; width: 300px; padding: 18px 20px; border-radius: 20px; background: var(--glass); border: 2px solid var(--stroke); }
+.ev.up { top: 270px; height: 240px; } .ev.dn { top: 610px; height: 240px; }
+.ev .yr { font: 800 46px/1 var(--en); color: var(--cyan); }
+.ev .et { font: 600 25px/1.35 var(--bn); margin-top: 10px; }
+#s04wave { position: absolute; left: 705px; top: 600px; width: 290px; font: 600 22px/1.3 var(--bn); color: var(--mute); text-align: center; }
+
+/* flow */
+.steps { position: absolute; left: 80px; top: 236px; width: 1760px; height: 236px; display: flex; align-items: stretch; gap: 0; }
+.step { width: 380px; border-radius: 24px; background: var(--glass); border: 2px solid var(--stroke); padding: 22px 24px; display: flex; flex-direction: column; gap: 10px; }
+.step .sn { font: 800 22px/1 var(--en); color: var(--navy); background: var(--cyan); border-radius: 8px; padding: 6px 10px; align-self: flex-start; }
+.step .st { font: 700 36px/1.1 var(--bn); }
+.step .ss { font: 500 23px/1.3 var(--bn); color: var(--mute); }
+.sarr { width: 80px; display: flex; align-items: center; justify-content: center; font: 800 46px/1 var(--en); color: var(--cyan); }
+.meter { width: 300px; height: 14px; border-radius: 7px; background: rgba(255,255,255,.08); overflow: hidden; margin-top: 4px; }
+.meter i { display: block; width: 300px; height: 14px; background: linear-gradient(90deg, var(--red), var(--amber)); transform-origin: 0 50%; }
+#s05lab { position: absolute; left: 80px; top: 486px; width: 600px; padding: 12px 18px; border-radius: 14px; background: rgba(74,222,128,.10); border: 2px solid rgba(74,222,128,.5); font: 600 24px/1.3 var(--bn); }
+#s05llm { left: 80px; top: 560px; width: 1760px; height: 306px; }
+.bars { display: grid; grid-template-columns: 220px 1fr 90px; gap: 10px 18px; align-items: center; margin-top: 16px; width: 1100px; }
+.bars .w { font: 700 30px/1 var(--bn); }
+.bars .b { height: 26px; border-radius: 13px; background: rgba(255,255,255,.07); overflow: hidden; }
+.bars .b i { display: block; height: 26px; border-radius: 13px; background: linear-gradient(90deg, var(--cyan), var(--purple)); transform-origin: 0 50%; }
+.bars .v { font: 700 26px/1 var(--en); color: var(--mute); }
+.sent { font: 700 40px/1.2 var(--bn); margin-top: 22px; }
+.blank { display: inline-block; min-width: 140px; border-bottom: 4px dashed var(--cyan); }
+#s05ver { position: absolute; left: 1260px; top: 640px; width: 540px; padding: 18px 22px; border-radius: 18px; background: rgba(253,224,71,.12); border: 2px solid rgba(253,224,71,.55); font: 600 27px/1.35 var(--bn); }
+.ex2 { position: absolute; right: 30px; top: 26px; font: 500 20px/1 var(--bn); color: var(--mute); border: 1px dashed rgba(200,182,162,.6); border-radius: 10px; padding: 8px 12px; }
+
+/* apps */
+.appgrid { position: absolute; left: 80px; top: 236px; width: 1760px; height: 630px; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 22px; }
+.app { border-radius: 24px; background: var(--glass); border: 2px solid var(--stroke); padding: 26px 28px; display: flex; flex-direction: column; gap: 12px; }
+.app .at { font: 700 36px/1.1 var(--bn); }
+.app .as { font: 500 25px/1.35 var(--bn); color: var(--ink); opacity: .9; }
+
+/* limits */
+#s07ok { left: 80px; top: 236px; width: 700px; height: 430px; border-color: rgba(74,222,128,.5); }
+#s07ban { left: 80px; top: 690px; width: 700px; height: 176px; border-radius: 24px; display: flex; align-items: center; gap: 20px; padding: 22px 28px; background: linear-gradient(90deg, rgba(255,162,76,.16), rgba(45,212,191,.18)); border: 2px solid rgba(255,162,76,.55); font: 700 30px/1.3 var(--bn); }
+.oklist { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
+.oklist div { font: 600 28px/1.2 var(--bn); display: flex; gap: 14px; align-items: center; }
+#s07lim { left: 820px; top: 236px; width: 1020px; height: 630px; padding: 26px 30px; border-color: rgba(253,224,71,.45); }
+.lrow { display: flex; align-items: center; gap: 18px; padding: 14px 18px; border-radius: 16px; background: rgba(253,224,71,.07); border: 2px solid rgba(253,224,71,.35); margin-top: 12px; }
+.lrow .lt { font: 700 27px/1.15 var(--bn); }
+.lrow .ls { font: 500 21px/1.3 var(--bn); color: var(--mute); margin-top: 4px; }
+
+/* demo */
+.dsteps { position: absolute; left: 80px; top: 236px; width: 520px; height: 630px; display: flex; flex-direction: column; gap: 12px; }
+.ds { display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 16px; background: rgba(255,255,255,.04); border: 2px solid rgba(255,255,255,.12); font: 600 27px/1.2 var(--bn); }
+.ds .dn { font: 800 22px/1 var(--en); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.1); color: var(--ink); flex: 0 0 auto; }
+.ds.on { background: rgba(255,162,76,.12); border-color: rgba(255,162,76,.7); }
+.ds.on .dn { background: var(--cyan); color: var(--navy); }
+#s08def { position: absolute; left: 80px; top: 690px; width: 520px; padding: 16px 20px; border-radius: 16px; background: rgba(45,212,191,.14); border: 2px solid rgba(45,212,191,.55); font: 600 25px/1.35 var(--bn); }
+.browser { position: absolute; left: 640px; top: 230px; width: 1200px; height: 640px; border-radius: 22px; background: #1c1510; border: 2px solid rgba(255,255,255,.16); overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+.bar { height: 58px; background: #2a1f17; display: flex; align-items: center; gap: 12px; padding: 0 18px; }
+.bar i { width: 14px; height: 14px; border-radius: 50%; display: block; }
+.addr { margin-left: 14px; width: 420px; height: 36px; border-radius: 10px; background: rgba(255,255,255,.08); display: flex; align-items: center; padding: 0 14px; font: 600 20px/1 var(--en); color: var(--mute); }
+.illus { margin-left: auto; padding: 8px 14px; border-radius: 10px; background: rgba(253,224,71,.16); border: 1px solid rgba(253,224,71,.7); font: 700 19px/1 var(--bn); color: var(--amber); }
+.chat { position: absolute; left: 0; top: 58px; width: 1200px; height: 486px; padding: 22px 30px; }
+.ub { position: absolute; right: 30px; top: 20px; width: 760px; padding: 16px 20px; border-radius: 18px 18px 4px 18px; background: rgba(255,162,76,.14); border: 1px solid rgba(255,162,76,.4); font: 600 23px/1.4 var(--bn); }
+.ab { position: absolute; left: 30px; top: 150px; width: 960px; padding: 16px 20px; border-radius: 18px 18px 18px 4px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16); font: 500 21px/1.42 var(--bn); }
+.ab .samp { font: 700 17px/1 var(--bn); color: var(--amber); margin-bottom: 8px; display: block; }
+.fu { position: absolute; right: 30px; top: 412px; padding: 12px 18px; border-radius: 16px; background: rgba(255,162,76,.14); border: 1px solid rgba(255,162,76,.4); font: 600 22px/1.2 var(--bn); }
+.inp { position: absolute; left: 30px; bottom: 18px; width: 1140px; height: 78px; border-radius: 18px; background: rgba(255,255,255,.07); border: 2px solid rgba(255,255,255,.18); display: flex; align-items: center; padding: 0 90px 0 20px; font: 600 22px/1.35 var(--bn); }
+.send { position: absolute; right: 16px; top: 15px; width: 46px; height: 46px; border-radius: 50%; background: var(--cyan); display: block; }
+.ptxt .w { opacity: 0; }
+.tagr { color: var(--cyan); } .tagl { color: var(--green); } .tagn { color: var(--amber); } .tage { color: #5eead4; }
+#s08tags { position: absolute; left: 670px; top: 800px; display: flex; gap: 12px; }
+#s08tags .chip { font-size: 22px; padding: 8px 14px; }
+#s08chk { position: absolute; left: 1010px; top: 290px; width: 280px; display: flex; flex-direction: column; gap: 8px; }
+#s08chk .chip { font-size: 20px; padding: 8px 12px; background: rgba(74,222,128,.12); border-color: rgba(74,222,128,.5); }
+#s08ver { position: absolute; left: 1260px; top: 250px; padding: 12px 18px; border-radius: 14px; background: rgba(74,222,128,.16); border: 2px solid rgba(74,222,128,.7); font: 700 22px/1 var(--bn); color: var(--green); }
+#s08priv { position: absolute; left: 640px; top: 800px; width: 1200px; padding: 14px 20px; border-radius: 16px; background: rgba(248,113,113,.16); border: 2px solid rgba(248,113,113,.7); font: 700 25px/1.2 var(--bn); color: var(--red); }
+
+/* assignment */
+.ws { position: absolute; left: 80px; top: 236px; width: 1180px; height: 620px; border-radius: 24px; background: rgba(255,255,255,.04); border: 2px solid var(--stroke); padding: 26px; }
+.wsh { display: grid; grid-template-columns: 60px 1fr 1fr 1fr 1fr; gap: 10px; }
+.wsh div { font: 700 23px/1.2 var(--bn); color: var(--cyan); padding: 12px 10px; background: rgba(255,162,76,.08); border-radius: 10px; }
+.wsr { display: grid; grid-template-columns: 60px 1fr 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
+.wsr div { height: 76px; border-radius: 10px; border: 2px dashed rgba(255,255,255,.18); display: flex; align-items: center; justify-content: center; font: 700 26px/1 var(--en); color: var(--mute); }
+#s09note { left: 1300px; top: 236px; width: 540px; height: 230px; background: rgba(253,224,71,.12); border-color: rgba(253,224,71,.55); transform: rotate(-1.5deg); }
+#s09chk { left: 1300px; top: 490px; width: 540px; height: 366px; }
+.ck { display: flex; gap: 12px; align-items: flex-start; font: 600 24px/1.35 var(--bn); margin-top: 14px; }
+.box { width: 26px; height: 26px; border-radius: 7px; border: 3px solid var(--green); flex: 0 0 auto; margin-top: 4px; display: block; }
+
+/* recap */
+.photo.sm { left: 80px; top: 236px; width: 440px; height: 520px; }
+.photo.sm img { width: 440px; height: 520px; }
+.rlist { position: absolute; left: 570px; top: 236px; width: 760px; height: 520px; display: flex; flex-direction: column; gap: 12px; }
+.rl { display: flex; align-items: center; gap: 16px; padding: 14px 20px; border-radius: 16px; background: rgba(74,222,128,.07); border: 2px solid rgba(74,222,128,.35); font: 600 28px/1.2 var(--bn); }
+#s10key { left: 570px; top: 776px; width: 1270px; height: 90px; border-radius: 22px; display: flex; align-items: center; gap: 18px; padding: 0 26px; background: linear-gradient(90deg, rgba(255,162,76,.16), rgba(45,212,191,.18)); border: 2px solid rgba(255,162,76,.55); font: 700 28px/1.2 var(--bn); }
+#s10next { left: 1370px; top: 236px; width: 470px; height: 520px; border-color: rgba(45,212,191,.6); }
+.endc { left: 0; top: 0; width: 1920px; height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; background: rgba(14,11,9,.94); }
+
+/* captions */
+.cap { left: 160px; top: 902px; width: 1600px; height: 150px; display: flex; align-items: flex-start; justify-content: center; }
+.capbox { max-width: 1600px; padding: 12px 28px; border-radius: 18px; background: rgba(14,10,7,.84); border: 2px solid rgba(255,162,76,.22); font: 700 42px/1.35 var(--bn); text-align: center; display: block; }
+.capbox .kw { color: var(--cyan); }
+/* ===== Lesson 02 additions ===== */
+.chap .n { min-width: 112px; text-align: center; }
+/* s02 circles */
+.rings { position: absolute; left: 120px; top: 236px; width: 760px; height: 640px; transform-origin: 50% 50%; }
+.ring { position: absolute; border-radius: 50%; display: flex; justify-content: center; align-items: flex-start; }
+.ring .rl2 { font: 800 27px/1 var(--en); margin-top: 22px; padding: 6px 14px; border-radius: 10px; background: rgba(14,11,9,.55); white-space: nowrap; }
+.ring.r3 { align-items: center; } .ring.r3 .rl2 { margin-top: 0; font-size: 25px; background: none; }
+.ring.r0 { background: rgba(255,162,76,.07); border: 4px solid rgba(255,162,76,.85); box-shadow: 0 0 50px rgba(255,162,76,.25); } .ring.r0 .rl2 { color: var(--cyan); }
+.ring.r1 { background: rgba(45,212,191,.12); border: 4px solid rgba(45,212,191,.95); box-shadow: 0 0 40px rgba(45,212,191,.3); } .ring.r1 .rl2 { color: #5eead4; }
+.ring.r2 { background: rgba(244,114,182,.14); border: 4px solid rgba(244,114,182,.95); box-shadow: 0 0 40px rgba(244,114,182,.3); } .ring.r2 .rl2 { color: #f9a8d4; }
+.ring.r3 { background: rgba(253,224,71,.18); border: 4px solid rgba(253,224,71,.95); box-shadow: 0 0 40px rgba(253,224,71,.35); } .ring.r3 .rl2 { color: var(--amber); }
+.defs { position: absolute; left: 960px; top: 236px; width: 880px; height: 470px; display: flex; flex-direction: column; gap: 12px; }
+.drow { display: flex; align-items: center; gap: 18px; padding: 14px 20px; border-radius: 18px; background: var(--glass); border: 2px solid var(--stroke); }
+.drow .dot2 { width: 26px; height: 26px; border-radius: 50%; flex: 0 0 auto; display: block; }
+.drow .dt { font: 800 28px/1.1 var(--en); } .drow .dd { font: 600 25px/1.3 var(--bn); color: var(--ink); opacity: .9; margin-top: 4px; }
+.drow .dn2 { font: 600 21px/1.3 var(--bn); color: var(--amber); margin-top: 4px; }
+#s02rule { left: 960px; top: 726px; width: 880px; height: 140px; display: flex; align-items: center; gap: 20px; padding: 0 28px; border-radius: 22px; background: linear-gradient(90deg, rgba(255,162,76,.16), rgba(45,212,191,.18)); border: 2px solid rgba(255,162,76,.55); font: 700 29px/1.35 var(--bn); }
+/* s03 ML types */
+#s03head { left: 80px; top: 236px; width: 1760px; height: 80px; display: flex; align-items: center; justify-content: center; gap: 26px; border-radius: 20px; background: rgba(255,255,255,.05); border: 2px solid rgba(255,255,255,.14); font: 700 30px/1 var(--bn); }
+.mlc { position: absolute; top: 336px; width: 570px; height: 440px; }
+.mlc .h { font-size: 36px; } .mlc .p { font-size: 24px; color: var(--mute); margin-top: 4px; }
+.mrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; margin-top: 12px; border-radius: 14px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.14); font: 600 23px/1.2 var(--bn); }
+.mrow .tg { font: 700 21px/1 var(--bn); padding: 6px 12px; border-radius: 10px; }
+.tg.bad { color: var(--red); background: rgba(248,113,113,.14); border: 1px solid rgba(248,113,113,.6); }
+.tg.good { color: var(--green); background: rgba(74,222,128,.14); border: 1px solid rgba(74,222,128,.6); }
+.dots { position: relative; width: 494px; height: 230px; margin-top: 14px; border-radius: 16px; background: rgba(255,255,255,.03); border: 1px dashed rgba(255,255,255,.18); }
+.dt3 { position: absolute; width: 22px; height: 22px; border-radius: 50%; display: block; }
+.rlbox { position: relative; width: 494px; height: 230px; margin-top: 14px; }
+.agent { position: absolute; left: 30px; top: 70px; width: 96px; height: 96px; border-radius: 24px; background: rgba(255,162,76,.12); border: 2px solid rgba(255,162,76,.6); display: flex; align-items: center; justify-content: center; }
+.agent .ic { width: 60px; height: 60px; }
+.rw { position: absolute; left: 230px; width: 250px; padding: 12px 16px; border-radius: 14px; font: 700 24px/1.2 var(--bn); }
+.rw.p { top: 30px; color: var(--green); background: rgba(74,222,128,.12); border: 2px solid rgba(74,222,128,.55); }
+.rw.n { top: 130px; color: var(--red); background: rgba(248,113,113,.12); border: 2px solid rgba(248,113,113,.55); }
+.rarr { position: absolute; left: 140px; top: 100px; font: 800 44px/1 var(--en); color: var(--cyan); }
+#s03foot { left: 80px; top: 796px; width: 1760px; height: 70px; display: flex; align-items: center; justify-content: center; gap: 16px; border-radius: 18px; background: rgba(74,222,128,.12); border: 2px solid rgba(74,222,128,.55); font: 700 30px/1 var(--bn); color: var(--green); }
+/* s04 neural network */
+#s04net { left: 80px; top: 236px; width: 1220px; height: 470px; padding: 0; overflow: hidden; }
+#s04net svg.lines { position: absolute; left: 0; top: 0; width: 1220px; height: 470px; }
+#s04net svg.lines line { stroke: rgba(255,190,130,.32); stroke-width: 2; }
+#s04net svg.lines line.wt { stroke: var(--amber); stroke-width: 5; }
+.nn { position: absolute; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; background: #241a12; border: 4px solid var(--cyan); box-shadow: 0 0 16px rgba(255,162,76,.6); display: block; }
+.nn.h { border-color: #5eead4; box-shadow: 0 0 16px rgba(45,212,191,.7); }
+.nn.o { border-color: var(--green); box-shadow: 0 0 16px rgba(74,222,128,.7); }
+.lyl { position: absolute; top: 420px; width: 220px; margin-left: -110px; text-align: center; font: 700 22px/1.1 var(--bn); color: var(--mute); }
+.outl { position: absolute; font: 700 26px/1 var(--bn); }
+.pix { position: absolute; left: 24px; top: 150px; width: 110px; height: 110px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+.pix i { display: block; border-radius: 3px; }
+#s04wt { position: absolute; padding: 6px 12px; border-radius: 10px; background: rgba(253,224,71,.16); border: 2px solid rgba(253,224,71,.8); font: 700 22px/1 var(--en); color: var(--amber); }
+#s04deep { position: absolute; left: 470px; top: 18px; padding: 10px 18px; border-radius: 12px; background: rgba(244,114,182,.18); border: 2px solid rgba(244,114,182,.8); font: 700 25px/1 var(--bn); color: #f9a8d4; }
+#s04note { left: 1340px; top: 236px; width: 500px; height: 220px; background: rgba(45,212,191,.14); border-color: rgba(45,212,191,.55); }
+#s04note .p { font-size: 27px; }
+#s04use { left: 1340px; top: 476px; width: 500px; height: 230px; }
+#s04use .chip { font-size: 24px; padding: 10px 14px; }
+.feat { position: absolute; left: 80px; top: 726px; width: 1760px; height: 140px; display: flex; align-items: center; gap: 0; }
+.fbox { width: 520px; height: 120px; border-radius: 20px; background: var(--glass); border: 2px solid var(--stroke); display: flex; align-items: center; gap: 18px; padding: 0 24px; font: 700 28px/1.2 var(--bn); }
+.fbox svg { width: 96px; height: 80px; flex: 0 0 auto; display: block; }
+.farr { width: 100px; text-align: center; font: 800 44px/1 var(--en); color: var(--cyan); }
+/* s05 gen ai */
+.gcard { position: absolute; top: 236px; width: 800px; height: 300px; }
+#s05L { left: 80px; } #s05R { left: 1040px; border-color: rgba(253,224,71,.6); background: rgba(253,224,71,.08); }
+.gq { display: flex; align-items: center; gap: 14px; margin-top: 18px; font: 600 27px/1.2 var(--bn); }
+.gq svg { width: 52px; height: 52px; display: block; }
+#s05arr { position: absolute; left: 900px; top: 340px; width: 120px; text-align: center; font: 800 70px/1 var(--en); color: var(--amber); }
+.spark { position: absolute; width: 20px; height: 20px; display: block; background: var(--amber); clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); }
+.outs { position: absolute; left: 80px; top: 560px; width: 1760px; height: 200px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+.outs .tile { align-items: center; text-align: center; }
+#s05ban { left: 80px; top: 780px; width: 1760px; height: 86px; display: flex; align-items: center; gap: 18px; padding: 0 28px; border-radius: 20px; background: rgba(253,224,71,.12); border: 2px solid rgba(253,224,71,.6); font: 700 27px/1.25 var(--bn); }
+/* s06 llm */
+#s06def { left: 80px; top: 236px; width: 1760px; height: 150px; }
+#s06def .h { font-size: 38px; margin-top: 12px; }
+#s06as { position: absolute; left: 80px; top: 404px; width: 1760px; height: 74px; display: flex; align-items: center; gap: 16px; }
+#s06as .chip { font: 800 28px/1 var(--en); }
+#s06as .arrow { margin: 0 6px; }
+#s06as .eng { font: 700 28px/1 var(--bn); color: var(--amber); padding: 12px 18px; border-radius: 14px; border: 2px solid rgba(253,224,71,.6); background: rgba(253,224,71,.10); }
+.lstep { position: absolute; top: 496px; width: 800px; height: 264px; }
+#s06p1 { left: 80px; } #s06p2 { left: 1040px; border-color: rgba(45,212,191,.6); }
+.lstep .h { font-size: 36px; display: flex; align-items: center; gap: 14px; }
+.lstep .p { font-size: 25px; }
+#s06arr { position: absolute; left: 900px; top: 590px; width: 120px; text-align: center; font: 800 60px/1 var(--en); color: var(--cyan); }
+.nxtw { margin-top: 14px; font: 700 30px/1 var(--bn); }
+.nxtw .blank { min-width: 110px; }
+.nxtw .fill { color: var(--cyan); }
+.blist { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; }
+.blist .chip { font-size: 22px; padding: 8px 12px; background: rgba(45,212,191,.12); border-color: rgba(45,212,191,.5); }
+#s06note { left: 80px; top: 780px; width: 1760px; height: 86px; display: flex; align-items: center; gap: 18px; padding: 0 28px; border-radius: 20px; background: rgba(253,224,71,.12); border: 2px solid rgba(253,224,71,.6); font: 700 27px/1.25 var(--bn); }
+/* s07 data */
+#s07L { left: 80px; top: 236px; width: 700px; height: 630px; }
+.dgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+.dgrid .tile { padding: 16px 18px; flex-direction: row; align-items: center; gap: 14px; justify-content: flex-start; }
+.dgrid .tt { font-size: 28px; }
+.hw { margin-top: 20px; padding: 16px 18px; border-radius: 18px; background: rgba(255,162,76,.07); border: 2px dashed rgba(255,162,76,.45); }
+.hw .hl { font: 600 22px/1.3 var(--bn); color: var(--mute); }
+.hwr { display: flex; gap: 12px; margin-top: 12px; }
+.hwc { width: 112px; height: 104px; border-radius: 14px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.18); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.hwc b { font: 500 46px/1 var(--bn); font-style: italic; transform: rotate(-6deg); display: block; }
+.hwc span { font: 700 18px/1 var(--bn); color: var(--green); }
+.drows { position: absolute; left: 820px; top: 236px; width: 1020px; height: 630px; display: flex; flex-direction: column; gap: 14px; }
+.drw { height: 146px; display: flex; align-items: center; gap: 22px; padding: 0 26px; border-radius: 22px; background: var(--glass); border: 2px solid var(--stroke); }
+.drw .lt { font: 700 32px/1.15 var(--bn); } .drw .ls { font: 500 23px/1.35 var(--bn); color: var(--mute); margin-top: 6px; }
+.drw.w { border-color: rgba(253,224,71,.5); background: rgba(253,224,71,.07); }
+/* s08 tokens */
+#s08tok { left: 80px; top: 236px; width: 1760px; height: 300px; }
+.trow { display: flex; align-items: center; gap: 8px; margin-top: 16px; flex-wrap: nowrap; }
+.trow .lang { width: 150px; font: 700 24px/1 var(--bn); color: var(--mute); flex: 0 0 auto; }
+.tk { padding: 10px 12px; border-radius: 10px; font: 700 30px/1 var(--bn); white-space: pre; border: 2px solid; display: inline-block; }
+.trow .cnt { margin-left: 18px; font: 800 26px/1 var(--en); color: var(--amber); flex: 0 0 auto; }
+#s08rule { position: absolute; right: 38px; top: 30px; padding: 10px 16px; border-radius: 12px; background: rgba(255,162,76,.10); border: 2px solid rgba(255,162,76,.5); font: 600 22px/1.25 var(--bn); max-width: 640px; }
+#s08ctx { left: 80px; top: 556px; width: 820px; height: 310px; }
+.cwin { margin-top: 18px; width: 740px; height: 46px; border-radius: 14px; border: 2px solid rgba(255,162,76,.6); background: rgba(255,255,255,.04); overflow: hidden; position: relative; }
+.cwin i { position: absolute; left: 0; top: 0; width: 740px; height: 42px; display: block; transform-origin: 0 50%; background: repeating-linear-gradient(90deg, var(--cyan) 0 34px, rgba(255,162,76,.35) 34px 38px); opacity: .8; }
+.cost { margin-top: 18px; display: flex; gap: 12px; }
+.cost .chip { font-size: 23px; padding: 10px 14px; background: rgba(253,224,71,.10); border-color: rgba(253,224,71,.5); }
+#s08inf { left: 940px; top: 556px; width: 900px; height: 310px; border-color: rgba(74,222,128,.55); }
+.ians { margin-top: 14px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.ians .q { font: 600 25px/1 var(--bn); color: var(--mute); margin-right: 6px; }
+.ians .tk { font-size: 27px; padding: 8px 10px; }
+.tcmp { margin-top: 18px; display: flex; gap: 12px; }
+.tcmp .chip { font-size: 22px; padding: 10px 14px; }
+#s08var { position: absolute; left: 1300px; top: 500px; padding: 10px 16px; border-radius: 12px; background: rgba(253,224,71,.16); border: 2px solid rgba(253,224,71,.7); font: 700 22px/1.2 var(--bn); color: var(--amber); }
+/* s09 search vs assistant */
+.pan { position: absolute; top: 236px; width: 860px; height: 420px; border-radius: 22px; background: #1c1510; border: 2px solid rgba(255,255,255,.16); overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+#s09A { left: 80px; } #s09B { left: 980px; }
+.pan .bar { height: 54px; }
+.pan .addr { width: 330px; font: 700 20px/1 var(--bn); }
+.pan .illus { font-size: 17px; padding: 6px 10px; }
+.pbody { position: absolute; left: 0; top: 54px; width: 860px; height: 366px; padding: 18px 24px; }
+.qbox { height: 50px; border-radius: 25px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.2); display: flex; align-items: center; padding: 0 20px; font: 600 22px/1 var(--bn); color: var(--ink); }
+.lnk { margin-top: 12px; padding: 10px 16px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); }
+.lnk .lt3 { font: 700 23px/1.2 var(--bn); color: #fdba74; } .lnk .lu { font: 500 18px/1.2 var(--en); color: var(--green); margin-top: 4px; }
+.aib { margin-top: 14px; padding: 14px 18px; border-radius: 16px 16px 16px 4px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16); }
+.aib .ln { height: 14px; border-radius: 7px; background: rgba(255,244,232,.28); margin-top: 12px; display: block; transform-origin: 0 50%; }
+.aib .at3 { font: 600 22px/1.3 var(--bn); }
+.fub { margin-top: 12px; margin-left: auto; width: 470px; padding: 10px 16px; border-radius: 16px 16px 4px 16px; background: rgba(255,162,76,.14); border: 1px solid rgba(255,162,76,.4); font: 600 21px/1.25 var(--bn); }
+.hyb { position: absolute; right: 22px; padding: 6px 12px; border-radius: 10px; font: 700 18px/1 var(--bn); color: #5eead4; background: rgba(45,212,191,.18); border: 1px solid rgba(45,212,191,.7); }
+.pc { position: absolute; top: 676px; width: 860px; height: 190px; display: flex; flex-direction: column; gap: 12px; }
+#s09pa { left: 80px; } #s09pb { left: 980px; }
+.pc .pr { display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-radius: 16px; font: 600 24px/1.3 var(--bn); }
+.pr.g { background: rgba(74,222,128,.10); border: 2px solid rgba(74,222,128,.5); }
+.pr.a { background: rgba(253,224,71,.10); border: 2px solid rgba(253,224,71,.5); }
+#s09rule { left: 80px; top: 676px; width: 1760px; height: 190px; display: flex; align-items: center; justify-content: center; gap: 22px; border-radius: 22px; background: linear-gradient(90deg, rgba(255,162,76,.16), rgba(45,212,191,.18)); border: 2px solid rgba(255,162,76,.55); font: 700 34px/1.3 var(--bn); padding: 0 40px; }
+.exq { position: absolute; top: 676px; width: 860px; height: 190px; padding: 20px 26px; border-radius: 22px; background: var(--glass); border: 2px solid var(--stroke); }
+#s09e1 { left: 80px; } #s09e2 { left: 980px; }
+.exq .qq { font: 700 28px/1.25 var(--bn); }
+.exq .ans { margin-top: 14px; font: 600 24px/1.3 var(--bn); }
+.stamp { display: inline-block; padding: 6px 12px; border-radius: 10px; font: 800 21px/1 var(--bn); margin-right: 10px; }
+.stamp.s { color: var(--navy); background: #fdba74; } .stamp.a { color: var(--navy); background: var(--amber); }
+/* s10 exercise */
+.ws2 { position: absolute; left: 80px; top: 236px; width: 1040px; height: 630px; border-radius: 24px; background: rgba(255,255,255,.04); border: 2px solid var(--stroke); padding: 24px; }
+.ws2 .wsh, .ws2 .wsr { grid-template-columns: 250px repeat(4, 1fr); }
+.ws2 .wsh div { font-size: 22px; text-align: center; }
+.ws2 .wsr div { height: 96px; font: 700 21px/1.2 var(--en); }
+.ws2 .wsr div.q { font: 700 22px/1.25 var(--bn); color: var(--ink); border-style: solid; border-color: rgba(255,162,76,.3); background: rgba(255,162,76,.06); padding: 0 10px; text-align: center; }
+.ptag { font: 700 24px/1 var(--bn); color: var(--navy); background: var(--cyan); border-radius: 10px; padding: 8px 14px; display: inline-block; }
+#s10save { position: absolute; left: 104px; top: 770px; width: 990px; padding: 14px 20px; border-radius: 16px; background: rgba(74,222,128,.12); border: 2px solid rgba(74,222,128,.55); font: 600 24px/1.3 var(--bn); display: flex; gap: 14px; align-items: center; }
+.cls { position: absolute; left: 1160px; top: 236px; width: 680px; height: 630px; }
+.cgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+.cc { position: relative; height: 118px; border-radius: 18px; background: var(--glass); border: 2px solid var(--stroke); display: flex; align-items: center; padding: 0 70px 0 18px; font: 700 25px/1.25 var(--bn); }
+.cc .qm { position: absolute; right: 14px; top: 34px; width: 46px; height: 46px; border-radius: 50%; background: var(--amber); color: var(--navy); font: 800 28px/46px var(--en); text-align: center; display: block; }
+.legend { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
+.legend span { font: 800 22px/1 var(--en); padding: 8px 12px; border-radius: 10px; border: 2px solid; }
+/* s11 recap */
+#s11key { left: 570px; top: 776px; width: 1270px; height: 90px; border-radius: 22px; display: flex; align-items: center; gap: 18px; padding: 0 26px; background: linear-gradient(90deg, rgba(255,162,76,.16), rgba(45,212,191,.18)); border: 2px solid rgba(255,162,76,.55); font: 700 27px/1.2 var(--bn); }
+#s11next { left: 1370px; top: 236px; width: 470px; height: 520px; border-color: rgba(45,212,191,.6); }
+#s11next .chip { font-size: 23px; padding: 8px 12px; }
+.rl { font-size: 26px; }
+
+/* QC fixes */
+.rw { left: 175px; width: 300px; white-space: nowrap; font-size: 23px; } .rw.p { top: 22px; } .rw.n { top: 142px; } .rarr { left: 128px; }
+.pix { top: 170px; } .lyl { top: 440px; }
+#s04deep { left: 518px; top: 8px; }
+.nxtw { position: absolute; right: 38px; top: 34px; margin: 0; }
+.ians .q { font-size: 24px; } .ians .tk { font-size: 26px; }
+
+/* ===== Lesson 03 warm-studio additions ===== */
+.grid { opacity: .10; }
+.o1 { background: #f97316; } .o3 { background: #2dd4bf; opacity: .18; }
+.photo img { object-position: 50% 30%; }
+.photo video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lipbadge { position: absolute; right: 18px; top: 18px; padding: 6px 12px; border-radius: 10px; background: rgba(14,11,9,.75); border: 1px solid rgba(255,162,76,.6); font: 700 18px/1 var(--bn); color: var(--cyan); }
+/* s02 families */
+.fam { position: absolute; left: 80px; top: 236px; width: 1760px; height: 520px; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 22px; }
+.fam .tile { flex-direction: row; align-items: center; gap: 22px; padding: 24px 30px; }
+.fam .tt { font-size: 38px; } .fam .ts { font-size: 23px; margin-top: 6px; }
+.ribbon { position: absolute; left: 80px; top: 780px; width: 1760px; height: 86px; display: flex; align-items: center; gap: 18px; padding: 0 28px; border-radius: 20px; background: rgba(253,224,71,.10); border: 2px solid rgba(253,224,71,.6); font: 700 27px/1.25 var(--bn); }
+#s02fl { left: 80px; top: 676px; width: 1760px; height: 80px; display: flex; align-items: center; justify-content: center; gap: 16px; border-radius: 18px; background: rgba(45,212,191,.10); border: 2px solid rgba(45,212,191,.5); font: 600 25px/1.2 var(--bn); }
+/* two-card scenes */
+.half { position: absolute; top: 236px; width: 860px; height: 530px; }
+.half.l { left: 80px; } .half.r { left: 980px; }
+.half .h { font-size: 38px; display: flex; align-items: center; gap: 16px; }
+.uses { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.uses .chip { font-size: 24px; padding: 10px 16px; }
+.names { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.names span { font: 800 24px/1 var(--en); padding: 10px 14px; border-radius: 12px; background: rgba(45,212,191,.12); border: 2px solid rgba(45,212,191,.55); color: #5eead4; }
+.rsrow { display: flex; align-items: center; gap: 16px; margin-top: 14px; padding: 12px 16px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); }
+.rsrow b { font: 800 26px/1 var(--en); color: #5eead4; min-width: 200px; }
+.rsrow span { font: 600 23px/1.3 var(--bn); }
+.foot { position: absolute; left: 80px; top: 786px; width: 1760px; height: 80px; display: flex; align-items: center; gap: 16px; padding: 0 28px; border-radius: 18px; font: 700 27px/1.25 var(--bn); }
+.foot.am { background: rgba(253,224,71,.10); border: 2px solid rgba(253,224,71,.6); color: var(--ink); }
+.foot.rd { background: rgba(248,113,113,.12); border: 2px solid rgba(248,113,113,.65); color: var(--ink); }
+.foot.gr { background: rgba(74,222,128,.10); border: 2px solid rgba(74,222,128,.55); color: var(--ink); }
+.pbar { margin-top: 16px; height: 54px; border-radius: 27px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,190,130,.35); display: flex; align-items: center; padding: 0 22px; font: 600 23px/1 var(--bn); }
+.pbar .w { opacity: 0; }
+.thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+.thumbs i { display: block; height: 120px; border-radius: 14px; }
+.film { margin-top: 16px; height: 130px; border-radius: 14px; overflow: hidden; position: relative; background: #000; border: 2px solid rgba(255,255,255,.15); }
+.film .strip { position: absolute; left: 0; top: 14px; width: 2200px; height: 102px; display: flex; gap: 10px; }
+.film .strip i { display: block; width: 170px; height: 102px; border-radius: 8px; }
+.film .play { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: rgba(255,162,76,.92); clip-path: none; }
+.film .play::after { content: ""; position: absolute; left: 25px; top: 18px; border-left: 22px solid #0e0b09; border-top: 14px solid transparent; border-bottom: 14px solid transparent; }
+.illus2 { position: absolute; right: 30px; top: 26px; font: 700 18px/1 var(--bn); color: var(--amber); border: 1px solid rgba(253,224,71,.7); background: rgba(253,224,71,.12); padding: 6px 10px; border-radius: 10px; }
+.wave { display: flex; align-items: center; gap: 5px; height: 90px; margin-top: 14px; }
+.wave i { display: block; width: 10px; border-radius: 5px; background: linear-gradient(180deg, var(--cyan), var(--purple)); }
+.arow { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.arow .chip { font-size: 22px; padding: 8px 12px; }
+.code { margin-top: 16px; border-radius: 16px; background: #120d0a; border: 1px solid rgba(255,255,255,.14); padding: 16px 20px; font: 600 23px/1.6 "Inter", monospace; color: #e7d9c8; }
+.code .k { color: #5eead4; } .code .s { color: #fdba74; } .code .ghost { color: rgba(255,244,232,.38); }
+.code .tabk { display: inline-block; margin-left: 10px; padding: 2px 10px; border-radius: 6px; border: 1px solid rgba(255,162,76,.7); color: var(--cyan); font-size: 18px; }
+/* assistant profile */
+.prof { position: absolute; left: 80px; top: 236px; width: 760px; height: 630px; }
+.glyph { width: 120px; height: 120px; border-radius: 30px; display: flex; align-items: center; justify-content: center; font: 800 54px/1 var(--en); color: #0e0b09; }
+.pname { font: 800 60px/1 var(--en); margin-top: 22px; }
+.pmeta { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+.pmeta div { font: 600 26px/1.3 var(--bn); display: flex; gap: 12px; align-items: center; }
+.pmeta b { color: var(--mute); font-weight: 600; min-width: 130px; }
+.ptag { font: 700 22px/1 var(--bn); padding: 10px 14px; border-radius: 12px; display: inline-block; margin-top: 22px; }
+.caps { position: absolute; left: 880px; top: 236px; width: 960px; height: 300px; }
+.caps .uses .chip { font-size: 25px; }
+.usec { position: absolute; left: 880px; top: 556px; width: 960px; height: 310px; }
+.usec .p { font-size: 26px; }
+.lim { margin-top: 14px; font: 600 22px/1.3 var(--bn); color: var(--amber); }
+.orbit { position: absolute; left: 520px; top: 40px; width: 210px; height: 210px; }
+.orbit span { position: absolute; padding: 6px 10px; border-radius: 10px; font: 700 18px/1 var(--en); background: rgba(45,212,191,.15); border: 1px solid rgba(45,212,191,.6); color: #5eead4; }
+.pdfs { position: absolute; right: 40px; top: 60px; width: 200px; height: 200px; }
+.pdfs i { position: absolute; width: 110px; height: 140px; border-radius: 10px; background: #f5ebe0; border: 2px solid #c8b6a2; display: block; }
+.pdfs b { position: absolute; left: 70px; top: 110px; width: 130px; padding: 10px; border-radius: 12px; background: rgba(74,222,128,.18); border: 2px solid rgba(74,222,128,.7); font: 700 18px/1.2 var(--bn); color: var(--green); }
+/* pricing */
+.pcol { position: absolute; top: 236px; width: 860px; height: 330px; }
+.pcol.l { left: 80px; } .pcol.r { left: 980px; border-color: rgba(255,162,76,.65); }
+.prow { display: flex; align-items: center; gap: 14px; font: 600 27px/1.3 var(--bn); margin-top: 16px; }
+.pstrip { position: absolute; left: 80px; top: 586px; width: 1760px; height: 180px; padding: 22px 30px; border-radius: 22px; background: rgba(255,255,255,.04); border: 2px dashed rgba(255,190,130,.45); }
+.pstrip .row { display: flex; gap: 18px; margin-top: 14px; }
+.price { flex: 1; padding: 14px 18px; border-radius: 16px; background: var(--glass); border: 2px solid var(--stroke); }
+.price b { font: 800 26px/1 var(--en); display: block; } .price span { font: 800 34px/1.2 var(--en); color: var(--cyan); }
+.pnote { font: 600 21px/1.3 var(--bn); color: var(--mute); }
+/* choose */
+.q4g { position: absolute; left: 80px; top: 236px; width: 1760px; height: 420px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 20px; }
+.q4 { border-radius: 24px; background: var(--glass); border: 2px solid var(--stroke); padding: 22px 28px; display: flex; gap: 22px; align-items: center; }
+.q4 .qn { font: 800 54px/1 var(--en); color: var(--cyan); min-width: 60px; }
+.q4 .qt { font: 700 32px/1.2 var(--bn); } .q4 .qs { font: 500 22px/1.35 var(--bn); color: var(--mute); margin-top: 6px; }
+.exflow { position: absolute; left: 80px; top: 680px; width: 1760px; height: 186px; padding: 20px 28px; border-radius: 22px; background: rgba(45,212,191,.08); border: 2px solid rgba(45,212,191,.5); }
+.exflow .pills { display: flex; align-items: center; gap: 14px; margin-top: 16px; flex-wrap: wrap; }
+.exflow .pills .pill { font-size: 26px; }
+/* compare */
+.pcard { position: absolute; left: 80px; top: 236px; width: 1760px; height: 140px; padding: 18px 28px; }
+.pcard .pt { font: 600 26px/1.4 var(--bn); margin-top: 10px; } .pcard .pt .w { opacity: 0; }
+.cpan { position: absolute; top: 396px; width: 570px; height: 250px; border-radius: 20px; background: #1c1510; border: 2px solid rgba(255,255,255,.14); overflow: hidden; }
+.cpan .bar { height: 46px; } .cpan .addr { width: 200px; height: 30px; font: 800 18px/1 var(--en); }
+.cpan .illus { font-size: 14px; padding: 5px 8px; }
+.cpan .body { padding: 16px 20px; }
+.cpan .ln { display: block; height: 13px; border-radius: 7px; background: rgba(255,244,232,.26); margin-top: 13px; transform-origin: 0 50%; }
+.score { position: absolute; left: 80px; top: 666px; width: 1760px; height: 200px; padding: 14px 24px; border-radius: 22px; background: var(--glass); border: 2px solid var(--stroke); }
+.sg { display: grid; grid-template-columns: 300px repeat(4, 1fr); gap: 8px 14px; align-items: center; }
+.sg .hd { font: 700 21px/1.2 var(--bn); color: var(--cyan); text-align: center; }
+.sg .tn { font: 800 22px/1 var(--en); }
+.dots5 { display: flex; gap: 8px; justify-content: center; }
+.dots5 i { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,190,130,.5); display: block; }
+.dots5 i.f { background: var(--cyan); border-color: var(--cyan); }
+.sub2 { position: absolute; right: 26px; top: 12px; font: 700 18px/1 var(--bn); color: var(--amber); }
+#s12key { left: 570px; top: 776px; width: 1270px; height: 90px; border-radius: 22px; display: flex; align-items: center; gap: 18px; padding: 0 26px; background: linear-gradient(90deg, rgba(255,162,76,.16), rgba(45,212,191,.16)); border: 2px solid rgba(255,162,76,.55); font: 700 27px/1.2 var(--bn); }
+#s12next { left: 1370px; top: 236px; width: 470px; height: 520px; border-color: rgba(45,212,191,.6); }
+
+/* QC fixes */
+.pbar { gap: 9px; }
+.glyph { font-size: 44px; }
+.sub2 { top: auto; bottom: 10px; }
+.score { padding-top: 18px; }
+.sg { row-gap: 14px; }
+
+/* ===== Lesson 04 additions ===== */
+.talkv { position: absolute; object-fit: cover; border-radius: 25px; }
+.talko { position: absolute; pointer-events: none; }
+.talko .tag { position: absolute; left: 24px; bottom: 24px; padding: 10px 18px; border-radius: 12px; background: rgba(14,11,9,.78); border-left: 6px solid var(--cyan); font: 700 24px/1.2 var(--bn); }
+.bigt { font-size: 66px; }
+/* formula */
+.fgrid { position: absolute; left: 80px; top: 236px; width: 1760px; height: 340px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
+.ftile { border-radius: 24px; background: var(--glass); border: 3px solid; padding: 24px 20px; display: flex; flex-direction: column; gap: 10px; }
+.ftile .fn { font: 800 54px/1 var(--en); }
+.ftile .ft { font: 700 40px/1.1 var(--bn); }
+.ftile .fd { font: 500 22px/1.35 var(--bn); color: var(--mute); }
+/* email panels */
+.sprompt { font: 600 22px/1.75 var(--bn); }
+.sp { padding: 2px 6px; border-radius: 8px; border: 2px solid transparent; }
+.ph { color: #f87171; background: rgba(248,113,113,.16); border-radius: 6px; padding: 0 6px; }
+.at4 { font: 500 18px/1.4 "Inter", var(--bn); margin-top: 6px; }
+.samp2 { font: 700 16px/1 var(--bn); color: var(--amber); display: block; margin-bottom: 6px; }
+#s03A .aib { margin-top: 18px; } #s03A .at3 { margin-top: 10px; font-family: "Inter", var(--bn); }
+#s03chk b { margin: 0 4px; color: var(--ink); }
+/* report/proposal */
+.stk { display: flex; align-items: center; gap: 16px; margin-top: 14px; padding: 14px 18px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,190,130,.25); font: 700 28px/1.2 var(--bn); position: relative; }
+.sn2 { font: 800 24px/1 var(--en); color: #0e0b09; background: var(--cyan); border-radius: 10px; padding: 6px 11px; }
+.redtag { margin-left: auto; font: 700 20px/1 var(--bn); color: var(--red); background: rgba(248,113,113,.14); border: 2px solid rgba(248,113,113,.7); padding: 8px 12px; border-radius: 10px; }
+/* script */
+.tbar { position: absolute; left: 80px; top: 236px; width: 1760px; height: 80px; display: flex; gap: 8px; }
+.seg { border-radius: 14px; display: flex; align-items: center; justify-content: center; font: 700 24px/1 var(--bn); white-space: nowrap; overflow: hidden; }
+#s05g0 { background: rgba(255,162,76,.85); color: #0e0b09; font-size: 18px; } #s05g1 { background: rgba(45,212,191,.22); border: 2px solid rgba(45,212,191,.6); } #s05g2 { background: rgba(253,224,71,.2); border: 2px solid rgba(253,224,71,.6); font-size: 20px; }
+.sct { position: absolute; left: 80px; top: 336px; width: 1360px; height: 430px; padding: 24px 28px; }
+.sgrid { display: grid; grid-template-columns: 170px 1fr 400px; gap: 10px 14px; }
+.sh { font: 700 22px/1 var(--bn); color: var(--cyan); padding: 10px 12px; background: rgba(255,162,76,.08); border-radius: 10px; }
+.sc { font: 600 23px/1.35 var(--bn); padding: 16px 12px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); }
+#s05wc { left: 1470px; top: 336px; width: 370px; height: 430px; display: flex; flex-direction: column; justify-content: center; }
+.big2 { font: 800 64px/1.1 var(--bn); color: var(--cyan); margin-top: 14px; }
+/* blog */
+#s06st { top: 236px; height: 250px; }
+#s06st .step { width: 500px; } #s06st .sarr { width: 130px; }
+.sticky { position: absolute; left: 1560px; top: 210px; padding: 18px 20px; background: #fde047; color: #1c1510; font: 700 24px/1.2 var(--bn); border-radius: 6px; transform: rotate(6deg); box-shadow: 0 12px 30px rgba(0,0,0,.4); }
+#s06kw { left: 80px; top: 510px; width: 860px; height: 256px; }
+#s06hd { left: 980px; top: 510px; width: 860px; height: 256px; }
+.hl { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+.hl i { display: block; height: 14px; border-radius: 7px; background: rgba(255,244,232,.28); transform-origin: 0 50%; }
+.hl i:nth-child(2) { width: 85%; } .hl i:nth-child(3) { width: 92%; } .hl i:nth-child(4) { width: 70%; } .hl i:nth-child(5) { width: 80%; }
+/* caption & ad */
+.phones { position: absolute; left: 80px; top: 270px; width: 1010px; height: 500px; display: flex; gap: 20px; }
+.phone { width: 323px; height: 496px; border-radius: 30px; background: #1c1510; border: 3px solid rgba(255,255,255,.18); padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.pt2 { font: 700 20px/1 var(--bn); color: var(--cyan); }
+.pimg { height: 230px; border-radius: 16px; }
+.pc2 { font: 600 21px/1.4 var(--bn); }
+#s07ad { left: 1130px; top: 236px; width: 710px; height: 530px; }
+.adr { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; padding: 12px 16px; border-radius: 14px; background: rgba(255,255,255,.04); border-left: 6px solid var(--cyan); }
+.adr b { font: 800 22px/1 var(--bn); color: var(--cyan); } .adr span { font: 600 25px/1.3 var(--bn); }
+/* translation */
+#s08tr { left: 80px; top: 236px; width: 1760px; height: 330px; }
+.trow2 { display: flex; align-items: center; gap: 24px; margin-top: 18px; }
+.tsrc, .tdst { flex: 1; padding: 20px 24px; border-radius: 18px; font: 600 30px/1.4 var(--bn); }
+.tsrc { background: rgba(255,162,76,.10); border: 2px solid rgba(255,162,76,.5); }
+.tdst { background: rgba(45,212,191,.10); border: 2px solid rgba(45,212,191,.5); font-family: "Inter", var(--bn); }
+.tarr { font: 800 54px/1 var(--en); color: var(--cyan); }
+.dial { display: flex; align-items: center; gap: 16px; margin-top: 18px; font: 600 22px/1 var(--bn); color: var(--mute); }
+.dial i { display: block; width: 300px; height: 10px; border-radius: 5px; background: linear-gradient(90deg, var(--purple), var(--cyan)); position: relative; }
+#s08knob { position: relative; }
+#s08knob::after { content: ""; position: absolute; right: 0; top: -9px; width: 28px; height: 28px; border-radius: 50%; background: #fff4e8; box-shadow: 0 0 12px rgba(255,162,76,.8); }
+#s08bk { left: 80px; top: 586px; width: 860px; height: 180px; } #s08nat { left: 980px; top: 586px; width: 860px; height: 180px; }
+/* editing */
+#s09pg { left: 80px; top: 236px; width: 1180px; height: 450px; }
+.para { margin-top: 18px; font: 600 30px/1.75 "Inter", var(--bn); }
+.para del { color: #f87171; text-decoration: line-through; } .para ins { color: #4ade80; text-decoration: none; border-bottom: 2px solid #4ade80; }
+.clog { margin-top: 18px; padding: 14px 18px; border-radius: 14px; background: rgba(253,224,71,.10); border: 1px solid rgba(253,224,71,.5); font: 600 22px/1.4 var(--bn); }
+.modes { position: absolute; left: 1300px; top: 236px; width: 540px; display: flex; flex-direction: column; gap: 14px; }
+.modes .chip { font-size: 28px; padding: 16px 20px; }
+#s09cv { left: 1300px; top: 520px; width: 540px; height: 246px; }
+/* workflow */
+.pipe { position: absolute; left: 80px; top: 246px; width: 1760px; height: 200px; display: flex; align-items: center; gap: 6px; }
+.pst { flex: 1; height: 180px; border-radius: 20px; background: var(--glass); border: 2px solid var(--stroke); padding: 16px 12px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; }
+.pst.hu { border-color: rgba(74,222,128,.75); background: rgba(74,222,128,.08); }
+.pt3 { font: 700 24px/1.2 var(--bn); }
+.pbadge { font: 800 18px/1 var(--en); padding: 8px 10px; border-radius: 10px; background: rgba(255,162,76,.18); color: var(--cyan); display: flex; align-items: center; gap: 6px; }
+.pbadge .ic { width: 22px; height: 22px; }
+.pbadge.hu { background: rgba(74,222,128,.18); color: var(--green); font-family: var(--bn); }
+.pbadge.dim { background: rgba(255,255,255,.06); color: var(--mute); font: 700 16px/1 var(--bn); }
+.parr { font: 800 30px/1 var(--en); color: var(--cyan); }
+#s10rp { left: 80px; top: 476px; width: 1180px; height: 290px; }
+.rprow { display: flex; align-items: center; gap: 14px; margin-top: 30px; flex-wrap: wrap; }
+.rprow .pill { font-size: 28px; }
+#s10sh { left: 1300px; top: 476px; width: 540px; height: 290px; }
+/* engine */
+.epart { width: 480px; height: 210px; display: flex; align-items: center; gap: 20px; }
+.et2 { font: 700 32px/1.15 var(--bn); } .es { font: 500 22px/1.35 var(--bn); color: var(--mute); margin-top: 6px; }
+.engine { position: absolute; left: 640px; top: 236px; width: 640px; height: 360px; border-radius: 30px; background: radial-gradient(circle at 50% 45%, rgba(255,162,76,.25), rgba(14,11,9,.2) 70%); border: 2px dashed rgba(255,162,76,.5); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+.gearw { width: 170px; height: 170px; } .gearw svg { width: 100%; height: 100%; fill: none; stroke: var(--cyan); stroke-width: 3.5; stroke-linecap: round; }
+.engine .en { font: 800 38px/1 var(--en); }
+.outs2 { position: absolute; left: 640px; top: 616px; width: 640px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.outs2 .pill { font-size: 24px; padding: 10px 16px; }
+#s12next .h .ic { width: 76px; height: 76px; }
+
+/* QC fixes */
+#s03A, #s03B { top: 236px; width: 860px; height: 530px; }
+#s03A { left: 80px; } #s03B { left: 980px; }
+#s03B .pbody { height: 476px; }
+#s09cv { top: 590px; height: 176px; }
+#s05g0 { font-size: 20px; }
+
+/* end-card credits */
+.credits { display: flex; align-items: center; gap: 48px; margin-top: 26px; padding: 22px 44px; border-radius: 20px; background: rgba(255,162,76,.08); border: 2px solid rgba(255,162,76,.45); }
+.credits div { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.credits span { font: 600 24px/1 var(--bn); color: var(--mute); }
+.credits b { font: 800 40px/1 var(--en); color: var(--ink); }
+.credits i { display: block; width: 2px; height: 70px; background: rgba(255,162,76,.5); }
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-width="1920" data-height="1080" data-duration="612.596" data-fps="30">
+  <div id="bg" class="clip" data-start="0" data-duration="612.596" data-track-index="0"><div class="bgfill"></div><div id="grid" class="grid"></div>
+    <div id="orb1" class="orb o1"></div><div id="orb2" class="orb o2"></div><div id="orb3" class="orb o3"></div></div>
+  <div id="topbar" class="clip" data-start="0" data-duration="612.596" data-track-index="1">
+    <div class="brand"><span class="dot"></span>AI FUNDAMENTALS<span class="pill">বাংলা</span></div>
+    <div class="lesson">লেসন ০৪ · Writing, Content ও Communication</div></div>
+  <div id="prog" class="clip" data-start="0" data-duration="612.596" data-track-index="2"><i id="progfill"></i></div>
+  <div id="s01" class="clip scene" data-start="0.000" data-duration="44.274" data-track-index="3"><div class="chap"><span class="n">০১ / ১২</span><span class="t">স্বাগতম</span></div><div class="photo"><img id="p1" src="assets/presenter.jpg" alt=""/><div class="tag">AI শেখার সঙ্গী · বাংলায়</div></div><div class="introR"><div class="kicker">LESSON 04 · MODULE</div><div class="bigt" id="s01t">Writing, Content ও Communication</div><div class="sub" id="s01s">AI দিয়ে লেখা, কনটেন্ট ও যোগাযোগ — দ্রুত, কিন্তু নিজের কণ্ঠে</div><div class="road"><div class="chip" id="s01r0"><span class="num">01</span>লেখার ফর্মুলা</div><div class="chip" id="s01r1"><span class="num">02</span>Email · report · proposal · script</div><div class="chip" id="s01r2"><span class="num">03</span>Blog · caption · ad copy</div><div class="chip" id="s01r3"><span class="num">04</span>Translation ও editing</div><div class="chip" id="s01r4"><span class="num">05</span>Workflow: idea → publish</div><div class="chip" id="s01r5"><span class="num">06</span>নিজের AI Content Engine</div></div></div></div><div id="s02" class="clip scene" data-start="44.274" data-duration="51.452" data-track-index="3"><div class="chap"><span class="n">০২ / ১২</span><span class="t">লেখার মূল ফর্মুলা</span></div><div class="fgrid"><div class="ftile" id="s02f0" style="border-color:#ffa24c"><span class="fn" style="color:#ffa24c">১</span><div class="ft">কাজ</div><div class="fd">কী লিখতে হবে</div></div><div class="ftile" id="s02f1" style="border-color:#2dd4bf"><span class="fn" style="color:#2dd4bf">২</span><div class="ft">পাঠক</div><div class="fd">কে পড়বে</div></div><div class="ftile" id="s02f2" style="border-color:#fde047"><span class="fn" style="color:#fde047">৩</span><div class="ft">উদ্দেশ্য</div><div class="fd">পড়ে কী করবে</div></div><div class="ftile" id="s02f3" style="border-color:#f472b6"><span class="fn" style="color:#f472b6">৪</span><div class="ft">টোন</div><div class="fd">ভদ্র · বন্ধুসুলভ · আনুষ্ঠানিক</div></div><div class="ftile" id="s02f4" style="border-color:#4ade80"><span class="fn" style="color:#4ade80">৫</span><div class="ft">দৈর্ঘ্য</div><div class="fd">কত শব্দ / লাইন</div></div><div class="ftile" id="s02f5" style="border-color:#fdba74"><span class="fn" style="color:#fdba74">৬</span><div class="ft">ফরম্যাট</div><div class="fd">অনুচ্ছেদ · বুলেট · টেবিল</div></div></div><div class="foot gr" id="s02tip" style="top:600px"><span class="ic gr"><svg viewBox="0 0 48 48"><circle cx="24" cy="16" r="8"/><path d="M8 42c2-9 9-13 16-13s14 4 16 13"/></svg></span> কৌশল: নিজের পুরোনো একটি লেখা দিয়ে বলুন — "এই ধাঁচে লেখো"</div><div class="foot am" id="s02gold"><span class="ic am"><svg viewBox="0 0 48 48"><path d="M24 6 39 12v11c0 9-6.5 16-15 19-8.5-3-15-10-15-19V12z"/><path d="m17 24 5 5 9-10"/></svg></span> <span><b class="am">সোনালি নিয়ম:</b> AI খসড়া দেয় — সিদ্ধান্ত, তথ্য আর দায়িত্ব আপনার</span></div></div><div id="s03" class="clip scene" data-start="95.726" data-duration="56.667" data-track-index="3"><div class="chap"><span class="n">০৩ / ১২</span><span class="t">ইমেইল</span></div><div class="pan" id="s03A"><div class="bar"><i style="background:#f87171"></i><i style="background:#fde047"></i><i style="background:#4ade80"></i><div class="addr">দুর্বল প্রম্পট</div><div class="illus">প্রতীকী চিত্র — আসল স্ক্রিনশট নয়</div></div><div class="pbody"><div class="fub" style="margin:0 0 0 auto;width:auto;background:rgba(248,113,113,.14);border-color:rgba(248,113,113,.55)">একটা ইমেইল লিখে দাও।</div><div class="aib" id="s03wa"><div class="at3">Subject: <span class="ph">[Subject]</span></div><div class="at3">Dear <span class="ph">[Name]</span>,</div><div class="at3">I am writing to inform you about <span class="ph">[topic]</span> on <span class="ph">[date]</span>…</div><div class="at3">Regards, <span class="ph">[Your Name]</span></div></div></div></div><div class="pan" id="s03B"><div class="bar"><i style="background:#f87171"></i><i style="background:#fde047"></i><i style="background:#4ade80"></i><div class="addr">শক্তিশালী প্রম্পট</div><div class="illus">প্রতীকী চিত্র — আসল স্ক্রিনশট নয়</div></div><div class="pbody"><div class="sprompt"><span class="sp" id="s03p0" data-c="#ffa24c">একজন বিদেশি ক্লায়েন্টকে ইমেইল লেখো।</span> <span class="sp" id="s03p1" data-c="#2dd4bf">আমি ঢাকার একজন ফ্রিল্যান্স গ্রাফিক ডিজাইনার।</span> <span class="sp" id="s03p2" data-c="#fde047">লোগোর প্রথম খসড়া আজ পাঠাচ্ছি, আর শুক্রবারের মধ্যে তাঁর মতামত চাই।</span> <span class="sp" id="s03p3" data-c="#f472b6">ভদ্র ও আত্মবিশ্বাসী টোনে, ইংরেজিতে,</span> <span class="sp" id="s03p4" data-c="#4ade80">১০০ শব্দের মধ্যে —</span> <span class="sp" id="s03p5" data-c="#fdba74">বিষয় লাইনসহ।</span></div><div class="aib" id="s03sa"><span class="samp2">নমুনা উত্তর — উদাহরণ মাত্র</span><div class="at4">Subject: First logo draft ready for your review</div><div class="at4">Hi Sarah,</div><div class="at4">I'm pleased to share the first draft of your logo (attached). I've focused on a clean, modern mark that works well in both colour and black-and-white.</div><div class="at4">Could you please send your feedback by Friday? That keeps us on track for the final files next week.</div><div class="at4">Best regards,<br/>Arif</div></div></div></div><div class="foot gr" id="s03chk"><span class="ic gr"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="m16 24 6 6 11-12"/></svg></span> পাঠানোর আগে মিলিয়ে নিন: <b id="s03c0">নাম</b> · <b id="s03c1">তারিখ</b> · <b id="s03c2">সংখ্যা</b> · <b id="s03c3">টোন</b> · <b id="s03c4">সংযুক্তি</b></div></div><div id="s04" class="clip scene" data-start="152.393" data-duration="50.481" data-track-index="3"><div class="chap"><span class="n">০৪ / ১২</span><span class="t">রিপোর্ট ও প্রপোজাল</span></div><div class="card half l" id="s04L"><div class="lbl">রিপোর্ট</div><div class="h"><span class="ic lg"><svg viewBox="0 0 48 48"><rect x="8" y="6" width="32" height="36" rx="4"/><path d="M14 14h20M14 22h20M14 30h12"/></svg></span> নোট → গোছানো রিপোর্ট</div><div class="stk" id="s04r0"><span class="sn2">১</span>সারসংক্ষেপ</div><div class="stk" id="s04r1"><span class="sn2">২</span>মূল তথ্য</div><div class="stk" id="s04r2"><span class="sn2">৩</span>বিশ্লেষণ</div><div class="stk" id="s04r3"><span class="sn2">৪</span>সুপারিশ</div><div class="lim" id="s04rl">⚠ সংখ্যা ও তথ্য আপনি দিন — নইলে AI বানানো সংখ্যা বসাতে পারে</div></div><div class="card half r" id="s04R"><div class="lbl">প্রপোজাল</div><div class="h"><span class="ic lg"><svg viewBox="0 0 48 48"><path d="M12 6h17l9 9v27H12z"/><path d="M29 6v9h9M18 24h14M18 31h14"/></svg></span> ক্লায়েন্টের চাহিদা → প্রপোজাল</div><div class="stk" id="s04p0"><span class="sn2">১</span>ক্লায়েন্টের সমস্যা</div><div class="stk" id="s04p1"><span class="sn2">২</span>আপনার সমাধান</div><div class="stk" id="s04p2"><span class="sn2">৩</span>সময়সীমা</div><div class="stk" id="s04p3"><span class="sn2">৪</span>মূল্য<span class=redtag id=s04tag>দাম ও সময় আপনি ঠিক করবেন</span></div></div><div class="foot rd" id="s04ft"><span class="ic rd"><svg viewBox="0 0 48 48"><rect x="11" y="21" width="26" height="19" rx="4"/><path d="M16 21v-6a8 8 0 0 1 16 0v6"/></svg></span> ক্লায়েন্টের গোপন তথ্য ও চুক্তির বিবরণ দেওয়ার আগে নাম ও সংবেদনশীল তথ্য সরিয়ে নিন</div></div><div id="s05" class="clip scene" data-start="202.874" data-duration="44.585" data-track-index="3"><div class="chap"><span class="n">০৫ / ১২</span><span class="t">ভিডিও স্ক্রিপ্ট</span></div><div class="tbar" id="s05bar"><div class="seg" id="s05g0" style="flex:9">হুক · ০–৩ সে.</div><div class="seg" id="s05g1" style="flex:41">মূল কথা · ৩–৫০ সে.</div><div class="seg" id="s05g2" style="flex:10">CTA · ৫০–৬০</div></div><div class="card sct" id="s05tb"><div class="sgrid"><div class="sh">সময়</div><div class="sh">কী বলবেন</div><div class="sh">স্ক্রিনে কী দেখাবেন</div><div class="sc r0">০–৩ সে.</div><div class="sc r0">“এক মিনিটে শিখুন, AI দিয়ে ইমেইল লেখার ৩টি কৌশল!”</div><div class="sc r0">মুখের ক্লোজআপ + বড় টেক্সট</div><div class="sc r1">৩–৫০ সে.</div><div class="sc r1">কৌশল ১, ২, ৩ — প্রতিটি এক লাইনের উদাহরণসহ</div><div class="sc r1">স্ক্রিন রেকর্ডিং + সাবটাইটেল</div><div class="sc r2">৫০–৬০ সে.</div><div class="sc r2">“পরের ভিডিওর জন্য ফলো করুন”</div><div class="sc r2">ফলো বাটনের অ্যানিমেশন</div></div><div class="illus2">নমুনা</div></div><div class="card" id="s05wc"><div class="lbl">৬০ সেকেন্ড ≈</div><div class="big2">~১৫০ শব্দ</div><div class="p" style="font-size:22px;color:var(--mute)">বেশি লিখলে তাড়াহুড়ো</div></div><div class="foot am" id="s05ft"><span class="ic am"><svg viewBox="0 0 48 48"><rect x="18" y="7" width="12" height="22" rx="6"/><path d="M12 23a12 12 0 0 0 24 0M24 35v6"/></svg></span> স্ক্রিপ্ট জোরে পড়ে দেখুন — আটকালে বলুন "আরও সহজ কথ্য ভাষায় লেখো"</div></div><div id="s06" class="clip scene" data-start="247.459" data-duration="49.821" data-track-index="3"><div class="chap"><span class="n">০৬ / ১২</span><span class="t">ব্লগ লেখা</span></div><div class="steps" id="s06st"><div class="step" id="s06s0"><span class="sn">ধাপ ১</span><span class="ic "><svg viewBox="0 0 48 48"><path d="M12 6h17l9 9v27H12z"/><path d="M29 6v9h9M18 24h14M18 31h14"/></svg></span><div class="st">আউটলাইন</div><div class="ss">শিরোনাম + প্রতিটি অংশের মূল পয়েন্ট</div></div><div class="sarr">→</div><div class="step" id="s06s1"><span class="sn">ধাপ ২</span><span class="ic "><svg viewBox="0 0 48 48"><path d="M10 38l4-12L32 8l8 8-18 18z"/><path d="M28 12l8 8"/></svg></span><div class="st">অংশ ধরে লেখা</div><div class="ss">প্রতিটি অংশ আলাদা প্রম্পটে</div></div><div class="sarr">→</div><div class="step" id="s06s2"><span class="sn">ধাপ ৩</span><span class="ic "><svg viewBox="0 0 48 48"><path d="M24 40S7 30 7 18a9 9 0 0 1 17-4 9 9 0 0 1 17 4c0 12-17 22-17 22z"/><path d="M14 22h6l3-5 4 9 3-4h5"/></svg></span><div class="st">নিজের অভিজ্ঞতা</div><div class="ss">গল্প, উদাহরণ, মতামত — আপনার</div></div></div><div class="sticky" id="s06stk">আমার অভিজ্ঞতা ✍</div><div class="card" id="s06kw"><div class="lbl">সার্চের জন্য</div><div class="h" style="font-size:32px"><span class="ic "><svg viewBox="0 0 48 48"><circle cx="21" cy="21" r="12"/><path d="m30 30 11 11"/></svg></span> কিওয়ার্ড স্বাভাবিকভাবে</div><div class="names"><span>AI দিয়ে ইমেইল লেখা</span></div><div class="lim">জোর করে বারবার নয়</div></div><div class="card" id="s06hd"><div class="lbl">শিরোনাম</div><div class="h" style="font-size:32px"><span class="ic "><svg viewBox="0 0 48 48"><path d="m24 6 5.5 11.5L42 19l-9 8.5 2.3 12.5L24 34l-11.3 6 2.3-12.5L6 19l12.5-1.5z"/></svg></span> ৫টি বিকল্প চেয়ে নিন</div><div class="hl"><i></i><i></i><i></i><i></i><i></i></div></div><div class="foot am" id="s06ft"><span class="ic am"><svg viewBox="0 0 48 48"><path d="M24 7 43 40H5z"/><path d="M24 19v10M24 34v1"/></svg></span> তথ্য, পরিসংখ্যান ও উদ্ধৃতি — আসল উৎস থেকে মিলিয়ে নিন</div></div><div id="s07" class="clip scene" data-start="297.280" data-duration="49.832" data-track-index="3"><div class="chap"><span class="n">০৭ / ১২</span><span class="t">ক্যাপশন ও বিজ্ঞাপনের লেখা</span></div><div class="phones"><div class="phone" id="s07ph0"><div class="pt2">মজার</div><div class="pimg" style="background:linear-gradient(135deg,#7c2d12,#fdba74)"></div><div class="pc2">😄 ঈদে সবাই বলবে, “এত সুন্দর পাঞ্জাবি কোথায় পেলে?” — উত্তরটা আমরা!</div></div><div class="phone" id="s07ph1"><div class="pt2">আবেগী</div><div class="pimg" style="background:linear-gradient(135deg,#134e4a,#5eead4)"></div><div class="pc2">🌙 প্রিয়জনের সাথে ঈদের সকাল — নতুন পোশাকে আরও উজ্জ্বল।</div></div><div class="phone" id="s07ph2"><div class="pt2">সরাসরি অফার</div><div class="pimg" style="background:linear-gradient(135deg,#713f12,#fde047)"></div><div class="pc2">🛍 নতুন ঈদ কালেকশন এসেছে — অর্ডার করতে ইনবক্স করুন।</div></div><div class="illus2" style="top:-34px;right:0">প্রতীকী নমুনা</div></div><div class="card" id="s07ad"><div class="lbl" style="color:var(--cyan)">বিজ্ঞাপনের কাঠামো</div><div class="adr" id="s07a0"><b>সমস্যা</b><span>ঈদের ভিড়ে মার্কেটে যাওয়ার ঝামেলা?</span></div><div class="adr" id="s07a1"><b>সুবিধা</b><span>ঘরে বসে অর্ডার, ক্যাশ অন ডেলিভারি</span></div><div class="adr" id="s07a2"><b>প্রমাণ</b><span>কাস্টমারদের আসল রিভিউ</span></div><div class="adr" id="s07a3"><b>কল-টু-অ্যাকশন</b><span>এখনই মেসেজ করুন</span></div></div><div class="foot rd" id="s07ft"><span class="ic rd"><svg viewBox="0 0 48 48"><path d="M24 7 43 40H5z"/><path d="M24 19v10M24 34v1"/></svg></span> মিথ্যা দাবি নয় (যেমন "শতভাগ গ্যারান্টি") · প্ল্যাটফর্মের বিজ্ঞাপন নীতি মানুন · ভুল দাবি কেটে দিন</div></div><div id="s08" class="clip scene" data-start="347.112" data-duration="52.796" data-track-index="3"><div class="chap"><span class="n">০৮ / ১২</span><span class="t">অনুবাদ</span></div><div class="card" id="s08tr"><div class="lbl">প্রসঙ্গ ও টোনসহ অনুবাদ</div><div class="trow2"><div class="tsrc" id="s08bn">আপনার অর্ডারটি আগামীকাল পাঠানো হবে। দেরির জন্য আমরা দুঃখিত।</div><div class="tarr">→</div><div class="tdst" id="s08en">Your order will be shipped tomorrow. We're sorry for the delay.</div></div><div class="dial"><span>আনুষ্ঠানিক</span><i id="s08knob"></i><span>বন্ধুসুলভ</span></div><div class="names" id="s08ck"><span>✓ নাম</span><span>✓ সংখ্যা</span><span>✓ তারিখ</span><span>✓ অর্থ</span></div></div><div class="card" id="s08bk"><div class="lbl gr">যাচাইয়ের কৌশল</div><div class="h" style="font-size:30px"><span class="ic gr"><svg viewBox="0 0 48 48"><path d="M36 18a13 13 0 1 0 2 10"/><path d="M38 8v10H28"/></svg></span> উল্টো অনুবাদ করে মিলিয়ে দেখুন</div></div><div class="card" id="s08nat"><div class="lbl">বাংলাভাষী গ্রাহকের জন্য</div><div class="h" style="font-size:30px"><span class="ic "><svg viewBox="0 0 48 48"><path d="M10 38l4-12L32 8l8 8-18 18z"/><path d="M28 12l8 8"/></svg></span> সরাসরি বাংলায় লিখতে বলুন</div></div><div class="foot rd" id="s08ft"><span class="ic rd"><svg viewBox="0 0 48 48"><path d="M24 8v32M12 40h24M10 14h28M10 14l-5 12h10zM38 14l-5 12h10z"/></svg></span> আইনি, সরকারি বা চিকিৎসা-সংক্রান্ত লেখা → পেশাদার অনুবাদক বা বিশেষজ্ঞ</div></div><div id="s09" class="clip scene" data-start="399.908" data-duration="47.216" data-track-index="3"><div class="chap"><span class="n">০৯ / ১২</span><span class="t">এডিটিং</span></div><div class="card" id="s09pg"><div class="lbl">আপনার লেখা → AI এডিট</div><div class="para">I am <del>very much</del> <ins>a detail-oriented</ins> junior developer <del>which</del> <ins>who</ins> <del>have</del> <ins>has</ins> built three web apps<del> and also I can work in team</del><ins> and works well in a team</ins>.</div><div class="clog" id="s09log"><b>কী বদলেছে:</b> ১) “very much” বাদ · ২) which → who · ৩) have → has · ৪) শেষ অংশ আরও সংক্ষিপ্ত</div></div><div class="modes"><span class="chip" id="s09m0">ব্যাকরণ ও বানান</span><span class="chip" id="s09m1">আরও স্পষ্ট</span><span class="chip" id="s09m2">অর্ধেক ছোট</span><span class="chip" id="s09m3">টোন বদল</span></div><div class="card" id="s09cv"><div class="lbl am">সিভি এডিটের নিয়ম</div><div class="p" style="font-size:24px">ব্যাকরণ ঠিক করো, আরও আত্মবিশ্বাসী করো — কিন্তু <b class="am">নতুন দক্ষতা বা অভিজ্ঞতা যোগ নয়</b></div></div><div class="foot gr" id="s09ft"><span class="ic gr"><svg viewBox="0 0 48 48"><circle cx="24" cy="16" r="8"/><path d="M8 42c2-9 9-13 16-13s14 4 16 13"/></svg></span> বলে দিন: "আমার কণ্ঠ আর মূল অর্থ যেন না বদলায়"</div></div><div id="s10" class="clip scene" data-start="447.124" data-duration="54.057" data-track-index="3"><div class="chap"><span class="n">১০ / ১২</span><span class="t">কনটেন্ট ওয়ার্কফ্লো: আইডিয়া থেকে প্রকাশ</span></div><div class="pipe"><div class="pst" id="s10s0"><div class="pt3">আইডিয়া</div><div class="pbadge">AI</div></div><span class="parr">→</span><div class="pst" id="s10s1"><div class="pt3">গবেষণা</div><div class="pbadge dim">AI + আপনি</div></div><span class="parr">→</span><div class="pst" id="s10s2"><div class="pt3">আউটলাইন</div><div class="pbadge">AI</div></div><span class="parr">→</span><div class="pst" id="s10s3"><div class="pt3">খসড়া</div><div class="pbadge">AI</div></div><span class="parr">→</span><div class="pst hu" id="s10s4"><div class="pt3">এডিট ও যাচাই</div><div class="pbadge hu"><span class="ic gr"><svg viewBox="0 0 48 48"><circle cx="24" cy="16" r="8"/><path d="M8 42c2-9 9-13 16-13s14 4 16 13"/></svg></span> মানুষ</div></div><span class="parr">→</span><div class="pst" id="s10s5"><div class="pt3">ডিজাইন</div><div class="pbadge dim">AI + আপনি</div></div><span class="parr">→</span><div class="pst hu" id="s10s6"><div class="pt3">প্রকাশ ও মূল্যায়ন</div><div class="pbadge hu"><span class="ic gr"><svg viewBox="0 0 48 48"><circle cx="24" cy="16" r="8"/><path d="M8 42c2-9 9-13 16-13s14 4 16 13"/></svg></span> মানুষ</div></div></div><div class="card" id="s10rp"><div class="lbl">রিপারপাস · এক পরিশ্রমে পাঁচটি কনটেন্ট</div><div class="rprow"><span class="pill k">১টি ব্লগ</span><span class="arrow">→</span><span class="pill" id="s10o0">৩টি ক্যাপশন</span><span class="pill" id="s10o1">১টি রিলস স্ক্রিপ্ট</span><span class="pill" id="s10o2">১টি নিউজলেটার ইমেইল</span></div></div><div class="card" id="s10sh"><div class="lbl">ট্র্যাকিং</div><div class="h" style="font-size:28px"><span class="ic "><svg viewBox="0 0 48 48"><rect x="12" y="6" width="24" height="36" rx="4"/><path d="M17 13h14v7H17zM18 27h2M24 27h2M30 27h2M18 34h2M24 34h2M30 34h2"/></svg></span> স্প্রেডশিটে ধাপগুলোর কলাম</div></div><div class="foot gr" id="s10ft"><span class="ic gr"><svg viewBox="0 0 48 48"><path d="M36 18a13 13 0 1 0 2 10"/><path d="M38 8v10H28"/></svg></span> কোন পোস্ট ভালো চলল দেখে পরের আইডিয়া — প্রতি সপ্তাহে চক্রটি উন্নত হয়</div></div><div id="s11" class="clip scene" data-start="501.181" data-duration="61.058" data-track-index="3"><div class="chap"><span class="n">১১ / ১২</span><span class="t">আপনার AI Content Engine</span></div><div class="card epart" id="s11p0" style="left:80px;top:236px"><span class="ic lg"><svg viewBox="0 0 48 48"><circle cx="24" cy="16" r="8"/><path d="M8 42c2-9 9-13 16-13s14 4 16 13"/></svg></span><div><div class="et2">ব্র্যান্ড ভয়েস কার্ড</div><div class="es">ভাষা · শব্দ · পাঠক</div></div></div><div class="card epart" id="s11p1" style="left:80px;top:470px"><span class="ic lg"><svg viewBox="0 0 48 48"><path d="M12 6h17l9 9v27H12z"/><path d="M29 6v9h9M18 24h14M18 31h14"/></svg></span><div><div class="et2">প্রম্পট টেমপ্লেট</div><div class="es">ইমেইল · ক্যাপশন · ব্লগ · স্ক্রিপ্ট</div></div></div><div class="card epart" id="s11p2" style="left:1360px;top:236px"><span class="ic lg"><svg viewBox="0 0 48 48"><rect x="7" y="10" width="34" height="31" rx="4"/><path d="M7 19h34M16 6v8M32 6v8M14 26h4M22 26h4M30 26h4M14 33h4M22 33h4"/></svg></span><div><div class="et2">কনটেন্ট ক্যালেন্ডার</div><div class="es">সপ্তাহের পরিকল্পনা</div></div></div><div class="card epart" id="s11p3" style="left:1360px;top:470px"><span class="ic lg"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="m16 24 6 6 11-12"/></svg></span><div><div class="et2">যাচাই চেকলিস্ট</div><div class="es">প্রকাশের আগে</div></div></div><div class="engine" id="s11eng"><div class="gearw" id="s11gear"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="7"/><path d="M24 4v6M24 38v6M4 24h6M38 24h6M9.9 9.9l4.2 4.2M33.9 33.9l4.2 4.2M9.9 38.1l4.2-4.2M33.9 14.1l4.2-4.2"/></svg></div><div class="en">AI Content Engine</div></div><div class="outs2" id="s11out"><span class="pill" id="s11o0">১ ব্লগ</span><span class="pill" id="s11o1">৩ ক্যাপশন</span><span class="pill" id="s11o2">১ রিলস স্ক্রিপ্ট</span><span class="pill" id="s11o3">১ ইমেইল</span></div><div class="foot am" id="s11as"><span class="ic am"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><circle cx="24" cy="24" r="9"/><circle cx="24" cy="24" r="2"/></svg></span> <span><b class="am">অ্যাসাইনমেন্ট:</b> চারটি অংশ একটি ডকুমেন্টে + এক সপ্তাহের কনটেন্ট · জমা: ডকুমেন্ট, কনটেন্ট, আর কোথায় AI-এর লেখা বদলেছেন ও কেন</span></div></div><div id="s12" class="clip scene" data-start="562.239" data-duration="50.357" data-track-index="3"><div class="chap"><span class="n">১২ / ১২</span><span class="t">সারসংক্ষেপ</span></div><div class="photo sm"><img id="p12" src="assets/presenter.jpg" alt=""/><div class="tag">দেখা হবে পরের মডিউলে!</div></div><div class="rlist"><div class="rl" id="s12i0"><span class="ic gr"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="m16 24 6 6 11-12"/></svg></span>লেখার ছয় অংশের ফর্মুলা</div><div class="rl" id="s12i1"><span class="ic gr"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="m16 24 6 6 11-12"/></svg></span>Email · report · proposal · script</div><div class="rl" id="s12i2"><span class="ic gr"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="m16 24 6 6 11-12"/></svg></span>Blog · caption · ad copy</div><div class="rl" id="s12i3"><span class="ic gr"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="m16 24 6 6 11-12"/></svg></span>Translation ও editing</div><div class="rl" id="s12i4"><span class="ic gr"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="m16 24 6 6 11-12"/></svg></span>Idea → publish ওয়ার্কফ্লো</div><div class="rl" id="s12i5"><span class="ic gr"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="m16 24 6 6 11-12"/></svg></span>নিজের AI Content Engine</div></div><div class="card" id="s12next"><div class="lbl" style="color:#5eead4">মডিউল ০৪</div><div class="h"><span class="ic lg"><svg viewBox="0 0 48 48"><path d="m24 6 5.5 11.5L42 19l-9 8.5 2.3 12.5L24 34l-11.3 6 2.3-12.5L6 19l12.5-1.5z"/></svg></span></div><div class="h" style="font-size:40px">সম্পন্ন!</div><div class="p" style="font-size:25px;color:var(--mute)">অ্যাসাইনমেন্ট: নিজের AI Content Engine দিয়ে এক সপ্তাহের কনটেন্ট</div></div><div id="s12key" style="position:absolute"><span class="ic lg"><svg viewBox="0 0 48 48"><path d="M24 6 39 12v11c0 9-6.5 16-15 19-8.5-3-15-10-15-19V12z"/><path d="m17 24 5 5 9-10"/></svg></span><span>AI গতি বাড়ায় — আপনার অভিজ্ঞতা, কণ্ঠ আর সততাই লেখাকে আলাদা করে</span></div></div>
+  <video id="vs01" class="clip talkv" data-start="1.200" data-duration="42.574" data-track-index="8" src="assets/talk_s01.mp4" muted playsinline style="left:83px;top:239px;width:554px;height:604px"></video><div id="os01" class="clip talko" data-start="1.200" data-duration="42.574" data-track-index="12" style="left:83px;top:239px;width:554px;height:604px"><div class="lipbadge">AI লিপ-সিঙ্ক</div><div class="tag">AI শেখার সঙ্গী · বাংলায়</div></div><video id="vs12" class="clip talkv" data-start="563.639" data-duration="45.957" data-track-index="8" src="assets/talk_s12.mp4" muted playsinline style="left:83px;top:239px;width:434px;height:514px"></video><div id="os12" class="clip talko" data-start="563.639" data-duration="45.957" data-track-index="12" style="left:83px;top:239px;width:434px;height:514px"><div class="lipbadge">AI লিপ-সিঙ্ক</div><div class="tag">দেখা হবে পরের মডিউলে!</div></div>
+  <div id="fs02" class="clip flash" data-start="44.274" data-duration="1.250" data-track-index="7"><span class="fn">০২</span><span class="ft">লেখার মূল ফর্মুলা</span><span class="fl"></span></div><div id="fs03" class="clip flash" data-start="95.726" data-duration="1.250" data-track-index="7"><span class="fn">০৩</span><span class="ft">ইমেইল</span><span class="fl"></span></div><div id="fs04" class="clip flash" data-start="152.393" data-duration="1.250" data-track-index="7"><span class="fn">০৪</span><span class="ft">রিপোর্ট ও প্রপোজাল</span><span class="fl"></span></div><div id="fs05" class="clip flash" data-start="202.874" data-duration="1.250" data-track-index="7"><span class="fn">০৫</span><span class="ft">ভিডিও স্ক্রিপ্ট</span><span class="fl"></span></div><div id="fs06" class="clip flash" data-start="247.459" data-duration="1.250" data-track-index="7"><span class="fn">০৬</span><span class="ft">ব্লগ লেখা</span><span class="fl"></span></div><div id="fs07" class="clip flash" data-start="297.280" data-duration="1.250" data-track-index="7"><span class="fn">০৭</span><span class="ft">ক্যাপশন ও বিজ্ঞাপনের লেখা</span><span class="fl"></span></div><div id="fs08" class="clip flash" data-start="347.112" data-duration="1.250" data-track-index="7"><span class="fn">০৮</span><span class="ft">অনুবাদ</span><span class="fl"></span></div><div id="fs09" class="clip flash" data-start="399.908" data-duration="1.250" data-track-index="7"><span class="fn">০৯</span><span class="ft">এডিটিং</span><span class="fl"></span></div><div id="fs10" class="clip flash" data-start="447.124" data-duration="1.250" data-track-index="7"><span class="fn">১০</span><span class="ft">কনটেন্ট ওয়ার্কফ্লো: আইডিয়া থেকে প্রকাশ</span><span class="fl"></span></div><div id="fs11" class="clip flash" data-start="501.181" data-duration="1.250" data-track-index="7"><span class="fn">১১</span><span class="ft">আপনার AI Content Engine</span><span class="fl"></span></div><div id="fs12" class="clip flash" data-start="562.239" data-duration="1.250" data-track-index="7"><span class="fn">১২</span><span class="ft">সারসংক্ষেপ</span><span class="fl"></span></div>
+  <div id="cap0" class="clip cap" data-start="1.150" data-duration="3.626" data-track-index="10"><div class="capbox"><span class="">স্বাগতম</span> <span class="">চতুর্থ</span> <span class="">লেসনে</span> <span class="">—</span> <span class="kw">AI</span> <span class="">দিয়ে</span> <span class="">লেখা,</span></div></div><div id="cap1" class="clip cap" data-start="4.766" data-duration="2.319" data-track-index="11"><div class="capbox"><span class="">কনটেন্ট</span> <span class="">আর</span> <span class="">কমিউনিকেশন।</span></div></div><div id="cap2" class="clip cap" data-start="7.075" data-duration="3.648" data-track-index="10"><div class="capbox"><span class="">পড়াশোনা,</span> <span class="">চাকরি,</span> <span class="">ফ্রিল্যান্সিং</span> <span class="">কিংবা</span> <span class="">ব্যবসা</span></div></div><div id="cap3" class="clip cap" data-start="10.713" data-duration="3.648" data-track-index="11"><div class="capbox"><span class="">সব</span> <span class="">জায়গাতেই</span> <span class="">প্রতিদিন</span> <span class="">কিছু</span> <span class="">না</span> <span class="">কিছু</span> <span class="">লিখতে</span> <span class="">হয়।</span></div></div><div id="cap4" class="clip cap" data-start="14.351" data-duration="3.451" data-track-index="10"><div class="capbox"><span class="">ইমেইল,</span> <span class="">রিপোর্ট,</span> <span class="">প্রপোজাল,</span> <span class="">পোস্ট,</span> <span class="">ক্যাপশন।</span></div></div><div id="cap5" class="clip cap" data-start="17.792" data-duration="4.806" data-track-index="11"><div class="capbox"><span class="">আজ</span> <span class="">শিখব,</span> <span class="kw">AI-কে</span> <span class="">কীভাবে</span> <span class="">লেখার</span> <span class="">সহকারী</span> <span class="">হিসেবে</span> <span class="">ব্যবহার</span> <span class="">করবেন</span></div></div><div id="cap6" class="clip cap" data-start="22.588" data-duration="3.603" data-track-index="10"><div class="capbox"><span class="">দ্রুত,</span> <span class="">কিন্তু</span> <span class="">মান</span> <span class="">আর</span> <span class="">নিজের</span> <span class="">কণ্ঠ</span> <span class="">ঠিক</span> <span class="">রেখে।</span></div></div><div id="cap7" class="clip cap" data-start="26.181" data-duration="3.752" data-track-index="11"><div class="capbox"><span class="">দেখব</span> <span class="">ইমেইল,</span> <span class="">রিপোর্ট,</span> <span class="">প্রপোজাল</span> <span class="">আর</span> <span class="">ভিডিও</span> <span class="">স্ক্রিপ্ট;</span> <span class="">তারপর</span> <span class="">ব্লগ,</span></div></div><div id="cap8" class="clip cap" data-start="29.923" data-duration="3.209" data-track-index="10"><div class="capbox"><span class="">ক্যাপশন</span> <span class="">আর</span> <span class="">বিজ্ঞাপনের</span> <span class="">লেখা;</span> <span class="">সাথে</span> <span class="">অনুবাদ</span> <span class="">আর</span> <span class="">এডিটিং।</span></div></div><div id="cap9" class="clip cap" data-start="33.122" data-duration="5.311" data-track-index="11"><div class="capbox"><span class="">শেষে</span> <span class="">আইডিয়া</span> <span class="">থেকে</span> <span class="">প্রকাশ</span> <span class="">পর্যন্ত</span> <span class="">পুরো</span> <span class="">কনটেন্ট</span> <span class="">ওয়ার্কফ্লো,</span></div></div><div id="cap10" class="clip cap" data-start="38.423" data-duration="5.351" data-track-index="10"><div class="capbox"><span class="">আর</span> <span class="">আপনার</span> <span class="">নিজের</span> <span class="">একটি</span> <span class="kw">AI</span> <span class="kw">Content</span> <span class="kw">Engine</span> <span class="">তৈরির</span> <span class="">অ্যাসাইনমেন্ট।</span></div></div><div id="cap11" class="clip cap" data-start="45.624" data-duration="3.738" data-track-index="11"><div class="capbox"><span class="">যেকোনো</span> <span class="">লেখার</span> <span class="">কাজে</span> <span class="">একটি</span> <span class="">সহজ</span> <span class="">ফর্মুলা</span> <span class="">মনে</span> <span class="">রাখুন</span></div></div><div id="cap12" class="clip cap" data-start="49.352" data-duration="1.795" data-track-index="10"><div class="capbox"><span class="">ছয়টি</span> <span class="">জিনিস</span> <span class="">বলে</span> <span class="">দিন।</span></div></div><div id="cap13" class="clip cap" data-start="51.137" data-duration="3.346" data-track-index="11"><div class="capbox"><span class="">কাজ</span> <span class="">—</span> <span class="">কী</span> <span class="">লিখতে</span> <span class="">হবে।</span> <span class="">পাঠক</span> <span class="">—</span> <span class="">কে</span> <span class="">পড়বে।</span></div></div><div id="cap14" class="clip cap" data-start="54.473" data-duration="3.526" data-track-index="10"><div class="capbox"><span class="">উদ্দেশ্য</span> <span class="">—</span> <span class="">পড়ে</span> <span class="">পাঠক</span> <span class="">কী</span> <span class="">করবে</span> <span class="">বা</span> <span class="">বুঝবে।</span></div></div><div id="cap15" class="clip cap" data-start="57.989" data-duration="3.646" data-track-index="11"><div class="capbox"><span class="">টোন</span> <span class="">—</span> <span class="">ভদ্র,</span> <span class="">বন্ধুসুলভ</span> <span class="">নাকি</span> <span class="">আনুষ্ঠানিক।</span></div></div><div id="cap16" class="clip cap" data-start="61.625" data-duration="3.339" data-track-index="10"><div class="capbox"><span class="">দৈর্ঘ্য</span> <span class="">—</span> <span class="">কত</span> <span class="">শব্দ</span> <span class="">বা</span> <span class="">কত</span> <span class="">লাইন।</span> <span class="">আর</span> <span class="">ফরম্যাট</span></div></div><div id="cap17" class="clip cap" data-start="64.954" data-duration="3.847" data-track-index="11"><div class="capbox"><span class="">অনুচ্ছেদ,</span> <span class="">বুলেট,</span> <span class="">টেবিল</span> <span class="">নাকি</span> <span class="">নির্দিষ্ট</span> <span class="">অংশে</span> <span class="">ভাগ।</span></div></div><div id="cap18" class="clip cap" data-start="68.791" data-duration="2.757" data-track-index="10"><div class="capbox"><span class="">এই</span> <span class="">ছয়টি</span> <span class="">দিলে</span> <span class="kw">AI</span> <span class="">অনুমান</span> <span class="">কম</span> <span class="">করে,</span></div></div><div id="cap19" class="clip cap" data-start="71.538" data-duration="2.876" data-track-index="11"><div class="capbox"><span class="">আর</span> <span class="">প্রথম</span> <span class="">খসড়াই</span> <span class="">অনেক</span> <span class="">কাজের</span> <span class="">হয়।</span></div></div><div id="cap20" class="clip cap" data-start="74.404" data-duration="4.416" data-track-index="10"><div class="capbox"><span class="">একটি</span> <span class="">ছোট</span> <span class="">কৌশল</span> <span class="">—</span> <span class="">নিজের</span> <span class="">একটি</span> <span class="">পুরোনো</span> <span class="">লেখা</span> <span class="">দিয়ে</span> <span class="kw">AI-কে</span> <span class="">বলুন,</span></div></div><div id="cap21" class="clip cap" data-start="78.810" data-duration="4.227" data-track-index="11"><div class="capbox"><span class="">এই</span> <span class="">লেখার</span> <span class="">ধাঁচে</span> <span class="">লিখতে।</span> <span class="">তাহলে</span> <span class="">খসড়া</span> <span class="">আপনার</span> <span class="">মতোই</span> <span class="">শোনাবে।</span></div></div><div id="cap22" class="clip cap" data-start="83.027" data-duration="3.645" data-track-index="10"><div class="capbox"><span class="">আর</span> <span class="">একটি</span> <span class="">সোনালি</span> <span class="">নিয়ম</span> <span class="">—</span> <span class="kw">AI</span> <span class="">খসড়া</span> <span class="">দেয়,</span></div></div><div id="cap23" class="clip cap" data-start="86.662" data-duration="4.028" data-track-index="11"><div class="capbox"><span class="">কিন্তু</span> <span class="">সিদ্ধান্ত,</span> <span class="">তথ্য</span> <span class="">আর</span> <span class="">দায়িত্ব</span> <span class="">আপনার।</span></div></div><div id="cap24" class="clip cap" data-start="90.680" data-duration="4.546" data-track-index="10"><div class="capbox"><span class="">নিজে</span> <span class="">না</span> <span class="">পড়ে,</span> <span class="">না</span> <span class="">মিলিয়ে</span> <span class="">কোনো</span> <span class="">লেখা</span> <span class="">পাঠাবেন</span> <span class="">না।</span></div></div><div id="cap25" class="clip cap" data-start="97.076" data-duration="2.719" data-track-index="11"><div class="capbox"><span class="">প্রথমে</span> <span class="">ইমেইল।</span> <span class="">দুর্বল</span> <span class="">প্রম্পট</span></div></div><div id="cap26" class="clip cap" data-start="99.785" data-duration="4.030" data-track-index="10"><div class="capbox"><span class="">একটা</span> <span class="">ইমেইল</span> <span class="">লিখে</span> <span class="">দাও।</span> <span class="">ফলাফল</span> <span class="">একটি</span> <span class="">সাধারণ</span> <span class="">ইমেইল,</span></div></div><div id="cap27" class="clip cap" data-start="103.805" data-duration="4.675" data-track-index="11"><div class="capbox"><span class="">যাতে</span> <span class="">নাম,</span> <span class="">তারিখ,</span> <span class="">বিষয়</span> <span class="">—</span> <span class="">সবকিছুর</span> <span class="">জায়গায়</span> <span class="">ফাঁকা</span> <span class="">ঘর।</span></div></div><div id="cap28" class="clip cap" data-start="108.470" data-duration="4.858" data-track-index="10"><div class="capbox"><span class="">এবার</span> <span class="">শক্তিশালী</span> <span class="">প্রম্পট</span> <span class="">—</span> <span class="">একজন</span> <span class="">বিদেশি</span> <span class="">ক্লায়েন্টকে</span> <span class="">ইমেইল</span> <span class="">লেখো।</span></div></div><div id="cap29" class="clip cap" data-start="113.318" data-duration="3.528" data-track-index="11"><div class="capbox"><span class="">আমি</span> <span class="">ঢাকার</span> <span class="">একজন</span> <span class="">ফ্রিল্যান্স</span> <span class="">গ্রাফিক</span> <span class="">ডিজাইনার।</span></div></div><div id="cap30" class="clip cap" data-start="116.836" data-duration="2.434" data-track-index="10"><div class="capbox"><span class="">লোগোর</span> <span class="">প্রথম</span> <span class="">খসড়া</span> <span class="">আজ</span> <span class="">পাঠাচ্ছি,</span></div></div><div id="cap31" class="clip cap" data-start="119.260" data-duration="2.825" data-track-index="11"><div class="capbox"><span class="">আর</span> <span class="">শুক্রবারের</span> <span class="">মধ্যে</span> <span class="">তাঁর</span> <span class="">মতামত</span> <span class="">চাই।</span></div></div><div id="cap32" class="clip cap" data-start="122.075" data-duration="2.825" data-track-index="10"><div class="capbox"><span class="">ভদ্র</span> <span class="">ও</span> <span class="">আত্মবিশ্বাসী</span> <span class="">টোনে,</span> <span class="">ইংরেজিতে,</span></div></div><div id="cap33" class="clip cap" data-start="124.890" data-duration="2.710" data-track-index="11"><div class="capbox"><span class="">একশো</span> <span class="">শব্দের</span> <span class="">মধ্যে,</span> <span class="">বিষয়</span> <span class="">লাইনসহ।</span></div></div><div id="cap34" class="clip cap" data-start="127.590" data-duration="3.061" data-track-index="10"><div class="capbox"><span class="">দেখুন,</span> <span class="">এখানে</span> <span class="">ফর্মুলার</span> <span class="">ছয়টি</span> <span class="">অংশই</span> <span class="">আছে।</span></div></div><div id="cap35" class="clip cap" data-start="130.641" data-duration="3.903" data-track-index="11"><div class="capbox"><span class="">ফলাফল</span> <span class="">প্রায়</span> <span class="">পাঠানোর</span> <span class="">মতো</span> <span class="">একটি</span> <span class="">নির্দিষ্ট</span> <span class="">ইমেইল।</span></div></div><div id="cap36" class="clip cap" data-start="134.534" data-duration="3.052" data-track-index="10"><div class="capbox"><span class="">ক্লায়েন্টের</span> <span class="">রাগান্বিত</span> <span class="">মেসেজের</span> <span class="">শান্ত</span> <span class="">উত্তর,</span></div></div><div id="cap37" class="clip cap" data-start="137.576" data-duration="3.586" data-track-index="11"><div class="capbox"><span class="">কিংবা</span> <span class="">বসকে</span> <span class="">ছুটির</span> <span class="">আবেদন</span> <span class="">—</span> <span class="">একই</span> <span class="">ফর্মুলায়</span> <span class="">লেখা</span> <span class="">যায়।</span></div></div><div id="cap38" class="clip cap" data-start="141.152" data-duration="3.546" data-track-index="10"><div class="capbox"><span class="">তবে</span> <span class="">পাঠানোর</span> <span class="">আগে</span> <span class="">পাঁচটি</span> <span class="">জিনিস</span> <span class="">মিলিয়ে</span> <span class="">নিন</span></div></div><div id="cap39" class="clip cap" data-start="144.688" data-duration="3.711" data-track-index="11"><div class="capbox"><span class="">নাম,</span> <span class="">তারিখ,</span> <span class="">সংখ্যা,</span> <span class="">টোন</span> <span class="">আর</span> <span class="">সংযুক্তির</span> <span class="">উল্লেখ।</span></div></div><div id="cap40" class="clip cap" data-start="148.389" data-duration="3.504" data-track-index="10"><div class="capbox"><span class="kw">AI</span> <span class="">কখনো</span> <span class="">কখনো</span> <span class="">এগুলো</span> <span class="">নিজের</span> <span class="">মতো</span> <span class="">বসিয়ে</span> <span class="">দেয়।</span></div></div><div id="cap41" class="clip cap" data-start="153.743" data-duration="5.367" data-track-index="11"><div class="capbox"><span class="">এবার</span> <span class="">রিপোর্ট</span> <span class="">আর</span> <span class="">প্রপোজাল</span> <span class="">—</span> <span class="">অফিস</span> <span class="">আর</span> <span class="">ফ্রিল্যান্সিংয়ে</span> <span class="">সবচেয়ে</span> <span class="">কাজের</span> <span class="">দুটি</span> <span class="">লেখা।</span></div></div><div id="cap42" class="clip cap" data-start="159.100" data-duration="3.644" data-track-index="10"><div class="capbox"><span class="">রিপোর্টের</span> <span class="">জন্য</span> <span class="kw">AI-কে</span> <span class="">আপনার</span> <span class="">নোট</span> <span class="">বা</span> <span class="">তথ্য</span> <span class="">দিন,</span></div></div><div id="cap43" class="clip cap" data-start="162.734" data-duration="2.570" data-track-index="11"><div class="capbox"><span class="">আর</span> <span class="">বলুন</span> <span class="">একটি</span> <span class="">কাঠামোয়</span> <span class="">সাজাতে</span></div></div><div id="cap44" class="clip cap" data-start="165.294" data-duration="3.682" data-track-index="10"><div class="capbox"><span class="">সারসংক্ষেপ,</span> <span class="">মূল</span> <span class="">তথ্য,</span> <span class="">বিশ্লেষণ</span> <span class="">আর</span> <span class="">সুপারিশ।</span></div></div><div id="cap45" class="clip cap" data-start="168.966" data-duration="3.382" data-track-index="11"><div class="capbox"><span class="">খেয়াল</span> <span class="">রাখুন</span> <span class="">—</span> <span class="">সংখ্যা</span> <span class="">আর</span> <span class="">তথ্য</span> <span class="">আপনাকেই</span> <span class="">দিতে</span> <span class="">হবে।</span></div></div><div id="cap46" class="clip cap" data-start="172.338" data-duration="2.539" data-track-index="10"><div class="capbox"><span class="">আপনি</span> <span class="">না</span> <span class="">দিলে</span> <span class="kw">AI</span> <span class="">বিশ্বাসযোগ্য</span> <span class="">দেখতে,</span></div></div><div id="cap47" class="clip cap" data-start="174.867" data-duration="2.870" data-track-index="11"><div class="capbox"><span class="">কিন্তু</span> <span class="">বানানো</span> <span class="">সংখ্যা</span> <span class="">বসিয়ে</span> <span class="">দিতে</span> <span class="">পারে।</span></div></div><div id="cap48" class="clip cap" data-start="177.727" data-duration="3.616" data-track-index="10"><div class="capbox"><span class="">প্রপোজালের</span> <span class="">জন্য</span> <span class="">ক্লায়েন্টের</span> <span class="">চাহিদাটা</span> <span class="">পেস্ট</span> <span class="">করুন,</span></div></div><div id="cap49" class="clip cap" data-start="181.333" data-duration="2.463" data-track-index="11"><div class="capbox"><span class="">তারপর</span> <span class="">বলুন</span> <span class="">—</span> <span class="">ক্লায়েন্টের</span> <span class="">সমস্যা,</span></div></div><div id="cap50" class="clip cap" data-start="183.786" data-duration="2.390" data-track-index="10"><div class="capbox"><span class="">আমার</span> <span class="">সমাধান,</span> <span class="">সময়সীমা</span> <span class="">আর</span> <span class="">মূল্য</span></div></div><div id="cap51" class="clip cap" data-start="186.166" data-duration="2.438" data-track-index="11"><div class="capbox"><span class="">এই</span> <span class="">চার</span> <span class="">অংশে</span> <span class="">একটি</span> <span class="">প্রপোজাল</span> <span class="">লেখো।</span></div></div><div id="cap52" class="clip cap" data-start="188.594" data-duration="3.358" data-track-index="10"><div class="capbox"><span class="">তবে</span> <span class="">দাম</span> <span class="">আর</span> <span class="">সময়সীমা</span> <span class="">আপনি</span> <span class="">নিজে</span> <span class="">ঠিক</span> <span class="">করবেন।</span></div></div><div id="cap53" class="clip cap" data-start="191.942" data-duration="3.478" data-track-index="11"><div class="capbox"><span class="kw">AI</span> <span class="">আপনার</span> <span class="">খরচ,</span> <span class="">দক্ষতা</span> <span class="">বা</span> <span class="">বাজারদর</span> <span class="">জানে</span> <span class="">না।</span></div></div><div id="cap54" class="clip cap" data-start="195.410" data-duration="4.938" data-track-index="10"><div class="capbox"><span class="">আর</span> <span class="">ক্লায়েন্টের</span> <span class="">গোপন</span> <span class="">তথ্য</span> <span class="">বা</span> <span class="">চুক্তির</span> <span class="">বিবরণ</span> <span class="kw">AI-তে</span> <span class="">দেওয়ার</span> <span class="">আগে</span> <span class="">নাম</span> <span class="">ও</span></div></div><div id="cap55" class="clip cap" data-start="200.338" data-duration="2.036" data-track-index="11"><div class="capbox"><span class="">সংবেদনশীল</span> <span class="">তথ্য</span> <span class="">সরিয়ে</span> <span class="">নিন।</span></div></div><div id="cap56" class="clip cap" data-start="204.224" data-duration="2.327" data-track-index="10"><div class="capbox"><span class="">এবার</span> <span class="">ভিডিও</span> <span class="">স্ক্রিপ্ট</span> <span class="">—</span> <span class="">ইউটিউব,</span></div></div><div id="cap57" class="clip cap" data-start="206.541" data-duration="2.297" data-track-index="11"><div class="capbox"><span class="">ফেসবুক</span> <span class="">রিলস</span> <span class="">বা</span> <span class="">টিকটকের</span> <span class="">জন্য।</span></div></div><div id="cap58" class="clip cap" data-start="208.828" data-duration="4.871" data-track-index="10"><div class="capbox"><span class="">ভালো</span> <span class="">স্ক্রিপ্টের</span> <span class="">তিনটি</span> <span class="">অংশ</span> <span class="">—</span> <span class="">প্রথম</span> <span class="">তিন</span> <span class="">সেকেন্ডে</span> <span class="">দর্শক</span> <span class="">ধরে</span> <span class="">রাখার</span></div></div><div id="cap59" class="clip cap" data-start="213.689" data-duration="3.352" data-track-index="11"><div class="capbox"><span class="">হুক,</span> <span class="">তারপর</span> <span class="">মূল</span> <span class="">কথা,</span> <span class="">আর</span> <span class="">শেষে</span> <span class="">কল-টু-অ্যাকশন</span></div></div><div id="cap60" class="clip cap" data-start="217.031" data-duration="2.561" data-track-index="10"><div class="capbox"><span class="">যেমন</span> <span class="">ফলো</span> <span class="">করুন</span> <span class="">বা</span> <span class="">কমেন্টে</span> <span class="">জানান।</span></div></div><div id="cap61" class="clip cap" data-start="219.582" data-duration="3.257" data-track-index="11"><div class="capbox"><span class="kw">AI-কে</span> <span class="">বলুন</span> <span class="">—</span> <span class="">ষাট</span> <span class="">সেকেন্ডের</span> <span class="">একটি</span> <span class="">রিলসের</span> <span class="">স্ক্রিপ্ট</span> <span class="">লেখো,</span></div></div><div id="cap62" class="clip cap" data-start="222.829" data-duration="2.903" data-track-index="10"><div class="capbox"><span class="">তিনটি</span> <span class="">কলামে:</span> <span class="">সময়,</span> <span class="">কী</span> <span class="">বলব,</span> <span class="">আর</span> <span class="">স্ক্রিনে</span> <span class="">কী</span> <span class="">দেখাব।</span></div></div><div id="cap63" class="clip cap" data-start="225.722" data-duration="2.315" data-track-index="11"><div class="capbox"><span class="">তাহলে</span> <span class="">শুটিং</span> <span class="">আর</span> <span class="">এডিটিং</span> <span class="">দুটোই</span> <span class="">সহজ</span> <span class="">হয়।</span></div></div><div id="cap64" class="clip cap" data-start="228.027" data-duration="5.983" data-track-index="10"><div class="capbox"><span class="">আর</span> <span class="">ষাট</span> <span class="">সেকেন্ডের</span> <span class="">ভিডিওতে</span> <span class="">মোটামুটি</span> <span class="">দেড়শো</span> <span class="">শব্দের</span> <span class="">আশেপাশেই</span> <span class="">যথেষ্ট</span></div></div><div id="cap65" class="clip cap" data-start="234.000" data-duration="3.388" data-track-index="11"><div class="capbox"><span class="">বেশি</span> <span class="">লিখলে</span> <span class="">তাড়াহুড়ো</span> <span class="">করে</span> <span class="">বলতে</span> <span class="">হবে।</span></div></div><div id="cap66" class="clip cap" data-start="237.378" data-duration="2.763" data-track-index="10"><div class="capbox"><span class="">স্ক্রিপ্ট</span> <span class="">পেলে</span> <span class="">অবশ্যই</span> <span class="">জোরে</span> <span class="">পড়ে</span> <span class="">দেখুন।</span></div></div><div id="cap67" class="clip cap" data-start="240.131" data-duration="2.340" data-track-index="11"><div class="capbox"><span class="">লেখার</span> <span class="">ভাষা</span> <span class="">আর</span> <span class="">মুখের</span> <span class="">ভাষা</span> <span class="">আলাদা</span></div></div><div id="cap68" class="clip cap" data-start="242.461" data-duration="4.498" data-track-index="10"><div class="capbox"><span class="">যেখানে</span> <span class="">আটকে</span> <span class="">যায়,</span> <span class="">সেখানে</span> <span class="kw">AI-কে</span> <span class="">বলুন</span> <span class="">আরও</span> <span class="">সহজ</span> <span class="">কথ্য</span> <span class="">ভাষায়</span> <span class="">লিখতে।</span></div></div><div id="cap69" class="clip cap" data-start="248.809" data-duration="5.076" data-track-index="11"><div class="capbox"><span class="">এবার</span> <span class="">ব্লগ।</span> <span class="">পুরো</span> <span class="">ব্লগ</span> <span class="">একবারে</span> <span class="">না</span> <span class="">চেয়ে</span> <span class="">আগে</span> <span class="">একটি</span> <span class="">আউটলাইন</span> <span class="">চান</span></div></div><div id="cap70" class="clip cap" data-start="253.875" data-duration="3.338" data-track-index="10"><div class="capbox"><span class="">শিরোনাম</span> <span class="">আর</span> <span class="">প্রতিটি</span> <span class="">অংশের</span> <span class="">মূল</span> <span class="">পয়েন্ট।</span></div></div><div id="cap71" class="clip cap" data-start="257.203" data-duration="3.364" data-track-index="11"><div class="capbox"><span class="">আউটলাইন</span> <span class="">ঠিক</span> <span class="">হলে</span> <span class="">প্রতিটি</span> <span class="">অংশ</span> <span class="">আলাদা</span> <span class="">করে</span> <span class="">লেখান।</span></div></div><div id="cap72" class="clip cap" data-start="260.557" data-duration="4.900" data-track-index="10"><div class="capbox"><span class="">এতে</span> <span class="">লেখা</span> <span class="">গোছানো</span> <span class="">হয়,</span> <span class="">আর</span> <span class="">প্রতিটি</span> <span class="">অংশ</span> <span class="">আপনি</span> <span class="">নিয়ন্ত্রণ</span> <span class="">করতে</span> <span class="">পারেন।</span></div></div><div id="cap73" class="clip cap" data-start="265.447" data-duration="2.792" data-track-index="11"><div class="capbox"><span class="">সবচেয়ে</span> <span class="">গুরুত্বপূর্ণ</span> <span class="">ধাপ</span> <span class="">—</span> <span class="">নিজের</span> <span class="">অভিজ্ঞতা,</span></div></div><div id="cap74" class="clip cap" data-start="268.229" data-duration="4.086" data-track-index="10"><div class="capbox"><span class="">উদাহরণ</span> <span class="">আর</span> <span class="">মতামত</span> <span class="">যোগ</span> <span class="">করুন।</span> <span class="">শুধু</span> <span class="kw">AI-এর</span> <span class="">লেখা</span> <span class="">সাধারণ</span> <span class="">শোনায়;</span> <span class="">আপনার</span></div></div><div id="cap75" class="clip cap" data-start="272.305" data-duration="2.006" data-track-index="11"><div class="capbox"><span class="">নিজের</span> <span class="">গল্পই</span> <span class="">পাঠককে</span> <span class="">ধরে</span> <span class="">রাখে।</span></div></div><div id="cap76" class="clip cap" data-start="274.301" data-duration="6.187" data-track-index="10"><div class="capbox"><span class="">সার্চে</span> <span class="">আসার</span> <span class="">জন্য</span> <span class="">কিওয়ার্ড</span> <span class="">চাইলে</span> <span class="kw">AI-কে</span> <span class="">বলুন</span> <span class="">সেটি</span> <span class="">স্বাভাবিকভাবে</span></div></div><div id="cap77" class="clip cap" data-start="280.478" data-duration="3.562" data-track-index="11"><div class="capbox"><span class="">ব্যবহার</span> <span class="">করতে</span> <span class="">—</span> <span class="">জোর</span> <span class="">করে</span> <span class="">বারবার</span> <span class="">নয়।</span></div></div><div id="cap78" class="clip cap" data-start="284.030" data-duration="4.688" data-track-index="10"><div class="capbox"><span class="">লেখা</span> <span class="">শেষে</span> <span class="">আকর্ষণীয়</span> <span class="">শিরোনামের</span> <span class="">পাঁচটি</span> <span class="">বিকল্পও</span> <span class="">চেয়ে</span> <span class="">নিতে</span> <span class="">পারেন,</span></div></div><div id="cap79" class="clip cap" data-start="288.708" data-duration="2.284" data-track-index="11"><div class="capbox"><span class="">তারপর</span> <span class="">নিজের</span> <span class="">পছন্দেরটি</span> <span class="">বাছুন।</span></div></div><div id="cap80" class="clip cap" data-start="290.982" data-duration="5.798" data-track-index="10"><div class="capbox"><span class="">আর</span> <span class="">ব্লগে</span> <span class="">কোনো</span> <span class="">তথ্য,</span> <span class="">পরিসংখ্যান</span> <span class="">বা</span> <span class="">উদ্ধৃতি</span> <span class="">থাকলে</span> <span class="">আসল</span> <span class="">উৎস</span> <span class="">থেকে</span> <span class="">মিলিয়ে</span> <span class="">নিন।</span></div></div><div id="cap81" class="clip cap" data-start="298.630" data-duration="3.797" data-track-index="11"><div class="capbox"><span class="">এবার</span> <span class="">সোশ্যাল</span> <span class="">মিডিয়ার</span> <span class="">ক্যাপশন</span> <span class="">আর</span> <span class="">বিজ্ঞাপনের</span> <span class="">লেখা।</span></div></div><div id="cap82" class="clip cap" data-start="302.417" data-duration="3.669" data-track-index="10"><div class="capbox"><span class="">ক্যাপশনের</span> <span class="">জন্য</span> <span class="">একটি</span> <span class="">নয়,</span> <span class="">কয়েকটি</span> <span class="">বিকল্প</span> <span class="">চান</span></div></div><div id="cap83" class="clip cap" data-start="306.076" data-duration="5.180" data-track-index="11"><div class="capbox"><span class="">যেমন,</span> <span class="">ঢাকার</span> <span class="">একটি</span> <span class="">পোশাকের</span> <span class="">পেজের</span> <span class="">নতুন</span> <span class="">কালেকশনের</span> <span class="">জন্য</span> <span class="">তিনটি</span> <span class="">ক্যাপশন</span></div></div><div id="cap84" class="clip cap" data-start="311.246" data-duration="3.827" data-track-index="10"><div class="capbox"><span class="">দাও:</span> <span class="">একটি</span> <span class="">মজার,</span> <span class="">একটি</span> <span class="">আবেগী,</span> <span class="">একটি</span> <span class="">সরাসরি</span> <span class="">অফারের।</span></div></div><div id="cap85" class="clip cap" data-start="315.063" data-duration="2.914" data-track-index="11"><div class="capbox"><span class="">তারপর</span> <span class="">সেরাটি</span> <span class="">বাছুন</span> <span class="">বা</span> <span class="">মিলিয়ে</span> <span class="">নিন।</span></div></div><div id="cap86" class="clip cap" data-start="317.967" data-duration="3.812" data-track-index="10"><div class="capbox"><span class="">বিজ্ঞাপনের</span> <span class="">লেখায়</span> <span class="">একটি</span> <span class="">সহজ</span> <span class="">কাঠামো</span> <span class="">কাজে</span> <span class="">আসে</span></div></div><div id="cap87" class="clip cap" data-start="321.769" data-duration="3.220" data-track-index="11"><div class="capbox"><span class="">গ্রাহকের</span> <span class="">সমস্যা,</span> <span class="">আপনার</span> <span class="">পণ্যের</span> <span class="">সুবিধা,</span></div></div><div id="cap88" class="clip cap" data-start="324.979" data-duration="4.185" data-track-index="10"><div class="capbox"><span class="">একটি</span> <span class="">প্রমাণ,</span> <span class="">যেমন</span> <span class="">রিভিউ,</span> <span class="">আর</span> <span class="">শেষে</span> <span class="">কল-টু-অ্যাকশন।</span></div></div><div id="cap89" class="clip cap" data-start="329.154" data-duration="4.981" data-track-index="11"><div class="capbox"><span class="">তবে</span> <span class="">সাবধান</span> <span class="">—</span> <span class="">মিথ্যা</span> <span class="">দাবি,</span> <span class="">যেমন</span> <span class="">শতভাগ</span> <span class="">গ্যারান্টি</span> <span class="">বা</span> <span class="">অবাস্তব</span> <span class="">ফল,</span></div></div><div id="cap90" class="clip cap" data-start="334.125" data-duration="3.087" data-track-index="10"><div class="capbox"><span class="">লিখবেন</span> <span class="">না।</span> <span class="">এটি</span> <span class="">গ্রাহকের</span> <span class="">সাথে</span> <span class="">প্রতারণা,</span></div></div><div id="cap91" class="clip cap" data-start="337.202" data-duration="3.128" data-track-index="11"><div class="capbox"><span class="">আর</span> <span class="">প্ল্যাটফর্মের</span> <span class="">বিজ্ঞাপন</span> <span class="">নীতিও</span> <span class="">ভাঙে।</span></div></div><div id="cap92" class="clip cap" data-start="340.320" data-duration="2.306" data-track-index="10"><div class="capbox"><span class="kw">AI</span> <span class="">যদি</span> <span class="">এমন</span> <span class="">কোনো</span> <span class="">দাবি</span> <span class="">লিখে</span> <span class="">দেয়,</span></div></div><div id="cap93" class="clip cap" data-start="342.616" data-duration="2.521" data-track-index="11"><div class="capbox"><span class="">যা</span> <span class="">আপনার</span> <span class="">পণ্যের</span> <span class="">ক্ষেত্রে</span> <span class="">সত্য</span> <span class="">নয়,</span></div></div><div id="cap94" class="clip cap" data-start="345.127" data-duration="1.485" data-track-index="10"><div class="capbox"><span class="">তা</span> <span class="">অবশ্যই</span> <span class="">কেটে</span> <span class="">দিন।</span></div></div><div id="cap95" class="clip cap" data-start="348.462" data-duration="2.639" data-track-index="11"><div class="capbox"><span class="">এবার</span> <span class="">অনুবাদ</span> <span class="">—</span> <span class="">বাংলা</span> <span class="">থেকে</span> <span class="">ইংরেজি,</span></div></div><div id="cap96" class="clip cap" data-start="351.091" data-duration="1.883" data-track-index="10"><div class="capbox"><span class="">বা</span> <span class="">ইংরেজি</span> <span class="">থেকে</span> <span class="">বাংলা।</span></div></div><div id="cap97" class="clip cap" data-start="352.964" data-duration="3.464" data-track-index="11"><div class="capbox"><span class="">শুধু</span> <span class="">অনুবাদ</span> <span class="">করো</span> <span class="">না</span> <span class="">বলে</span> <span class="">প্রসঙ্গ</span> <span class="">আর</span> <span class="">টোন</span> <span class="">বলে</span> <span class="">দিন</span></div></div><div id="cap98" class="clip cap" data-start="356.418" data-duration="2.961" data-track-index="10"><div class="capbox"><span class="">যেমন,</span> <span class="">এটি</span> <span class="">একজন</span> <span class="">বিদেশি</span> <span class="">ক্লায়েন্টের</span> <span class="">জন্য,</span></div></div><div id="cap99" class="clip cap" data-start="359.369" data-duration="2.600" data-track-index="11"><div class="capbox"><span class="">ভদ্র</span> <span class="">ও</span> <span class="">পেশাদার</span> <span class="">ইংরেজিতে</span> <span class="">অনুবাদ</span> <span class="">করো,</span></div></div><div id="cap100" class="clip cap" data-start="361.959" data-duration="2.361" data-track-index="10"><div class="capbox"><span class="">আক্ষরিক</span> <span class="">নয়,</span> <span class="">স্বাভাবিক</span> <span class="">ভাষায়।</span></div></div><div id="cap101" class="clip cap" data-start="364.310" data-duration="5.020" data-track-index="11"><div class="capbox"><span class="">অনুবাদের</span> <span class="">পর</span> <span class="">নাম,</span> <span class="">সংখ্যা,</span> <span class="">তারিখ</span> <span class="">আর</span> <span class="">মূল</span> <span class="">অর্থ</span> <span class="">ঠিক</span> <span class="">আছে</span> <span class="">কি</span> <span class="">না</span> <span class="">মিলিয়ে</span></div></div><div id="cap102" class="clip cap" data-start="369.320" data-duration="4.711" data-track-index="10"><div class="capbox"><span class="">নিন।</span> <span class="">একটি</span> <span class="">ভালো</span> <span class="">কৌশল</span> <span class="">—</span> <span class="">অনুবাদটি</span> <span class="">আবার</span> <span class="">উল্টো</span> <span class="">দিকে</span> <span class="">অনুবাদ</span> <span class="">করিয়ে</span></div></div><div id="cap103" class="clip cap" data-start="374.021" data-duration="2.596" data-track-index="11"><div class="capbox"><span class="">দেখুন,</span> <span class="">মূল</span> <span class="">কথা</span> <span class="">ঠিক</span> <span class="">থাকছে</span> <span class="">কি</span> <span class="">না।</span></div></div><div id="cap104" class="clip cap" data-start="376.607" data-duration="5.121" data-track-index="10"><div class="capbox"><span class="">তবে</span> <span class="">আইনি</span> <span class="">কাগজ,</span> <span class="">সরকারি</span> <span class="">আবেদন</span> <span class="">বা</span> <span class="">চিকিৎসা-সংক্রান্ত</span> <span class="">লেখার</span> <span class="">মতো</span></div></div><div id="cap105" class="clip cap" data-start="381.718" data-duration="4.601" data-track-index="11"><div class="capbox"><span class="">গুরুত্বপূর্ণ</span> <span class="">ক্ষেত্রে</span> <span class="">শুধু</span> <span class="kw">AI-এর</span> <span class="">ওপর</span> <span class="">ভরসা</span> <span class="">করবেন</span> <span class="">না</span></div></div><div id="cap106" class="clip cap" data-start="386.309" data-duration="4.375" data-track-index="10"><div class="capbox"><span class="">পেশাদার</span> <span class="">অনুবাদক</span> <span class="">বা</span> <span class="">বিশেষজ্ঞকে</span> <span class="">দিয়ে</span> <span class="">দেখিয়ে</span> <span class="">নিন।</span></div></div><div id="cap107" class="clip cap" data-start="390.674" data-duration="4.520" data-track-index="11"><div class="capbox"><span class="">আর</span> <span class="">বাংলাভাষী</span> <span class="">গ্রাহকের</span> <span class="">জন্য</span> <span class="">কনটেন্ট</span> <span class="">দরকার</span> <span class="">হলে</span> <span class="">ইংরেজি</span> <span class="">থেকে</span> <span class="">অনুবাদ</span> <span class="">না</span></div></div><div id="cap108" class="clip cap" data-start="395.184" data-duration="2.164" data-track-index="10"><div class="capbox"><span class="">করে</span> <span class="">সরাসরি</span> <span class="">বাংলায়</span> <span class="">লিখতে</span> <span class="">বলুন</span></div></div><div id="cap109" class="clip cap" data-start="397.338" data-duration="2.070" data-track-index="11"><div class="capbox"><span class="">তাতে</span> <span class="">ভাষা</span> <span class="">বেশি</span> <span class="">স্বাভাবিক</span> <span class="">হয়।</span></div></div><div id="cap110" class="clip cap" data-start="401.258" data-duration="4.625" data-track-index="10"><div class="capbox"><span class="">এবার</span> <span class="">এডিটিং</span> <span class="">—</span> <span class="">নিজের</span> <span class="">লেখা</span> <span class="">ঠিক</span> <span class="">করতে</span> <span class="kw">AI</span> <span class="">দারুণ</span> <span class="">সহকারী।</span></div></div><div id="cap111" class="clip cap" data-start="405.873" data-duration="2.564" data-track-index="11"><div class="capbox"><span class="">নিজের</span> <span class="">লেখা</span> <span class="">পেস্ট</span> <span class="">করে</span> <span class="">নির্দিষ্ট</span> <span class="">করে</span> <span class="">বলুন</span></div></div><div id="cap112" class="clip cap" data-start="408.427" data-duration="3.902" data-track-index="10"><div class="capbox"><span class="">শুধু</span> <span class="">ব্যাকরণ</span> <span class="">আর</span> <span class="">বানান</span> <span class="">ঠিক</span> <span class="">করো;</span> <span class="">কিংবা</span> <span class="">আরও</span> <span class="">স্পষ্ট</span> <span class="">করো;</span> <span class="">অর্ধেক</span> <span class="">ছোট</span></div></div><div id="cap113" class="clip cap" data-start="412.319" data-duration="2.198" data-track-index="11"><div class="capbox"><span class="">করো;</span> <span class="">অথবা</span> <span class="">টোন</span> <span class="">আরও</span> <span class="">আনুষ্ঠানিক</span> <span class="">করো।</span></div></div><div id="cap114" class="clip cap" data-start="414.507" data-duration="2.895" data-track-index="10"><div class="capbox"><span class="">একটি</span> <span class="">দরকারি</span> <span class="">নির্দেশনা</span> <span class="">যোগ</span> <span class="">করুন</span></div></div><div id="cap115" class="clip cap" data-start="417.392" data-duration="2.982" data-track-index="11"><div class="capbox"><span class="">কী</span> <span class="">কী</span> <span class="">বদলেছ,</span> <span class="">তার</span> <span class="">একটি</span> <span class="">তালিকা</span> <span class="">দাও।</span></div></div><div id="cap116" class="clip cap" data-start="420.364" data-duration="5.343" data-track-index="10"><div class="capbox"><span class="">এতে</span> <span class="">আপনি</span> <span class="">প্রতিটি</span> <span class="">পরিবর্তন</span> <span class="">দেখে</span> <span class="">মেনে</span> <span class="">নিতে</span> <span class="">বা</span> <span class="">বাদ</span> <span class="">দিতে</span> <span class="">পারবেন,</span></div></div><div id="cap117" class="clip cap" data-start="425.697" data-duration="3.365" data-track-index="11"><div class="capbox"><span class="">আর</span> <span class="">ইংরেজি</span> <span class="">লেখার</span> <span class="">ভুলগুলোও</span> <span class="">শিখে</span> <span class="">যাবেন।</span></div></div><div id="cap118" class="clip cap" data-start="429.052" data-duration="4.281" data-track-index="10"><div class="capbox"><span class="">যেমন</span> <span class="">একজন</span> <span class="">চাকরিপ্রার্থী</span> <span class="">নিজের</span> <span class="">ইংরেজি</span> <span class="">সিভির</span> <span class="">সারসংক্ষেপ</span> <span class="">দিয়ে</span> <span class="">বলতে</span></div></div><div id="cap119" class="clip cap" data-start="433.323" data-duration="3.098" data-track-index="11"><div class="capbox"><span class="">পারেন</span> <span class="">—</span> <span class="">ব্যাকরণ</span> <span class="">ঠিক</span> <span class="">করো,</span> <span class="">আরও</span> <span class="">আত্মবিশ্বাসী</span> <span class="">করো,</span></div></div><div id="cap120" class="clip cap" data-start="436.411" data-duration="3.349" data-track-index="10"><div class="capbox"><span class="">কিন্তু</span> <span class="">কোনো</span> <span class="">নতুন</span> <span class="">দক্ষতা</span> <span class="">বা</span> <span class="">অভিজ্ঞতা</span> <span class="">যোগ</span> <span class="">করবে</span> <span class="">না।</span></div></div><div id="cap121" class="clip cap" data-start="439.750" data-duration="3.759" data-track-index="11"><div class="capbox"><span class="">আর</span> <span class="">বলে</span> <span class="">দিন</span> <span class="">—</span> <span class="">আমার</span> <span class="">কণ্ঠ</span> <span class="">আর</span> <span class="">মূল</span> <span class="">অর্থ</span> <span class="">যেন</span> <span class="">না</span> <span class="">বদলায়।</span></div></div><div id="cap122" class="clip cap" data-start="443.499" data-duration="3.125" data-track-index="10"><div class="capbox"><span class="">নইলে</span> <span class="">লেখাটা</span> <span class="">আপনার</span> <span class="">নয়,</span> <span class="kw">AI-এর</span> <span class="">মতো</span> <span class="">শোনাবে।</span></div></div><div id="cap123" class="clip cap" data-start="448.474" data-duration="5.928" data-track-index="11"><div class="capbox"><span class="">এবার</span> <span class="">সবকিছু</span> <span class="">একসাথে</span> <span class="">—</span> <span class="">আইডিয়া</span> <span class="">থেকে</span> <span class="">প্রকাশ</span> <span class="">পর্যন্ত</span> <span class="">একটি</span> <span class="">কনটেন্ট</span> <span class="">ওয়ার্কফ্লো।</span></div></div><div id="cap124" class="clip cap" data-start="454.392" data-duration="3.037" data-track-index="10"><div class="capbox"><span class="">আইডিয়া,</span> <span class="">গবেষণা,</span> <span class="">আউটলাইন,</span> <span class="">খসড়া,</span></div></div><div id="cap125" class="clip cap" data-start="457.419" data-duration="5.175" data-track-index="11"><div class="capbox"><span class="">এডিট</span> <span class="">ও</span> <span class="">যাচাই,</span> <span class="">ডিজাইন,</span> <span class="">তারপর</span> <span class="">প্রকাশ</span> <span class="">আর</span> <span class="">ফলাফল</span> <span class="">মূল্যায়ন।</span></div></div><div id="cap126" class="clip cap" data-start="462.584" data-duration="4.397" data-track-index="10"><div class="capbox"><span class="">আইডিয়া</span> <span class="">খোঁজা,</span> <span class="">আউটলাইন</span> <span class="">আর</span> <span class="">খসড়ায়</span> <span class="kw">AI</span> <span class="">অনেক</span> <span class="">সময়</span> <span class="">বাঁচায়।</span></div></div><div id="cap127" class="clip cap" data-start="466.971" data-duration="3.535" data-track-index="11"><div class="capbox"><span class="">কিন্তু</span> <span class="">এডিট</span> <span class="">ও</span> <span class="">যাচাই,</span> <span class="">আর</span> <span class="">প্রকাশের</span> <span class="">সিদ্ধান্ত</span></div></div><div id="cap128" class="clip cap" data-start="470.496" data-duration="3.342" data-track-index="10"><div class="capbox"><span class="">এই</span> <span class="">দুই</span> <span class="">জায়গায়</span> <span class="">মানুষের</span> <span class="">চোখ</span> <span class="">বাধ্যতামূলক।</span></div></div><div id="cap129" class="clip cap" data-start="473.828" data-duration="2.459" data-track-index="11"><div class="capbox"><span class="">আরেকটি</span> <span class="">শক্তিশালী</span> <span class="">কৌশল</span> <span class="">—</span> <span class="">রিপারপাস।</span></div></div><div id="cap130" class="clip cap" data-start="476.277" data-duration="3.757" data-track-index="10"><div class="capbox"><span class="">একটি</span> <span class="">ব্লগ</span> <span class="">লিখে</span> <span class="kw">AI-কে</span> <span class="">বলুন</span> <span class="">সেখান</span> <span class="">থেকে</span> <span class="">তিনটি</span> <span class="">ক্যাপশন,</span></div></div><div id="cap131" class="clip cap" data-start="480.024" data-duration="3.756" data-track-index="11"><div class="capbox"><span class="">একটি</span> <span class="">রিলস</span> <span class="">স্ক্রিপ্ট</span> <span class="">আর</span> <span class="">একটি</span> <span class="">নিউজলেটার</span> <span class="">ইমেইল</span> <span class="">বানাতে।</span></div></div><div id="cap132" class="clip cap" data-start="483.770" data-duration="2.147" data-track-index="10"><div class="capbox"><span class="">এক</span> <span class="">পরিশ্রমে</span> <span class="">পাঁচটি</span> <span class="">কনটেন্ট।</span></div></div><div id="cap133" class="clip cap" data-start="485.907" data-duration="4.415" data-track-index="11"><div class="capbox"><span class="">একটি</span> <span class="">সাধারণ</span> <span class="">স্প্রেডশিটেই</span> <span class="">এই</span> <span class="">ধাপগুলোর</span> <span class="">কলাম</span> <span class="">বানিয়ে</span> <span class="">প্রতিটি</span></div></div><div id="cap134" class="clip cap" data-start="490.312" data-duration="2.940" data-track-index="10"><div class="capbox"><span class="">কনটেন্টের</span> <span class="">অবস্থা</span> <span class="">ট্র্যাক</span> <span class="">করতে</span> <span class="">পারেন।</span></div></div><div id="cap135" class="clip cap" data-start="493.242" data-duration="2.306" data-track-index="11"><div class="capbox"><span class="">প্রকাশের</span> <span class="">পর</span> <span class="">কোন</span> <span class="">পোস্ট</span> <span class="">ভালো</span> <span class="">চলল,</span></div></div><div id="cap136" class="clip cap" data-start="495.538" data-duration="2.305" data-track-index="10"><div class="capbox"><span class="">তা</span> <span class="">দেখে</span> <span class="">পরের</span> <span class="">আইডিয়া</span> <span class="">ঠিক</span> <span class="">করুন</span></div></div><div id="cap137" class="clip cap" data-start="497.833" data-duration="2.848" data-track-index="11"><div class="capbox"><span class="">এভাবেই</span> <span class="">চক্রটি</span> <span class="">প্রতি</span> <span class="">সপ্তাহে</span> <span class="">উন্নত</span> <span class="">হয়।</span></div></div><div id="cap138" class="clip cap" data-start="502.531" data-duration="4.735" data-track-index="10"><div class="capbox"><span class="">এবার</span> <span class="">এই</span> <span class="">মডিউলের</span> <span class="">মূল</span> <span class="">অর্জন</span> <span class="">—</span> <span class="">নিজের</span> <span class="">একটি</span> <span class="kw">AI</span> <span class="kw">Content</span> <span class="kw">Engine।</span></div></div><div id="cap139" class="clip cap" data-start="507.256" data-duration="3.188" data-track-index="11"><div class="capbox"><span class="">এটি</span> <span class="">চারটি</span> <span class="">অংশ</span> <span class="">নিয়ে</span> <span class="">একটি</span> <span class="">সহজ</span> <span class="">ব্যবস্থা,</span></div></div><div id="cap140" class="clip cap" data-start="510.434" data-duration="3.144" data-track-index="10"><div class="capbox"><span class="">যা</span> <span class="">প্রতি</span> <span class="">সপ্তাহে</span> <span class="">আবার</span> <span class="">ব্যবহার</span> <span class="">করবেন।</span></div></div><div id="cap141" class="clip cap" data-start="513.568" data-duration="4.262" data-track-index="11"><div class="capbox"><span class="">এক</span> <span class="">—</span> <span class="">ব্র্যান্ড</span> <span class="">ভয়েস</span> <span class="">কার্ড:</span> <span class="">আপনি</span> <span class="">বা</span> <span class="">আপনার</span> <span class="">ব্যবসা</span> <span class="">কেমন</span> <span class="">ভাষায়</span> <span class="">কথা</span></div></div><div id="cap142" class="clip cap" data-start="517.820" data-duration="2.561" data-track-index="10"><div class="capbox"><span class="">বলে,</span> <span class="">কোন</span> <span class="">শব্দ</span> <span class="">ব্যবহার</span> <span class="">করেন</span> <span class="">আর</span> <span class="">করেন</span> <span class="">না,</span></div></div><div id="cap143" class="clip cap" data-start="520.371" data-duration="1.438" data-track-index="11"><div class="capbox"><span class="">আর</span> <span class="">আপনার</span> <span class="">পাঠক</span> <span class="">কারা।</span></div></div><div id="cap144" class="clip cap" data-start="521.799" data-duration="3.525" data-track-index="10"><div class="capbox"><span class="">দুই</span> <span class="">—</span> <span class="">প্রম্পট</span> <span class="">টেমপ্লেট</span> <span class="">লাইব্রেরি:</span> <span class="">ইমেইল,</span></div></div><div id="cap145" class="clip cap" data-start="525.314" data-duration="5.497" data-track-index="11"><div class="capbox"><span class="">ক্যাপশন,</span> <span class="">ব্লগ</span> <span class="">আউটলাইন</span> <span class="">আর</span> <span class="">স্ক্রিপ্টের</span> <span class="">জন্য</span> <span class="">ফর্মুলা</span> <span class="">অনুযায়ী</span> <span class="">তৈরি</span></div></div><div id="cap146" class="clip cap" data-start="530.801" data-duration="3.354" data-track-index="10"><div class="capbox"><span class="">প্রম্পট,</span> <span class="">যেখানে</span> <span class="">শুধু</span> <span class="">তথ্য</span> <span class="">বদলালেই</span> <span class="">চলে।</span></div></div><div id="cap147" class="clip cap" data-start="534.145" data-duration="3.182" data-track-index="11"><div class="capbox"><span class="">তিন</span> <span class="">—</span> <span class="">সাপ্তাহিক</span> <span class="">কনটেন্ট</span> <span class="">ক্যালেন্ডার।</span></div></div><div id="cap148" class="clip cap" data-start="537.317" data-duration="3.731" data-track-index="10"><div class="capbox"><span class="">আর</span> <span class="">চার</span> <span class="">—</span> <span class="">প্রকাশের</span> <span class="">আগে</span> <span class="">যাচাইয়ের</span> <span class="">চেকলিস্ট।</span></div></div><div id="cap149" class="clip cap" data-start="541.038" data-duration="4.514" data-track-index="11"><div class="capbox"><span class="">আপনার</span> <span class="">অ্যাসাইনমেন্ট</span> <span class="">—</span> <span class="">এই</span> <span class="">চারটি</span> <span class="">অংশ</span> <span class="">একটি</span> <span class="">ডকুমেন্টে</span> <span class="">তৈরি</span> <span class="">করুন।</span></div></div><div id="cap150" class="clip cap" data-start="545.542" data-duration="4.439" data-track-index="10"><div class="capbox"><span class="">তারপর</span> <span class="">এই</span> <span class="">ইঞ্জিন</span> <span class="">দিয়ে</span> <span class="">এক</span> <span class="">সপ্তাহের</span> <span class="">কনটেন্ট</span> <span class="">বানান:</span> <span class="">একটি</span> <span class="">ব্লগ,</span></div></div><div id="cap151" class="clip cap" data-start="549.971" data-duration="4.634" data-track-index="11"><div class="capbox"><span class="">সেখান</span> <span class="">থেকে</span> <span class="">তিনটি</span> <span class="">ক্যাপশন,</span> <span class="">একটি</span> <span class="">রিলস</span> <span class="">স্ক্রিপ্ট</span> <span class="">আর</span> <span class="">একটি</span> <span class="">ইমেইল।</span></div></div><div id="cap152" class="clip cap" data-start="554.595" data-duration="2.576" data-track-index="10"><div class="capbox"><span class="">জমা</span> <span class="">দিন</span> <span class="">—</span> <span class="">ডকুমেন্ট,</span> <span class="">তৈরি</span> <span class="">কনটেন্ট,</span></div></div><div id="cap153" class="clip cap" data-start="557.161" data-duration="4.578" data-track-index="11"><div class="capbox"><span class="">আর</span> <span class="">দুই</span> <span class="">লাইনে</span> <span class="">লিখুন</span> <span class="">কোথায়</span> <span class="kw">AI-এর</span> <span class="">লেখা</span> <span class="">বদলাতে</span> <span class="">হয়েছে,</span> <span class="">আর</span> <span class="">কেন।</span></div></div><div id="cap154" class="clip cap" data-start="563.589" data-duration="3.192" data-track-index="10"><div class="capbox"><span class="">আজ</span> <span class="">আমরা</span> <span class="">শিখলাম</span> <span class="">লেখার</span> <span class="">ছয়</span> <span class="">অংশের</span> <span class="">ফর্মুলা</span></div></div><div id="cap155" class="clip cap" data-start="566.771" data-duration="3.699" data-track-index="11"><div class="capbox"><span class="">কাজ,</span> <span class="">পাঠক,</span> <span class="">উদ্দেশ্য,</span> <span class="">টোন,</span> <span class="">দৈর্ঘ্য</span> <span class="">আর</span> <span class="">ফরম্যাট।</span></div></div><div id="cap156" class="clip cap" data-start="570.460" data-duration="4.835" data-track-index="10"><div class="capbox"><span class="">দেখলাম</span> <span class="">ইমেইল,</span> <span class="">রিপোর্ট,</span> <span class="">প্রপোজাল</span> <span class="">আর</span> <span class="">স্ক্রিপ্ট;</span> <span class="">ব্লগ,</span></div></div><div id="cap157" class="clip cap" data-start="575.285" data-duration="6.255" data-track-index="11"><div class="capbox"><span class="">ক্যাপশন</span> <span class="">আর</span> <span class="">বিজ্ঞাপন;</span> <span class="">আর</span> <span class="">অনুবাদ</span> <span class="">ও</span> <span class="">এডিটিংয়ে</span> <span class="kw">AI</span> <span class="">কীভাবে</span> <span class="">সাহায্য</span> <span class="">করে।</span></div></div><div id="cap158" class="clip cap" data-start="581.530" data-duration="2.725" data-track-index="10"><div class="capbox"><span class="">জানলাম</span> <span class="">আইডিয়া</span> <span class="">থেকে</span> <span class="">প্রকাশ</span> <span class="">পর্যন্ত</span> <span class="">ওয়ার্কফ্লো,</span></div></div><div id="cap159" class="clip cap" data-start="584.245" data-duration="2.393" data-track-index="11"><div class="capbox"><span class="">আর</span> <span class="">নিজের</span> <span class="kw">AI</span> <span class="kw">Content</span> <span class="kw">Engine</span> <span class="">তৈরির</span> <span class="">উপায়।</span></div></div><div id="cap160" class="clip cap" data-start="586.628" data-duration="3.588" data-track-index="10"><div class="capbox"><span class="">মনে</span> <span class="">রাখবেন</span> <span class="">—</span> <span class="kw">AI</span> <span class="">আপনার</span> <span class="">লেখার</span> <span class="">গতি</span> <span class="">বাড়ায়,</span></div></div><div id="cap161" class="clip cap" data-start="590.206" data-duration="4.929" data-track-index="11"><div class="capbox"><span class="">কিন্তু</span> <span class="">আপনার</span> <span class="">অভিজ্ঞতা,</span> <span class="">কণ্ঠ</span> <span class="">আর</span> <span class="">সততাই</span> <span class="">লেখাকে</span> <span class="">আলাদা</span> <span class="">করে।</span></div></div><div id="cap162" class="clip cap" data-start="595.125" data-duration="6.336" data-track-index="10"><div class="capbox"><span class="">আর</span> <span class="kw">AI</span> <span class="">দিয়ে</span> <span class="">বানানো</span> <span class="">ছবি,</span> <span class="">ভিডিও</span> <span class="">বা</span> <span class="">কণ্ঠ</span> <span class="">প্রকাশের</span> <span class="">সময়</span> <span class="">প্ল্যাটফর্মের</span></div></div><div id="cap163" class="clip cap" data-start="601.451" data-duration="4.347" data-track-index="11"><div class="capbox"><span class="">নিয়ম</span> <span class="">অনুযায়ী</span> <span class="">প্রয়োজন</span> <span class="">হলে</span> <span class="">তা</span> <span class="">জানিয়ে</span> <span class="">দিন।</span></div></div><div id="cap164" class="clip cap" data-start="605.788" data-duration="3.808" data-track-index="10"><div class="capbox"><span class="">অ্যাসাইনমেন্টটি</span> <span class="">শেষ</span> <span class="">করে</span> <span class="">চলে</span> <span class="">আসুন</span> <span class="">পরের</span> <span class="">মডিউলে।</span> <span class="">দেখা</span> <span class="">হবে!</span></div></div>
+  <div id="endc" class="clip endc" data-start="609.596" data-duration="3.0" data-track-index="9">
+    <div class="brand" style="font-size:44px"><span class="dot"></span>AI FUNDAMENTALS</div>
+    <div class="sub">মডিউল ০৪ সম্পন্ন · দেখা হবে পরের মডিউলে</div>
+    <div class="credits" id="credits"><div><span>ইন্সট্রাক্টর</span><b>Rubel Miah</b></div><i></i><div><span>ভিডিও এডিটর</span><b>Paloan</b></div></div></div>
+</div>
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+tl.to("#orb1",{x:220,y:120,duration:153.15,ease:"sine.inOut",yoyo:true,repeat:3},0);
+tl.to("#orb2",{x:-200,y:-140,duration:153.15,ease:"sine.inOut",yoyo:true,repeat:3},0);
+tl.to("#orb3",{x:160,y:-90,duration:102.10,ease:"sine.inOut",yoyo:true,repeat:5},0);
+tl.fromTo("#grid",{x:0},{x:-96,duration:612.60,ease:"none"},0);
+tl.from("#topbar",{y:-40,opacity:0,duration:0.6},0);
+tl.fromTo("#progfill",{scaleX:0},{scaleX:1,duration:612.60,ease:"none"},0);
+tl.from("#vs01",{opacity:0,duration:0.4},1.200);
+tl.to("#vs01",{opacity:0,duration:0.3},43.474);
+tl.from("#os01",{opacity:0,duration:0.4},1.200);
+tl.to("#os01",{opacity:0,duration:0.3},43.474);
+tl.set("#vs01",{opacity:0},43.774);
+tl.from("#s01 .photo",{x:-60,opacity:0,duration:0.8,ease:"power3.out"},0.200);
+tl.from("#s01 .kicker",{y:20,opacity:0,duration:0.5,ease:"power3.out"},0.900);
+tl.from("#s01t",{y:40,opacity:0,duration:0.7,ease:"power3.out"},1.780);
+tl.from("#s01s",{y:40,opacity:0,duration:0.55,ease:"power3.out"},18.255);
+tl.from("#s01r0",{x:60,opacity:0,duration:0.45,ease:"power3.out"},22.803);
+tl.from("#s01r1",{x:60,opacity:0,duration:0.45,ease:"power3.out"},26.572);
+tl.from("#s01r2",{x:60,opacity:0,duration:0.45,ease:"power3.out"},28.959);
+tl.from("#s01r3",{x:60,opacity:0,duration:0.45,ease:"power3.out"},31.347);
+tl.from("#s01r4",{x:60,opacity:0,duration:0.45,ease:"power3.out"},33.702);
+tl.from("#s01r5",{x:60,opacity:0,duration:0.45,ease:"power3.out"},39.533);
+tl.fromTo("#p1",{scale:1},{scale:1.06,duration:44.27,ease:"none"},0.000);
+tl.from("#s02f0",{y:-60,opacity:0,duration:0.5,ease:"back.out(1.8)"},51.394);
+tl.from("#s02f1",{y:-60,opacity:0,duration:0.5,ease:"back.out(1.8)"},54.090);
+tl.from("#s02f2",{y:-60,opacity:0,duration:0.5,ease:"back.out(1.8)"},56.578);
+tl.from("#s02f3",{y:-60,opacity:0,duration:0.5,ease:"back.out(1.8)"},59.274);
+tl.from("#s02f4",{y:-60,opacity:0,duration:0.5,ease:"back.out(1.8)"},61.816);
+tl.from("#s02f5",{y:-60,opacity:0,duration:0.5,ease:"back.out(1.8)"},65.198);
+tl.to("#s02 .ftile",{scale:1.04,duration:0.25,yoyo:true,repeat:1,stagger:0.1},69.390);
+tl.from("#s02tip",{y:30,opacity:0,duration:0.55,ease:"power3.out"},74.879);
+tl.from("#s02gold",{y:30,opacity:0,duration:0.55,ease:"power3.out"},83.684);
+tl.from("#s03A",{x:-60,opacity:0,duration:0.6,ease:"power3.out"},97.690);
+tl.from("#s03wa",{y:20,opacity:0,duration:0.45,ease:"power3.out"},102.199);
+tl.to("#s03wa .ph",{opacity:0.25,duration:0.3,yoyo:true,repeat:5},103.890);
+tl.from("#s03B",{x:60,opacity:0,duration:0.6,ease:"power3.out"},108.320);
+tl.from("#s03p0",{opacity:0,duration:0.3,ease:"power3.out"},109.660);
+tl.to("#s03p0",{backgroundColor:"#ffa24c33",borderColor:"#ffa24c",duration:0.3},128.322);
+tl.from("#s03p1",{opacity:0,duration:0.3,ease:"power3.out"},112.320);
+tl.to("#s03p1",{backgroundColor:"#2dd4bf33",borderColor:"#2dd4bf",duration:0.3},128.472);
+tl.from("#s03p2",{opacity:0,duration:0.3,ease:"power3.out"},115.740);
+tl.to("#s03p2",{backgroundColor:"#fde04733",borderColor:"#fde047",duration:0.3},128.622);
+tl.from("#s03p3",{opacity:0,duration:0.3,ease:"power3.out"},120.300);
+tl.to("#s03p3",{backgroundColor:"#f472b633",borderColor:"#f472b6",duration:0.3},128.772);
+tl.from("#s03p4",{opacity:0,duration:0.3,ease:"power3.out"},123.340);
+tl.to("#s03p4",{backgroundColor:"#4ade8033",borderColor:"#4ade80",duration:0.3},128.922);
+tl.from("#s03p5",{opacity:0,duration:0.3,ease:"power3.out"},125.620);
+tl.to("#s03p5",{backgroundColor:"#fdba7433",borderColor:"#fdba74",duration:0.3},129.072);
+tl.from("#s03sa",{y:20,opacity:0,duration:0.5,ease:"power3.out"},130.370);
+tl.from("#s03chk",{y:30,opacity:0,duration:0.55,ease:"power3.out"},141.737);
+tl.to("#s03c0",{color:"#4ade80",duration:0.2},144.409);
+tl.to("#s03c1",{color:"#4ade80",duration:0.2},145.692);
+tl.to("#s03c2",{color:"#4ade80",duration:0.2},146.975);
+tl.to("#s03c3",{color:"#4ade80",duration:0.2},148.258);
+tl.to("#s03c4",{color:"#4ade80",duration:0.2},149.541);
+tl.from("#s04L",{x:-60,opacity:0,duration:0.55,ease:"power3.out"},158.950);
+tl.from("#s04r0",{x:-30,opacity:0,duration:0.35,ease:"power3.out"},163.536);
+tl.from("#s04r1",{x:-30,opacity:0,duration:0.35,ease:"power3.out"},164.705);
+tl.from("#s04r2",{x:-30,opacity:0,duration:0.35,ease:"power3.out"},165.875);
+tl.from("#s04r3",{x:-30,opacity:0,duration:0.35,ease:"power3.out"},167.044);
+tl.from("#s04rl",{x:-20,opacity:0,duration:0.4,ease:"power3.out"},169.448);
+tl.from("#s04R",{x:60,opacity:0,duration:0.55,ease:"power3.out"},177.577);
+tl.from("#s04p0",{x:30,opacity:0,duration:0.35,ease:"power3.out"},182.613);
+tl.from("#s04p1",{x:30,opacity:0,duration:0.35,ease:"power3.out"},183.903);
+tl.from("#s04p2",{x:30,opacity:0,duration:0.35,ease:"power3.out"},185.192);
+tl.from("#s04p3",{x:30,opacity:0,duration:0.35,ease:"power3.out"},186.482);
+tl.from("#s04tag",{scale:0.5,opacity:0,duration:0.4,ease:"back.out(2.5)"},188.979);
+tl.from("#s04ft",{y:30,opacity:0,duration:0.55,ease:"power3.out"},195.806);
+tl.from("#s05bar",{y:-20,opacity:0,duration:0.55,ease:"power3.out"},208.678);
+tl.from("#s05g0",{scaleX:0,transformOrigin:"0 50%",duration:0.5},209.941);
+tl.from("#s05g1",{scaleX:0,transformOrigin:"0 50%",duration:0.5},213.663);
+tl.from("#s05g2",{scaleX:0,transformOrigin:"0 50%",duration:0.5},216.853);
+tl.from("#s05tb",{y:40,opacity:0,duration:0.55,ease:"power3.out"},220.048);
+tl.from("#s05tb .r0",{opacity:0,x:-20,stagger:0.1,duration:0.35},222.962);
+tl.from("#s05tb .r1",{opacity:0,x:-20,stagger:0.1,duration:0.35},224.211);
+tl.from("#s05tb .r2",{opacity:0,x:-20,stagger:0.1,duration:0.35},225.459);
+tl.from("#s05wc",{scale:0.7,opacity:0,duration:0.45,ease:"back.out(2)"},228.539);
+tl.from("#s05ft",{y:30,opacity:0,duration:0.55,ease:"power3.out"},237.905);
+tl.from("#s06s0",{y:40,opacity:0,duration:0.55,ease:"power3.out"},251.341);
+tl.from("#s06s1",{y:40,opacity:0,duration:0.55,ease:"power3.out"},257.659);
+tl.from("#s06s2",{y:40,opacity:0,duration:0.55,ease:"power3.out"},265.934);
+tl.from("#s06stk",{rotation:-20,scale:0.4,opacity:0,duration:0.5,ease:"back.out(2)"},268.554);
+tl.from("#s06kw",{x:-40,opacity:0,duration:0.55,ease:"power3.out"},274.831);
+tl.from("#s06hd",{x:40,opacity:0,duration:0.55,ease:"power3.out"},284.422);
+tl.from("#s06hd .hl i",{scaleX:0,stagger:0.15,duration:0.3},286.130);
+tl.from("#s06ft",{y:30,opacity:0,duration:0.55,ease:"power3.out"},291.319);
+tl.from("#s07ph0",{y:60,opacity:0,duration:0.5,ease:"power3.out"},307.868);
+tl.from("#s07ph1",{y:60,opacity:0,duration:0.5,ease:"power3.out"},311.725);
+tl.from("#s07ph2",{y:60,opacity:0,duration:0.5,ease:"power3.out"},315.582);
+tl.from("#s07ad",{x:60,opacity:0,duration:0.55,ease:"power3.out"},317.817);
+tl.from("#s07a0",{x:30,opacity:0,duration:0.35,ease:"power3.out"},320.784);
+tl.from("#s07a1",{x:30,opacity:0,duration:0.35,ease:"power3.out"},322.665);
+tl.from("#s07a2",{x:30,opacity:0,duration:0.35,ease:"power3.out"},324.657);
+tl.from("#s07a3",{x:30,opacity:0,duration:0.35,ease:"power3.out"},326.871);
+tl.from("#s07ft",{y:30,opacity:0,duration:0.55,ease:"power3.out"},329.756);
+tl.to("#s07ft",{x:8,duration:0.06,yoyo:true,repeat:5},340.994);
+tl.from("#s08tr",{y:40,opacity:0,duration:0.55,ease:"power3.out"},349.388);
+tl.from("#s08en",{opacity:0,x:-30,duration:0.6},357.504);
+tl.fromTo("#s08knob",{x:0},{x:-110,duration:0.8,ease:"power2.inOut"},359.188);
+tl.from("#s08ck span",{scale:0.5,opacity:0,stagger:0.25,duration:0.3},364.969);
+tl.from("#s08bk",{x:-40,opacity:0,duration:0.55,ease:"power3.out"},370.448);
+tl.from("#s08ft",{y:30,opacity:0,duration:0.55,ease:"power3.out"},377.354);
+tl.from("#s08nat",{x:40,opacity:0,duration:0.55,ease:"power3.out"},391.158);
+tl.from("#s09pg",{y:40,opacity:0,duration:0.55,ease:"power3.out"},402.207);
+tl.from("#s09pg del, #s09pg ins",{opacity:0,stagger:0.3,duration:0.3},408.477);
+tl.from("#s09m0",{scale:0.6,opacity:0,duration:0.35,ease:"back.out(2)"},407.200);
+tl.from("#s09m1",{scale:0.6,opacity:0,duration:0.35,ease:"back.out(2)"},409.329);
+tl.from("#s09m2",{scale:0.6,opacity:0,duration:0.35,ease:"back.out(2)"},410.861);
+tl.from("#s09m3",{scale:0.6,opacity:0,duration:0.35,ease:"back.out(2)"},412.564);
+tl.from("#s09log",{y:20,opacity:0,duration:0.45,ease:"power3.out"},416.000);
+tl.from("#s09cv",{x:40,opacity:0,duration:0.55,ease:"power3.out"},429.631);
+tl.from("#s09ft",{y:30,opacity:0,duration:0.55,ease:"power3.out"},440.141);
+tl.from("#s10s0",{y:30,opacity:0,duration:0.4,ease:"power3.out"},454.765);
+tl.from("#s10s1",{y:30,opacity:0,duration:0.4,ease:"power3.out"},455.814);
+tl.from("#s10s2",{y:30,opacity:0,duration:0.4,ease:"power3.out"},456.864);
+tl.from("#s10s3",{y:30,opacity:0,duration:0.4,ease:"power3.out"},457.913);
+tl.from("#s10s4",{y:30,opacity:0,duration:0.4,ease:"power3.out"},458.962);
+tl.from("#s10s5",{y:30,opacity:0,duration:0.4,ease:"power3.out"},460.012);
+tl.from("#s10s6",{y:30,opacity:0,duration:0.4,ease:"power3.out"},461.061);
+tl.to("#s10s0, #s10s2, #s10s3",{borderColor:"rgba(255,162,76,.95)",duration:0.3,yoyo:true,repeat:1},463.746);
+tl.to("#s10s4, #s10s6",{scale:1.08,duration:0.3,yoyo:true,repeat:1},469.308);
+tl.from("#s10rp",{y:40,opacity:0,duration:0.55,ease:"power3.out"},474.476);
+tl.from("#s10o0",{scale:0.6,opacity:0,duration:0.35,ease:"back.out(2)"},479.857);
+tl.from("#s10o1",{scale:0.6,opacity:0,duration:0.35,ease:"back.out(2)"},481.293);
+tl.from("#s10o2",{scale:0.6,opacity:0,duration:0.35,ease:"back.out(2)"},482.728);
+tl.from("#s10sh",{x:40,opacity:0,duration:0.55,ease:"power3.out"},486.318);
+tl.from("#s10ft",{y:30,opacity:0,duration:0.55,ease:"power3.out"},493.661);
+tl.from("#s11eng",{scale:0.5,opacity:0,duration:0.6,ease:"back.out(1.6)"},504.764);
+tl.to("#s11gear",{rotation:360,duration:57.48,ease:"none"},504.764);
+tl.from("#s11p0",{x:-60,opacity:0,duration:0.55,ease:"power3.out"},514.024);
+tl.from("#s11p1",{x:-60,opacity:0,duration:0.55,ease:"power3.out"},522.231);
+tl.from("#s11p2",{x:60,opacity:0,duration:0.55,ease:"power3.out"},533.703);
+tl.from("#s11p3",{x:60,opacity:0,duration:0.55,ease:"power3.out"},538.100);
+tl.from("#s11as",{y:30,opacity:0,duration:0.55,ease:"power3.out"},541.088);
+tl.from("#s11o0",{scale:0.5,opacity:0,duration:0.35,ease:"back.out(2)"},548.478);
+tl.from("#s11o1",{scale:0.5,opacity:0,duration:0.35,ease:"back.out(2)"},550.225);
+tl.from("#s11o2",{scale:0.5,opacity:0,duration:0.35,ease:"back.out(2)"},551.838);
+tl.from("#s11o3",{scale:0.5,opacity:0,duration:0.35,ease:"back.out(2)"},553.181);
+tl.to("#s11as",{scale:1.02,duration:0.3,yoyo:true,repeat:1},555.354);
+tl.from("#vs12",{opacity:0,duration:0.4},563.639);
+tl.to("#vs12",{opacity:0,duration:0.3},609.296);
+tl.from("#os12",{opacity:0,duration:0.4},563.639);
+tl.to("#os12",{opacity:0,duration:0.3},609.296);
+tl.set("#vs12",{opacity:0},609.596);
+tl.from("#s12 .photo",{x:-50,opacity:0,duration:0.7,ease:"power3.out"},562.439);
+tl.from("#s12i0",{x:40,opacity:0,duration:0.4,ease:"power3.out"},565.664);
+tl.from("#s12i1",{x:40,opacity:0,duration:0.4,ease:"power3.out"},571.058);
+tl.from("#s12i2",{x:40,opacity:0,duration:0.4,ease:"power3.out"},574.342);
+tl.from("#s12i3",{x:40,opacity:0,duration:0.4,ease:"power3.out"},578.175);
+tl.from("#s12i4",{x:40,opacity:0,duration:0.4,ease:"power3.out"},581.829);
+tl.from("#s12i5",{x:40,opacity:0,duration:0.4,ease:"power3.out"},584.567);
+tl.from("#s12key",{y:40,opacity:0,duration:0.55,ease:"power3.out"},587.097);
+tl.from("#s12next",{x:60,opacity:0,duration:0.55,ease:"power3.out"},605.438);
+tl.fromTo("#p12",{scale:1.06},{scale:1,duration:50.36,ease:"none"},562.239);
+tl.from("#fs02 .fn",{scale:0.6,opacity:0,duration:0.45,ease:"back.out(2)"},44.274);
+tl.from("#fs02 .ft",{y:30,opacity:0,duration:0.45},44.424);
+tl.fromTo("#fs02 .fl",{scaleX:0},{scaleX:1,duration:0.6,ease:"power2.out"},44.474);
+tl.to("#fs02",{opacity:0,duration:0.3},45.224);
+tl.from("#fs03 .fn",{scale:0.6,opacity:0,duration:0.45,ease:"back.out(2)"},95.726);
+tl.from("#fs03 .ft",{y:30,opacity:0,duration:0.45},95.876);
+tl.fromTo("#fs03 .fl",{scaleX:0},{scaleX:1,duration:0.6,ease:"power2.out"},95.926);
+tl.to("#fs03",{opacity:0,duration:0.3},96.676);
+tl.from("#fs04 .fn",{scale:0.6,opacity:0,duration:0.45,ease:"back.out(2)"},152.393);
+tl.from("#fs04 .ft",{y:30,opacity:0,duration:0.45},152.543);
+tl.fromTo("#fs04 .fl",{scaleX:0},{scaleX:1,duration:0.6,ease:"power2.out"},152.593);
+tl.to("#fs04",{opacity:0,duration:0.3},153.343);
+tl.from("#fs05 .fn",{scale:0.6,opacity:0,duration:0.45,ease:"back.out(2)"},202.874);
+tl.from("#fs05 .ft",{y:30,opacity:0,duration:0.45},203.024);
+tl.fromTo("#fs05 .fl",{scaleX:0},{scaleX:1,duration:0.6,ease:"power2.out"},203.074);
+tl.to("#fs05",{opacity:0,duration:0.3},203.824);
+tl.from("#fs06 .fn",{scale:0.6,opacity:0,duration:0.45,ease:"back.out(2)"},247.459);
+tl.from("#fs06 .ft",{y:30,opacity:0,duration:0.45},247.609);
+tl.fromTo("#fs06 .fl",{scaleX:0},{scaleX:1,duration:0.6,ease:"power2.out"},247.659);
+tl.to("#fs06",{opacity:0,duration:0.3},248.409);
+tl.from("#fs07 .fn",{scale:0.6,opacity:0,duration:0.45,ease:"back.out(2)"},297.280);
+tl.from("#fs07 .ft",{y:30,opacity:0,duration:0.45},297.430);
+tl.fromTo("#fs07 .fl",{scaleX:0},{scaleX:1,duration:0.6,ease:"power2.out"},297.480);
+tl.to("#fs07",{opacity:0,duration:0.3},298.230);
+tl.from("#fs08 .fn",{scale:0.6,opacity:0,duration:0.45,ease:"back.out(2)"},347.112);
+tl.from("#fs08 .ft",{y:30,opacity:0,duration:0.45},347.262);
+tl.fromTo("#fs08 .fl",{scaleX:0},{scaleX:1,duration:0.6,ease:"power2.out"},347.312);
+tl.to("#fs08",{opacity:0,duration:0.3},348.062);
+tl.from("#fs09 .fn",{scale:0.6,opacity:0,duration:0.45,ease:"back.out(2)"},399.908);
+tl.from("#fs09 .ft",{y:30,opacity:0,duration:0.45},400.058);
+tl.fromTo("#fs09 .fl",{scaleX:0},{scaleX:1,duration:0.6,ease:"power2.out"},400.108);
+tl.to("#fs09",{opacity:0,duration:0.3},400.858);
+tl.from("#fs10 .fn",{scale:0.6,opacity:0,duration:0.45,ease:"back.out(2)"},447.124);
+tl.from("#fs10 .ft",{y:30,opacity:0,duration:0.45},447.274);
+tl.fromTo("#fs10 .fl",{scaleX:0},{scaleX:1,duration:0.6,ease:"power2.out"},447.324);
+tl.to("#fs10",{opacity:0,duration:0.3},448.074);
+tl.from("#fs11 .fn",{scale:0.6,opacity:0,duration:0.45,ease:"back.out(2)"},501.181);
+tl.from("#fs11 .ft",{y:30,opacity:0,duration:0.45},501.331);
+tl.fromTo("#fs11 .fl",{scaleX:0},{scaleX:1,duration:0.6,ease:"power2.out"},501.381);
+tl.to("#fs11",{opacity:0,duration:0.3},502.131);
+tl.from("#fs12 .fn",{scale:0.6,opacity:0,duration:0.45,ease:"back.out(2)"},562.239);
+tl.from("#fs12 .ft",{y:30,opacity:0,duration:0.45},562.389);
+tl.fromTo("#fs12 .fl",{scaleX:0},{scaleX:1,duration:0.6,ease:"power2.out"},562.439);
+tl.to("#fs12",{opacity:0,duration:0.3},563.189);
+tl.to("#s01",{opacity:0,duration:0.3},43.974);
+tl.to("#s02",{opacity:0,duration:0.3},95.426);
+tl.to("#s03",{opacity:0,duration:0.3},152.093);
+tl.to("#s04",{opacity:0,duration:0.3},202.574);
+tl.to("#s05",{opacity:0,duration:0.3},247.159);
+tl.to("#s06",{opacity:0,duration:0.3},296.980);
+tl.to("#s07",{opacity:0,duration:0.3},346.812);
+tl.to("#s08",{opacity:0,duration:0.3},399.608);
+tl.to("#s09",{opacity:0,duration:0.3},446.824);
+tl.to("#s10",{opacity:0,duration:0.3},500.881);
+tl.to("#s11",{opacity:0,duration:0.3},561.939);
+tl.from("#cap0 .capbox",{opacity:0,duration:0.15},1.150);
+tl.from("#cap1 .capbox",{opacity:0,duration:0.15},4.766);
+tl.from("#cap2 .capbox",{opacity:0,duration:0.15},7.075);
+tl.from("#cap3 .capbox",{opacity:0,duration:0.15},10.713);
+tl.from("#cap4 .capbox",{opacity:0,duration:0.15},14.351);
+tl.from("#cap5 .capbox",{opacity:0,duration:0.15},17.792);
+tl.from("#cap6 .capbox",{opacity:0,duration:0.15},22.588);
+tl.from("#cap7 .capbox",{opacity:0,duration:0.15},26.181);
+tl.from("#cap8 .capbox",{opacity:0,duration:0.15},29.923);
+tl.from("#cap9 .capbox",{opacity:0,duration:0.15},33.122);
+tl.from("#cap10 .capbox",{opacity:0,duration:0.15},38.423);
+tl.from("#cap11 .capbox",{opacity:0,duration:0.15},45.624);
+tl.from("#cap12 .capbox",{opacity:0,duration:0.15},49.352);
+tl.from("#cap13 .capbox",{opacity:0,duration:0.15},51.137);
+tl.from("#cap14 .capbox",{opacity:0,duration:0.15},54.473);
+tl.from("#cap15 .capbox",{opacity:0,duration:0.15},57.989);
+tl.from("#cap16 .capbox",{opacity:0,duration:0.15},61.625);
+tl.from("#cap17 .capbox",{opacity:0,duration:0.15},64.954);
+tl.from("#cap18 .capbox",{opacity:0,duration:0.15},68.791);
+tl.from("#cap19 .capbox",{opacity:0,duration:0.15},71.538);
+tl.from("#cap20 .capbox",{opacity:0,duration:0.15},74.404);
+tl.from("#cap21 .capbox",{opacity:0,duration:0.15},78.810);
+tl.from("#cap22 .capbox",{opacity:0,duration:0.15},83.027);
+tl.from("#cap23 .capbox",{opacity:0,duration:0.15},86.662);
+tl.from("#cap24 .capbox",{opacity:0,duration:0.15},90.680);
+tl.from("#cap25 .capbox",{opacity:0,duration:0.15},97.076);
+tl.from("#cap26 .capbox",{opacity:0,duration:0.15},99.785);
+tl.from("#cap27 .capbox",{opacity:0,duration:0.15},103.805);
+tl.from("#cap28 .capbox",{opacity:0,duration:0.15},108.470);
+tl.from("#cap29 .capbox",{opacity:0,duration:0.15},113.318);
+tl.from("#cap30 .capbox",{opacity:0,duration:0.15},116.836);
+tl.from("#cap31 .capbox",{opacity:0,duration:0.15},119.260);
+tl.from("#cap32 .capbox",{opacity:0,duration:0.15},122.075);
+tl.from("#cap33 .capbox",{opacity:0,duration:0.15},124.890);
+tl.from("#cap34 .capbox",{opacity:0,duration:0.15},127.590);
+tl.from("#cap35 .capbox",{opacity:0,duration:0.15},130.641);
+tl.from("#cap36 .capbox",{opacity:0,duration:0.15},134.534);
+tl.from("#cap37 .capbox",{opacity:0,duration:0.15},137.576);
+tl.from("#cap38 .capbox",{opacity:0,duration:0.15},141.152);
+tl.from("#cap39 .capbox",{opacity:0,duration:0.15},144.688);
+tl.from("#cap40 .capbox",{opacity:0,duration:0.15},148.389);
+tl.from("#cap41 .capbox",{opacity:0,duration:0.15},153.743);
+tl.from("#cap42 .capbox",{opacity:0,duration:0.15},159.100);
+tl.from("#cap43 .capbox",{opacity:0,duration:0.15},162.734);
+tl.from("#cap44 .capbox",{opacity:0,duration:0.15},165.294);
+tl.from("#cap45 .capbox",{opacity:0,duration:0.15},168.966);
+tl.from("#cap46 .capbox",{opacity:0,duration:0.15},172.338);
+tl.from("#cap47 .capbox",{opacity:0,duration:0.15},174.867);
+tl.from("#cap48 .capbox",{opacity:0,duration:0.15},177.727);
+tl.from("#cap49 .capbox",{opacity:0,duration:0.15},181.333);
+tl.from("#cap50 .capbox",{opacity:0,duration:0.15},183.786);
+tl.from("#cap51 .capbox",{opacity:0,duration:0.15},186.166);
+tl.from("#cap52 .capbox",{opacity:0,duration:0.15},188.594);
+tl.from("#cap53 .capbox",{opacity:0,duration:0.15},191.942);
+tl.from("#cap54 .capbox",{opacity:0,duration:0.15},195.410);
+tl.from("#cap55 .capbox",{opacity:0,duration:0.15},200.338);
+tl.from("#cap56 .capbox",{opacity:0,duration:0.15},204.224);
+tl.from("#cap57 .capbox",{opacity:0,duration:0.15},206.541);
+tl.from("#cap58 .capbox",{opacity:0,duration:0.15},208.828);
+tl.from("#cap59 .capbox",{opacity:0,duration:0.15},213.689);
+tl.from("#cap60 .capbox",{opacity:0,duration:0.15},217.031);
+tl.from("#cap61 .capbox",{opacity:0,duration:0.15},219.582);
+tl.from("#cap62 .capbox",{opacity:0,duration:0.15},222.829);
+tl.from("#cap63 .capbox",{opacity:0,duration:0.15},225.722);
+tl.from("#cap64 .capbox",{opacity:0,duration:0.15},228.027);
+tl.from("#cap65 .capbox",{opacity:0,duration:0.15},234.000);
+tl.from("#cap66 .capbox",{opacity:0,duration:0.15},237.378);
+tl.from("#cap67 .capbox",{opacity:0,duration:0.15},240.131);
+tl.from("#cap68 .capbox",{opacity:0,duration:0.15},242.461);
+tl.from("#cap69 .capbox",{opacity:0,duration:0.15},248.809);
+tl.from("#cap70 .capbox",{opacity:0,duration:0.15},253.875);
+tl.from("#cap71 .capbox",{opacity:0,duration:0.15},257.203);
+tl.from("#cap72 .capbox",{opacity:0,duration:0.15},260.557);
+tl.from("#cap73 .capbox",{opacity:0,duration:0.15},265.447);
+tl.from("#cap74 .capbox",{opacity:0,duration:0.15},268.229);
+tl.from("#cap75 .capbox",{opacity:0,duration:0.15},272.305);
+tl.from("#cap76 .capbox",{opacity:0,duration:0.15},274.301);
+tl.from("#cap77 .capbox",{opacity:0,duration:0.15},280.478);
+tl.from("#cap78 .capbox",{opacity:0,duration:0.15},284.030);
+tl.from("#cap79 .capbox",{opacity:0,duration:0.15},288.708);
+tl.from("#cap80 .capbox",{opacity:0,duration:0.15},290.982);
+tl.from("#cap81 .capbox",{opacity:0,duration:0.15},298.630);
+tl.from("#cap82 .capbox",{opacity:0,duration:0.15},302.417);
+tl.from("#cap83 .capbox",{opacity:0,duration:0.15},306.076);
+tl.from("#cap84 .capbox",{opacity:0,duration:0.15},311.246);
+tl.from("#cap85 .capbox",{opacity:0,duration:0.15},315.063);
+tl.from("#cap86 .capbox",{opacity:0,duration:0.15},317.967);
+tl.from("#cap87 .capbox",{opacity:0,duration:0.15},321.769);
+tl.from("#cap88 .capbox",{opacity:0,duration:0.15},324.979);
+tl.from("#cap89 .capbox",{opacity:0,duration:0.15},329.154);
+tl.from("#cap90 .capbox",{opacity:0,duration:0.15},334.125);
+tl.from("#cap91 .capbox",{opacity:0,duration:0.15},337.202);
+tl.from("#cap92 .capbox",{opacity:0,duration:0.15},340.320);
+tl.from("#cap93 .capbox",{opacity:0,duration:0.15},342.616);
+tl.from("#cap94 .capbox",{opacity:0,duration:0.15},345.127);
+tl.from("#cap95 .capbox",{opacity:0,duration:0.15},348.462);
+tl.from("#cap96 .capbox",{opacity:0,duration:0.15},351.091);
+tl.from("#cap97 .capbox",{opacity:0,duration:0.15},352.964);
+tl.from("#cap98 .capbox",{opacity:0,duration:0.15},356.418);
+tl.from("#cap99 .capbox",{opacity:0,duration:0.15},359.369);
+tl.from("#cap100 .capbox",{opacity:0,duration:0.15},361.959);
+tl.from("#cap101 .capbox",{opacity:0,duration:0.15},364.310);
+tl.from("#cap102 .capbox",{opacity:0,duration:0.15},369.320);
+tl.from("#cap103 .capbox",{opacity:0,duration:0.15},374.021);
+tl.from("#cap104 .capbox",{opacity:0,duration:0.15},376.607);
+tl.from("#cap105 .capbox",{opacity:0,duration:0.15},381.718);
+tl.from("#cap106 .capbox",{opacity:0,duration:0.15},386.309);
+tl.from("#cap107 .capbox",{opacity:0,duration:0.15},390.674);
+tl.from("#cap108 .capbox",{opacity:0,duration:0.15},395.184);
+tl.from("#cap109 .capbox",{opacity:0,duration:0.15},397.338);
+tl.from("#cap110 .capbox",{opacity:0,duration:0.15},401.258);
+tl.from("#cap111 .capbox",{opacity:0,duration:0.15},405.873);
+tl.from("#cap112 .capbox",{opacity:0,duration:0.15},408.427);
+tl.from("#cap113 .capbox",{opacity:0,duration:0.15},412.319);
+tl.from("#cap114 .capbox",{opacity:0,duration:0.15},414.507);
+tl.from("#cap115 .capbox",{opacity:0,duration:0.15},417.392);
+tl.from("#cap116 .capbox",{opacity:0,duration:0.15},420.364);
+tl.from("#cap117 .capbox",{opacity:0,duration:0.15},425.697);
+tl.from("#cap118 .capbox",{opacity:0,duration:0.15},429.052);
+tl.from("#cap119 .capbox",{opacity:0,duration:0.15},433.323);
+tl.from("#cap120 .capbox",{opacity:0,duration:0.15},436.411);
+tl.from("#cap121 .capbox",{opacity:0,duration:0.15},439.750);
+tl.from("#cap122 .capbox",{opacity:0,duration:0.15},443.499);
+tl.from("#cap123 .capbox",{opacity:0,duration:0.15},448.474);
+tl.from("#cap124 .capbox",{opacity:0,duration:0.15},454.392);
+tl.from("#cap125 .capbox",{opacity:0,duration:0.15},457.419);
+tl.from("#cap126 .capbox",{opacity:0,duration:0.15},462.584);
+tl.from("#cap127 .capbox",{opacity:0,duration:0.15},466.971);
+tl.from("#cap128 .capbox",{opacity:0,duration:0.15},470.496);
+tl.from("#cap129 .capbox",{opacity:0,duration:0.15},473.828);
+tl.from("#cap130 .capbox",{opacity:0,duration:0.15},476.277);
+tl.from("#cap131 .capbox",{opacity:0,duration:0.15},480.024);
+tl.from("#cap132 .capbox",{opacity:0,duration:0.15},483.770);
+tl.from("#cap133 .capbox",{opacity:0,duration:0.15},485.907);
+tl.from("#cap134 .capbox",{opacity:0,duration:0.15},490.312);
+tl.from("#cap135 .capbox",{opacity:0,duration:0.15},493.242);
+tl.from("#cap136 .capbox",{opacity:0,duration:0.15},495.538);
+tl.from("#cap137 .capbox",{opacity:0,duration:0.15},497.833);
+tl.from("#cap138 .capbox",{opacity:0,duration:0.15},502.531);
+tl.from("#cap139 .capbox",{opacity:0,duration:0.15},507.256);
+tl.from("#cap140 .capbox",{opacity:0,duration:0.15},510.434);
+tl.from("#cap141 .capbox",{opacity:0,duration:0.15},513.568);
+tl.from("#cap142 .capbox",{opacity:0,duration:0.15},517.820);
+tl.from("#cap143 .capbox",{opacity:0,duration:0.15},520.371);
+tl.from("#cap144 .capbox",{opacity:0,duration:0.15},521.799);
+tl.from("#cap145 .capbox",{opacity:0,duration:0.15},525.314);
+tl.from("#cap146 .capbox",{opacity:0,duration:0.15},530.801);
+tl.from("#cap147 .capbox",{opacity:0,duration:0.15},534.145);
+tl.from("#cap148 .capbox",{opacity:0,duration:0.15},537.317);
+tl.from("#cap149 .capbox",{opacity:0,duration:0.15},541.038);
+tl.from("#cap150 .capbox",{opacity:0,duration:0.15},545.542);
+tl.from("#cap151 .capbox",{opacity:0,duration:0.15},549.971);
+tl.from("#cap152 .capbox",{opacity:0,duration:0.15},554.595);
+tl.from("#cap153 .capbox",{opacity:0,duration:0.15},557.161);
+tl.from("#cap154 .capbox",{opacity:0,duration:0.15},563.589);
+tl.from("#cap155 .capbox",{opacity:0,duration:0.15},566.771);
+tl.from("#cap156 .capbox",{opacity:0,duration:0.15},570.460);
+tl.from("#cap157 .capbox",{opacity:0,duration:0.15},575.285);
+tl.from("#cap158 .capbox",{opacity:0,duration:0.15},581.530);
+tl.from("#cap159 .capbox",{opacity:0,duration:0.15},584.245);
+tl.from("#cap160 .capbox",{opacity:0,duration:0.15},586.628);
+tl.from("#cap161 .capbox",{opacity:0,duration:0.15},590.206);
+tl.from("#cap162 .capbox",{opacity:0,duration:0.15},595.125);
+tl.from("#cap163 .capbox",{opacity:0,duration:0.15},601.451);
+tl.from("#cap164 .capbox",{opacity:0,duration:0.15},605.788);
+tl.from("#endc",{opacity:0,duration:0.5},609.596);
+tl.from("#credits > *",{y:20,opacity:0,stagger:0.15,duration:0.5},609.996);
+window.__timelines["main"] = tl;
+</script></body></html>
