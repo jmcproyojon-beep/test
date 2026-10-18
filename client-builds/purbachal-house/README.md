@@ -20,7 +20,8 @@ projects/purbachal-house/
 ## Run order
 
 ```bash
-python3 -I client-builds/purbachal-house/make_overlays.py   # Bengali lower thirds + brand bar
+python3 -I client-builds/purbachal-house/make_overlays.py   # Bengali lower thirds
+python3 -I client-builds/purbachal-house/make_brand.py      # logo chip + end card with the booking number
 python3 -I client-builds/purbachal-house/make_cards.py      # title overlay + end card
 python3 -I client-builds/purbachal-house/build_promo.py     # trim, stabilise, overlay every beat
 python3 -I client-builds/purbachal-house/fix_stills.py      # rebuild the still beats only
@@ -39,7 +40,8 @@ capped near 3 Mbps so the 42-second cut stays under WhatsApp's 16 MB limit.
 
 ## Gotchas worth keeping
 
-- **`zoompan` multiplies frames.** `-loop 1 -t N -i image` caps the *input*, not the
+- **`zoompan` multiplies frames** (this one bit twice — once for the stills, once
+  for the end card). `-loop 1 -t N -i image` caps the *input*, not the
   output: zoompan then emits `d` frames per input frame and the clip runs for
   minutes. Cap the output with `-frames:v`.
 - **Fading a single-frame overlay makes it vanish.** A PNG read without `-loop 1`
@@ -52,9 +54,13 @@ capped near 3 Mbps so the 42-second cut stays under WhatsApp's 16 MB limit.
 - Captions state only what is visible on screen. No floor area, room count or
   price was supplied by the client, so none appears in the video.
 
-## Open items
+## Branding and audio
 
-- The client logo PNG is not in this repo; the brand lockup is currently set in
-  type. Drop the logo in and overlay it where `brand-bar.png` goes.
-- No music: this environment cannot reach a stock-music provider. The promo
-  ships with cleaned source ambience at about -45 dB.
+- `make_brand.py` keys the white ground out of the client's logo JPEG by
+  luminance, puts the wordmark on a white chip top-right of every beat, and
+  builds the end card with the full lockup plus the booking number.
+- The music bed is an original royalty-free track generated for this cut,
+  normalised to -16 LUFS with the location ambience mixed under it at 25%.
+  Replace `assets/audio/music-source.wav` to swap the track.
+- Delivery is capped near 3 Mbps so a 42-second cut stays under WhatsApp's
+  16 MB attachment limit.

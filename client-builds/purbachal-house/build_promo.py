@@ -39,8 +39,6 @@ for name, kind, img, a, b, ovfile in BEATS:
     n = int(dur * FPS)
 
     if kind == "photo":
-        continue
-    if False:
         base = (f"scale=2200:-2:flags=lanczos,"
                 f"zoompan=z='if(eq(on,0),1.12,max(1.0,zoom-0.00040))':d={n}:"
                 f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920:fps={FPS},"
@@ -81,6 +79,8 @@ subprocess.run(["ffmpeg", "-v", "error", "-loop", "1", "-t", "4.0", "-i", str(OV
                 "-r", str(FPS), "-vf",
                 f"zoompan=z='min(1.04,1.0+0.00018*on)':d=120:x='iw/2-(iw/zoom/2)':"
                 f"y='ih/2-(ih/zoom/2)':s=1080x1920:fps={FPS},fade=t=in:st=0:d=0.4,format=yuv420p",
+                # zoompan emits d frames per input frame: cap the output or this runs for minutes
+                "-frames:v", "120",
                 "-c:v", "libx264", "-crf", "19", "-preset", "slow", "-an",
                 str(SEG / "10-end.mp4"), "-y"], check=True)
 print("10-end        4.0s  card")
