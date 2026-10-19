@@ -42,10 +42,16 @@ This source pack is not all portrait, so `build_promo.py` takes a per-beat
 - Looped overlay stills need both `-loop 1` and `-t`, or the alpha fade leaves
   them invisible / the filtergraph never ends.
 - No U+00B7 in the Bengali face; use `ও` between clauses.
+- A caption too long for one line is written as a tuple of lines in
+  `LOWER_THIRDS`; the stack is bottom-anchored at `PILL_BOTTOM` so the English
+  gloss stays level with every other caption. Each line is drawn in its own
+  `d.text` call — splitting a Bengali string any finer breaks shaping.
 
 ## Copy policy
 
 Size and location come from the client (5 katha; Sector 9, Road 304). Every
 other caption describes only what is on screen — open level land, boundary
-pillars, nearby construction, the access path, greenery, the paved road and its
-street lighting. No price is stated because none was supplied.
+pillars, nearby construction, the access path, greenery and the road's street
+lighting — or is a fact the client supplied: the road beat carries their
+walking distance from the 300 Feet roundabout no. 4. No price is stated because
+none was supplied.

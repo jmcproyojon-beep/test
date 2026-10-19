@@ -22,7 +22,8 @@ LOWER_THIRDS = [
     ("lt-03-around", "চারপাশে গড়ে উঠছে নতুন ভবন",  "New buildings rising all around"),
     ("lt-04-path",   "প্লটের পাশেই চলাচলের পথ",     "Access path along the plot"),
     ("lt-05-green",  "গাছপালায় ঘেরা সবুজ পরিবেশ",   "Green, tree-lined surroundings"),
-    ("lt-06-road",   "প্রশস্ত পাকা রাস্তা",           "Wide paved road"),
+    ("lt-06-road",   ("৩০০ ফিট ৪ নাম্বার গোলচত্বর থেকে",
+                      "১০ মিনিট হাঁটার দূরত্ব"),      "10 minutes' walk from 300 Feet roundabout no. 4"),
     ("lt-07-light",  "সড়কবাতি ও বিদ্যুৎ লাইন",      "Street lighting and power lines"),
 ]
 
@@ -34,14 +35,29 @@ def scrim(img, height=560, strength=155):
     img.alpha_composite(s, (0, H - height))
 
 f_bn, f_en = ImageFont.truetype(BN_B, 62), ImageFont.truetype(EN_R, 32)
+f_bn2 = ImageFont.truetype(BN_B, 58)   # stacked lines, one notch down so two fit the frame
+PILL_BOTTOM = 1662                     # where the single-line pill ends; stacks grow upward
+
 for name, bn, en in LOWER_THIRDS:
     img = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(img); scrim(img)
-    b = d.textbbox((0, 0), bn, font=f_bn); tw, th = b[2] - b[0], b[3] - b[1]
-    d.rounded_rectangle([W/2 - tw/2 - 40, 1560 - 22, W/2 + tw/2 + 40, 1560 + th + 32],
-                        radius=18, fill=(11, 93, 30, 240))
-    d.text((W/2 - tw/2 - b[0], 1560 - b[1] + 4), bn, font=f_bn, fill=(255, 255, 255, 255))
+    if isinstance(bn, str):
+        b = d.textbbox((0, 0), bn, font=f_bn); tw, th = b[2] - b[0], b[3] - b[1]
+        d.rounded_rectangle([W/2 - tw/2 - 40, 1560 - 22, W/2 + tw/2 + 40, 1560 + th + 32],
+                            radius=18, fill=(11, 93, 30, 240))
+        d.text((W/2 - tw/2 - b[0], 1560 - b[1] + 4), bn, font=f_bn, fill=(255, 255, 255, 255))
+        gloss_y = 1560 + th + 58
+    else:
+        asc, desc = f_bn2.getmetrics(); lh = asc + desc + 4
+        tw = max(f_bn2.getlength(l) for l in bn)
+        top = PILL_BOTTOM - 14 - lh * len(bn)
+        d.rounded_rectangle([W/2 - tw/2 - 40, top - 16, W/2 + tw/2 + 40, PILL_BOTTOM],
+                            radius=18, fill=(11, 93, 30, 240))
+        for i, line in enumerate(bn):   # one draw call per line keeps Bengali shaping intact
+            d.text((W/2 - f_bn2.getlength(line) / 2, top + i * lh), line,
+                   font=f_bn2, fill=(255, 255, 255, 255))
+        gloss_y = PILL_BOTTOM + 26
     eb = d.textbbox((0, 0), en, font=f_en)
-    d.text(((W - (eb[2] - eb[0])) / 2 - eb[0], 1560 + th + 58), en, font=f_en, fill=(255, 255, 255, 235))
+    d.text(((W - (eb[2] - eb[0])) / 2 - eb[0], gloss_y), en, font=f_en, fill=(255, 255, 255, 235))
     img.save(f"{OUT}/{name}.png"); print("lower third:", name)
 
 def centre(d, y, text, font, fill):
