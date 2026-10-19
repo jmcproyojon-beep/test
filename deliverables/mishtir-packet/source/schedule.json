@@ -1,0 +1,90 @@
+{
+ "l01": {
+  "who": "dadu",
+  "text": "মিষ্টি কেউ এমনি আনে না।",
+  "start": 0.3,
+  "end": 2.903,
+  "dur": 2.603,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l01_fx.wav"
+ },
+ "l02": {
+  "who": "chhana",
+  "text": "দাদু, উনি তো খুশির খবর শুনে এসেছেন!",
+  "start": 6.0,
+  "end": 9.067,
+  "dur": 3.067,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l02_fx.wav"
+ },
+ "l03": {
+  "who": "mojid",
+  "text": "মাশাআল্লাহ! কত বড় চাকরি!",
+  "start": 11.0,
+  "end": 13.807,
+  "dur": 2.807,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l03_fx.wav"
+ },
+ "l04": {
+  "who": "mojid",
+  "text": "তা, বেতন কত পায়?",
+  "start": 16.0,
+  "end": 18.167,
+  "dur": 2.167,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l04_fx.wav"
+ },
+ "l05": {
+  "who": "dadu",
+  "text": "প্রশ্নগুলো খেয়াল করো। একটাও শুভেচ্ছা না। সবগুলো হিসাব।",
+  "start": 22.6,
+  "end": 29.032,
+  "dur": 6.432,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l05_fx.wav"
+ },
+ "l06": {
+  "who": "chhana",
+  "text": "উনি কোথায় যাচ্ছেন?",
+  "start": 33.0,
+  "end": 34.8,
+  "dur": 1.8,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l06_fx.wav"
+ },
+ "l07": {
+  "who": "dadu",
+  "text": "পরের বাসায়। খবর বেচতে।",
+  "start": 35.6,
+  "end": 38.898,
+  "dur": 3.298,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l07_fx.wav"
+ },
+ "l08": {
+  "who": "mojid",
+  "text": "বেতন যতই হোক, ওদের ঘরের অবস্থা কিন্তু ভালো না।",
+  "start": 43.0,
+  "end": 47.607,
+  "dur": 4.607,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l08_fx.wav"
+ },
+ "l09": {
+  "who": "dadu",
+  "text": "যে মিষ্টি দিয়ে তোমার দরজা খোলে, সে খবর নিয়ে বের হয়।",
+  "start": 53.4,
+  "end": 58.654,
+  "dur": 5.254,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l09_fx.wav"
+ },
+ "l10": {
+  "who": "dadu",
+  "text": "সবাই তাকায়। কেউ দেখে না।",
+  "start": 61.2,
+  "end": 64.283,
+  "dur": 3.083,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l10_fx.wav"
+ },
+ "l11": {
+  "who": "dadu",
+  "text": "কম বলো। বেশি দেখো।",
+  "start": 65.4,
+  "end": 68.528,
+  "dur": 3.128,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l11_fx.wav"
+ }
+}

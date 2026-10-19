@@ -1,0 +1,123 @@
+{
+ "l01": {
+  "who": "dadu",
+  "voice": "Algenib",
+  "model": "gemini-3.8-flash-tts",
+  "text": "মিষ্টি কেউ এমনি আনে না।",
+  "transcript": "মিষ্টি কেউ এমনি আনে না",
+  "dur": 2.41,
+  "ratio": 1.0,
+  "ok": true,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l01.wav"
+ },
+ "l02": {
+  "who": "chhana",
+  "voice": "Puck",
+  "model": "gemini-3.8-flash-tts",
+  "text": "দাদু, উনি তো খুশির খবর শুনে এসেছেন!",
+  "transcript": "দাদু উনি তো খুশির খবর শুনে এসেছেন",
+  "dur": 3.09,
+  "ratio": 1.0,
+  "ok": true,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l02.wav"
+ },
+ "l03": {
+  "who": "mojid",
+  "voice": "Achird",
+  "model": "gemini-3.8-flash-tts",
+  "text": "মাশাআল্লাহ! কত বড় চাকরি!",
+  "transcript": "মাশাল্লাহ! কত বড় চাকরি!",
+  "dur": 2.81,
+  "ratio": 0.923,
+  "ok": true,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l03.wav"
+ },
+ "l04": {
+  "who": "mojid",
+  "voice": "Achird",
+  "model": "gemini-3.8-flash-tts",
+  "text": "তা, বেতন কত পায়?",
+  "transcript": "তা বেতন কত পায়?",
+  "dur": 2.17,
+  "ratio": 0.875,
+  "ok": true,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l04.wav"
+ },
+ "l05": {
+  "who": "dadu",
+  "voice": "Algenib",
+  "model": "gemini-3.8-flash-tts",
+  "text": "প্রশ্নগুলো খেয়াল করো। একটাও শুভেচ্ছা না। সবগুলো হিসাব।",
+  "transcript": "প্রশ্নগুলো খেয়াল করো। একটাও শুভেচ্ছা না। সবগুলো হিসাব।",
+  "dur": 5.93,
+  "ratio": 0.963,
+  "ok": true,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l05.wav"
+ },
+ "l06": {
+  "who": "chhana",
+  "voice": "Puck",
+  "model": "gemini-3.8-flash-tts",
+  "text": "উনি কোথায় যাচ্ছেন?",
+  "transcript": "উনি কোথায় যাচ্ছেন",
+  "dur": 1.81,
+  "ratio": 0.889,
+  "ok": true,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l06.wav"
+ },
+ "l07": {
+  "who": "dadu",
+  "voice": "Algenib",
+  "model": "gemini-3.8-flash-tts",
+  "text": "পরের বাসায়। খবর বেচতে।",
+  "transcript": "পরের বাসায় খবর বেচতে",
+  "dur": 3.05,
+  "ratio": 0.917,
+  "ok": true,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l07.wav"
+ },
+ "l08": {
+  "who": "mojid",
+  "voice": "Achird",
+  "model": "gemini-3.8-flash-tts",
+  "text": "বেতন যতই হোক, ওদের ঘরের অবস্থা কিন্তু ভালো না।",
+  "transcript": "বেতন যতই হোক ওদের ঘরের অবস্থা কিন্তু ভালো না।",
+  "dur": 4.61,
+  "ratio": 1.0,
+  "ok": true,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l08.wav"
+ },
+ "l09": {
+  "who": "dadu",
+  "voice": "Algenib",
+  "model": "gemini-3.8-flash-tts",
+  "text": "যে মিষ্টি দিয়ে তোমার দরজা খোলে, সে খবর নিয়ে বের হয়।",
+  "transcript": "যে মিষ্টি দিয়ে তোমার দরজা খোলে সে খবর নিয়ে বের হয়",
+  "dur": 4.85,
+  "ratio": 1.0,
+  "ok": true,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l09.wav"
+ },
+ "l10": {
+  "who": "dadu",
+  "voice": "Algenib",
+  "model": "gemini-3.8-flash-tts",
+  "text": "সবাই তাকায়। কেউ দেখে না।",
+  "transcript": "সবাই তাকায় কেউ দেখে না",
+  "dur": 2.85,
+  "ratio": 1.0,
+  "ok": true,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l10.wav"
+ },
+ "l11": {
+  "who": "dadu",
+  "voice": "Algenib",
+  "model": "gemini-3.8-flash-tts",
+  "text": "কম বলো। বেশি দেখো।",
+  "transcript": "কম বলো বেশি দেখো",
+  "dur": 2.89,
+  "ratio": 1.0,
+  "ok": true,
+  "wav": "/home/user/test/projects/mishtir-packet/assets/audio/lines/l11.wav"
+ }
+}
