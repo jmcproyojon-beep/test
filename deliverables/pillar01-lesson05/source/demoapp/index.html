@@ -1,0 +1,50 @@
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><title>AI চ্যাট — লাইভ ডেমো</title>
+<style>
+@font-face{font-family:"Hind Siliguri","Inter",sans-serif;font-weight:500;src:url(hind-siliguri-bengali-500-normal.woff2);unicode-range:U+0951-0952,U+0964-0965,U+0980-09FE,U+200C-200D,U+25CC}
+@font-face{font-family:"Hind Siliguri","Inter",sans-serif;font-weight:600;src:url(hind-siliguri-bengali-600-normal.woff2);unicode-range:U+0951-0952,U+0964-0965,U+0980-09FE,U+200C-200D,U+25CC}
+@font-face{font-family:"Hind Siliguri","Inter",sans-serif;font-weight:700;src:url(hind-siliguri-bengali-700-normal.woff2);unicode-range:U+0951-0952,U+0964-0965,U+0980-09FE,U+200C-200D,U+25CC}
+@font-face{font-family:"Hind Siliguri","Inter",sans-serif;font-weight:500;src:url(hind-siliguri-latin-500-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:"Hind Siliguri","Inter",sans-serif;font-weight:700;src:url(hind-siliguri-latin-700-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:"Hind Siliguri","Inter",sans-serif;font-weight:600;src:url(hind-siliguri-latin-600-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:"Inter";font-weight:600;src:url(inter-latin-600-normal.woff2)}
+@font-face{font-family:"Inter";font-weight:700;src:url(inter-latin-700-normal.woff2)}
+*{box-sizing:border-box} html,body{margin:0;height:100%;background:#f6f4ef;font-family:"Hind Siliguri","Inter",sans-serif;color:#1d1b18}
+#side{position:fixed;left:0;top:0;bottom:0;width:250px;background:#1f1b17;color:#e9e1d6;padding:22px 18px}
+#side .new{border:1px solid #4a4037;border-radius:12px;padding:12px 14px;font:600 19px "Hind Siliguri","Inter",sans-serif} #side .lbl{margin-top:26px;font-size:15px;color:#a39686}
+#top{position:fixed;left:250px;right:0;top:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:#f6f4ef;border-bottom:1px solid #e3ddd2;z-index:5}
+#top .m{font:700 20px "Hind Siliguri","Inter",sans-serif} #top .tag{font:600 16px "Hind Siliguri","Inter",sans-serif;color:#8a5a14;background:#fde9c4;border:1px solid #e9b765;border-radius:10px;padding:6px 12px}
+#chat{position:fixed;left:250px;right:0;top:64px;bottom:170px;overflow-y:auto;padding:30px 0 60px}
+.msg{width:1180px;margin:0 auto 26px}
+.u{display:flex;justify-content:flex-end}.u .b{max-width:960px;background:#2f2a25;color:#fff;border-radius:22px 22px 6px 22px;padding:16px 22px;font:500 21px/1.6 "Hind Siliguri","Inter",sans-serif;white-space:pre-wrap}
+.a .b{font:500 21px/1.65 "Hind Siliguri","Inter",sans-serif} .a .who{font:700 16px "Hind Siliguri","Inter",sans-serif;color:#8a5a14;margin-bottom:6px}
+.a table{border-collapse:collapse;margin:12px 0;font-size:19px} .a th,.a td{border:1px solid #d7cfc2;padding:8px 12px;text-align:left;vertical-align:top} .a th{background:#efe7da}
+.a h1,.a h2,.a h3{font-size:24px;margin:18px 0 8px} .a p{margin:8px 0} .a ul,.a ol{margin:6px 0 6px 28px;padding:0} .a li{margin:4px 0}
+#box{position:fixed;left:250px;right:0;bottom:0;height:170px;background:linear-gradient(transparent,#f6f4ef 30%);display:flex;justify-content:center;align-items:flex-start;padding-top:22px}
+#inwrap{width:1180px;position:relative} #in{width:100%;height:110px;border-radius:20px;border:2px solid #d8cfc1;background:#fff;padding:16px 90px 16px 22px;font:500 20px/1.5 "Hind Siliguri","Inter",sans-serif;resize:none;outline:none}
+#in:focus{border-color:#c98a2b} #send{position:absolute;right:16px;bottom:18px;width:54px;height:54px;border-radius:50%;border:0;background:#c98a2b;color:#fff;font-size:26px}
+#cur{position:fixed;left:0;top:0;width:30px;height:30px;z-index:99;pointer-events:none;transition:transform .55s cubic-bezier(.3,.8,.3,1)}
+#cur svg{filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))} #ring{position:fixed;width:46px;height:46px;border-radius:50%;border:3px solid #f0a020;z-index:98;opacity:0;pointer-events:none}
+.typing{color:#a08a6a;font-style:italic}
+</style><script src="node_modules/marked/marked.min.js"></script></head><body>
+<div id="side"><div class="new">＋ নতুন চ্যাট</div><div class="lbl">Practical AI Masterclass · লেসন ০৫</div></div>
+<div id="top"><div class="m">AI চ্যাট</div><div class="tag">Google Gemini · লাইভ API ডেমো · আসল AI উত্তর</div></div>
+<div id="chat"></div>
+<div id="box"><div id="inwrap"><textarea id="in" placeholder="এখানে আপনার প্রম্পট লিখুন…"></textarea><button id="send">➤</button></div></div>
+<div id="cur"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M4 2l16 10-7 1.5L9.5 21z" fill="#fff" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/></svg></div><div id="ring"></div>
+<script>
+const hist=[]; window.__ev=[]; const ev=e=>window.__ev.push({e,t:performance.now()/1000});
+window.cursorTo=(x,y)=>{document.getElementById('cur').style.transform=`translate(${x}px,${y}px)`};
+window.clickFx=(x,y)=>{const r=document.getElementById('ring');r.style.left=(x-23)+'px';r.style.top=(y-23)+'px';r.animate([{opacity:1,transform:'scale(.4)'},{opacity:0,transform:'scale(1.4)'}],{duration:500})};
+function add(cls,html){const m=document.createElement('div');m.className='msg '+cls;m.innerHTML=html;document.getElementById('chat').appendChild(m);return m}
+window.send=async(demo,turn)=>{const ta=document.getElementById('in');const text=ta.value;ta.value='';
+ add('u','<div class="b"></div>').querySelector('.b').textContent=text; hist.push({role:'user',text});
+ const a=add('a','<div class="who">AI</div><div class="b"><span class="typing">লিখছে…</span></div>').querySelector('.b'); const chat=document.getElementById('chat');
+ chat.scrollTop=chat.scrollHeight; ev('send');
+ const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({history:hist,demo,turn})});
+ const rd=r.body.getReader(); const dec=new TextDecoder(); let buf='',full='',first=true;
+ while(true){const {value,done}=await rd.read(); if(done)break; buf+=dec.decode(value,{stream:true}); let i;
+  while((i=buf.indexOf('\n\n'))>=0){const line=buf.slice(0,i).trim(); buf=buf.slice(i+2); if(!line.startsWith('data:'))continue; const d=JSON.parse(line.slice(5));
+   if(d.t){if(first){ev('first');first=false} full+=d.t; a.innerHTML=marked.parse(full); chat.scrollTop=chat.scrollHeight}
+   if(d.done){hist.push({role:'model',text:full}); ev('done'); window.__last={full,model:d.model}}}}
+};
+</script></body></html>
