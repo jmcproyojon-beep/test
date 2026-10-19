@@ -1,0 +1,482 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="wallGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c1936"/>
+      <stop offset="40%" stop-color="#272343"/>
+      <stop offset="100%" stop-color="#3d2e4c"/>
+    </linearGradient>
+    
+    <linearGradient id="windowGlow" x1="0%" y1="0%" x2="100%" y2="80%">
+      <stop offset="0%" stop-color="#ffd599" stop-opacity="0.15"/>
+      <stop offset="40%" stop-color="#ff9e64" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#1c1936" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Warm Atmospheric Light -->
+    <radialGradient id="lampGlow" cx="85%" cy="25%" r="75%">
+      <stop offset="0%" stop-color="#ffeedd" stop-opacity="0.4"/>
+      <stop offset="25%" stop-color="#ffaa5e" stop-opacity="0.25"/>
+      <stop offset="60%" stop-color="#993d49" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#1c1936" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="tableLight" cx="45%" cy="80%" r="50%">
+      <stop offset="0%" stop-color="#ffb877" stop-opacity="0.35"/>
+      <stop offset="50%" stop-color="#c2593f" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#110d1a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Wood Textures & Colors -->
+    <linearGradient id="tableTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#784435"/>
+      <stop offset="4%" stop-color="#562e27"/>
+      <stop offset="50%" stop-color="#3d1e1a"/>
+      <stop offset="100%" stop-color="#24100e"/>
+    </linearGradient>
+
+    <linearGradient id="woodPlank1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.04"/>
+      <stop offset="50%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.08"/>
+    </linearGradient>
+
+    <!-- Cup & Saucer Gradients -->
+    <linearGradient id="saucerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5efe6"/>
+      <stop offset="40%" stop-color="#e8dcce"/>
+      <stop offset="100%" stop-color="#b09c85"/>
+    </linearGradient>
+
+    <linearGradient id="cupGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#dfd2c4"/>
+      <stop offset="30%" stop-color="#f8f4ee"/>
+      <stop offset="70%" stop-color="#ebdccb"/>
+      <stop offset="100%" stop-color="#bda086"/>
+    </linearGradient>
+
+    <linearGradient id="cupInner" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5c3826"/>
+      <stop offset="60%" stop-color="#804a23"/>
+      <stop offset="100%" stop-color="#a3632d"/>
+    </linearGradient>
+
+    <linearGradient id="teaLiquid" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#b3541e"/>
+      <stop offset="50%" stop-color="#933b11"/>
+      <stop offset="100%" stop-color="#592006"/>
+    </linearGradient>
+
+    <!-- Phone Gradients -->
+    <linearGradient id="phoneBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#434854"/>
+      <stop offset="50%" stop-color="#252930"/>
+      <stop offset="100%" stop-color="#15171c"/>
+    </linearGradient>
+
+    <linearGradient id="phoneRim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8e99a8"/>
+      <stop offset="50%" stop-color="#484f5c"/>
+      <stop offset="100%" stop-color="#1f232b"/>
+    </linearGradient>
+
+    <linearGradient id="phoneScreen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f4f5f8"/>
+      <stop offset="100%" stop-color="#e1e5eb"/>
+    </linearGradient>
+
+    <linearGradient id="screenGlassLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.4"/>
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="41%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Chat & Leaf Elements -->
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#84cc49"/>
+      <stop offset="60%" stop-color="#54a027"/>
+      <stop offset="100%" stop-color="#316e16"/>
+    </linearGradient>
+
+    <linearGradient id="bubbleReceived" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#ebeff2"/>
+    </linearGradient>
+
+    <linearGradient id="bubbleSent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#48bb78"/>
+      <stop offset="100%" stop-color="#2f855a"/>
+    </linearGradient>
+
+    <!-- Steam Gradients -->
+    <linearGradient id="steamGrad1" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="70%" stop-color="#ffe4cc" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="steamGrad2" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0.2"/>
+      <stop offset="80%" stop-color="#ffecd9" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Shadows -->
+    <radialGradient id="cupShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#080404" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#080404" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#080404" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="phoneShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0a0505" stop-opacity="0.7"/>
+      <stop offset="60%" stop-color="#0a0505" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0a0505" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="15" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <filter id="cozyBlur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="25"/>
+    </filter>
+  </defs>
+
+  <!-- ================= BACKGROUND ================= -->
+  <!-- Base Wall -->
+  <rect width="1080" height="1920" fill="url(#wallGrad)"/>
+
+  <!-- Background Wall Art / Window Frame hint -->
+  <rect x="-50" y="-50" width="700" height="1100" fill="#201a30"/>
+  <rect x="0" y="0" width="600" height="1000" fill="#181326"/>
+  <!-- Diagonal Cozy Sunlight/Window Cast -->
+  <polygon points="0,0 650,0 1080,850 0,1400" fill="url(#windowGlow)"/>
+  <polygon points="0,200 450,0 850,550 0,1100" fill="url(#windowGlow)"/>
+
+  <!-- Hanging Pendant Lamp String & Cone of Light -->
+  <line x1="880" y1="0" x2="880" y2="420" stroke="#181324" stroke-width="6"/>
+  <!-- Lamp Shade -->
+  <path d="M 800,420 L 960,420 L 1010,500 L 750,500 Z" fill="#2c2738"/>
+  <ellipse cx="880" cy="500" rx="130" ry="25" fill="#e8984a"/>
+  <!-- Lamp Glow Core -->
+  <ellipse cx="880" cy="505" rx="70" ry="15" fill="#fff5ea"/>
+
+  <!-- Cozy Ambient Light Wash -->
+  <rect width="1080" height="1920" fill="url(#lampGlow)" pointer-events="none"/>
+
+  <!-- Potted Plant in Background (Bokeh / Shelf) -->
+  <path d="M 0,720 L 320,720 L 300,750 L 0,750 Z" fill="#1c1626"/>
+  <!-- Shelf Bracket -->
+  <path d="M 80,750 L 80,850 L 100,750 Z" fill="#120e1a"/>
+  <!-- Plant Pot -->
+  <path d="M 120,720 L 200,720 L 185,630 L 135,630 Z" fill="#663a33"/>
+  <!-- Leaves -->
+  <path d="M 160,630 C 140,580 90,580 80,610 C 90,640 140,635 160,630 Z" fill="#2d402b"/>
+  <path d="M 160,630 C 180,560 240,570 245,605 C 230,635 180,630 160,630 Z" fill="#395236"/>
+  <path d="M 160,620 C 150,540 180,510 190,530 C 195,570 175,605 160,620 Z" fill="#4a6946"/>
+  <path d="M 140,630 C 110,640 70,680 90,710 C 115,715 135,660 140,630 Z" fill="#223321"/>
+  <path d="M 180,630 C 210,650 250,685 235,715 C 205,720 185,665 180,630 Z" fill="#2d402b"/>
+
+  <!-- Small Picture Frame on Wall -->
+  <rect x="420" y="320" width="220" height="280" rx="6" fill="#161221" stroke="#372c42" stroke-width="8"/>
+  <rect x="440" y="340" width="180" height="240" fill="#221b30"/>
+  <!-- Abstract Art Inside Frame -->
+  <circle cx="530" cy="450" r="50" fill="#d97d55" opacity="0.6"/>
+  <path d="M 440,540 C 470,490 510,530 550,500 C 580,480 600,510 620,490 L 620,580 L 440,580 Z" fill="#4d3347"/>
+  <path d="M 440,560 C 480,530 520,550 560,520 C 590,500 605,530 620,515 L 620,580 L 440,580 Z" fill="#2a1e38"/>
+
+  <!-- ================= WOODEN TABLE ================= -->
+  <!-- Table Top Surface -->
+  <!-- Back edge of table (perspective line) -->
+  <polygon points="-50,1150 1130,1150 1130,1970 -50,1970" fill="url(#tableTop)"/>
+
+  <!-- Planks Separation Lines & Wood Grain Details -->
+  <!-- Plank Line 1 -->
+  <line x1="-50" y1="1360" x2="1130" y2="1360" stroke="#1d0a08" stroke-width="5"/>
+  <line x1="-50" y1="1363" x2="1130" y2="1363" stroke="#ff936b" stroke-width="1.5" stroke-opacity="0.25"/>
+
+  <!-- Plank Line 2 -->
+  <line x1="-50" y1="1620" x2="1130" y2="1620" stroke="#150806" stroke-width="6"/>
+  <line x1="-50" y1="1623" x2="1130" y2="1623" stroke="#ff936b" stroke-width="1.5" stroke-opacity="0.2"/>
+
+  <!-- Subtle Wood Grains -->
+  <path d="M 0,1230 Q 300,1210 600,1235 T 1080,1220" stroke="#33140f" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M -20,1270 Q 450,1290 850,1260 T 1100,1285" stroke="#4a1e17" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <path d="M 50,1460 Q 400,1440 750,1470 T 1120,1450" stroke="#2a0d08" stroke-width="2.5" fill="none" opacity="0.6"/>
+  <path d="M -50,1520 Q 300,1545 650,1515 T 1100,1530" stroke="#421610" stroke-width="2" fill="none" opacity="0.4"/>
+  <path d="M 20,1750 Q 500,1720 900,1760 T 1100,1730" stroke="#170605" stroke-width="3" fill="none" opacity="0.7"/>
+
+  <!-- Table Ambient Highlight Gradient Overlay -->
+  <polygon points="-50,1150 1130,1150 1130,1970 -50,1970" fill="url(#tableLight)"/>
+
+  <!-- ================= COZY ACCESSORIES ================= -->
+  <!-- Coaster for Mug (woven / cork style) -->
+  <ellipse cx="370" cy="1490" rx="240" ry="105" fill="#3d2119" opacity="0.9"/>
+  <!-- Cork coaster layers -->
+  <ellipse cx="370" cy="1485" rx="235" ry="100" fill="#a46944"/>
+  <ellipse cx="370" cy="1480" rx="230" ry="97" fill="#bc7c52"/>
+  <path d="M 160,1475 C 200,1550 540,1550 580,1475 C 540,1565 200,1565 160,1475 Z" fill="#885231"/>
+
+  <!-- Coaster Edge Stitching / Texture Dots -->
+  <!-- A subtle dashed inner ring -->
+  <ellipse cx="370" cy="1480" rx="215" ry="88" fill="none" stroke="#7e4727" stroke-width="3" stroke-dasharray="8 8"/>
+
+  <!-- ================= SMARTPHONE (RIGHT) ================= -->
+  <!-- Phone Drop Shadow -->
+  <ellipse cx="760" cy="1530" rx="240" ry="110" fill="url(#phoneShadow)"/>
+
+  <!-- Phone Body Rotation Group -->
+  <g transform="rotate(-12, 730, 1420)">
+    <!-- Outer Edge / Case -->
+    <rect x="525" y="1065" width="410" height="730" rx="56" fill="url(#phoneRim)"/>
+    <!-- Inner Dark Bezel Surround -->
+    <rect x="530" y="1070" width="400" height="720" rx="52" fill="url(#phoneBody)"/>
+    <!-- Screen Glass -->
+    <rect x="545" y="1085" width="370" height="690" rx="42" fill="url(#phoneScreen)"/>
+
+    <!-- Screen Content -->
+    <g>
+      <!-- Clip path for screen corner radii -->
+      <clipPath id="screenClip">
+        <rect x="545" y="1085" width="370" height="690" rx="42"/>
+      </clipPath>
+      
+      <g clip-path="url(#screenClip)">
+        <!-- App Background -->
+        <rect x="545" y="1085" width="370" height="690" fill="#f8fafc"/>
+
+        <!-- App Header Bar -->
+        <rect x="545" y="1085" width="370" height="125" fill="#ffffff"/>
+        <line x1="545" y1="1210" x2="915" y2="1210" stroke="#e2e8f0" stroke-width="2"/>
+
+        <!-- Header: Avatar Circle -->
+        <circle cx="605" cy="1155" r="28" fill="#e8f5e9"/>
+        <!-- Header: Leaf Icon in Avatar -->
+        <path d="M 605,1135 C 592,1142 590,1162 605,1172 C 620,1162 618,1142 605,1135 Z" fill="#43a047"/>
+        <path d="M 605,1144 L 605,1168" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+
+        <!-- Header: User status / name abstract bars -->
+        <rect x="648" y="1142" width="110" height="12" rx="6" fill="#334155"/>
+        <rect x="648" y="1162" width="65" height="9" rx="4.5" fill="#10b981"/>
+
+        <!-- Audio Call / More Icons dummy dots -->
+        <circle cx="830" cy="1155" r="5" fill="#94a3b8"/>
+        <circle cx="850" cy="1155" r="5" fill="#94a3b8"/>
+        <circle cx="870" cy="1155" r="5" fill="#94a3b8"/>
+
+        <!-- Chat Area Background Elements -->
+        <!-- Date Badge -->
+        <rect x="685" y="1235" width="90" height="26" rx="13" fill="#e2e8f0" opacity="0.7"/>
+        <rect x="705" y="1244" width="50" height="8" rx="4" fill="#94a3b8"/>
+
+        <!-- Chat Bubble 1: Received (Left) -->
+        <path d="M 580,1290 L 760,1290 C 775,1290 785,1300 785,1315 L 785,1370 C 785,1385 775,1395 760,1395 L 595,1395 C 580,1395 570,1385 570,1370 L 570,1300 C 570,1294 574,1290 580,1290 Z" fill="url(#bubbleReceived)"/>
+        <!-- Received Bubble Tail -->
+        <path d="M 570,1305 L 558,1298 C 566,1312 570,1318 570,1322 Z" fill="#ebeff2"/>
+        
+        <!-- Text Dummy Lines inside Bubble 1 -->
+        <rect x="595" y="1318" width="160" height="10" rx="5" fill="#64748b"/>
+        <rect x="595" y="1338" width="130" height="10" rx="5" fill="#64748b"/>
+        <rect x="595" y="1358" width="80" height="10" rx="5" fill="#94a3b8"/>
+
+        <!-- Chat Bubble 2: Sent with Leaf Logo (Right) -->
+        <!-- Main Highlight Message! -->
+        <g filter="url(#softGlow)">
+          <!-- Soft glow to emphasize cozy communication -->
+          <rect x="670" y="1425" width="220" height="190" rx="26" fill="#2e7d32" opacity="0.15"/>
+        </g>
+        
+        <path d="M 685,1420 L 870,1420 C 885,1420 895,1430 895,1445 L 895,1600 C 895,1615 885,1625 870,1625 L 685,1625 C 670,1625 660,1615 660,1600 L 660,1445 C 660,1430 670,1420 685,1420 Z" fill="url(#bubbleSent)"/>
+        <!-- Sent Bubble Tail -->
+        <path d="M 895,1438 L 907,1430 C 899,1444 895,1452 895,1456 Z" fill="#388e3c"/>
+
+        <!-- Leaf Emblem Container inside Bubble 2 -->
+        <circle cx="777" cy="1490" r="42" fill="#ffffff" opacity="0.95"/>
+
+        <!-- GREEN LEAF LOGO -->
+        <!-- Stem & Main Leaf Silhouette -->
+        <g transform="translate(777, 1490) scale(1.15)">
+          <!-- Primary Leaf Body -->
+          <path d="M -1,-26 C 18,-24 30,-5 24,16 C 18,22 10,25 -1,26 C -3,15 -4,0 -1,-26 Z" fill="url(#leafGrad)"/>
+          <!-- Secondary Small Leaf / Sprout -->
+          <path d="M -2,4 C -16,4 -24,-8 -18,-20 C -7,-18 0,-6 -2,4 Z" fill="#84cc49"/>
+          <!-- Central Leaf Vein Accent -->
+          <path d="M 0,25 C 2,12 5,-5 20,-20" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7"/>
+          <path d="M 7,8 C 12,5 17,4 19,4" stroke="#ffffff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6"/>
+          <!-- Delicate Stem Base -->
+          <path d="M -1,26 C -2,32 -6,37 -12,40" stroke="#2e6817" stroke-width="3" stroke-linecap="round" fill="none"/>
+        </g>
+
+        <!-- Message Bars inside Bubble 2 -->
+        <rect x="690" y="1555" width="175" height="11" rx="5.5" fill="#ffffff" opacity="0.95"/>
+        <rect x="715" y="1578" width="125" height="10" rx="5" fill="#c8e6c9" opacity="0.9"/>
+        <!-- Bubble timestamp / checkmarks -->
+        <circle cx="862" cy="1606" r="3.5" fill="#e8f5e9" opacity="0.8"/>
+        <path d="M 872,1606 L 876,1610 L 885,1601" stroke="#e8f5e9" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+        <!-- Chat Bubble 3: Received (Bottom) -->
+        <path d="M 580,1650 L 790,1650 C 805,1650 815,1660 815,1675 L 815,1725 C 815,1740 805,1750 790,1750 L 595,1750 C 580,1750 570,1740 570,1725 L 570,1660 C 570,1654 574,1650 580,1650 Z" fill="url(#bubbleReceived)"/>
+        <rect x="595" y="1675" width="180" height="10" rx="5" fill="#64748b"/>
+        <rect x="595" y="1695" width="110" height="10" rx="5" fill="#94a3b8"/>
+
+        <!-- Screen Bottom Bar / Home Indicator -->
+        <rect x="660" y="1760" width="140" height="5" rx="2.5" fill="#94a3b8"/>
+
+        <!-- Glass Diagonal Glare/Reflection across screen -->
+        <polygon points="545,1085 750,1085 545,1650" fill="url(#screenGlassLight)"/>
+        <polygon points="680,1085 915,1085 545,1775 545,1650" fill="url(#screenGlassLight)" opacity="0.5"/>
+
+        <!-- Camera Notch / Island -->
+        <rect x="685" y="1097" width="90" height="22" rx="11" fill="#15171c"/>
+        <circle cx="750" cy="1108" r="5.5" fill="#23272f"/>
+        <circle cx="752" cy="1109" r="2" fill="#3b4252"/>
+        <circle cx="705" cy="1108" r="4" fill="#1a3b5c"/>
+      </g>
+    </g>
+
+    <!-- Phone Screen Bezel Highlight (Rim Light) -->
+    <rect x="543" y="1083" width="374" height="694" rx="44" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.3"/>
+  </g>
+
+  <!-- ================= CUP & SAUCER (LEFT) ================= -->
+  <!-- Main Cup Shadows -->
+  <ellipse cx="370" cy="1485" rx="195" ry="75" fill="url(#cupShadow)"/>
+  <ellipse cx="370" cy="1475" rx="150" ry="50" fill="#000000" opacity="0.35"/>
+
+  <!-- SAUCER -->
+  <!-- Saucer Rim Outer -->
+  <ellipse cx="370" cy="1470" rx="200" ry="70" fill="url(#saucerGrad)"/>
+  <!-- Saucer Bottom/Edge Depth -->
+  <path d="M 170,1470 C 170,1525 570,1525 570,1470 C 570,1510 170,1510 170,1470 Z" fill="#9c8770"/>
+  <!-- Saucer Inner Well -->
+  <ellipse cx="370" cy="1468" rx="135" ry="45" fill="#ded2c1"/>
+  <ellipse cx="370" cy="1465" rx="125" ry="40" fill="#c7b5a0"/>
+
+  <!-- CUP HANDLE -->
+  <!-- Handle Shadow -->
+  <path d="M 190,1310 C 90,1310 90,1430 200,1445 C 105,1420 110,1325 190,1310 Z" fill="#180e0c" opacity="0.4"/>
+  <!-- Handle Outer Curve -->
+  <path d="M 230,1280 C 100,1280 90,1425 220,1445 C 235,1447 245,1435 240,1425 C 235,1415 220,1415 210,1410 C 135,1395 140,1315 230,1310 Z" fill="url(#cupGrad)"/>
+  <!-- Handle Inner Light / Edge -->
+  <path d="M 230,1285 C 120,1285 115,1405 215,1425" stroke="#fffbf5" stroke-width="3" fill="none" opacity="0.6"/>
+
+  <!-- CUP BODY -->
+  <!-- Cup Silhouette / Outer Wall -->
+  <path d="M 210,1235 C 215,1370 260,1460 370,1460 C 480,1460 525,1370 530,1235 Z" fill="url(#cupGrad)"/>
+
+  <!-- Warm Light Reflection on Cup Side (Lamp glow bounce) -->
+  <path d="M 460,1250 C 490,1330 470,1420 370,1455 C 450,1445 505,1370 515,1250 Z" fill="#ffa459" opacity="0.3"/>
+  <!-- Rim Highlight along Cup Edge -->
+  <path d="M 211,1245 C 216,1375 260,1458 370,1458 C 475,1458 522,1375 528,1245 C 522,1365 470,1448 370,1448 C 265,1448 220,1365 211,1245 Z" fill="#99785d" opacity="0.35"/>
+
+  <!-- Left Edge Rim Light -->
+  <path d="M 213,1240 C 216,1330 240,1410 280,1440 C 250,1405 228,1330 223,1240 Z" fill="#ffffff" opacity="0.5"/>
+
+  <!-- CUP TOP & INTERIOR / TEA -->
+  <!-- Cup Rim Opening Lip -->
+  <ellipse cx="370" cy="1235" rx="160" ry="58" fill="#ebe1d3"/>
+  <!-- Cup Inside Wall Depth -->
+  <ellipse cx="370" cy="1238" rx="153" ry="53" fill="url(#cupInner)"/>
+
+  <!-- TEA LIQUID SURFACE -->
+  <ellipse cx="370" cy="1248" rx="142" ry="46" fill="url(#teaLiquid)"/>
+
+  <!-- Tea Surface Highlights & Rings -->
+  <!-- Outer liquid reflection edge -->
+  <ellipse cx="370" cy="1248" rx="138" ry="43" fill="none" stroke="#e07e38" stroke-width="2.5" opacity="0.7"/>
+  
+  <!-- Warm glow reflection of lamp on liquid surface -->
+  <ellipse cx="420" cy="1242" rx="65" ry="20" fill="#ffb066" opacity="0.35"/>
+  <ellipse cx="435" cy="1239" rx="35" ry="9" fill="#ffecd1" opacity="0.6"/>
+
+  <!-- Floating Green Leaf / Mint in Tea -->
+  <g transform="translate(330, 1250) rotate(-20) scale(0.65)">
+    <!-- Leaf Body -->
+    <path d="M 0,-30 C 25,-25 35,5 20,25 C 5,45 -15,35 -25,20 C -35,5 -25,-25 0,-30 Z" fill="#48872b"/>
+    <!-- Leaf lighter half -->
+    <path d="M 0,-30 C 15,-25 25,5 15,25 C 5,40 0,35 0,-30 Z" fill="#68a83d"/>
+    <!-- Leaf Central Vein -->
+    <path d="M 0,-25 Q 5,2 0,30" stroke="#8ce058" stroke-width="2.5" fill="none"/>
+    <!-- Little droplet on leaf -->
+    <circle cx="8" cy="2" r="3" fill="#ffffff" opacity="0.7"/>
+  </g>
+
+  <!-- Tea Surface Tension Wave Ring -->
+  <ellipse cx="330" cy="1253" rx="35" ry="12" fill="none" stroke="#e07e38" stroke-width="1" opacity="0.5"/>
+
+  <!-- ================= DETAILED STEAM TRAILS ================= -->
+  <!-- Back/Thick Steam Layer -->
+  <g filter="url(#softGlow)">
+    <!-- Steam Ribbon 1 (Center-Left drifting Right) -->
+    <path d="M 330,1210 C 310,1130 250,1090 280,1000 C 310,910 400,880 370,780 C 340,680 270,670 300,530 C 320,440 400,380 370,280" 
+          fill="none" stroke="url(#steamGrad1)" stroke-width="32" stroke-linecap="round"/>
+
+    <!-- Steam Ribbon 2 (Center-Right drifting upward) -->
+    <path d="M 410,1210 C 440,1120 490,1070 450,970 C 410,870 320,840 370,730 C 420,620 480,590 420,460 C 370,360 410,290 440,200" 
+          fill="none" stroke="url(#steamGrad2)" stroke-width="26" stroke-linecap="round"/>
+
+    <!-- Steam Ribbon 3 (Gentle Wisps) -->
+    <path d="M 360,1190 C 390,1140 370,1080 330,1030 C 290,980 310,910 350,860 C 400,800 390,720 340,640" 
+          fill="none" stroke="url(#steamGrad1)" stroke-width="18" stroke-linecap="round"/>
+
+    <!-- Whimsical little steam loop for charm -->
+    <path d="M 280,1180 C 250,1110 290,1040 320,990 C 360,930 330,870 300,820" 
+          fill="none" stroke="url(#steamGrad2)" stroke-width="14" stroke-linecap="round"/>
+  </g>
+
+  <!-- Fine Sharp Steam Filaments for Vector Detail -->
+  <path d="M 335,1210 C 315,1130 260,1090 285,1000 C 310,910 395,880 370,780 C 345,680 280,670 305,530" 
+        fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.3"/>
+  <path d="M 405,1205 C 435,1120 480,1075 445,970 C 410,865 330,840 375,730 C 415,630 465,590 420,470" 
+        fill="none" stroke="#fff0e0" stroke-width="4" stroke-linecap="round" opacity="0.25"/>
+
+  <!-- ================= COZY FOREGROUND ATMOSPHERE ================= -->
+  <!-- Scattered Dried Tea Leaves / Spices on Table -->
+  <g opacity="0.85">
+    <!-- Star Anise / Cinnamon or small tea bits -->
+    <!-- Leaf floret 1 -->
+    <path d="M 600,1650 C 615,1645 625,1650 630,1658 C 620,1663 610,1660 600,1650 Z" fill="#3a1c14"/>
+    <path d="M 608,1648 C 615,1652 620,1654 624,1656" stroke="#5a2e22" stroke-width="1"/>
+
+    <!-- Leaf floret 2 -->
+    <path d="M 640,1665 C 650,1660 660,1665 662,1672 C 655,1676 645,1673 640,1665 Z" fill="#4d2419"/>
+
+    <!-- Tiny tea crumbs -->
+    <circle cx="210" cy="1540" r="3" fill="#2d130d"/>
+    <circle cx="225" cy="1555" r="2" fill="#3d1d14"/>
+    <circle cx="195" cy="1560" r="2.5" fill="#260f0a"/>
+
+    <circle cx="585" cy="1640" r="3" fill="#361710"/>
+    <circle cx="635" cy="1645" r="2.5" fill="#421e15"/>
+    <circle cx="615" cy="1675" r="2" fill="#29110b"/>
+  </g>
+
+  <!-- Warm Bokeh / Floating Golden Dust in Light Beam -->
+  <g pointer-events="none">
+    <circle cx="480" cy="850" r="9" fill="#ffe0b2" opacity="0.25" filter="url(#softGlow)"/>
+    <circle cx="420" cy="720" r="14" fill="#ffd59e" opacity="0.18" filter="url(#softGlow)"/>
+    <circle cx="580" cy="650" r="8" fill="#ffedd5" opacity="0.2" filter="url(#softGlow)"/>
+    <circle cx="360" cy="520" r="12" fill="#ffcc80" opacity="0.2" filter="url(#softGlow)"/>
+    <circle cx="520" cy="410" r="16" fill="#ffe0b2" opacity="0.15" filter="url(#softGlow)"/>
+
+    <circle cx="780" cy="780" r="6" fill="#ffffff" opacity="0.3"/>
+    <circle cx="680" cy="920" r="4" fill="#ffebd4" opacity="0.4"/>
+    <circle cx="310" cy="890" r="5" fill="#ffe4cc" opacity="0.3"/>
+    <circle cx="490" cy="1020" r="3.5" fill="#ffffff" opacity="0.4"/>
+    <circle cx="260" cy="1080" r="4" fill="#ffd9b3" opacity="0.3"/>
+    <circle cx="570" cy="1160" r="3" fill="#ffffff" opacity="0.5"/>
+  </g>
+
+  <!-- Vignette Envelope (Deep warm moody edges) -->
+  <path d="M 0,0 L 1080,0 L 1080,1920 L 0,1920 Z" 
+        fill="none" 
+        stroke="#0c0712" 
+        stroke-width="60" 
+        opacity="0.4" 
+        pointer-events="none"/>
+</svg>

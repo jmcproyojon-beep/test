@@ -1,0 +1,569 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="100%" height="100%">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FDE2A7"/>
+      <stop offset="25%" stop-color="#FCD094"/>
+      <stop offset="50%" stop-color="#F8B17B"/>
+      <stop offset="75%" stop-color="#E28972"/>
+      <stop offset="100%" stop-color="#9E5F75"/>
+    </linearGradient>
+
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFDF0" stop-opacity="1"/>
+      <stop offset="20%" stop-color="#FFE79A" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#FFAE42" stop-opacity="0.5"/>
+      <stop offset="75%" stop-color="#F68842" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#F8B17B" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="sunDisc" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="65%" stop-color="#FFF8D6"/>
+      <stop offset="100%" stop-color="#FDC966"/>
+    </radialGradient>
+
+    <linearGradient id="rayGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF5C0" stop-opacity="0.45"/>
+      <stop offset="60%" stop-color="#FFD685" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#FFAE42" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="distantMtnGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#926B7E"/>
+      <stop offset="60%" stop-color="#6F6B7E"/>
+      <stop offset="100%" stop-color="#495D69"/>
+    </linearGradient>
+
+    <linearGradient id="hillLayer1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#557B69"/>
+      <stop offset="100%" stop-color="#345952"/>
+    </linearGradient>
+
+    <linearGradient id="hillLayer2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#678E56"/>
+      <stop offset="50%" stop-color="#497544"/>
+      <stop offset="100%" stop-color="#2D543B"/>
+    </linearGradient>
+
+    <linearGradient id="hillLayer3" x1="0.3" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#80A74D"/>
+      <stop offset="40%" stop-color="#5B8B3D"/>
+      <stop offset="100%" stop-color="#264D29"/>
+    </linearGradient>
+
+    <linearGradient id="hillLayer4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#93BD47"/>
+      <stop offset="50%" stop-color="#689A32"/>
+      <stop offset="100%" stop-color="#285627"/>
+    </linearGradient>
+
+    <linearGradient id="frontHill" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#98C644"/>
+      <stop offset="35%" stop-color="#6D9C31"/>
+      <stop offset="80%" stop-color="#3C6728"/>
+      <stop offset="100%" stop-color="#1E3E1A"/>
+    </linearGradient>
+
+    <linearGradient id="bushSunSide" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C2E85A"/>
+      <stop offset="40%" stop-color="#8BBF36"/>
+      <stop offset="100%" stop-color="#437721"/>
+    </linearGradient>
+
+    <linearGradient id="bushShadowSide" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5E8C2B"/>
+      <stop offset="50%" stop-color="#38641F"/>
+      <stop offset="100%" stop-color="#1E3D16"/>
+    </linearGradient>
+
+    <linearGradient id="goldHaze" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#FFAE42" stop-opacity="0.35"/>
+      <stop offset="50%" stop-color="#FFD175" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#FFE8A3" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="mistWhite" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="25%" stop-color="#FFF5E0" stop-opacity="0.35"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="75%" stop-color="#FFE8D0" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="mistValley" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF2D6" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#FFE7C4" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#FCE1C3" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="basketTone" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E1AC69"/>
+      <stop offset="40%" stop-color="#C08544"/>
+      <stop offset="100%" stop-color="#7B4E26"/>
+    </linearGradient>
+
+    <linearGradient id="sareeRed" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FF6353"/>
+      <stop offset="45%" stop-color="#D72D2D"/>
+      <stop offset="85%" stop-color="#931320"/>
+      <stop offset="100%" stop-color="#5F0611"/>
+    </linearGradient>
+
+    <linearGradient id="sareeTurquoise" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#46D8BE"/>
+      <stop offset="50%" stop-color="#149F8C"/>
+      <stop offset="100%" stop-color="#085B50"/>
+    </linearGradient>
+
+    <linearGradient id="skinShade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#C6865B"/>
+      <stop offset="60%" stop-color="#A5643B"/>
+      <stop offset="100%" stop-color="#7D4625"/>
+    </linearGradient>
+
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="35" result="glow"/>
+      <feComposite in="SourceGraphic" in2="glow" operator="over"/>
+    </filter>
+
+    <filter id="sunBlur">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+  </defs>
+
+  <!-- SKY -->
+  <rect x="0" y="0" width="1080" height="1920" fill="url(#skyGrad)"/>
+
+  <!-- SUN & PRIMARY GLOW -->
+  <circle cx="480" cy="460" r="420" fill="url(#sunGlow)"/>
+  <circle cx="480" cy="460" r="260" fill="url(#sunGlow)" filter="url(#softGlow)"/>
+
+  <!-- SUNBEAMS -->
+  <g opacity="0.65">
+    <polygon points="480,460 -100,1000 -60,1180" fill="url(#rayGrad)"/>
+    <polygon points="480,460 20,1350 140,1420" fill="url(#rayGrad)"/>
+    <polygon points="480,460 280,1580 430,1650" fill="url(#rayGrad)"/>
+    <polygon points="480,460 620,1700 780,1660" fill="url(#rayGrad)"/>
+    <polygon points="480,460 980,1520 1120,1440" fill="url(#rayGrad)"/>
+    <polygon points="480,460 1140,1080 1200,950" fill="url(#rayGrad)"/>
+    <polygon points="480,460 1100,680 1180,550" fill="url(#rayGrad)"/>
+  </g>
+
+  <!-- SUN CORE DISC -->
+  <circle cx="480" cy="460" r="75" fill="url(#sunDisc)"/>
+  <circle cx="480" cy="460" r="85" fill="#FFFFFF" opacity="0.4" filter="url(#sunBlur)"/>
+
+  <!-- DISTANT JAINTEA / MEGHALAYA FOOTHILLS -->
+  <path d="M0 640 Q210 570 410 610 T850 590 Q980 560 1080 580 L1080 820 L0 820 Z" fill="url(#distantMtnGrad)" opacity="0.65"/>
+  <path d="M0 680 Q160 630 360 660 T760 630 Q940 610 1080 645 L1080 860 L0 860 Z" fill="url(#distantMtnGrad)" opacity="0.85"/>
+
+  <!-- HORIZON MORNING MIST -->
+  <rect x="0" y="600" width="1080" height="140" fill="url(#mistValley)" opacity="0.7"/>
+
+  <!-- DISTANT HIGH TEA RIDGE (LAYER 1) -->
+  <path d="M-40 760 Q120 700 320 730 T780 710 Q960 690 1120 740 L1120 950 L-40 950 Z" fill="url(#hillLayer1)"/>
+  
+  <!-- SILHOUETTE SHADE TREES (FAR BACKGROUND) -->
+  <g fill="#375246" opacity="0.7">
+    <!-- Slender Albizia / shade tree 1 -->
+    <path d="M180 720 Q183 660 185 615 Q186 612 189 612 Q191 660 193 720 Z"/>
+    <ellipse cx="187" cy="610" rx="42" ry="12"/>
+    <ellipse cx="165" cy="615" rx="28" ry="9"/>
+    <ellipse cx="205" cy="608" rx="26" ry="8"/>
+
+    <!-- Shade tree 2 -->
+    <path d="M720 705 Q723 645 726 590 Q728 588 731 588 Q733 645 735 705 Z"/>
+    <ellipse cx="730" cy="585" rx="58" ry="14"/>
+    <ellipse cx="700" cy="590" rx="35" ry="10"/>
+    <ellipse cx="760" cy="582" rx="38" ry="10"/>
+
+    <!-- Shade tree 3 -->
+    <path d="M880 715 Q882 665 885 625 Q887 623 889 623 Q891 665 893 715 Z"/>
+    <ellipse cx="888" cy="620" rx="38" ry="11"/>
+  </g>
+
+  <!-- MID-DISTANCE ROLLING RIDGE (LAYER 2) -->
+  <path d="M-20 830 Q180 770 440 820 T950 790 Q1040 800 1100 820 L1100 1080 L-20 1080 Z" fill="url(#hillLayer2)"/>
+
+  <!-- TEA CONTOUR HEDGES (LAYER 2) -->
+  <g fill="none" stroke="#6F9D47" stroke-width="8" opacity="0.5" stroke-linecap="round">
+    <path d="M-20 845 Q180 785 440 835 T950 805 Q1040 815 1100 835"/>
+    <path d="M-20 865 Q180 805 440 855 T950 825 Q1040 835 1100 855"/>
+    <path d="M-20 885 Q180 825 440 875 T950 845 Q1040 855 1100 875"/>
+    <path d="M-20 905 Q180 845 440 895 T950 865 Q1040 875 1100 895"/>
+    <path d="M-20 925 Q180 865 440 915 T950 885 Q1040 895 1100 915"/>
+  </g>
+
+  <!-- SOFT ROLLING MIST SHEET 1 -->
+  <path d="M-50 870 C180 840 320 890 560 850 C800 810 940 860 1130 830 L1130 920 C950 940 760 900 520 930 C280 960 120 920 -50 940 Z" fill="url(#mistWhite)" opacity="0.6"/>
+
+  <!-- MIDGROUND SLOPING HILL LEFT TO RIGHT (LAYER 3) -->
+  <path d="M-40 930 Q240 890 520 970 T1100 960 L1100 1280 L-40 1280 Z" fill="url(#hillLayer3)"/>
+
+  <!-- SHADE TREES MIDGROUND (BETWEEN HILLS) -->
+  <g>
+    <!-- Trunk 1 -->
+    <path d="M280 955 Q285 860 288 780 Q292 780 295 860 Q293 920 298 965 Z" fill="#2E462F"/>
+    <!-- Foliage Canopy -->
+    <ellipse cx="292" cy="775" rx="85" ry="22" fill="#486D39"/>
+    <ellipse cx="250" cy="780" rx="55" ry="18" fill="#588043"/>
+    <ellipse cx="335" cy="770" rx="60" ry="17" fill="#6B994F"/>
+    <ellipse cx="295" cy="762" rx="68" ry="16" fill="#80B05C" opacity="0.7"/>
+
+    <!-- Trunk 2 -->
+    <path d="M840 960 Q848 880 855 810 Q859 810 862 880 Q860 930 865 970 Z" fill="#2E462F"/>
+    <!-- Canopy 2 -->
+    <ellipse cx="858" cy="805" rx="100" ry="25" fill="#486D39"/>
+    <ellipse cx="810" cy="812" rx="65" ry="20" fill="#5A8344"/>
+    <ellipse cx="910" cy="800" rx="70" ry="20" fill="#75A454"/>
+    <ellipse cx="865" cy="792" rx="75" ry="18" fill="#93C664" opacity="0.75"/>
+  </g>
+
+  <!-- MIDGROUND TEA CONTOURS & BUSH STRIPS (LAYER 3) -->
+  <g fill="none" stroke-linecap="round">
+    <!-- Contour 1 -->
+    <path d="M-30 960 Q220 920 500 1000 T1100 990" stroke="#446E26" stroke-width="26"/>
+    <path d="M-30 956 Q220 916 500 996 T1100 986" stroke="#77A736" stroke-width="18"/>
+    <path d="M-30 953 Q220 913 500 993 T1100 983" stroke="#B0E251" stroke-width="7" opacity="0.8"/>
+
+    <!-- Contour 2 -->
+    <path d="M-30 1005 Q240 965 520 1045 T1100 1035" stroke="#3A601F" stroke-width="30"/>
+    <path d="M-30 1000 Q240 960 520 1040 T1100 1030" stroke="#6C9B2E" stroke-width="20"/>
+    <path d="M-30 996 Q240 956 520 1036 T1100 1026" stroke="#9ECF43" stroke-width="8" opacity="0.8"/>
+
+    <!-- Contour 3 -->
+    <path d="M-30 1055 Q260 1010 540 1095 T1100 1085" stroke="#315418" stroke-width="34"/>
+    <path d="M-30 1050 Q260 1005 540 1090 T1100 1080" stroke="#639127" stroke-width="22"/>
+    <path d="M-30 1045 Q260 1000 540 1085 T1100 1075" stroke="#94C53C" stroke-width="9" opacity="0.8"/>
+
+    <!-- Contour 4 -->
+    <path d="M-30 1110 Q280 1060 570 1145 T1100 1140" stroke="#2B4B15" stroke-width="36"/>
+    <path d="M-30 1104 Q280 1054 570 1139 T1100 1134" stroke="#5A8723" stroke-width="24"/>
+    <path d="M-30 1098 Q280 1048 570 1133 T1100 1128" stroke="#8EBE34" stroke-width="10" opacity="0.85"/>
+  </g>
+
+  <!-- MORNING MIST BAND IN BASIN -->
+  <path d="M-40 1120 C180 1080 440 1160 700 1110 C920 1070 1020 1120 1120 1100 L1120 1200 C980 1230 760 1170 540 1220 C260 1270 120 1210 -40 1210 Z" fill="url(#mistWhite)" opacity="0.5"/>
+
+  <!-- DRAMATIC FOREGROUND HILL WITH TEA WORKER (LAYER 4) -->
+  <!-- Sweeping hill from bottom-left climbing towards middle-right then dropping -->
+  <path d="M-60 1240 Q180 1180 520 1230 T1120 1160 L1120 1960 L-60 1960 Z" fill="url(#hillLayer4)"/>
+
+  <!-- CONTOURED PATTERNS ON THE MAIN SLOPING HILL -->
+  <g fill="none" stroke-linecap="round">
+    <!-- Row 1 -->
+    <path d="M-40 1245 Q260 1205 600 1260 T1120 1200" stroke="#2F5419" stroke-width="42"/>
+    <path d="M-40 1238 Q260 1198 600 1253 T1120 1193" stroke="#5E9027" stroke-width="28"/>
+    <path d="M-40 1230 Q260 1190 600 1245 T1120 1185" stroke="#94C93B" stroke-width="12"/>
+    <path d="M-40 1225 Q260 1185 600 1240 T1120 1180" stroke="#D3F76E" stroke-width="4" opacity="0.9"/>
+
+    <!-- Row 2 -->
+    <path d="M-40 1310 Q280 1265 640 1325 T1120 1265" stroke="#284814" stroke-width="48"/>
+    <path d="M-40 1302 Q280 1257 640 1317 T1120 1257" stroke="#548320" stroke-width="32"/>
+    <path d="M-40 1293 Q280 1248 640 1308 T1120 1248" stroke="#88BF31" stroke-width="14"/>
+    <path d="M-40 1286 Q280 1241 640 1301 T1120 1241" stroke="#CEF362" stroke-width="5" opacity="0.9"/>
+
+    <!-- Row 3 -->
+    <path d="M-40 1385 Q300 1335 680 1400 T1120 1340" stroke="#223E10" stroke-width="56"/>
+    <path d="M-40 1375 Q300 1325 680 1390 T1120 1330" stroke="#4C781A" stroke-width="36"/>
+    <path d="M-40 1364 Q300 1314 680 1379 T1120 1319" stroke="#7CB428" stroke-width="16"/>
+    <path d="M-40 1356 Q300 1306 680 1371 T1120 1311" stroke="#C5EE52" stroke-width="6" opacity="0.9"/>
+
+    <!-- Row 4 -->
+    <path d="M-40 1475 Q320 1420 720 1490 T1120 1430" stroke="#1C340C" stroke-width="65"/>
+    <path d="M-40 1463 Q320 1408 720 1478 T1120 1418" stroke="#416914" stroke-width="42"/>
+    <path d="M-40 1450 Q320 1395 720 1465 T1120 1405" stroke="#71A721" stroke-width="18"/>
+    <path d="M-40 1440 Q320 1385 720 1455 T1120 1395" stroke="#BCE946" stroke-width="7" opacity="0.95"/>
+  </g>
+
+  <!-- NARROW RED-CLAY FOOTPATH WEAVING THROUGH THE HILL -->
+  <path d="M570 1245 Q550 1290 535 1330 T480 1430 Q440 1500 390 1580" fill="none" stroke="#A95738" stroke-width="14" opacity="0.8" stroke-linecap="round"/>
+  <path d="M570 1245 Q550 1290 535 1330 T480 1430 Q440 1500 390 1580" fill="none" stroke="#D17B56" stroke-width="6" opacity="0.6" stroke-linecap="round"/>
+
+  <!-- TALL ELEGANT SHADE TREE ON MAIN RIDGE (SUNLIT) -->
+  <g>
+    <!-- Shadow cast -->
+    <ellipse cx="230" cy="1320" rx="140" ry="25" fill="#132B0D" opacity="0.4"/>
+    <!-- Trunk with warm morning rim light -->
+    <path d="M175 1320 Q185 1160 192 1020 Q196 920 190 850 L204 850 Q202 930 200 1020 Q204 1160 215 1320 Z" fill="#24341E"/>
+    <path d="M197 850 Q199 930 197 1020 Q200 1160 211 1320 L216 1320 Q205 1160 202 1020 Q204 930 205 850 Z" fill="#997843" opacity="0.8"/>
+    <!-- Branches -->
+    <path d="M192 940 Q150 890 110 870 L114 864 Q155 884 194 930 Z" fill="#24341E"/>
+    <path d="M198 905 Q240 865 295 845 L298 851 Q244 870 200 913 Z" fill="#24341E"/>
+    <path d="M190 855 Q150 805 90 785 L94 779 Q153 800 193 848 Z" fill="#24341E"/>
+    <path d="M200 850 Q240 810 310 790 L313 796 Q245 815 203 855 Z" fill="#24341E"/>
+
+    <!-- Layered Delicate Foliage Clusters (Sylhet Koroi/Sissoo Tree) -->
+    <!-- Far clusters -->
+    <ellipse cx="90" cy="780" rx="65" ry="16" fill="#3D612B"/>
+    <ellipse cx="305" cy="790" rx="75" ry="18" fill="#4B7434"/>
+    <ellipse cx="110" cy="865" rx="55" ry="15" fill="#436B2F"/>
+    <ellipse cx="295" cy="845" rx="60" ry="16" fill="#4A7534"/>
+    <!-- Central Main Clusters -->
+    <ellipse cx="195" cy="830" rx="110" ry="24" fill="#527F38"/>
+    <ellipse cx="195" cy="824" rx="95" ry="20" fill="#75A844"/>
+    <ellipse cx="205" cy="818" rx="80" ry="16" fill="#A1D659"/>
+    <!-- Highlights -->
+    <ellipse cx="100" cy="776" rx="45" ry="11" fill="#88BE4A"/>
+    <ellipse cx="315" cy="786" rx="50" ry="12" fill="#B1E362"/>
+    <ellipse cx="190" cy="815" rx="65" ry="13" fill="#D3F87B" opacity="0.85"/>
+  </g>
+
+  <!-- TEA PICKER (SYLHETI TEA GARDEN WORKER) -->
+  <!-- Positioned amidst lush rows at right-center, gracefully plucking two leaves and a bud -->
+  <g id="teaPicker" transform="translate(620, 1150)">
+    <!-- Picker's Shadow -->
+    <ellipse cx="60" cy="270" rx="75" ry="18" fill="#14260D" opacity="0.5"/>
+
+    <!-- TRADITIONAL PLAITED BAMBOO BASKET (DOKI/THOKRI) ON HER BACK -->
+    <!-- Basket Body -->
+    <g transform="rotate(-8 60 140)">
+      <path d="M-25 60 L15 195 Q20 205 35 205 L85 205 Q100 205 105 195 L145 60 Q148 45 130 45 L-10 45 Q-28 45 -25 60 Z" fill="url(#basketTone)" stroke="#533315" stroke-width="2"/>
+      <!-- Woven Bamboo Texture Lattice Lines -->
+      <path d="M-15 65 L95 195 M5 50 L115 170 M30 50 L125 145 M60 50 L135 120 M-22 95 L75 205 M-20 135 L45 205" stroke="#7A4B1F" stroke-width="2" opacity="0.6"/>
+      <path d="M135 65 L25 195 M115 50 L5 170 M90 50 L-5 145 M60 50 L-15 120 M142 95 L45 205 M140 135 L75 205" stroke="#7A4B1F" stroke-width="2" opacity="0.6"/>
+      <!-- Freshly Picked Tea Leaves Mounded in Basket -->
+      <ellipse cx="60" cy="50" rx="72" ry="22" fill="#4B7D24"/>
+      <ellipse cx="62" cy="46" rx="64" ry="17" fill="#7DB534"/>
+      <!-- Top Leaves Spill Over -->
+      <path d="M10 45 Q25 25 45 42 Q60 18 80 40 Q105 28 120 48 Q85 35 60 52 Q35 32 10 45 Z" fill="#B2E74B"/>
+      <!-- Basket Rim Band -->
+      <ellipse cx="60" cy="48" rx="76" ry="12" fill="none" stroke="#533113" stroke-width="5"/>
+      <ellipse cx="60" cy="48" rx="76" ry="12" fill="none" stroke="#F1BD79" stroke-width="2" opacity="0.8"/>
+    </g>
+
+    <!-- HEAD TUMPLINE STRAP (Holding the heavy basket) -->
+    <path d="M52 28 Q42 50 25 90 Q12 120 -2 142" fill="none" stroke="#E5C189" stroke-width="5" stroke-linecap="round"/>
+    <path d="M52 28 Q42 50 25 90 Q12 120 -2 142" fill="none" stroke="#7F4B18" stroke-width="1.5"/>
+
+    <!-- WOMAN'S BODY & TRADITIONAL ATTIRE -->
+    <!-- Feet/Ankles emerging from saree -->
+    <path d="M45 250 L48 272 L62 274 L60 250 Z" fill="url(#skinShade)"/>
+    <path d="M72 250 L75 270 L89 272 L87 250 Z" fill="url(#skinShade)"/>
+    <!-- Silver Anklets -->
+    <ellipse cx="54" cy="266" rx="9" ry="3" fill="#D9E5E6"/>
+    <ellipse cx="81" cy="264" rx="9" ry="3" fill="#D9E5E6"/>
+
+    <!-- Saree Skirt (Petticoat & pleated drape - Bengali style) -->
+    <path d="M20 120 Q5 180 28 258 Q55 264 92 258 Q118 190 98 120 Z" fill="url(#sareeTurquoise)"/>
+    <!-- Pleats & Folds -->
+    <path d="M45 140 Q40 195 50 258" stroke="#08574B" stroke-width="3" fill="none"/>
+    <path d="M62 135 Q60 195 72 258" stroke="#08574B" stroke-width="3" fill="none"/>
+    <path d="M78 140 Q82 195 86 256" stroke="#08574B" stroke-width="2.5" fill="none"/>
+    <!-- Golden Zari Border on Lower Hem -->
+    <path d="M27 253 Q55 262 93 253" stroke="#F8C649" stroke-width="6" fill="none"/>
+    <path d="M28 256 Q55 265 92 256" stroke="#B83A1B" stroke-width="2.5" fill="none"/>
+
+    <!-- Torso & Blouse (Choli) -->
+    <path d="M28 75 Q15 110 22 135 Q55 145 92 135 Q96 100 84 75 Z" fill="#931320"/>
+
+    <!-- Red Saree Pallu / Anchal draped gracefully across chest and around waist -->
+    <path d="M25 90 Q40 125 78 142 Q95 130 90 100 Q65 80 25 90 Z" fill="url(#sareeRed)"/>
+    <path d="M22 92 Q42 128 80 144" stroke="#F6C348" stroke-width="3.5" fill="none"/>
+
+    <!-- Left Arm & Hand (Reaching down towards a tea shoot) -->
+    <!-- Upper Arm -->
+    <path d="M82 82 Q115 102 125 125 L112 132 Q102 112 76 92 Z" fill="#931320"/>
+    <!-- Bare Forearm -->
+    <path d="M122 126 Q140 148 152 175 L140 180 Q130 154 112 133 Z" fill="url(#skinShade)"/>
+    <!-- Glass Bangles (Red & Gold) -->
+    <ellipse cx="143" cy="172" rx="7" ry="4" fill="#D72D2D" transform="rotate(-25 143 172)"/>
+    <ellipse cx="145" cy="175" rx="7" ry="4" fill="#F8C649" transform="rotate(-25 145 175)"/>
+    <ellipse cx="147" cy="178" rx="7" ry="4" fill="#149F8C" transform="rotate(-25 147 178)"/>
+    <!-- Hand plucking tea leaf -->
+    <path d="M152 175 Q160 186 168 190 Q164 195 156 193 Q150 197 146 190 L140 180 Z" fill="url(#skinShade)"/>
+    <!-- Tender Tea Shoot plucked in hand -->
+    <path d="M165 186 Q170 178 172 172 Q175 180 173 186 Z" fill="#B7EB47"/>
+    <path d="M164 187 Q160 180 156 177 Q162 181 165 187 Z" fill="#8AC230"/>
+
+    <!-- Right Arm (Raised forward gently towards another branch) -->
+    <!-- Forearm -->
+    <path d="M30 82 Q5 110 -15 135 L-24 126 Q-5 102 24 75 Z" fill="url(#skinShade)"/>
+    <!-- Bangles -->
+    <ellipse cx="-16" cy="130" rx="7" ry="4" fill="#F8C649" transform="rotate(35 -16 130)"/>
+    <ellipse cx="-18" cy="133" rx="7" ry="4" fill="#D72D2D" transform="rotate(35 -18 133)"/>
+    <!-- Hand -->
+    <path d="-24 126 Q-35 138 -45 140 Q-42 146 -34 145 Q-30 150 -24 144 L-15 135 Z" fill="url(#skinShade)"/>
+
+    <!-- Neck -->
+    <path d="M48 50 L48 74 Q56 78 64 74 L64 50 Z" fill="url(#skinShade)"/>
+    <!-- Gold Necklace / Hansuli -->
+    <path d="M49 68 Q56 76 63 68" stroke="#FBD25E" stroke-width="3" fill="none"/>
+
+    <!-- Head & Profile (Turned gracefully towards plucking hand) -->
+    <path d="M42 30 Q40 54 54 58 Q66 58 72 46 Q74 28 58 24 Q46 22 42 30 Z" fill="url(#skinShade)"/>
+    <!-- Delicate Facial Contour -->
+    <path d="M64 36 Q71 42 66 48 L61 50" stroke="#7A3D19" stroke-width="1.2" fill="none"/>
+    <!-- Nose / Lips Profile -->
+    <path d="M68 40 Q73 42 70 45 Q72 47 68 48" fill="none" stroke="#904B22" stroke-width="1.2"/>
+    <!-- Traditional Earring (Jhumka) -->
+    <circle cx="50" cy="46" r="3" fill="#FBD25E"/>
+    <path d="M48 49 L52 49 L50 54 Z" fill="#FBD25E"/>
+
+    <!-- Hair (Neat Bun / Shidur / Headcloth) -->
+    <path d="M45 32 Q42 15 58 14 Q74 14 74 32 Q66 22 52 24 Q44 26 45 32 Z" fill="#1C140E"/>
+    <!-- Dark glossy bun -->
+    <circle cx="40" cy="32" r="14" fill="#1C140E"/>
+    <!-- Fresh Jasmine / Marigold Flower Garland in hair (Gajra) -->
+    <circle cx="34" cy="24" r="4" fill="#FFFFFF"/>
+    <circle cx="40" cy="20" r="4.5" fill="#FFAE42"/>
+    <circle cx="47" cy="21" r="4" fill="#FFFFFF"/>
+    <circle cx="30" cy="30" r="4" fill="#FFAE42"/>
+    <circle cx="31" cy="37" r="4" fill="#FFFFFF"/>
+
+    <!-- Cloth Napkin / Headscarf protecting from sun (Gamcha/Orna) -->
+    <path d="M48 14 Q65 10 78 22 Q75 30 70 32 Q62 18 48 14 Z" fill="#FFECE1" opacity="0.9"/>
+
+    <!-- Warm Golden Morning Sun Rim Highlights on Picker -->
+    <path d="M68 22 Q74 28 72 46 Q66 58 58 64" stroke="#FFF0A8" stroke-width="2.5" fill="none" opacity="0.85"/>
+    <path d="M82 82 Q115 102 125 125" stroke="#FFE994" stroke-width="2" fill="none" opacity="0.75"/>
+    <path d="M122 126 Q140 148 152 175" stroke="#FFF2B8" stroke-width="2" fill="none" opacity="0.85"/>
+  </g>
+
+  <!-- FOREGROUND VIBRANT HILL & DETAILED TEA BUSHES (LAYER 5 - BOTTOM 500px) -->
+  <path d="M-40 1560 Q220 1490 560 1540 T1120 1480 L1120 1960 L-40 1960 Z" fill="url(#frontHill)"/>
+
+  <!-- DETAILED LARGE TEA BUSHES IN IMMEDIATE FOREGROUND -->
+  <!-- Bush Cluster 1: Left Foreground (X: -60 to 360, Y: 1560-1940) -->
+  <g>
+    <!-- Dark deep shadow under leaves -->
+    <path d="M-30 1620 Q70 1580 180 1600 Q290 1590 360 1640 Q390 1730 330 1820 Q240 1920 -30 1920 Z" fill="url(#bushShadowSide)"/>
+
+    <!-- Layered Leaf Domes -->
+    <!-- Leaf Clump Left A -->
+    <ellipse cx="60" cy="1640" rx="95" ry="55" fill="url(#bushSunSide)"/>
+    <ellipse cx="190" cy="1630" rx="85" ry="50" fill="url(#bushSunSide)"/>
+    <ellipse cx="300" cy="1660" rx="75" ry="48" fill="url(#bushSunSide)"/>
+
+    <!-- Leaf Clump Lower A -->
+    <ellipse cx="120" cy="1720" rx="125" ry="65" fill="#4B8125"/>
+    <ellipse cx="270" cy="1725" rx="105" ry="60" fill="#3D6D1D"/>
+    <ellipse cx="-10" cy="1730" rx="90" ry="60" fill="#417320"/>
+
+    <ellipse cx="130" cy="1710" rx="115" ry="55" fill="#6EA62E"/>
+    <ellipse cx="265" cy="1710" rx="95" ry="50" fill="#639928"/>
+
+    <ellipse cx="135" cy="1695" rx="95" ry="42" fill="#95CD40"/>
+    <ellipse cx="260" cy="1698" rx="80" ry="38" fill="#88BD37"/>
+
+    <!-- Top sunlit flush ("two leaves and a bud" flush shoots) -->
+    <g fill="#D7FFA2" opacity="0.9">
+      <path d="M50 1600 Q55 1580 62 1572 Q65 1584 60 1602 Z"/>
+      <path d="M60 1588 Q70 1580 78 1582 Q70 1590 60 1594 Z"/>
+
+      <path d="M160 1585 Q165 1562 173 1555 Q176 1568 170 1588 Z"/>
+      <path d="M172 1573 Q184 1565 192 1568 Q182 1577 172 1580 Z"/>
+
+      <path d="M260 1610 Q264 1590 272 1582 Q275 1596 268 1612 Z"/>
+      <path d="M246 1602 Q256 1594 263 1598 Q258 1606 248 1608 Z"/>
+    </g>
+
+    <!-- Individual stylised tea leaves on foreground rim -->
+    <path d="M30 1630 C45 1610 70 1615 80 1635 C65 1645 40 1645 30 1630 Z" fill="#C5F757" stroke="#7CB328" stroke-width="1.5"/>
+    <path d="M100 1625 C118 1605 142 1610 152 1630 C138 1642 112 1640 100 1625 Z" fill="#B7EB47" stroke="#6C9F20" stroke-width="1.5"/>
+    <path d="M170 1615 C185 1595 210 1600 220 1620 C205 1630 180 1630 170 1615 Z" fill="#D3FB6C" stroke="#7CB328" stroke-width="1.5"/>
+    <path d="M230 1625 C248 1608 272 1612 280 1630 C265 1642 242 1640 230 1625 Z" fill="#B3E845" stroke="#6C9F20" stroke-width="1.5"/>
+  </g>
+
+  <!-- Bush Cluster 2: Center & Right Foreground (X: 380 to 1140, Y: 1530-1940) -->
+  <g>
+    <!-- Shadows -->
+    <path d="M380 1640 Q520 1560 740 1570 Q960 1560 1120 1610 L1120 1940 L380 1940 Z" fill="url(#bushShadowSide)"/>
+
+    <!-- Mid layers -->
+    <ellipse cx="510" cy="1620" rx="110" ry="55" fill="url(#bushSunSide)"/>
+    <ellipse cx="710" cy="1615" rx="125" ry="58" fill="url(#bushSunSide)"/>
+    <ellipse cx="920" cy="1630" rx="120" ry="55" fill="url(#bushSunSide)"/>
+    <ellipse cx="1060" cy="1640" rx="90" ry="50" fill="url(#bushSunSide)"/>
+
+    <!-- Bottom thick foliage -->
+    <ellipse cx="440" cy="1700" rx="120" ry="60" fill="#3A671B"/>
+    <ellipse cx="640" cy="1695" rx="135" ry="65" fill="#467822"/>
+    <ellipse cx="850" cy="1700" rx="130" ry="62" fill="#3D6E1E"/>
+    <ellipse cx="1040" cy="1710" rx="100" ry="58" fill="#36611A"/>
+
+    <!-- Brighter front shelves -->
+    <ellipse cx="450" cy="1680" rx="105" ry="48" fill="#6CA42B"/>
+    <ellipse cx="645" cy="1675" rx="120" ry="52" fill="#75AE30"/>
+    <ellipse cx="845" cy="1680" rx="115" ry="50" fill="#6AA129"/>
+
+    <ellipse cx="460" cy="1665" rx="85" ry="36" fill="#9CD643"/>
+    <ellipse cx="650" cy="1660" rx="100" ry="40" fill="#A8E24C"/>
+    <ellipse cx="840" cy="1665" rx="95" ry="38" fill="#93CE3D"/>
+
+    <!-- Sunlit Flush Leaf Clusters on Bush 2 -->
+    <g fill="#DBFFA8" opacity="0.95">
+      <path d="M470 1575 Q475 1555 484 1548 Q487 1560 480 1578 Z"/>
+      <path d="M482 1562 Q494 1555 502 1558 Q492 1567 482 1570 Z"/>
+
+      <path d="M680 1565 Q685 1542 694 1535 Q697 1548 690 1568 Z"/>
+      <path d="M670 1554 Q680 1545 688 1548 Q682 1558 672 1560 Z"/>
+
+      <path d="M860 1580 Q865 1560 873 1552 Q876 1565 870 1582 Z"/>
+      <path d="M872 1568 Q884 1560 892 1563 Q882 1572 872 1575 Z"/>
+
+      <path d="M980 1590 Q985 1570 993 1562 Q996 1576 990 1593 Z"/>
+    </g>
+
+    <!-- Foreground Leaves with Dew Trim -->
+    <path d="M470 1610 C490 1590 515 1595 525 1615 C510 1628 485 1628 470 1610 Z" fill="#D3FB6C" stroke="#7EB829" stroke-width="1.5"/>
+    <path d="M620 1605 C640 1585 668 1590 678 1610 C662 1624 635 1622 620 1605 Z" fill="#E2FF7D" stroke="#89C42E" stroke-width="1.5"/>
+    <path d="M760 1605 C780 1585 808 1590 818 1610 C802 1622 775 1622 760 1605 Z" fill="#CEFA61" stroke="#7EB829" stroke-width="1.5"/>
+    <path d="M910 1615 C930 1598 955 1602 965 1620 C950 1632 925 1632 910 1615 Z" fill="#B8EE4A" stroke="#6FA522" stroke-width="1.5"/>
+  </g>
+
+  <!-- BOTTOM CORNER VIGNETTING / BOTANICAL OVERLAY -->
+  <!-- Crisp Detailed Foreground Sprigs at very bottom (Viewer's perspective right in the tea garden) -->
+  <g>
+    <!-- Left Bottom Shoot -->
+    <path d="M-10 1940 Q50 1850 90 1800" fill="none" stroke="#2B4D16" stroke-width="5"/>
+    <path d="M90 1800 Q115 1775 130 1750 Q125 1780 100 1805 Z" fill="#9EE03B"/>
+    <path d="M88 1802 Q65 1790 55 1768 Q80 1778 90 1802 Z" fill="#78B928"/>
+    <path d="M95 1795 Q115 1805 135 1808 Q115 1818 95 1802 Z" fill="#B3EB4F"/>
+
+    <!-- Right Bottom Shoot -->
+    <path d="M1090 1930 Q1030 1840 980 1780" fill="none" stroke="#2B4D16" stroke-width="5"/>
+    <path d="M980 1780 Q955 1750 945 1720 Q955 1755 975 1782 Z" fill="#BAF354"/>
+    <path d="M978 1782 Q998 1770 1010 1748 Q990 1762 975 1785 Z" fill="#8ECB32"/>
+    <path d="M972 1785 Q955 1795 935 1798 Q955 1805 975 1788 Z" fill="#C9FA67"/>
+  </g>
+
+  <!-- SPARKLING MORNING DEW & GOLDEN LIGHT MOTES -->
+  <g fill="#FFFFFF" opacity="0.8">
+    <circle cx="80" cy="1635" r="2.5"/>
+    <circle cx="152" cy="1630" r="3"/>
+    <circle cx="220" cy="1620" r="2.5"/>
+    <circle cx="280" cy="1630" r="2"/>
+    <circle cx="482" cy="1562" r="3.5"/>
+    <circle cx="525" cy="1615" r="3"/>
+    <circle cx="678" cy="1610" r="3.5"/>
+    <circle cx="694" cy="1535" r="2"/>
+    <circle cx="818" cy="1610" r="3"/>
+    <circle cx="873" cy="1552" r="2.5"/>
+    <circle cx="965" cy="1620" r="2.5"/>
+    <circle cx="130" cy="1750" r="3"/>
+    <circle cx="945" cy="1720" r="3"/>
+  </g>
+
+  <!-- FLOATING GOLDEN SUNLIT DUST / POLLEN MOTES IN AIR -->
+  <g fill="#FFF8C6" opacity="0.6">
+    <circle cx="420" cy="980" r="3.5"/>
+    <circle cx="510" cy="1050" r="2.5"/>
+    <circle cx="380" cy="1180" r="4"/>
+    <circle cx="610" cy="1120" r="3"/>
+    <circle cx="470" cy="1320" r="4.5"/>
+    <circle cx="550" cy="1390" r="3.5"/>
+    <circle cx="670" cy="1360" r="3"/>
+    <circle cx="340" cy="1440" r="4"/>
+    <circle cx="730" cy="1480" r="3.5"/>
+    <circle cx="580" cy="1540" r="4.5"/>
+    <circle cx="290" cy="1560" r="3"/>
+  </g>
+
+  <!-- MORNING RISING FOG RIBBONS (TRANSLUCENT VEILS) -->
+  <path d="M120 1480 Q320 1440 540 1470 T980 1440 Q1060 1450 1100 1470 L1100 1510 Q1040 1490 960 1480 T520 1510 Q300 1480 120 1520 Z" fill="url(#mistWhite)" opacity="0.35"/>
+  <path d="M-20 1340 Q180 1300 420 1330 T920 1310 Q1020 1320 1080 1340 L1080 1370 Q1000 1350 900 1340 T400 1360 Q160 1330 -20 1370 Z" fill="url(#mistWhite)" opacity="0.25"/>
+
+  <!-- WARM SUNRISE AMBIENT OVERLAY (GLOW WASH) -->
+  <rect x="0" y="0" width="1080" height="1920" fill="url(#goldHaze)" pointer-events="none"/>
+</svg>

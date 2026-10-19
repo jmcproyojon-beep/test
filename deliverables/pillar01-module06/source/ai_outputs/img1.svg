@@ -1,0 +1,681 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <!-- Sky & Atmosphere Gradients -->
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#432371" />
+      <stop offset="25%" stop-color="#713770" />
+      <stop offset="50%" stop-color="#BA485A" />
+      <stop offset="70%" stop-color="#E66840" />
+      <stop offset="88%" stop-color="#FA9D49" />
+      <stop offset="100%" stop-color="#FCD371" />
+    </linearGradient>
+
+    <radialGradient id="sunGlow" cx="42%" cy="62%" r="60%">
+      <stop offset="0%" stop-color="#FFF6D1" stop-opacity="1" />
+      <stop offset="15%" stop-color="#FFD46A" stop-opacity="0.9" />
+      <stop offset="40%" stop-color="#F58B44" stop-opacity="0.5" />
+      <stop offset="75%" stop-color="#BD3E57" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#432371" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="hazeGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#FCD371" stop-opacity="0.6" />
+      <stop offset="50%" stop-color="#E66840" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#BA485A" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Skyline Gradients -->
+    <linearGradient id="dhakaFar" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#9C3A5A" />
+      <stop offset="100%" stop-color="#58214D" />
+    </linearGradient>
+
+    <linearGradient id="dhakaMid" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6A224B" />
+      <stop offset="100%" stop-color="#3C153B" />
+    </linearGradient>
+
+    <linearGradient id="dhakaNear" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#411538" />
+      <stop offset="100%" stop-color="#1F0824" />
+    </linearGradient>
+
+    <!-- Room Gradients -->
+    <linearGradient id="wallGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#21152B" />
+      <stop offset="40%" stop-color="#2D1B36" />
+      <stop offset="100%" stop-color="#1B1021" />
+    </linearGradient>
+
+    <linearGradient id="lightBeam" x1="0%" y1="0%" x2="100%" y2="80%">
+      <stop offset="0%" stop-color="#FFEAA5" stop-opacity="0.45" />
+      <stop offset="30%" stop-color="#FFAC59" stop-opacity="0.25" />
+      <stop offset="70%" stop-color="#E85D4E" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#2D1B36" stop-opacity="0" />
+    </linearGradient>
+
+    <linearGradient id="windowFrameGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1E1124" />
+      <stop offset="50%" stop-color="#341E3D" />
+      <stop offset="100%" stop-color="#14091A" />
+    </linearGradient>
+
+    <!-- Desk & Shadow Gradients -->
+    <linearGradient id="deskGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5E3229" />
+      <stop offset="8%" stop-color="#A25738" />
+      <stop offset="15%" stop-color="#4E2722" />
+      <stop offset="100%" stop-color="#241011" />
+    </linearGradient>
+
+    <linearGradient id="laptopBack" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9FA9B5" />
+      <stop offset="50%" stop-color="#6B7480" />
+      <stop offset="100%" stop-color="#3B414A" />
+    </linearGradient>
+
+    <linearGradient id="screenGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#C2E0FF" />
+      <stop offset="100%" stop-color="#6BA3D6" />
+    </linearGradient>
+
+    <linearGradient id="clayChai" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#934628" />
+      <stop offset="50%" stop-color="#BD633B" />
+      <stop offset="80%" stop-color="#E07C4F" />
+      <stop offset="100%" stop-color="#73331C" />
+    </linearGradient>
+
+    <!-- Character Gradients -->
+    <linearGradient id="skinBase" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#AE6844" />
+      <stop offset="40%" stop-color="#945333" />
+      <stop offset="100%" stop-color="#6E3821" />
+    </linearGradient>
+
+    <linearGradient id="skinWarmHighlight" x1="0%" y1="0%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#F8A769" />
+      <stop offset="50%" stop-color="#C97548" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#6E3821" stop-opacity="0" />
+    </linearGradient>
+
+    <linearGradient id="shirtGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFB37A" />
+      <stop offset="35%" stop-color="#A56E68" />
+      <stop offset="70%" stop-color="#5E4F68" />
+      <stop offset="100%" stop-color="#382C40" />
+    </linearGradient>
+
+    <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A2525" />
+      <stop offset="30%" stop-color="#24141A" />
+      <stop offset="100%" stop-color="#0F080D" />
+    </linearGradient>
+
+    <!-- Clip Paths -->
+    <clipPath id="windowClip">
+      <rect x="70" y="80" width="720" height="1060" rx="16" />
+    </clipPath>
+
+    <clipPath id="screenClip">
+      <polygon points="415,1335 635,1335 625,1475 430,1475" />
+    </clipPath>
+  </defs>
+
+  <!-- ================= BACKGROUND WALL ================= -->
+  <rect x="0" y="0" width="1080" height="1920" fill="url(#wallGrad)" />
+
+  <!-- Wall Texture / Geometric Pattern (Subtle) -->
+  <g opacity="0.04" stroke="#FFFFFF" stroke-width="2">
+    <path d="M0,200 L1080,200 M0,400 L1080,400 M0,600 L1080,600 M0,800 L1080,800 M0,1000 L1080,1000" />
+    <path d="M200,0 L200,1200 M400,0 L400,1200 M600,0 L600,1200 M800,0 L800,1200 M1000,0 L1000,1200" />
+  </g>
+
+  <!-- ================= THE OFFICE WINDOW ================= -->
+  <!-- Outer Window Shadow -->
+  <rect x="58" y="68" width="744" height="1084" rx="24" fill="#0C0510" opacity="0.8" />
+  <!-- Window Reveal / Inset -->
+  <rect x="64" y="74" width="732" height="1072" rx="20" fill="#3A2042" />
+
+  <!-- Window Content (Dhaka Sunset) -->
+  <g clip-path="url(#windowClip)">
+    <!-- Sky Background -->
+    <rect x="70" y="80" width="720" height="1060" fill="url(#skyGrad)" />
+
+    <!-- Big Soft Glowing Sun (Low at 5 PM) -->
+    <circle cx="340" cy="740" r="280" fill="url(#sunGlow)" />
+    <circle cx="340" cy="740" r="55" fill="#FFFBE8" />
+
+    <!-- Distant Dhaka Cityscape (Layer 1) -->
+    <path d="M70,820 
+             L95,820 L95,780 L130,780 L130,820 
+             L180,820 L180,750 L210,750 L210,820 
+             L250,820 L270,800 L290,820 
+             L340,820 L340,730 L355,710 L370,730 L370,820 
+             L430,820 L430,760 L470,760 L470,820 
+             L530,820 L530,740 L580,740 L580,820 
+             L630,820 L650,790 L680,820 
+             L720,820 L720,770 L760,770 L760,820 
+             L790,820 L790,1140 L70,1140 Z" 
+          fill="url(#dhakaFar)" opacity="0.6" />
+
+    <!-- Mid-ground Dhaka Skyline (Layer 2: Concrete Buildings, Antennas, Water Tanks) -->
+    <path d="M70,870 
+             L110,870 L110,790 L160,790 L160,870 
+             L175,870 L175,840 L215,840 L215,870 
+             L245,870 L245,770 L300,770 L300,870 
+             L360,870 L360,810 L410,810 L410,870 
+             L450,870 L450,760 L495,760 L495,870 
+             L540,870 L540,830 L590,830 L590,870 
+             L640,870 L640,780 L705,780 L705,870 
+             L750,870 L750,820 L790,820 L790,1140 L70,1140 Z" 
+          fill="url(#dhakaMid)" />
+
+    <!-- Dhaka Details: Rooftop Cylindrical Water Tanks (Sintex type) on Layer 2 -->
+    <rect x="120" y="776" width="22" height="14" rx="2" fill="#501C3E" />
+    <rect x="255" y="758" width="26" height="12" rx="2" fill="#501C3E" />
+    <rect x="460" y="746" width="28" height="14" rx="3" fill="#501C3E" />
+    <rect x="660" y="768" width="25" height="12" rx="2" fill="#501C3E" />
+
+    <!-- Network / TV Antennas -->
+    <line x1="285" y1="770" x2="285" y2="725" stroke="#3C153B" stroke-width="2" />
+    <line x1="277" y1="735" x2="293" y2="735" stroke="#3C153B" stroke-width="1.5" />
+    <line x1="280" y1="745" x2="290" y2="745" stroke="#3C153B" stroke-width="1.5" />
+
+    <line x1="485" y1="760" x2="485" y2="705" stroke="#3C153B" stroke-width="2" />
+    <path d="M475,720 L485,705 L495,720" fill="none" stroke="#3C153B" stroke-width="1.5" />
+
+    <line x1="680" y1="780" x2="680" y2="735" stroke="#3C153B" stroke-width="2" />
+
+    <!-- Foreground Skyline (Layer 3: Dense Urban Fabric, Balconies, Windows catching light) -->
+    <path d="M70,920 
+             L100,920 L100,830 L180,830 L180,920 
+             L210,920 L210,870 L260,870 L260,920 
+             L290,920 L290,820 L370,820 L370,920 
+             L420,920 L420,850 L500,850 L500,920 
+             L530,920 L530,810 L610,810 L610,920 
+             L660,920 L660,860 L730,860 L730,920 
+             L790,920 L790,1140 L70,1140 Z" 
+          fill="url(#dhakaNear)" />
+
+    <!-- Rooftop Potted Plants & Parapets (Common Dhaka Rooftop Garden vibe) -->
+    <circle cx="115" cy="826" r="6" fill="#2D112A" />
+    <circle cx="125" cy="824" r="8" fill="#3A1733" />
+    <rect x="110" y="827" width="20" height="4" fill="#1F0824" />
+    <circle cx="350" cy="815" r="7" fill="#3A1733" />
+    <rect x="345" y="817" width="12" height="4" fill="#1F0824" />
+
+    <!-- Glowing Evening Windows in Dhaka Buildings -->
+    <g fill="#FFCA65" opacity="0.75">
+      <rect x="115" y="845" width="10" height="14" rx="1" />
+      <rect x="135" y="845" width="10" height="14" rx="1" />
+      <rect x="155" y="845" width="10" height="14" rx="1" />
+      <rect x="135" y="870" width="10" height="14" rx="1" />
+      <rect x="310" y="840" width="12" height="16" rx="1" />
+      <rect x="335" y="840" width="12" height="16" rx="1" />
+      <rect x="310" y="870" width="12" height="15" rx="1" opacity="0.3" />
+      <rect x="440" y="865" width="14" height="18" rx="1" />
+      <rect x="465" y="865" width="14" height="18" rx="1" />
+      <rect x="550" y="830" width="11" height="15" rx="1" />
+      <rect x="575" y="830" width="11" height="15" rx="1" />
+      <rect x="550" y="860" width="11" height="15" rx="1" />
+      <rect x="680" y="880" width="12" height="15" rx="1" />
+    </g>
+
+    <!-- Warm Atmospheric Dust / Smog Layer over City -->
+    <rect x="70" y="700" width="720" height="440" fill="url(#hazeGrad)" pointer-events="none" />
+
+    <!-- Flock of Birds Flying Home at Dusk -->
+    <g fill="#532044" opacity="0.7">
+      <!-- Bird 1 -->
+      <path d="M220,540 Q228,532 236,540 Q244,532 252,540 Q244,537 236,543 Q228,537 220,540 Z" />
+      <!-- Bird 2 -->
+      <path d="M255,520 Q261,514 267,520 Q273,514 279,520 Q273,518 267,522 Q261,518 255,520 Z" />
+      <!-- Bird 3 -->
+      <path d="M275,545 Q281,539 287,545 Q293,539 299,545 Q293,543 287,547 Q281,543 275,545 Z" />
+      <!-- Bird 4 -->
+      <path d="M305,510 Q309,505 314,510 Q319,505 324,510 Q319,508 314,512 Q309,508 305,510 Z" />
+      <!-- Bird 5 -->
+      <path d="M210,565 Q215,560 220,565 Q225,560 230,565 Q225,563 220,567 Q215,563 210,565 Z" />
+    </g>
+  </g>
+
+  <!-- Window Panes & Inner Frames -->
+  <!-- Vertical Mullion -->
+  <rect x="420" y="80" width="16" height="1060" fill="url(#windowFrameGrad)" />
+  <!-- Horizontal Transom -->
+  <rect x="70" y="520" width="720" height="16" fill="url(#windowFrameGrad)" />
+  <rect x="70" y="900" width="720" height="16" fill="url(#windowFrameGrad)" />
+
+  <!-- Window Rim Highlight (Sunset Edge Light) -->
+  <path d="M80,80 L780,80 L780,1130" fill="none" stroke="#FFA359" stroke-width="2.5" opacity="0.6" />
+  <line x1="436" y1="80" x2="436" y2="1140" stroke="#FFBF73" stroke-width="1.5" opacity="0.4" />
+  <line x1="70" y1="536" x2="790" y2="536" stroke="#FFBF73" stroke-width="1.5" opacity="0.4" />
+  <line x1="70" y1="916" x2="790" y2="916" stroke="#FFBF73" stroke-width="1.5" opacity="0.4" />
+
+  <!-- Window Frame Border (Outer) -->
+  <rect x="70" y="80" width="720" height="1060" rx="16" fill="none" stroke="#120617" stroke-width="14" />
+
+  <!-- ================= OFFICE BACKGROUND ACCESSORIES ================= -->
+
+  <!-- Wall Clock on Right Side: Pointing to exactly 5:00 -->
+  <g transform="translate(910, 320)">
+    <!-- Clock Drop Shadow -->
+    <circle cx="0" cy="8" r="95" fill="#0E0714" opacity="0.6" />
+    <!-- Outer Rim -->
+    <circle cx="0" cy="0" r="95" fill="#2A1733" stroke="#4C2B59" stroke-width="8" />
+    <circle cx="0" cy="0" r="84" fill="#FAEDE1" />
+    <!-- Golden Sunset Rim on Clock Glass -->
+    <circle cx="0" cy="0" r="84" fill="url(#lightBeam)" opacity="0.3" />
+
+    <!-- Hour Markers -->
+    <g fill="#4A344D">
+      <rect x="-3" y="-76" width="6" height="14" rx="2" />
+      <rect x="-3" y="62" width="6" height="14" rx="2" />
+      <rect x="62" y="-3" width="14" height="6" rx="2" />
+      <rect x="-76" y="-3" width="14" height="6" rx="2" />
+      <!-- Subtle other ticks -->
+      <circle cx="37" cy="-64" r="3" />
+      <circle cx="64" cy="-37" r="3" />
+      <circle cx="64" cy="37" r="3" />
+      <circle cx="37" cy="64" r="3" />
+      <circle cx="-37" cy="64" r="3" />
+      <circle cx="-64" cy="37" r="3" />
+      <circle cx="-64" cy="-37" r="3" />
+      <circle cx="-37" cy="-64" r="3" />
+    </g>
+
+    <!-- Hands: 5:00 PM -->
+    <!-- Hour hand pointing to 5 -->
+    <line x1="0" y1="0" x2="28" y2="33" stroke="#2D1530" stroke-width="6" stroke-linecap="round" />
+    <!-- Minute hand pointing to 12 -->
+    <line x1="0" y1="0" x2="0" y2="-62" stroke="#2D1530" stroke-width="4.5" stroke-linecap="round" />
+    <!-- Center Pin -->
+    <circle cx="0" cy="0" r="6" fill="#BA485A" />
+  </g>
+
+  <!-- Potted Monstera / Office Plant on Left Sill/Corner -->
+  <g transform="translate(10, 960)">
+    <!-- Terracotta Planter -->
+    <polygon points="30,340 120,340 105,460 45,460" fill="#692C1D" />
+    <ellipse cx="75" cy="340" rx="45" ry="12" fill="#8A3B27" />
+    <ellipse cx="75" cy="340" rx="38" ry="9" fill="#3D170E" />
+
+    <!-- Monstera Leaves with Sunset Rim Light -->
+    <!-- Leaf 1 -->
+    <path d="M75,340 Q50,260 -20,240 Q-30,300 20,330 Q50,335 75,340 Z" fill="#193322" />
+    <path d="M75,340 Q50,260 -20,240" fill="none" stroke="#285236" stroke-width="3" />
+    <!-- Leaf 2 -->
+    <path d="M75,335 Q90,220 50,160 Q10,210 30,270 Q60,310 75,335 Z" fill="#20402B" />
+    <path d="M75,335 Q90,220 50,160" fill="none" stroke="#346846" stroke-width="3" />
+    <!-- Golden Rim on Leaf 2 -->
+    <path d="M50,160 Q10,210 30,270" fill="none" stroke="#FFBF73" stroke-width="3" opacity="0.7" />
+    <!-- Leaf 3 -->
+    <path d="M80,340 Q130,250 190,230 Q170,300 120,330 Q95,335 80,340 Z" fill="#132B1C" />
+    <!-- Leaf 4 (Catching Bright Sun) -->
+    <path d="M75,330 Q80,180 125,120 Q145,190 115,250 Z" fill="#295438" />
+    <path d="M125,120 Q145,190 115,250" fill="none" stroke="#FFA359" stroke-width="3.5" />
+  </g>
+
+  <!-- ================= VOLUMETRIC SUNLIGHT SHAFTS ================= -->
+  <!-- Warm diagonal beam pouring through window onto worker & desk -->
+  <polygon points="120,520 700,520 1080,1180 0,1600" fill="url(#lightBeam)" style="mix-blend-mode: screen;" />
+  <polygon points="200,700 780,600 1080,1400 150,1850" fill="url(#lightBeam)" opacity="0.7" style="mix-blend-mode: screen;" />
+
+  <!-- Floating Golden Dust Particles in Light Shaft -->
+  <g fill="#FFE699" opacity="0.6">
+    <circle cx="320" cy="980" r="2.5" />
+    <circle cx="410" cy="920" r="1.5" />
+    <circle cx="480" cy="1060" r="2" />
+    <circle cx="360" cy="1150" r="3" />
+    <circle cx="280" cy="1220" r="1.5" />
+    <circle cx="560" cy="1180" r="2.5" />
+    <circle cx="680" cy="1100" r="2" />
+    <circle cx="740" cy="1240" r="3" />
+    <circle cx="630" cy="1320" r="1.5" />
+    <circle cx="490" cy="1390" r="2" />
+    <circle cx="790" cy="1360" r="2" />
+    <circle cx="860" cy="1280" r="2.5" />
+  </g>
+
+  <!-- ================= OFFICE CHAIR (ERGONOMIC MESH) ================= -->
+  <g id="officeChair">
+    <!-- Headrest -->
+    <rect x="520" y="800" width="160" height="70" rx="30" fill="#1B1221" stroke="#362240" stroke-width="6" />
+    <!-- Headrest Stem -->
+    <rect x="588" y="865" width="24" height="55" fill="#120A17" />
+    <!-- High Mesh Backrest Frame -->
+    <path d="M430,920 Q600,890 770,920 Q800,1120 770,1320 Q600,1340 430,1320 Q400,1120 430,920 Z" 
+          fill="#170F1C" stroke="#2F1C36" stroke-width="8" />
+    <!-- Lumbar Support Arc -->
+    <path d="M445,1160 Q600,1210 755,1160" fill="none" stroke="#3F254A" stroke-width="12" stroke-linecap="round" />
+    <!-- Mesh Texture Lines -->
+    <path d="M455,950 Q600,930 745,950 M445,990 Q600,970 755,990 M440,1030 Q600,1010 760,1030 M435,1070 Q600,1050 765,1070 M435,1110 Q600,1090 765,1110" 
+          stroke="#26162E" stroke-width="3" fill="none" opacity="0.7" />
+    <!-- Left Armrest -->
+    <rect x="360" y="1220" width="90" height="20" rx="8" fill="#2A1733" />
+    <path d="M400,1240 L400,1350" stroke="#1B1021" stroke-width="16" stroke-linecap="round" />
+  </g>
+
+  <!-- ================= THE TIRED WORKER (YAWNING & STRETCHING) ================= -->
+  <g id="worker">
+    <!-- Torso / Upper Body (Slightly slumped back in stretch) -->
+    <path d="M430,1250 
+             C440,1130 500,1080 600,1080 
+             C700,1080 770,1130 790,1260 
+             L830,1520 L380,1520 Z" 
+          fill="url(#shirtGrad)" />
+
+    <!-- Office Shirt Collar -->
+    <!-- Collar Left -->
+    <path d="M545,1085 L595,1165 L605,1110 Z" fill="#E89674" />
+    <!-- Collar Right -->
+    <path d="M655,1085 L605,1165 L615,1110 Z" fill="#805663" />
+    <!-- Tie / Open Placket (Casual Friday / End of day unbuttoned) -->
+    <path d="M597,1160 L613,1160 L610,1320 L595,1320 Z" fill="#583C4D" />
+    <!-- Top button undone showing neck skin -->
+    <polygon points="590,1090 620,1090 605,1135" fill="url(#skinBase)" />
+
+    <!-- ID Card Lanyard Around Neck (Dhaka Tech/Corporate Style) -->
+    <path d="M540,1095 Q605,1230 630,1350" fill="none" stroke="#257A75" stroke-width="6" />
+    <path d="M660,1095 Q625,1200 630,1350" fill="none" stroke="#1D635F" stroke-width="6" />
+    <!-- Badge Clip & Card -->
+    <rect x="620" y="1350" width="20" height="12" rx="2" fill="#C5CCD6" />
+    <!-- Dangling Company ID Card -->
+    <g transform="translate(605, 1362)">
+      <rect x="0" y="0" width="50" height="75" rx="5" fill="#FAFAFA" stroke="#D3D9E0" stroke-width="2" />
+      <rect x="6" y="8" width="38" height="28" rx="2" fill="#5885A8" />
+      <rect x="6" y="42" width="28" height="4" rx="1" fill="#758291" />
+      <rect x="6" y="50" width="38" height="3" rx="1" fill="#A4B0BD" />
+      <rect x="6" y="56" width="22" height="3" rx="1" fill="#A4B0BD" />
+    </g>
+
+    <!-- Folds & Warm Sun Highlights on Shirt -->
+    <!-- Warm golden-peach edge light from sunset -->
+    <path d="M430,1250 C440,1130 500,1080 570,1080 L550,1120 C500,1150 460,1210 450,1290 Z" 
+          fill="#FFB37A" opacity="0.6" />
+    <!-- Wrinkle Shadows -->
+    <path d="M470,1260 Q520,1280 580,1240" fill="none" stroke="#2D1D33" stroke-width="4" opacity="0.4" />
+    <path d="M460,1310 Q530,1330 590,1290" fill="none" stroke="#2D1D33" stroke-width="4" opacity="0.4" />
+    <path d="M740,1220 Q700,1260 640,1250" fill="none" stroke="#2D1D33" stroke-width="5" opacity="0.4" />
+    <path d="M765,1290 Q720,1320 650,1300" fill="none" stroke="#2D1D33" stroke-width="4" opacity="0.4" />
+
+    <!-- Left Arm: Reaching back behind head in an exhaustive stretch -->
+    <g id="stretchingArm">
+      <!-- Upper Arm -->
+      <path d="M440,1180 L350,1050 L395,1015 L485,1120 Z" fill="url(#shirtGrad)" />
+      <!-- Forearm bent behind neck -->
+      <path d="M350,1050 L390,920 L445,945 L405,1035 Z" fill="url(#shirtGrad)" />
+      <!-- Rolled Up Sleeve Cuff -->
+      <polygon points="380,945 440,965 448,935 388,918" fill="#E89674" />
+      <!-- Exposed Forearm Skin -->
+      <path d="M400,925 L435,850 L475,875 L435,945 Z" fill="url(#skinBase)" />
+      <!-- Hand clasped behind neck / back of head -->
+      <path d="M435,860 C445,845 470,835 495,850 C510,860 515,875 500,895 L460,890 Z" fill="url(#skinBase)" />
+    </g>
+
+    <!-- Neck -->
+    <path d="M565,1040 L565,1100 Q605,1125 645,1100 L645,1040 Z" fill="url(#skinBase)" />
+    <!-- Neck Shadow under Jaw -->
+    <path d="M565,1040 Q605,1075 645,1040 Q630,1085 605,1095 Q580,1085 565,1040 Z" fill="#522415" opacity="0.8" />
+    <!-- Warm sunset rim on left side of neck -->
+    <path d="M565,1040 L565,1100 L575,1100 L575,1040 Z" fill="#FFA763" />
+
+    <!-- Head (Tilted back slightly in yawn) -->
+    <g id="head" transform="rotate(-4, 605, 960)">
+      <!-- Ears -->
+      <!-- Left Ear (Catches rim light) -->
+      <ellipse cx="518" cy="970" rx="14" ry="22" fill="url(#skinBase)" />
+      <ellipse cx="518" cy="970" rx="8" ry="14" fill="#692917" />
+      <path d="M510,955 Q522,945 528,965" fill="none" stroke="#FFB37A" stroke-width="3" />
+
+      <!-- Right Ear -->
+      <ellipse cx="698" cy="960" rx="12" ry="20" fill="#66311C" />
+
+      <!-- Face Base Shape -->
+      <path d="M525,940 
+               C520,870 550,810 610,810 
+               C675,810 705,870 700,940 
+               C695,1000 665,1055 610,1055 
+               C550,1055 528,1000 525,940 Z" 
+            fill="url(#skinBase)" />
+
+      <!-- Sunset Golden Rim Highlight on Left Cheek & Jaw -->
+      <path d="M536,870 C528,915 533,965 545,1005 C565,1040 595,1055 615,1055 C580,1050 555,1025 540,995 C526,955 524,910 536,870 Z" 
+            fill="#FFB37A" />
+
+      <!-- Hair Base (Young Bangladeshi Man - Modern side fade with volume on top) -->
+      <path d="M522,910 
+               C518,870 525,830 550,795 
+               C575,760 635,750 675,770 
+               C710,790 715,830 712,870 
+               C702,865 690,865 680,845 
+               C650,830 620,835 590,830 
+               C560,825 535,855 530,890 
+               C525,905 523,910 522,910 Z" 
+            fill="url(#hairGrad)" />
+
+      <!-- Detailed Hair Strands & Texture (Thick Wavy Dark Hair) -->
+      <path d="M545,800 Q590,755 640,765 Q690,775 705,820" fill="none" stroke="#3D1D1D" stroke-width="12" stroke-linecap="round" />
+      <path d="M565,780 Q620,745 670,765" fill="none" stroke="#5C2E2E" stroke-width="8" stroke-linecap="round" />
+      <!-- Golden rim light glistening on top/edge of hair -->
+      <path d="M532,835 Q550,780 600,762 Q640,752 680,772" fill="none" stroke="#FFAE6B" stroke-width="4.5" stroke-linecap="round" />
+      <path d="M520,875 Q525,835 545,805" fill="none" stroke="#FFAE6B" stroke-width="3" stroke-linecap="round" />
+
+      <!-- Tired Stubble / 5 O'Clock Shadow along jawline -->
+      <path d="M545,980 C550,1025 575,1050 610,1052 C645,1050 670,1025 675,980 C655,995 630,1000 610,1000 C590,1000 565,995 545,980 Z" 
+            fill="#3F1E15" opacity="0.35" />
+
+      <!-- Eyebrows (Arched & squeezed together from yawning) -->
+      <!-- Left Eyebrow -->
+      <path d="M545,905 Q565,888 590,900" fill="none" stroke="#1D0B08" stroke-width="6.5" stroke-linecap="round" />
+      <!-- Right Eyebrow -->
+      <path d="M625,900 Q650,888 670,905" fill="none" stroke="#1D0B08" stroke-width="6.5" stroke-linecap="round" />
+
+      <!-- Squeezed Shut Eyes (> < shape typical of a big yawn) -->
+      <!-- Left Eye -->
+      <path d="M546,926 Q565,938 586,926" fill="none" stroke="#2B100B" stroke-width="4.5" stroke-linecap="round" />
+      <path d="M548,930 Q565,942 584,930" fill="none" stroke="#2B100B" stroke-width="2.5" stroke-linecap="round" />
+      <!-- Tired Eye Bags (End of a long workday) -->
+      <path d="M548,942 Q567,952 585,943" fill="none" stroke="#632B1B" stroke-width="2" opacity="0.7" />
+      <path d="M542,925 Q536,928 540,935" fill="none" stroke="#2B100B" stroke-width="2.5" />
+
+      <!-- Right Eye -->
+      <path d="M630,926 Q650,938 668,926" fill="none" stroke="#2B100B" stroke-width="4.5" stroke-linecap="round" />
+      <path d="M632,930 Q650,942 666,930" fill="none" stroke="#2B100B" stroke-width="2.5" stroke-linecap="round" />
+      <!-- Right Eye Bags -->
+      <path d="M630,942 Q648,952 666,943" fill="none" stroke="#522415" stroke-width="2" opacity="0.7" />
+
+      <!-- Scrunched Wrinkles between Brows -->
+      <path d="M604,895 L604,912" stroke="#692917" stroke-width="2.5" stroke-linecap="round" />
+      <path d="M612,896 L612,910" stroke="#692917" stroke-width="2" stroke-linecap="round" />
+
+      <!-- Nose (Flared slightly from deep intake of air) -->
+      <path d="M605,910 L600,950 Q595,962 607,963 Q618,962 614,950 Z" fill="url(#skinWarmHighlight)" />
+      <!-- Nostrils -->
+      <ellipse cx="597" cy="958" rx="3.5" ry="2" fill="#3D150B" />
+      <ellipse cx="617" cy="958" rx="3.5" ry="2" fill="#3D150B" />
+
+      <!-- Wide Open Yawning Mouth -->
+      <!-- Outer Mouth Cavity -->
+      <path d="M565,975 
+               C560,1015 575,1042 608,1042 
+               C642,1042 658,1015 652,975 
+               C640,968 625,966 608,966 
+               C590,966 575,968 565,975 Z" 
+            fill="#1E0709" stroke="#752E1D" stroke-width="3" />
+
+      <!-- Dark Deep Throat -->
+      <ellipse cx="608" cy="1005" rx="26" ry="22" fill="#0D0203" />
+
+      <!-- Tongue (Raised bottom of mouth in yawn) -->
+      <path d="M582,1015 Q608,995 634,1015 Q622,1038 608,1038 Q592,1038 582,1015 Z" fill="#B8444B" />
+      <path d="M592,1020 Q608,1008 624,1020" fill="none" stroke="#D9686E" stroke-width="2.5" />
+      <!-- Uvula -->
+      <path d="M606,972 Q608,984 611,972" fill="#A83B42" />
+
+      <!-- Upper Teeth Row -->
+      <path d="M576,975 Q608,981 640,975 L636,981 Q608,986 580,981 Z" fill="#F0E8E1" />
+    </g>
+
+    <!-- Right Arm / Hand (Resting casually near laptop on desk) -->
+    <g id="rightArm">
+      <path d="M780,1250 L840,1400 L760,1460 L710,1320 Z" fill="url(#shirtGrad)" />
+      <!-- Rolled Up Sleeve Cuff -->
+      <polygon points="830,1390 855,1420 805,1455 785,1425" fill="#583C4D" />
+      <!-- Forearm on Desk -->
+      <path d="M820,1415 L890,1490 L850,1520 L790,1445 Z" fill="url(#skinBase)" />
+      <!-- Tired Limp Hand near laptop trackpad -->
+      <path d="M885,1485 C910,1505 920,1535 895,1545 C875,1550 860,1535 845,1515 Z" fill="url(#skinBase)" />
+    </g>
+  </g>
+
+  <!-- ================= THE OFFICE DESK (FOREGROUND) ================= -->
+  <!-- Main Desk Surface (Wooden Top) -->
+  <polygon points="0,1440 1080,1380 1080,1920 0,1920" fill="url(#deskGrad)" />
+  <!-- Front Bevel / Edge of Desk -->
+  <polygon points="0,1440 1080,1380 1080,1405 0,1465" fill="#A25738" />
+  <line x1="0" y1="1440" x2="1080" y2="1380" stroke="#FFAC59" stroke-width="3" opacity="0.7" />
+
+  <!-- Desk Reflection of Sunset Light (Glossy finish) -->
+  <polygon points="120,1440 680,1395 850,1520 220,1620" fill="url(#lightBeam)" opacity="0.4" style="mix-blend-mode: screen;" />
+
+  <!-- Desk Items: Left to Right -->
+
+  <!-- Traditional Bangladeshi Raw Clay Tea Cup (Matir Bhar / Cha er Cup) -->
+  <g transform="translate(180, 1470)">
+    <!-- Cup Shadow -->
+    <ellipse cx="45" cy="85" rx="42" ry="16" fill="#1C0907" opacity="0.7" />
+
+    <!-- Clay Cup Body -->
+    <path d="M15,10 
+             Q10,45 25,75 
+             Q45,90 65,75 
+             Q80,45 75,10 
+             Z" 
+          fill="url(#clayChai)" />
+
+    <!-- Cup Rim & Steaming Hot Milk Tea (Dudh Cha) -->
+    <ellipse cx="45" cy="10" rx="30" ry="10" fill="#75351E" />
+    <ellipse cx="45" cy="12" rx="26" ry="8" fill="#C98959" />
+
+    <!-- Sunset Glaze Highlight on Clay Edge -->
+    <path d="M15,10 Q10,45 25,75" fill="none" stroke="#FFBD8A" stroke-width="3.5" />
+
+    <!-- Thin Wisps of Fragrant Tea Steam Dissipating at 5 PM -->
+    <path d="M38,-5 Q30,-30 45,-50 Q60,-70 48,-95" fill="none" stroke="#FFE7D6" stroke-width="3" opacity="0.4" stroke-linecap="round" />
+    <path d="M52,-8 Q62,-35 48,-55 Q35,-75 46,-105" fill="none" stroke="#FFE7D6" stroke-width="2.5" opacity="0.3" stroke-linecap="round" />
+  </g>
+
+  <!-- Scattered Sticky Notes & Office Clutter (Exhausting Day Remnants) -->
+  <g transform="translate(290, 1460) rotate(-8)">
+    <rect x="0" y="0" width="75" height="75" rx="2" fill="#E6657A" opacity="0.9" />
+    <line x1="12" y1="20" x2="63" y2="20" stroke="#9C273B" stroke-width="3" stroke-linecap="round" />
+    <line x1="12" y1="35" x2="50" y2="35" stroke="#9C273B" stroke-width="3" stroke-linecap="round" />
+    <line x1="12" y1="50" x2="58" y2="50" stroke="#9C273B" stroke-width="3" stroke-linecap="round" />
+  </g>
+
+  <g transform="translate(340, 1485) rotate(12)">
+    <rect x="0" y="0" width="70" height="70" rx="2" fill="#FFD447" />
+    <line x1="10" y1="18" x2="58" y2="18" stroke="#A88213" stroke-width="3" stroke-linecap="round" />
+    <line x1="10" y1="32" x2="45" y2="32" stroke="#A88213" stroke-width="3" stroke-linecap="round" />
+    <!-- Checkmark on note: One task finished right at 5! -->
+    <path d="M12,50 L20,58 L40,42" fill="none" stroke="#2E7D32" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+
+  <!-- Blue Ballpoint Pen Dropped on Desk -->
+  <g transform="translate(270, 1550) rotate(35)">
+    <rect x="0" y="0" width="130" height="8" rx="4" fill="#1565C0" />
+    <polygon points="130,0 145,4 130,8" fill="#E0E0E0" />
+    <polygon points="142,3 148,4 142,5" fill="#212121" />
+    <rect x="15" y="-1" width="25" height="10" rx="2" fill="#0D47A1" />
+  </g>
+
+  <!-- Modern Slim Work Laptop (Open, Facing Worker at Angle) -->
+  <g id="laptop">
+    <!-- Laptop Base Drop Shadow -->
+    <polygon points="360,1540 760,1510 830,1620 400,1660" fill="#0D0612" opacity="0.75" />
+
+    <!-- Open Screen Housing (Tilted Back) -->
+    <!-- Screen Outer Shell (Back Lid) -->
+    <polygon points="400,1320 645,1320 635,1485 390,1485" fill="url(#laptopBack)" />
+
+    <!-- Sunset Rim on Laptop Edge -->
+    <line x1="400" y1="1320" x2="645" y2="1320" stroke="#FFC078" stroke-width="3" />
+    <line x1="400" y1="1320" x2="390" y2="1485" stroke="#FFC078" stroke-width="2.5" />
+
+    <!-- Inner Screen Bezel -->
+    <polygon points="405,1327 640,1327 630,1478 395,1478" fill="#171A1C" />
+
+    <!-- Glowing Screen Display (Code / Dashboard / Spreadsheet Open) -->
+    <polygon points="412,1333 633,1333 624,1472 402,1472" fill="url(#screenGlow)" />
+
+    <!-- Screen UI Details (Tired day's work) -->
+    <g opacity="0.6">
+      <!-- App Header Bar -->
+      <polygon points="412,1333 633,1333 631,1345 411,1345" fill="#3A5D7C" />
+      <circle cx="420" cy="1339" r="2" fill="#FF5F56" />
+      <circle cx="426" cy="1339" r="2" fill="#FFBD2E" />
+      <circle cx="432" cy="1339" r="2" fill="#27C93F" />
+
+      <!-- Spreadsheet / Code Rows -->
+      <rect x="420" y="1355" width="70" height="6" rx="2" fill="#FFFFFF" />
+      <rect x="420" y="1367" width="120" height="5" rx="2" fill="#D2E4F5" />
+      <rect x="420" y="1377" width="95" height="5" rx="2" fill="#D2E4F5" />
+      <rect x="420" y="1387" width="140" height="5" rx="2" fill="#FFFFFF" />
+      <rect x="420" y="1397" width="80" height="5" rx="2" fill="#D2E4F5" />
+      <rect x="420" y="1407" width="110" height="5" rx="2" fill="#D2E4F5" />
+
+      <!-- Chart Graphics on Screen -->
+      <path d="M550,1455 L570,1435 L590,1445 L615,1415" fill="none" stroke="#2E7D32" stroke-width="2.5" />
+      <circle cx="615" cy="1415" r="3" fill="#2E7D32" />
+    </g>
+
+    <!-- Cool Screen Light Cast onto Worker's Lower Torso (Contrast with Warm Sun) -->
+    <polygon points="412,1333 633,1333 720,1280 480,1280" fill="#A4D3FF" opacity="0.12" style="mix-blend-mode: screen;" />
+
+    <!-- Laptop Lower Base / Keyboard Deck -->
+    <polygon points="390,1485 635,1485 715,1575 430,1585" fill="#C2CAD4" />
+    <polygon points="430,1585 715,1575 710,1587 425,1597" fill="#8C96A3" />
+
+    <!-- Keyboard Well -->
+    <polygon points="430,1493 638,1493 685,1555 450,1560" fill="#22252A" />
+
+    <!-- Individual Key Glow Rows (Subtle Perspective Lines) -->
+    <g fill="#373D45" stroke="#1B1D21" stroke-width="0.8">
+      <!-- Function Row -->
+      <polygon points="433,1496 636,1496 639,1503 435,1503" />
+      <!-- Number Row -->
+      <polygon points="436,1506 643,1506 648,1515 439,1515" />
+      <!-- QWERTY Row -->
+      <polygon points="440,1518 652,1518 658,1528 443,1528" />
+      <!-- ASDF Row -->
+      <polygon points="444,1531 663,1531 670,1542 448,1542" />
+      <!-- Spacebar Row -->
+      <polygon points="450,1545 675,1545 682,1557 454,1557" />
+    </g>
+
+    <!-- Trackpad -->
+    <polygon points="530,1562 610,1562 614,1580 532,1580" fill="#ACB5C2" stroke="#8A94A0" stroke-width="1" />
+  </g>
+
+  <!-- Smartphone Face Down on Desk with Sunset Rim Glow -->
+  <g transform="translate(730, 1530) rotate(-15)">
+    <rect x="0" y="0" width="55" height="105" rx="8" fill="#1C1D21" stroke="#3D424A" stroke-width="2" />
+    <!-- Golden sunset streak on glossy phone back -->
+    <path d="M5,15 L45,5" stroke="#FFA359" stroke-width="2.5" opacity="0.6" stroke-linecap="round" />
+    <!-- Camera Island -->
+    <rect x="6" y="8" width="16" height="22" rx="4" fill="#0E0F12" />
+    <circle cx="14" cy="14" r="3" fill="#2A2F38" />
+    <circle cx="14" cy="23" r="3" fill="#2A2F38" />
+  </g>
+
+  <!-- ================= FOREGROUND COMPOSITIONAL VIGNETTE ================= -->
+  <!-- Dark Cozy Perimeter Shadowing to Frame 5 PM Mood -->
+  <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+    <stop offset="50%" stop-color="#000000" stop-opacity="0" />
+    <stop offset="85%" stop-color="#14061A" stop-opacity="0.4" />
+    <stop offset="100%" stop-color="#08020A" stop-opacity="0.85" />
+  </radialGradient>
+  <rect x="0" y="0" width="1080" height="1920" fill="url(#vignette)" pointer-events="none" />
+</svg>

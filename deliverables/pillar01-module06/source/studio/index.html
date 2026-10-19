@@ -1,0 +1,221 @@
+<!doctype html><html lang="bn"><head><meta charset="utf-8"><title>AI Reel Studio — লাইভ ডেমো</title>
+<style>
+@font-face{font-family:"Hind Siliguri";font-weight:500;src:url(hind-siliguri-bengali-500-normal.woff2);unicode-range:U+0951-0952,U+0964-0965,U+0980-09FE,U+200C-200D,U+25CC}
+@font-face{font-family:"Hind Siliguri";font-weight:600;src:url(hind-siliguri-bengali-600-normal.woff2);unicode-range:U+0951-0952,U+0964-0965,U+0980-09FE,U+200C-200D,U+25CC}
+@font-face{font-family:"Hind Siliguri";font-weight:700;src:url(hind-siliguri-bengali-700-normal.woff2);unicode-range:U+0951-0952,U+0964-0965,U+0980-09FE,U+200C-200D,U+25CC}
+@font-face{font-family:"Hind Siliguri";font-weight:500;src:url(hind-siliguri-latin-500-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:"Hind Siliguri";font-weight:600;src:url(hind-siliguri-latin-600-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:"Hind Siliguri";font-weight:700;src:url(hind-siliguri-latin-700-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:"Inter";font-weight:600;src:url(inter-latin-600-normal.woff2)}
+@font-face{font-family:"Inter";font-weight:700;src:url(inter-latin-700-normal.woff2)}
+:root{--bn:"Hind Siliguri","Inter",sans-serif;--g:#0f9d74;--g2:#0b7a5a;--dk:#0f2a24;--line:#dfe7e3;--bg:#f4f7f5;--ink:#14231e;--mute:#62736c}
+*{box-sizing:border-box} html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:var(--bg);font-family:var(--bn);color:var(--ink)}
+button{font-family:var(--bn);cursor:pointer}
+#side{position:fixed;left:0;top:0;bottom:0;width:280px;background:var(--dk);color:#d9efe7;padding:22px 18px}
+#side .logo{font:700 24px var(--bn);color:#fff;display:flex;align-items:center;gap:10px}#side .logo i{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#34d399,#facc15);display:inline-block}
+#side .proj{margin-top:22px;padding:14px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font:600 16px/1.45 var(--bn)}#side .proj b{display:block;color:#fff;font-size:18px}
+#steps{margin-top:24px}.st{display:flex;align-items:center;gap:12px;padding:13px 12px;border-radius:12px;font:600 19px var(--bn);color:#a9c8bd;margin-bottom:6px}
+.st .n{width:32px;height:32px;border-radius:50%;border:2px solid #3f6a5d;display:flex;align-items:center;justify-content:center;font:700 16px var(--bn)}
+.st.on{background:rgba(52,211,153,.16);color:#fff}.st.on .n{background:#34d399;border-color:#34d399;color:#0f2a24}.st.ok .n{background:#1f5a4a;border-color:#34d399;color:#34d399}
+#top{position:fixed;left:280px;right:0;top:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:#fff;border-bottom:1px solid var(--line);z-index:5}
+#top .m{font:700 22px var(--bn)}#top .tag{font:600 16px var(--bn);color:#7a5a00;background:#fff4c2;border:1px solid #f1cf4f;border-radius:10px;padding:6px 12px}
+.panel{position:fixed;left:280px;right:0;top:64px;bottom:0;display:none}.panel.on{display:block}
+h2.pt{position:absolute;left:30px;top:18px;margin:0;font:700 26px var(--bn)}h2.pt small{font:600 17px var(--bn);color:var(--mute);margin-left:12px}
+.card{position:absolute;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 4px 18px rgba(15,42,36,.06)}
+.lab{font:700 15px var(--bn);color:var(--mute);letter-spacing:.3px}
+textarea,input.tx{width:100%;border:2px solid var(--line);border-radius:14px;padding:12px 16px;font:500 19px/1.5 var(--bn);outline:none;resize:none;background:#fff;color:var(--ink)}
+textarea:focus,input.tx:focus{border-color:var(--g)}
+.btn{border:0;border-radius:12px;background:var(--g);color:#fff;font:700 19px var(--bn);padding:12px 22px}.btn.alt{background:#e8f3ef;color:var(--g2)}
+.code{background:#0f1f1b;color:#9ee6c9;font:500 14px/1.45 "Inter",monospace;border-radius:14px;padding:14px 16px;overflow:hidden;white-space:pre-wrap;word-break:break-all}
+.busy{display:inline-flex;align-items:center;gap:10px;font:600 17px var(--bn);color:var(--g2)}.busy i{width:16px;height:16px;border-radius:50%;border:3px solid #b9e3d4;border-top-color:var(--g);animation:sp 0.8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.model{font:600 14px "Inter",sans-serif;color:var(--mute)}
+/* chat */
+#chat{position:absolute;left:0;right:0;top:0;bottom:170px;overflow-y:auto;padding:30px 0 60px}
+.msg{width:1180px;margin:0 auto 26px}.u{display:flex;justify-content:flex-end}.u .b{max-width:960px;background:var(--dk);color:#fff;border-radius:22px 22px 6px 22px;padding:16px 22px;font:500 20px/1.6 var(--bn);white-space:pre-wrap}
+.a .b{font:500 21px/1.65 var(--bn)}.a .who{font:700 16px var(--bn);color:var(--g2);margin-bottom:6px}
+.a table{border-collapse:collapse;margin:12px 0;font-size:19px}.a th,.a td{border:1px solid #cfe0d9;padding:8px 12px;text-align:left;vertical-align:top}.a th{background:#e8f3ef}
+.a h1,.a h2,.a h3{font-size:24px;margin:18px 0 8px}.a p{margin:8px 0}.a ul,.a ol{margin:6px 0 6px 28px;padding:0}.a li{margin:4px 0}.a pre{background:#0f1f1b;color:#d8f5ea;padding:14px 18px;border-radius:12px;white-space:pre-wrap;font:500 19px/1.6 var(--bn)}.a code{font-family:var(--bn)}
+#box{position:absolute;left:0;right:0;bottom:0;height:170px;background:linear-gradient(transparent,var(--bg) 30%);display:flex;justify-content:center;padding-top:22px}
+#inwrap{width:1180px;position:relative}#in{height:110px;padding-right:90px}#send{position:absolute;right:16px;bottom:18px;width:54px;height:54px;border-radius:50%;border:0;background:var(--g);color:#fff;font-size:24px}
+.typing{color:#7f948c;font-style:italic}
+/* images */
+#p2 .cards{position:absolute;left:830px;top:78px;display:flex;gap:22px}
+.shot{width:250px}.shot .fr{width:250px;height:444px;border-radius:16px;background:#e9f0ed;border:2px dashed #c4d6cf;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#97aaa3;font:600 18px var(--bn)}
+.shot .fr svg{width:100%;height:100%;display:block}.shot .fr.done{border:2px solid var(--g)}.shot .cap{margin-top:10px;font:700 17px var(--bn)}.shot .cap span{display:block;font:600 14px var(--bn);color:var(--mute)}
+/* voice */
+.voices{display:flex;gap:12px}.vo{flex:1;padding:12px 14px;border-radius:14px;border:2px solid var(--line);background:#fff;font:700 18px var(--bn)}.vo span{display:block;font:600 14px var(--bn);color:var(--mute)}.vo.on{border-color:var(--g);background:#ecf8f3}
+.take{position:relative;padding:16px 18px;border-radius:16px;border:1px solid var(--line);background:#fff;margin-bottom:16px}
+.take .hd{display:flex;justify-content:space-between;align-items:center;font:700 18px var(--bn)}.take canvas{display:block;margin-top:10px}
+.take .pl{position:absolute;left:18px;top:52px;width:3px;height:90px;background:#facc15;opacity:0}
+.take .play{width:42px;height:42px;border-radius:50%;border:0;background:var(--g);color:#fff;font-size:18px}
+/* avatar */
+#avbox{position:absolute;left:1120px;top:78px;width:490px;height:760px;padding:20px}
+#avbox video{width:448px;height:488px;object-fit:cover;border-radius:14px;background:#0f2a24;display:block}
+/* subtitles */
+#pv{position:absolute;left:1180px;top:78px;width:405px;height:720px;border-radius:22px;overflow:hidden;background:#0f2a24;border:6px solid #14231e}
+#pv .im{position:absolute;inset:0;opacity:0;transition:opacity .4s}#pv .im svg{width:100%;height:100%}#pv .im.on{opacity:1}
+#pv .sub{position:absolute;left:24px;right:24px;bottom:120px;text-align:center}#pv .sub span{display:inline;background:rgba(10,20,17,.82);color:#fff;font:700 24px/1.55 var(--bn);padding:4px 10px;border-radius:8px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+#pv .bar{position:absolute;left:0;bottom:0;height:5px;background:#facc15;width:0}
+/* editor */
+#vid{position:absolute;left:30px;top:70px;width:340px;height:604px;border-radius:18px;background:#0f2a24;object-fit:cover;border:5px solid #14231e}
+#vidph{position:absolute;left:30px;top:70px;width:340px;height:604px;border-radius:18px;overflow:hidden;border:5px solid #14231e;background:#0f2a24}
+#vidph svg{width:100%;height:100%}
+#tl{position:absolute;left:30px;right:30px;top:700px;height:300px;padding:16px 20px}
+.trk{display:flex;align-items:center;height:56px;margin-bottom:8px}.trk .tn{width:140px;font:700 16px var(--bn);color:var(--mute)}.trk .ln{position:relative;flex:1;height:52px;border-radius:10px;background:#f1f5f3;overflow:hidden}
+.blk{position:absolute;top:3px;bottom:3px;border-radius:8px;overflow:hidden;font:600 13px var(--bn);color:#fff;padding:4px 8px;white-space:nowrap}
+.blk svg{position:absolute;inset:0;width:100%;height:100%;opacity:.55}.blk b{position:relative}
+#ph{position:absolute;top:10px;bottom:10px;width:3px;background:#ef4444;left:180px;z-index:3}
+#exp{position:absolute;left:400px;top:70px;width:560px;height:604px;padding:26px}
+.row{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);font:600 19px var(--bn)}.row b{font-family:"Inter",var(--bn)}
+.prog{height:16px;border-radius:8px;background:#e8f3ef;overflow:hidden;margin-top:16px}.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--g),#facc15)}
+#cur{position:fixed;left:0;top:0;width:30px;height:30px;z-index:99;pointer-events:none;transition:transform .55s cubic-bezier(.3,.8,.3,1)}
+#cur svg{filter:drop-shadow(0 2px 3px rgba(0,0,0,.4))}#ring{position:fixed;width:46px;height:46px;border-radius:50%;border:3px solid #f59e0b;z-index:98;opacity:0;pointer-events:none}
+</style><script src="node_modules/marked/marked.min.js"></script></head><body>
+<div id="side"><div class="logo"><i></i>AI Reel Studio</div>
+<div class="proj"><b>সবুজ পাতা · চা</b>৩০ সেকেন্ডের ফেসবুক রিল · ৯:১৬<br/>কাল্পনিক ব্যবসা</div>
+<div id="steps">
+<div class="st on" id="st1"><span class="n">১</span>স্ক্রিপ্ট</div><div class="st" id="st2"><span class="n">২</span>ছবি ও মোশন</div><div class="st" id="st3"><span class="n">৩</span>ভয়েস</div>
+<div class="st" id="st4"><span class="n">৪</span>ডাবিং ও অ্যাভাটার</div><div class="st" id="st5"><span class="n">৫</span>সাবটাইটেল</div><div class="st" id="st6"><span class="n">৬</span>এডিট ও এক্সপোর্ট</div></div></div>
+<div id="top"><div class="m" id="ttl">ধাপ ১ · স্ক্রিপ্ট</div><div class="tag">লাইভ ডেমো · Google Gemini API · আসল AI আউটপুট</div></div>
+
+<div class="panel on" id="p1"><div id="chat"></div>
+<div id="box"><div id="inwrap"><textarea id="in" placeholder="এখানে আপনার প্রম্পট লিখুন…"></textarea><button id="send">➤</button></div></div></div>
+
+<div class="panel" id="p2"><h2 class="pt">টেক্সট থেকে ছবি <small>Gemini লিখছে ভেক্টর ছবি (SVG কোড)</small></h2>
+<div class="card" style="left:30px;top:78px;width:770px;height:880px;padding:22px">
+<div class="lab">ইমেজ প্রম্পট · দৃশ্য <span id="sidx">১</span></div><textarea id="ip" style="height:150px;margin-top:10px"></textarea>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px"><button class="btn" id="genimg">ছবি বানাও</button><span id="ibusy"></span></div>
+<div class="lab" style="margin-top:20px">AI যে কোড লিখছে (লাইভ)</div><div class="code" id="icode" style="height:520px;margin-top:10px"></div></div>
+<div class="cards"><div class="shot"><div class="fr" id="fr1">দৃশ্য ১</div><div class="cap">দৃশ্য ১ · ক্লান্ত বিকেল<span id="m1"></span></div></div>
+<div class="shot"><div class="fr" id="fr2">দৃশ্য ২</div><div class="cap">দৃশ্য ২ · চা-বাগান<span id="m2"></span></div></div>
+<div class="shot"><div class="fr" id="fr3">দৃশ্য ৩</div><div class="cap">দৃশ্য ৩ · এক কাপ চা<span id="m3"></span></div></div></div>
+<div class="card" style="left:830px;top:600px;width:798px;height:150px;padding:18px 22px"><div class="lab">ইমেজ-টু-ভিডিও মোশন (এডিটরে প্রয়োগ হবে)</div>
+<div style="font:600 18px/1.5 var(--bn);margin-top:8px">দৃশ্য ১: ধীরে জুম-ইন · দৃশ্য ২: বাঁ থেকে ডানে প্যান · দৃশ্য ৩: ধীরে জুম-আউট</div></div></div>
+
+<div class="panel" id="p3"><h2 class="pt">টেক্সট থেকে ভয়েস <small>Gemini Text-to-Speech</small></h2>
+<div class="card" style="left:30px;top:78px;width:900px;height:880px;padding:22px">
+<div style="display:flex;justify-content:space-between;align-items:center"><div class="lab">ধারাবর্ণনা</div><button class="btn alt" id="imp">⤓ স্ক্রিপ্ট থেকে আনুন</button></div>
+<textarea id="narr" style="height:250px;margin-top:10px"></textarea>
+<div class="lab" style="margin-top:20px">কণ্ঠ বেছে নিন</div>
+<div class="voices" style="margin-top:10px"><div class="vo" id="vAoede">Aoede<span>হালকা, উষ্ণ নারী কণ্ঠ</span></div><div class="vo" id="vPuck">Puck<span>প্রাণবন্ত পুরুষ কণ্ঠ</span></div><div class="vo" id="vKore">Kore<span>দৃঢ়, স্পষ্ট নারী কণ্ঠ</span></div></div>
+<div class="lab" style="margin-top:20px">কীভাবে পড়বে (স্টাইল নির্দেশনা)</div><input class="tx" id="sty" style="margin-top:10px"/>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px"><button class="btn" id="gentts">ভয়েস বানাও</button><span id="tbusy"></span></div></div>
+<div style="position:absolute;left:960px;top:78px;width:640px" id="takes"></div></div>
+
+<div class="panel" id="p4"><h2 class="pt">ডাবিং ও AI অ্যাভাটার <small>অনুবাদ + নতুন ভাষায় ভয়েস</small></h2>
+<div class="card" style="left:30px;top:78px;width:1060px;height:880px;padding:22px">
+<div class="lab">মূল বাংলা ধারাবর্ণনা</div><div id="bn" style="margin-top:8px;font:500 18px/1.55 var(--bn);color:#33463f;height:110px;overflow:hidden"></div>
+<div class="lab" style="margin-top:14px">অনুবাদের প্রম্পট</div><textarea id="dp" style="height:110px;margin-top:8px"></textarea>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><button class="btn" id="trb">অনুবাদ করো</button><span id="dbusy"></span></div>
+<div class="lab" style="margin-top:16px">ইংরেজি ডাব স্ক্রিপ্ট (AI আউটপুট)</div><div id="en" style="margin-top:8px;font:500 19px/1.55 'Inter',var(--bn);height:150px;overflow:hidden;padding:12px 16px;border-radius:14px;background:#f4f7f5"></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px"><button class="btn" id="enb">ইংরেজি ভয়েস বানাও · Kore</button><span id="ebusy"></span></div>
+<div id="entake" style="margin-top:14px"></div></div>
+<div class="card" id="avbox"><div class="lab">AI অ্যাভাটার · ছবি + বাংলা ভয়েস → কথা বলা ভিডিও</div>
+<video id="av" muted playsinline style="margin-top:12px" src="rec/avatar.webm"></video>
+<div style="display:flex;align-items:center;gap:14px;margin-top:14px"><button class="play btn" id="avp" style="width:auto">▶ চালাও</button><div class="model">SadTalker (open source) · CPU render ≈ ৬০ মিনিট</div></div>
+<div style="font:600 15px/1.45 var(--bn);color:#8a5a00;margin-top:12px;background:#fff8dc;border-radius:10px;padding:10px 12px">শুধু নিজের বা লিখিত অনুমতি আছে এমন মানুষের ছবি ও কণ্ঠ ব্যবহার করুন</div></div></div>
+
+<div class="panel" id="p5"><h2 class="pt">অডিও থেকে সাবটাইটেল <small>Gemini অডিও শুনে SRT লিখছে</small></h2>
+<div class="card" style="left:30px;top:78px;width:1110px;height:880px;padding:22px">
+<div class="lab">ইনপুট অডিও: voice_bn.wav · প্রম্পট</div><textarea id="sp" style="height:120px;margin-top:10px"></textarea>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><button class="btn" id="srtb">SRT বানাও</button><span id="sbusy"></span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px"><div class="lab">SRT ফাইল (AI আউটপুট)</div><button class="btn alt" id="fixb">✓ SRT যাচাই ও ঠিক করো</button></div><div id="fixmsg" style="font:700 17px var(--bn);margin-top:6px;min-height:24px"></div><div class="code" id="srt" style="height:520px;margin-top:10px;font-size:18px;font-family:'Inter',var(--bn);color:#d8f5ea"></div></div>
+<div id="pv"><div class="im" id="pv1"></div><div class="im" id="pv2"></div><div class="im" id="pv3"></div><div class="sub"><span id="pvs" style="display:none"></span></div><div class="bar" id="pvb"></div></div>
+<button class="btn" id="pvp" style="position:absolute;left:1180px;top:820px">▶ প্রিভিউ চালাও</button></div>
+
+<div class="panel" id="p6"><h2 class="pt">এডিট ও এক্সপোর্ট <small>টাইমলাইন · ৯:১৬ · ৩০ fps</small></h2>
+<div id="vidph"></div><video id="vid" muted playsinline style="display:none"></video>
+<div class="card" id="exp"><div class="lab">এক্সপোর্ট সেটিং</div>
+<div class="row">রেজোলিউশন <b>1080 × 1920</b></div><div class="row">ফ্রেম রেট <b>30 fps</b></div><div class="row">ফরম্যাট <b>MP4 · H.264 + AAC</b></div><div class="row">মিউজিক <b>ভয়েসের সময় −18 dB</b></div><div class="row">সাবটাইটেল <b>বার্ন-ইন</b></div>
+<button class="btn" id="exb" style="margin-top:26px;width:100%;font-size:22px;padding:16px">⬇ এক্সপোর্ট</button>
+<div class="prog"><i id="pg"></i></div><div id="exs" style="margin-top:12px;font:600 17px var(--bn);color:var(--mute)">প্রস্তুত</div></div>
+<div class="card" style="left:990px;top:70px;width:600px;height:604px;padding:22px" id="editnotes"><div class="lab">এডিটিং নিয়ম</div>
+<div style="font:600 19px/1.75 var(--bn);margin-top:10px">✓ বাক্য শেষে ছবি বদল<br/>✓ প্রতিটি ছবিতে ধীর জুম/প্যান (ইমেজ-টু-ভিডিও)<br/>✓ দৃশ্যের মাঝে ০.৪ সেকেন্ডের ক্রসফেড<br/>✓ কথা চলার সময় মিউজিক নিচু<br/>✓ সাবটাইটেল ফোনের বাটনের ওপরে<br/>✓ শেষে ব্র্যান্ড ও কল-টু-অ্যাকশন</div></div>
+<div class="card" id="tl"><div id="ph"></div>
+<div class="trk"><div class="tn">ছবি</div><div class="ln" id="tk1"></div></div><div class="trk"><div class="tn">ভয়েস</div><div class="ln" id="tk2"></div></div>
+<div class="trk"><div class="tn">মিউজিক</div><div class="ln" id="tk3"></div></div><div class="trk"><div class="tn">সাবটাইটেল</div><div class="ln" id="tk4"></div></div></div></div>
+
+<div id="cur"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M4 2l16 10-7 1.5L9.5 21z" fill="#fff" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/></svg></div><div id="ring"></div>
+<script>
+const $=id=>document.getElementById(id); const hist=[]; const S={takes:[]};
+const ns=(svg,p)=>svg.replace(/id="([^"]+)"/g,`id="${p}_$1"`).replace(/url\(#([^)]+)\)/g,`url(#${p}_$1)`).replace(/href="#([^"]+)"/g,`href="#${p}_$1"`);
+const BN='০১২৩৪৫৬৭৮৯', bn=n=>String(n).replace(/\d/g,d=>BN[d]);
+const TITLES=['','ধাপ ১ · স্ক্রিপ্ট','ধাপ ২ · ছবি ও মোশন','ধাপ ৩ · ভয়েস','ধাপ ৪ · ডাবিং ও অ্যাভাটার','ধাপ ৫ · সাবটাইটেল','ধাপ ৬ · এডিট ও এক্সপোর্ট'];
+window.cursorTo=(x,y)=>{$('cur').style.transform=`translate(${x}px,${y}px)`};
+window.clickFx=(x,y)=>{const r=$('ring');r.style.left=(x-23)+'px';r.style.top=(y-23)+'px';r.animate([{opacity:1,transform:'scale(.4)'},{opacity:0,transform:'scale(1.4)'}],{duration:500})};
+window.goStep=n=>{for(let i=1;i<=6;i++){$('p'+i).classList.toggle('on',i===n);$('st'+i).classList.toggle('on',i===n);if(i<n)$('st'+i).classList.add('ok')} $('ttl').textContent=TITLES[n]};
+async function sse(url,body,onText){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+ const rd=r.body.getReader(),dec=new TextDecoder();let buf='',full='',model=null;
+ while(true){const {value,done}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});let i;
+  while((i=buf.indexOf('\n\n'))>=0){const line=buf.slice(0,i).trim();buf=buf.slice(i+2);if(!line.startsWith('data:'))continue;const d=JSON.parse(line.slice(5));
+   if(d.t){full+=d.t;onText(full)} if(d.done)model=d.model}} return {full,model}}
+const busy=(el,t)=>{$(el).innerHTML=t?`<span class="busy"><i></i>${t}</span>`:''};
+function add(cls,html){const m=document.createElement('div');m.className='msg '+cls;m.innerHTML=html;$('chat').appendChild(m);return m}
+window.sendChat=async(demo,turn)=>{const text=$('in').value;$('in').value='';
+ add('u','<div class="b"></div>').querySelector('.b').textContent=text;hist.push({role:'user',text});
+ const a=add('a','<div class="who">AI</div><div class="b"><span class="typing">লিখছে…</span></div>').querySelector('.b');const chat=$('chat');chat.scrollTop=chat.scrollHeight;
+ const {full}=await sse('/api/chat',{history:hist,demo,turn},f=>{a.innerHTML=marked.parse(f);chat.scrollTop=chat.scrollHeight});hist.push({role:'model',text:full})};
+window.genSvg=async idx=>{const prompt=$('ip').value;$('icode').textContent='';busy('ibusy','Gemini ছবি আঁকছে…');
+ const {full,model}=await sse('/api/svg',{prompt,idx},f=>{const c=$('icode');c.textContent=f.slice(-2600)});
+ const m=full.match(/<svg[\s\S]*<\/svg>/);const fr=$('fr'+idx);fr.innerHTML=m?ns(m[0],'i'+idx):'';fr.classList.add('done');$('m'+idx).textContent=model+' · SVG';busy('ibusy','')};
+window.setShot=idx=>{$('sidx').textContent=bn(idx);$('ip').value='';$('icode').textContent=''};
+window.importNarr=async()=>{const r=await (await fetch('/api/narration')).json();$('narr').value=r.text;S.narr=r.text};
+window.pickVoice=v=>{['Aoede','Puck','Kore'].forEach(x=>$('v'+x).classList.toggle('on',x===v));S.voice=v};
+function drawWave(cv,peaks,col){const c=cv.getContext('2d');const w=cv.width,h=cv.height;c.clearRect(0,0,w,h);c.fillStyle=col;const n=peaks.length;
+ for(let i=0;i<n;i++){const x=i/n*w,ph=Math.max(2,peaks[i]*h*0.95);c.fillRect(x,(h-ph)/2,Math.max(1,w/n-0.6),ph)}}
+function takeCard(host,r,title){const d=document.createElement('div');d.className='take';
+ d.innerHTML=`<div class="hd"><span>${title}</span><button class="play">▶</button></div><canvas width="600" height="90"></canvas><div class="pl"></div><div class="model" style="margin-top:8px">${r.model} · ${r.voice} · ${r.dur.toFixed(1)} সেকেন্ড</div>`;
+ host.appendChild(d);drawWave(d.querySelector('canvas'),r.peaks,'#0f9d74');return d}
+window.genTTS=async(tag,demo)=>{busy('tbusy','ভয়েস তৈরি হচ্ছে…');const text=$('narr').value,style=$('sty').value;
+ const r=await (await fetch('/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text,voice:S.voice,style,tag,demo})})).json();busy('tbusy','');
+ if(r.error){$('tbusy').textContent=r.error;return null}S.takes.push(r);const card=takeCard($('takes'),r,`টেক ${bn(S.takes.length)} · ${r.voice}`);r.card=card;return {dur:r.dur,tag}};
+function playCard(card,dur){const pl=card.querySelector('.pl'),btn=card.querySelector('.play');btn.textContent='❚❚';pl.style.opacity=1;
+ return new Promise(res=>{const t0=performance.now();const f=()=>{const k=Math.min(1,(performance.now()-t0)/1000/dur);pl.style.left=(18+600*k)+'px';
+  if(k<1)requestAnimationFrame(f);else{btn.textContent='▶';pl.style.opacity=0;res()}};f()})}
+window.playTake=i=>playCard(S.takes[i].card,S.takes[i].dur);
+window.loadDub=()=>{$('bn').textContent=$('narr').value||S.narr||''};
+window.translate=async()=>{const p=$('dp').value;busy('dbusy','অনুবাদ হচ্ছে…');
+ const {full}=await sse('/api/chat',{history:[{role:'user',text:p+'\n\n'+($('bn').textContent)}],demo:'d4',turn:0,save:'dub_en.txt'},f=>{$('en').textContent=f});busy('dbusy','');S.en=full.trim()};
+window.genEN=async()=>{busy('ebusy','ইংরেজি ভয়েস তৈরি হচ্ছে…');
+ const r=await (await fetch('/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:S.en,voice:'Kore',style:'',tag:'voice_en',demo:'d4'})})).json();busy('ebusy','');
+ S.entake=r;r.card=takeCard($('entake'),r,'ইংরেজি ডাব · Kore');return {dur:r.dur}};
+window.playEN=()=>playCard(S.entake.card,S.entake.dur);
+window.playAvatar=()=>new Promise(res=>{const v=$('av');v.currentTime=0;v.play();$('avp').textContent='❚❚ চলছে';v.onended=()=>{$('avp').textContent='▶ চালাও';res()}});
+function svgOf(i){return $('fr'+i).innerHTML}
+window.loadSubs=()=>{for(let i=1;i<=3;i++)$('pv'+i).innerHTML=svgOf(i)};
+window.makeSrt=async()=>{busy('sbusy','Gemini অডিও শুনছে…');$('srt').textContent='';
+ const {full}=await sse('/api/srt',{wav:S.mainTag+'.wav',prompt:$('sp').value},f=>{$('srt').textContent=f.replace(/^```[a-z]*\n?/,'');$('srt').scrollTop=1e6});busy('sbusy','');S.srt=parseSrt(full)};
+function ts(s){const m=s.match(/(\d+):(\d+):(\d+)[,.](\d+)/);return m?(+m[1])*3600+(+m[2])*60+(+m[3])+(+m[4])/1000:0}
+function parseSrt(t){return t.replace(/```[a-z]*/g,'').trim().split(/\n\s*\n/).map(b=>{const l=b.trim().split('\n');const k=l.findIndex(x=>x.includes('-->'));if(k<0)return null;const [a,c]=l[k].split('-->');return {s:ts(a),e:ts(c),t:l.slice(k+1).join('\n')}}).filter(Boolean)}
+window.playPreview=dur=>new Promise(res=>{const t0=performance.now();$('pvp').textContent='❚❚ চলছে';const f=()=>{const t=(performance.now()-t0)/1000;const k=Math.min(1,t/dur);
+ const sc=t<dur/3?1:(t<2*dur/3?2:3);for(let i=1;i<=3;i++)$('pv'+i).classList.toggle('on',i===sc);
+ const c=(S.srt||[]).find(x=>t>=x.s&&t<x.e);$('pvs').textContent=c?c.t:'';$('pvs').style.display=c?'inline':'none';$('pvb').style.width=(k*100)+'%';
+ if(k<1)requestAnimationFrame(f);else{$('pvp').textContent='▶ প্রিভিউ চালাও';res()}};f()});
+window.buildTimeline=(cuts,dur)=>{const W=$('tk1').clientWidth;S.tdur=dur;const col=['#0f9d74','#14b8a6','#ca8a04'];
+ $('tk1').innerHTML=cuts.map((c,i)=>`<div class="blk" style="left:${c[0]/dur*W}px;width:${(c[1]-c[0])/dur*W-3}px;background:${col[i]}">${svgOf(i+1)}<b>দৃশ্য ${bn(i+1)}</b></div>`).join('');
+ const t=S.takes.find(x=>x.tag===S.mainTag)||S.takes[0];$('tk2').innerHTML=`<canvas width="${W}" height="52"></canvas>`;const pk=t?t.peaks:[];drawWave($('tk2').querySelector('canvas'),pk.map(x=>x),'#0f9d74');
+ $('tk3').innerHTML=`<div class="blk" style="left:0;width:${W-4}px;background:linear-gradient(90deg,#7c3aed,#a78bfa)"><b>মৃদু অ্যাকুস্টিক বেড · কথার সময় নিচু</b></div>`;
+ $('tk4').innerHTML=(S.srt||[]).map(c=>`<div class="blk" style="left:${c.s/dur*W}px;width:${Math.max(8,(c.e-c.s)/dur*W-3)}px;background:#334155"><b>${c.t.replace(/\n/g,' ')}</b></div>`).join('');
+ $('vidph').innerHTML=svgOf(1)};
+window.movePh=(t)=>{const W=$('tk1').clientWidth;$('ph').style.left=(20+140+t/S.tdur*W)+'px'};
+window.scrubTimeline=dur=>new Promise(res=>{const t0=performance.now();const f=()=>{const t=(performance.now()-t0)/1000*(S.tdur/dur);movePh(Math.min(S.tdur,t));
+ const sc=t<S.cuts[1][0]?1:(t<S.cuts[2][0]?2:3);if(S.lastSc!==sc){$('vidph').innerHTML=svgOf(sc);S.lastSc=sc}
+ if(t<S.tdur)requestAnimationFrame(f);else res()};f()});
+window.exportReel=async()=>{$('exb').textContent='রেন্ডার হচ্ছে…';await fetch('/api/export',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+ while(true){const s=await (await fetch('/api/export_status')).json();$('pg').style.width=s.pct+'%';$('exs').textContent=s.state==='done'?`সম্পন্ন · reel_final.mp4 · ${bn(Math.round(s.secs))} সেকেন্ডে রেন্ডার`:`রেন্ডার হচ্ছে… ${bn(s.pct)}%`;
+  if(s.state==='done'||s.state==='error')break;await new Promise(r=>setTimeout(r,1000))}$('exb').textContent='✓ এক্সপোর্ট সম্পন্ন'};
+window.playFinal=()=>new Promise(res=>{const v=$('vid');v.src='rec/reel_final.webm';v.style.display='block';$('vidph').style.display='none';v.oncanplay=()=>{v.oncanplay=null;v.play()};
+ const f=()=>{movePh(Math.min(S.tdur,v.currentTime));if(!v.ended)requestAnimationFrame(f)};requestAnimationFrame(f);v.onended=()=>res()});
+window.fixSrt=async()=>{const raw=(S.rawSrt||$('srt').textContent).replace(/```[a-z]*/g,'').trim();let n=0;
+ const fixTs=x=>{const m=x.trim().match(/^(\d{1,2}):(\d{2}):(\d{2,3})$/);if(m&&m[3].length===3){n++;return `00:${m[1].padStart(2,'0')}:${m[2]},${m[3]}`}return x.trim()};
+ const html=[],fixed=[];raw.split('\n').forEach(l=>{if(l.includes('-->')){const [a,b]=l.split('-->');const A=fixTs(a),B=fixTs(b);const nl=`${A} --> ${B}`;fixed.push(nl);
+  html.push(nl!==l.trim()?`<span style="color:#fca5a5;text-decoration:line-through">${l.trim()}</span>\n<span style="color:#86efac">${nl}</span>`:l)}else{fixed.push(l);html.push(l.replace(/</g,'&lt;'))}});
+ $('srt').innerHTML=html.join('\n');$('fixmsg').innerHTML=n?`<span style="color:#b91c1c">⚠ ${bn(n)}টি টাইমস্ট্যাম্পে ফরম্যাট ভুল (ঘণ্টার অংশ নেই)</span> → <span style="color:#047857">ঠিক করা হলো</span>`:'<span style="color:#047857">✓ কোনো ফরম্যাট ভুল নেই</span>';
+ const txt=fixed.join('\n');S.srt=parseSrt(txt);await fetch('/api/savesrt',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({srt:txt})});return n};
+window.restore=async()=>{const st=await (await fetch('/api/state')).json();S.narr=st.narr;$('narr').value=st.narr;$('bn').textContent=st.narr;
+ st.svgs.forEach((v,i)=>{if(v){const fr=$('fr'+(i+1));fr.innerHTML=ns(v,'i'+(i+1));fr.classList.add('done')}});
+ st.takes.filter(t=>t.tag.startsWith('voice_bn')).forEach(t=>{S.takes.push(t);t.card=takeCard($('takes'),t,`টেক ${bn(S.takes.length)} · ${t.voice}`)});
+ const en=st.takes.find(t=>t.tag==='voice_en');if(st.en){S.en=st.en;$('en').textContent=st.en}if(en){S.entake=en;en.card=takeCard($('entake'),en,'ইংরেজি ডাব · Kore')}
+ if(st.srt){S.rawSrt=st.srt;S.srt=parseSrt(st.fixed||st.srt);$('srt').textContent=st.srt}if(st.plan){S.cuts=st.plan.cuts;S.plan=st.plan}S.mainTag='voice_bn_a';return st};
+</script></body></html>
