@@ -1,0 +1,111 @@
+@font-face { font-family: "Hind Siliguri"; font-weight: 600; src: url(assets/fonts/hind-siliguri-latin-600-normal.woff2); unicode-range: U+0000-00FF, U+2000-206F; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 700; src: url(assets/fonts/hind-siliguri-latin-700-normal.woff2); unicode-range: U+0000-00FF, U+2000-206F; }
+@font-face { font-family: "Hind Siliguri", "Inter"; font-weight: 600; src: url(assets/fonts/hind-siliguri-bengali-600-normal.woff2); unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+200C-200D, U+25CC; }
+@font-face { font-family: "Hind Siliguri", "Inter"; font-weight: 700; src: url(assets/fonts/hind-siliguri-bengali-700-normal.woff2); unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+200C-200D, U+25CC; }
+@font-face { font-family: "Inter"; font-weight: 600; src: url(assets/fonts/inter-latin-600-normal.woff2); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url(assets/fonts/inter-latin-700-normal.woff2); }
+@font-face { font-family: "Inter"; font-weight: 800; src: url(assets/fonts/inter-latin-800-normal.woff2); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #050816; }
+#root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #050816; color: #eef6ff; font-family: "Inter", "Hind Siliguri", sans-serif; }
+.clip { position: absolute; }
+#bg { inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+.bgf { position: absolute; inset: 0; background: radial-gradient(900px 900px at 30% 20%, #1e1b4b 0%, #0b1029 45%, #050816 100%); }
+.orb { position: absolute; width: 700px; height: 700px; border-radius: 50%; filter: blur(120px); opacity: .5; display: block; }
+.orb.a { left: -200px; top: 200px; background: #7c3aed; } .orb.b { right: -250px; top: 1100px; background: #0891b2; }
+.scan { position: absolute; left: 0; width: 1080px; height: 160px; background: linear-gradient(transparent, rgba(34,211,238,.06), transparent); }
+#hdr { left: 0; top: 0; width: 1080px; height: 130px; display: flex; align-items: center; gap: 22px; padding: 0 50px; background: linear-gradient(rgba(5,8,22,.95), rgba(5,8,22,.6)); border-bottom: 2px solid rgba(34,211,238,.35); }
+#hdr .live { font: 800 26px "Inter"; color: #fff; background: #e11d48; padding: 8px 14px; border-radius: 8px; }
+#hdr b { font: 800 40px "Inter"; letter-spacing: 3px; } #hdr .dt { margin-left: auto; font: 700 28px "Hind Siliguri", "Inter"; color: #a5f3fc; }
+#tick { left: 0; top: 1830px; width: 1080px; height: 90px; overflow: hidden; background: rgba(8,12,34,.95); border-top: 2px solid #a855f7; display: flex; align-items: center; }
+#tick .tk { white-space: nowrap; font: 700 30px "Inter", "Hind Siliguri", "Inter"; color: #c4b5fd; padding-left: 40px; }
+.scene { left: 0; top: 130px; width: 1080px; height: 1700px; overflow: hidden; }
+.cam { position: absolute; inset: 0; transform-origin: 50% 40%; }
+.tag { position: absolute; left: 50px; top: 40px; z-index: 5; font: 800 30px "Inter"; letter-spacing: 4px; color: #050816; background: linear-gradient(90deg, #22d3ee, #a855f7); padding: 10px 22px; border-radius: 10px; }
+.ost { position: absolute; left: 50px; right: 50px; top: 1090px; z-index: 5; text-align: center; font: 800 48px/1.25 "Inter", "Hind Siliguri", "Inter"; letter-spacing: 1px; padding: 22px 26px; border-radius: 22px; background: rgba(10,14,40,.82); border: 2px solid rgba(34,211,238,.45); box-shadow: 0 0 50px rgba(34,211,238,.18); }
+.ost i { color: #a855f7; font-style: normal; margin: 0 10px; } .ost .g { color: #22d3ee; } .ost .o { display: inline-block; }
+.panel { position: absolute; border-radius: 26px; background: rgba(15,23,60,.72); border: 2px solid rgba(56,189,248,.35); box-shadow: 0 20px 60px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.08); }
+/* captions */
+.cap { left: 60px; top: 1500px; width: 960px; height: 300px; display: flex; justify-content: center; align-items: flex-start; }
+.capbox { text-align: center; font: 700 56px/1.38 "Hind Siliguri", "Inter"; padding: 12px 26px; border-radius: 18px; background: rgba(5,8,22,.86); border: 2px solid rgba(168,85,247,.4); }
+.capbox .kw { color: #22d3ee; }
+/* 01 */
+.newsroom { position: absolute; inset: 0; perspective: 900px; } .grid3d { position: absolute; left: -400px; right: -400px; top: 620px; height: 900px; transform: rotateX(70deg); transform-origin: 50% 0;
+  background-image: linear-gradient(rgba(34,211,238,.35) 2px, transparent 2px), linear-gradient(90deg, rgba(34,211,238,.35) 2px, transparent 2px); background-size: 90px 90px; opacity: .45; }
+.chipwrap { position: absolute; left: 330px; top: 300px; width: 420px; height: 420px; perspective: 900px; }
+.chip3d { position: absolute; left: 90px; top: 90px; width: 240px; height: 240px; border-radius: 30px; background: linear-gradient(135deg, #1e3a8a, #312e81); border: 3px solid #22d3ee; box-shadow: 0 0 80px rgba(34,211,238,.5), inset 0 0 40px rgba(168,85,247,.5); transform-style: preserve-3d; }
+.chip3d .core { position: absolute; inset: 50px; border-radius: 18px; background: linear-gradient(135deg, #0ea5e9, #a855f7); display: flex; align-items: center; justify-content: center; font: 800 64px "Inter"; color: #fff; }
+.pin { position: absolute; width: 14px; height: 26px; border-radius: 4px; background: #67e8f9; display: block; }
+.pt0, .pt1, .pt2, .pt3, .pt4, .pt5 { top: -30px; } .pb0, .pb1, .pb2, .pb3, .pb4, .pb5 { bottom: -30px; }
+.pl0, .pl1, .pl2, .pl3, .pl4, .pl5 { left: -30px; width: 26px; height: 14px; } .pr0, .pr1, .pr2, .pr3, .pr4, .pr5 { right: -30px; width: 26px; height: 14px; }
+.pt0, .pb0 { left: 30px; } .pt1, .pb1 { left: 64px; } .pt2, .pb2 { left: 98px; } .pt3, .pb3 { left: 132px; } .pt4, .pb4 { left: 166px; } .pt5, .pb5 { left: 200px; }
+.pl0, .pr0 { top: 30px; } .pl1, .pr1 { top: 64px; } .pl2, .pr2 { top: 98px; } .pl3, .pr3 { top: 132px; } .pl4, .pr4 { top: 166px; } .pl5, .pr5 { top: 200px; }
+.trace { position: absolute; height: 4px; width: 300px; border-radius: 2px; background: linear-gradient(90deg, #22d3ee, transparent); transform-origin: 0 50%; display: block; }
+.t0 { left: 330px; top: 140px; } .t1 { left: 330px; top: 210px; } .t2 { left: 330px; top: 280px; } .t3 { left: 330px; top: 350px; }
+.t4 { left: 90px; top: 140px; transform: scaleX(-1); } .t5 { left: 90px; top: 210px; } .t6 { left: 90px; top: 280px; } .t7 { left: 90px; top: 350px; }
+.t4, .t5, .t6, .t7 { background: linear-gradient(270deg, #a855f7, transparent); left: -210px; }
+.g1 { position: absolute; left: 640px; top: 640px; width: 400px; height: 400px; opacity: .9; }
+.globe { width: 100%; height: 100%; display: block; }
+.breaking { position: absolute; left: 50px; top: 880px; display: flex; align-items: center; gap: 18px; }
+.breaking span { font: 800 40px "Inter"; background: #e11d48; padding: 10px 20px; border-radius: 10px; } .breaking b { font: 700 38px "Hind Siliguri", "Inter"; }
+/* 02 */
+.brand2 { position: absolute; left: 50px; top: 140px; width: 980px; }
+.wm { font: 800 120px/1 "Inter"; letter-spacing: 2px; background: linear-gradient(90deg, #fff, #67e8f9); -webkit-background-clip: text; color: transparent; }
+.mdl { font: 800 88px/1.1 "Inter"; margin-top: 10px; } .mdl b { color: #f472b6; } .rel { margin-top: 18px; font: 700 34px "Hind Siliguri", "Inter"; color: #4ade80; }
+.code { left: 50px; top: 560px; width: 980px; height: 470px; padding: 26px 34px; font: 600 34px/1.7 "Inter", monospace; }
+.ph { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; } .ph i { width: 16px; height: 16px; border-radius: 50%; background: #f472b6; display: block; } .ph i:nth-child(2) { background: #facc15; } .ph i:nth-child(3) { background: #4ade80; }
+.ph span { margin-left: 16px; font: 600 24px "Hind Siliguri", "Inter"; color: #93c5fd; }
+.cl em { color: #64748b; font-style: normal; margin-right: 26px; } .cl { color: #a5f3fc; }
+.flow { position: absolute; left: 50px; top: 580px; width: 980px; display: flex; align-items: center; justify-content: space-between; }
+.fn { width: 200px; height: 120px; border-radius: 20px; background: rgba(34,211,238,.12); border: 2px solid #22d3ee; display: flex; align-items: center; justify-content: center; text-align: center; font: 800 30px/1.2 "Inter"; }
+.fa { width: 40px; height: 4px; background: #a855f7; display: block; }
+.claim { left: 50px; top: 715px; width: 980px; height: 350px; padding: 22px 34px; }
+.cc { font: 800 26px "Inter", "Hind Siliguri", "Inter"; color: #facc15; letter-spacing: 2px; }
+.cr { margin-top: 18px; } .cr > span { font: 700 30px "Hind Siliguri", "Inter"; color: #cbd5e1; }
+.bar { position: relative; height: 40px; margin-top: 10px; } .bar i { position: absolute; left: 0; top: 0; height: 40px; width: 560px; border-radius: 10px; transform-origin: 0 50%; display: block; }
+.bar .b1 { background: #64748b; } .bar .b2 { background: linear-gradient(90deg, #22d3ee, #a855f7); }
+.bar em { position: absolute; left: 580px; top: 2px; font: 700 26px "Hind Siliguri", "Inter"; font-style: normal; color: #e2e8f0; }
+.bar .b2 + em { left: 190px; } .sp { font: 600 28px "Hind Siliguri", "Inter"; margin-top: 8px; color: #e2e8f0; } .sp b { color: #4ade80; }
+/* 03 */
+.orui { left: 50px; top: 140px; width: 980px; height: 900px; padding: 30px 34px; background: rgba(248,250,252,.96); color: #0f172a; border-color: #cbd5e1; }
+.ill { font: 700 24px "Hind Siliguri", "Inter"; color: #b45309; background: #fef3c7; display: inline-block; padding: 6px 14px; border-radius: 8px; }
+.srch { margin-top: 22px; padding: 18px 22px; border-radius: 16px; border: 2px solid #cbd5e1; font: 600 32px "Inter"; color: #334155; } .srch span { color: #6366f1; margin-right: 14px; }
+.mrow { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 22px 24px; border-radius: 18px; border: 2px solid #e2e8f0; background: #fff; }
+.mrow b { display: block; font: 800 34px "Inter"; } .mrow em { font: 600 22px "Inter"; color: #64748b; font-style: normal; }
+.free { font: 800 28px "Inter"; color: #fff; background: #16a34a; padding: 8px 16px; border-radius: 10px; } .paid { font: 700 24px "Inter"; color: #475569; }
+.pbox { margin-top: 22px; padding: 18px 22px; border-radius: 16px; background: #eef2ff; } .pl { font: 700 22px "Hind Siliguri", "Inter"; color: #6366f1; } .pt { font: 600 32px "Hind Siliguri", "Inter"; margin-top: 6px; }
+.lims { margin-top: 20px; display: flex; gap: 14px; flex-wrap: wrap; } .lims span { font: 700 28px "Hind Siliguri", "Inter"; padding: 10px 16px; border-radius: 12px; background: #fff7ed; color: #c2410c; border: 2px solid #fdba74; }
+.uses { margin-top: 22px; display: flex; gap: 14px; } .uses span { font: 800 30px "Inter"; padding: 12px 20px; border-radius: 14px; background: #0f172a; color: #67e8f9; }
+/* 04 */
+.map { left: 50px; top: 130px; width: 980px; height: 560px; border-radius: 26px; background: rgba(15,23,60,.6); border: 2px solid rgba(56,189,248,.3); overflow: hidden; }
+.dots i { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: rgba(103,232,249,.45); display: block; }
+.pinm { position: absolute; display: flex; align-items: center; gap: 12px; } .pinm i { width: 30px; height: 30px; border-radius: 50%; background: #f472b6; box-shadow: 0 0 30px #f472b6; display: block; }
+.pinm.bd i { background: #4ade80; box-shadow: 0 0 30px #4ade80; } .pinm b { font: 700 34px "Hind Siliguri", "Inter"; background: rgba(5,8,22,.8); padding: 4px 12px; border-radius: 8px; }
+.mapnote { position: absolute; right: 16px; bottom: 12px; font: 600 20px "Hind Siliguri", "Inter"; color: #94a3b8; }
+.langs { position: absolute; left: 50px; top: 720px; width: 980px; display: flex; flex-wrap: wrap; gap: 14px; } .langs span { font: 700 32px "Inter"; padding: 12px 20px; border-radius: 14px; background: rgba(168,85,247,.18); border: 2px solid #a855f7; }
+.repo { left: 50px; top: 880px; width: 470px; height: 180px; padding: 24px; } .rh { font: 800 32px "Inter"; color: #67e8f9; } .rb { font: 700 30px/1.4 "Hind Siliguri", "Inter"; margin-top: 10px; }
+.bdf { left: 560px; top: 880px; width: 470px; height: 180px; padding: 24px; border-color: #4ade80; } .bdf b { display: block; font: 800 36px "Hind Siliguri", "Inter"; color: #4ade80; } .bdf span { font: 600 26px/1.4 "Hind Siliguri", "Inter"; }
+/* 05 */
+.wf5 { position: absolute; left: 140px; top: 140px; width: 800px; }
+.w5 { position: relative; width: 800px; height: 170px; padding: 22px 30px; } .w5 b { display: block; font: 800 38px "Hind Siliguri", "Inter"; } .w5 span { font: 600 28px "Inter", "Hind Siliguri", "Inter"; color: #a5f3fc; }
+.w5.fc { border-color: #fb923c; } .w5.gm { border-color: #a855f7; background: rgba(88,28,135,.35); }
+.pg { display: flex; gap: 10px; margin-top: 12px; } .pg i { width: 140px; height: 18px; border-radius: 6px; background: rgba(148,163,184,.4); display: block; } .pg .s { background: #fb923c; }
+.js { font: 600 24px/1.35 "Inter", monospace; color: #fde68a; margin-top: 6px; }
+.arr5 { display: block; width: 6px; height: 46px; margin: 4px 0 4px 397px; background: linear-gradient(#22d3ee, #a855f7); border-radius: 3px; }
+.gcb { position: absolute; left: 140px; top: 1042px; width: 800px; text-align: center; font: 700 28px "Inter"; color: #93c5fd; }
+/* 06 */
+.dash { left: 50px; top: 140px; width: 980px; height: 520px; padding: 26px 30px; }
+.dh { font: 800 26px "Inter"; color: #93c5fd; letter-spacing: 1px; display: flex; align-items: center; gap: 12px; } .dh .dot { width: 14px; height: 14px; border-radius: 50%; background: #4ade80; display: inline-block; }
+.arow { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; padding: 26px 24px; border-radius: 16px; background: rgba(2,6,23,.5); font: 700 34px "Hind Siliguri", "Inter"; }
+.arow b { font: 800 28px "Inter", "Hind Siliguri", "Inter"; padding: 8px 14px; border-radius: 10px; } .ok { background: rgba(74,222,128,.2); color: #4ade80; } .no { background: rgba(244,114,182,.2); color: #f472b6; } .na { background: rgba(250,204,21,.18); color: #facc15; }
+.shield { position: absolute; left: 420px; top: 700px; width: 240px; height: 280px; filter: drop-shadow(0 0 40px rgba(34,211,238,.5)); } .shield svg { width: 100%; height: 100%; }
+.tip6 { left: 50px; top: 960px; width: 980px; height: 100px; display: none; }
+/* 07 */
+.g7 { position: absolute; left: 190px; top: 120px; width: 700px; height: 700px; }
+.trails i { position: absolute; left: 0; width: 1080px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, transparent, #22d3ee, #a855f7, transparent); display: block; }
+.tr0 { top: 300px; } .tr1 { top: 420px; } .tr2 { top: 540px; } .tr3 { top: 660px; } .tr4 { top: 780px; } .tr5 { top: 900px; }
+.steps7 { position: absolute; left: 140px; top: 760px; width: 800px; display: flex; flex-direction: column; gap: 14px; } .steps7 span { font: 700 40px "Hind Siliguri", "Inter"; padding: 14px 24px; border-radius: 16px; background: rgba(15,23,60,.8); border: 2px solid rgba(34,211,238,.5); }
+.logo7 { position: absolute; left: 0; top: 330px; width: 1080px; text-align: center; } .logo7 b { display: block; font: 800 100px "Inter"; letter-spacing: 4px; text-shadow: 0 0 40px rgba(168,85,247,.8); } .logo7 span { font: 800 44px "Inter"; color: #22d3ee; letter-spacing: 8px; }
+
+#s05c { height: 210px; }
+.ost { font-family: "Inter", "Hind Siliguri"; }

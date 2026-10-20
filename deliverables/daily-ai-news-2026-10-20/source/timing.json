@@ -1,0 +1,443 @@
+{
+ "video_duration": 84.864,
+ "scenes": [
+  {
+   "id": "s01",
+   "num": "০১",
+   "title": "BREAKING",
+   "start": 0.0,
+   "narr_start": 0.5,
+   "end": 10.908
+  },
+  {
+   "id": "s02",
+   "num": "০২",
+   "title": "MINIMAX",
+   "start": 10.908,
+   "narr_start": 11.608,
+   "end": 25.063
+  },
+  {
+   "id": "s03",
+   "num": "০৩",
+   "title": "FREE AI",
+   "start": 25.063,
+   "narr_start": 25.763,
+   "end": 37.799
+  },
+  {
+   "id": "s04",
+   "num": "০৪",
+   "title": "LOCAL AI",
+   "start": 37.799,
+   "narr_start": 38.499,
+   "end": 50.734
+  },
+  {
+   "id": "s05",
+   "num": "০৫",
+   "title": "INTEGRATION",
+   "start": 50.734,
+   "narr_start": 51.434,
+   "end": 59.952
+  },
+  {
+   "id": "s06",
+   "num": "০৬",
+   "title": "SECURITY",
+   "start": 59.952,
+   "narr_start": 60.652,
+   "end": 72.146
+  },
+  {
+   "id": "s07",
+   "num": "০৭",
+   "title": "OUTRO",
+   "start": 72.146,
+   "narr_start": 72.846,
+   "end": 84.864
+  }
+ ],
+ "segs": [
+  {
+   "id": "s01a",
+   "scene": "s01",
+   "kind": "anim",
+   "demo": null,
+   "part": null,
+   "play": null,
+   "lip": false,
+   "practice": false,
+   "quiz": false,
+   "start": 0.5,
+   "narr_end": 10.308,
+   "end": 10.908
+  },
+  {
+   "id": "s02a",
+   "scene": "s02",
+   "kind": "anim",
+   "demo": null,
+   "part": null,
+   "play": null,
+   "lip": false,
+   "practice": false,
+   "quiz": false,
+   "start": 11.608,
+   "narr_end": 24.463,
+   "end": 25.063
+  },
+  {
+   "id": "s03a",
+   "scene": "s03",
+   "kind": "anim",
+   "demo": null,
+   "part": null,
+   "play": null,
+   "lip": false,
+   "practice": false,
+   "quiz": false,
+   "start": 25.763,
+   "narr_end": 37.199,
+   "end": 37.799
+  },
+  {
+   "id": "s04a",
+   "scene": "s04",
+   "kind": "anim",
+   "demo": null,
+   "part": null,
+   "play": null,
+   "lip": false,
+   "practice": false,
+   "quiz": false,
+   "start": 38.499,
+   "narr_end": 50.134,
+   "end": 50.734
+  },
+  {
+   "id": "s05a",
+   "scene": "s05",
+   "kind": "anim",
+   "demo": null,
+   "part": null,
+   "play": null,
+   "lip": false,
+   "practice": false,
+   "quiz": false,
+   "start": 51.434,
+   "narr_end": 59.352,
+   "end": 59.952
+  },
+  {
+   "id": "s06a",
+   "scene": "s06",
+   "kind": "anim",
+   "demo": null,
+   "part": null,
+   "play": null,
+   "lip": false,
+   "practice": false,
+   "quiz": false,
+   "start": 60.652,
+   "narr_end": 71.546,
+   "end": 72.146
+  },
+  {
+   "id": "s07a",
+   "scene": "s07",
+   "kind": "anim",
+   "demo": null,
+   "part": null,
+   "play": null,
+   "lip": false,
+   "practice": false,
+   "quiz": false,
+   "start": 72.846,
+   "narr_end": 81.464,
+   "end": 82.064
+  }
+ ],
+ "lines": [
+  {
+   "scene": "s01",
+   "seg": "s01a",
+   "idx": 0,
+   "text": "নতুন AI মডেল, সত্তর শতাংশ পর্যন্ত কম খরচের দাবি! সঙ্গে ফ্রি AI ব্যবহার আর বড় নিরাপত্তা আপডেট। আজ AI দুনিয়ায় কী ঘটেছে?",
+   "start": 0.5,
+   "end": 10.308
+  },
+  {
+   "scene": "s02",
+   "seg": "s02a",
+   "idx": 0,
+   "text": "১৯ অক্টোবর MiniMax প্রকাশ করেছে M3.1 Flash। প্রতিষ্ঠানটির দাবি, নতুন মডেলটি AI Agent, Coding আর Computer Use-এর কাজে আগের তুলনায় দ্রুত এবং অনেক বেশি সাশ্রয়ী।",
+   "start": 11.608,
+   "end": 24.463
+  },
+  {
+   "scene": "s03",
+   "seg": "s03a",
+   "idx": 0,
+   "text": "সবচেয়ে ভালো খবর, OpenRouter-এ সীমিত সময়ের জন্য এই মডেলটি ফ্রি ব্যবহার করা যাচ্ছে। ব্যবহারসীমার মধ্যে Coding, Research আর AI Prototype পরীক্ষা করতে পারবেন।",
+   "start": 25.763,
+   "end": 37.199
+  },
+  {
+   "scene": "s04",
+   "seg": "s04a",
+   "idx": 0,
+   "text": "অন্যদিকে ইন্দোনেশিয়ার GoTo পাঁচটি ইন্দোনেশীয় ভাষার জন্য নতুন AI মডেল উন্মুক্ত করেছে। এটি দেখাচ্ছে, স্থানীয় ভাষাভিত্তিক AI তৈরির সম্ভাবনা কত বড়।",
+   "start": 38.499,
+   "end": 50.134
+  },
+  {
+   "scene": "s05",
+   "seg": "s05a",
+   "idx": 0,
+   "text": "আর Firecrawl-এর নতুন Google Cloud Integration দিয়ে Gemini-ভিত্তিক AI Agent-কে ওয়েবের হালনাগাদ তথ্যের সঙ্গে যুক্ত করা যাবে।",
+   "start": 51.434,
+   "end": 59.352
+  },
+  {
+   "scene": "s06",
+   "seg": "s06a",
+   "idx": 0,
+   "text": "এদিকে যুক্তরাষ্ট্রের সরকারি IT সিস্টেমে DeepSeek ব্যবহারে বিধিনিষেধের নোটিশ এসেছে। তবে এটি বিশ্বব্যাপী নিষেধাজ্ঞা নয়। AI ব্যবহারে ডেটা নিরাপত্তা গুরুত্বপূর্ণ।",
+   "start": 60.652,
+   "end": 71.546
+  },
+  {
+   "scene": "s07",
+   "seg": "s07a",
+   "idx": 0,
+   "text": "নতুন AI শিখুন, ফ্রি টুল পরীক্ষা করুন, আর তথ্য যাচাই করতে ভুলবেন না। প্রতিদিনের AI নিউজ পেতে আমাদের সঙ্গে থাকুন!",
+   "start": 72.846,
+   "end": 81.464
+  }
+ ],
+ "cues": [
+  {
+   "scene": "s01",
+   "text": "নতুন AI মডেল, সত্তর শতাংশ",
+   "start": 0.5,
+   "end": 2.568
+  },
+  {
+   "scene": "s01",
+   "text": "পর্যন্ত কম খরচের দাবি! সঙ্গে",
+   "start": 2.608,
+   "end": 4.918
+  },
+  {
+   "scene": "s01",
+   "text": "ফ্রি AI ব্যবহার আর বড়",
+   "start": 4.958,
+   "end": 6.783
+  },
+  {
+   "scene": "s01",
+   "text": "নিরাপত্তা আপডেট। আজ AI",
+   "start": 6.823,
+   "end": 8.647
+  },
+  {
+   "scene": "s01",
+   "text": "দুনিয়ায় কী ঘটেছে?",
+   "start": 8.687,
+   "end": 10.308
+  },
+  {
+   "scene": "s02",
+   "text": "১৯ অক্টোবর MiniMax প্রকাশ",
+   "start": 11.608,
+   "end": 13.657
+  },
+  {
+   "scene": "s02",
+   "text": "করেছে M3.1 Flash।",
+   "start": 13.697,
+   "end": 15.103
+  },
+  {
+   "scene": "s02",
+   "text": "প্রতিষ্ঠানটির দাবি, নতুন",
+   "start": 15.143,
+   "end": 17.112
+  },
+  {
+   "scene": "s02",
+   "text": "মডেলটি AI Agent, Coding আর",
+   "start": 17.152,
+   "end": 19.281
+  },
+  {
+   "scene": "s02",
+   "text": "Computer Use-এর কাজে আগের",
+   "start": 19.321,
+   "end": 21.37
+  },
+  {
+   "scene": "s02",
+   "text": "তুলনায় দ্রুত এবং অনেক বেশি সাশ্রয়ী।",
+   "start": 21.41,
+   "end": 24.463
+  },
+  {
+   "scene": "s03",
+   "text": "সবচেয়ে ভালো খবর, OpenRouter-এ",
+   "start": 25.763,
+   "end": 27.981
+  },
+  {
+   "scene": "s03",
+   "text": "সীমিত সময়ের জন্য এই মডেলটি",
+   "start": 28.021,
+   "end": 30.021
+  },
+  {
+   "scene": "s03",
+   "text": "ফ্রি ব্যবহার করা যাচ্ছে।",
+   "start": 30.061,
+   "end": 31.842
+  },
+  {
+   "scene": "s03",
+   "text": "ব্যবহারসীমার মধ্যে Coding,",
+   "start": 31.882,
+   "end": 33.808
+  },
+  {
+   "scene": "s03",
+   "text": "Research আর AI Prototype",
+   "start": 33.848,
+   "end": 35.629
+  },
+  {
+   "scene": "s03",
+   "text": "পরীক্ষা করতে পারবেন।",
+   "start": 35.669,
+   "end": 37.199
+  },
+  {
+   "scene": "s04",
+   "text": "অন্যদিকে ইন্দোনেশিয়ার GoTo",
+   "start": 38.499,
+   "end": 40.66
+  },
+  {
+   "scene": "s04",
+   "text": "পাঁচটি ইন্দোনেশীয় ভাষার জন্য",
+   "start": 40.7,
+   "end": 43.019
+  },
+  {
+   "scene": "s04",
+   "text": "নতুন AI মডেল উন্মুক্ত করেছে।",
+   "start": 43.059,
+   "end": 45.298
+  },
+  {
+   "scene": "s04",
+   "text": "এটি দেখাচ্ছে, স্থানীয়",
+   "start": 45.338,
+   "end": 47.107
+  },
+  {
+   "scene": "s04",
+   "text": "ভাষাভিত্তিক AI তৈরির সম্ভাবনা কত বড়।",
+   "start": 47.147,
+   "end": 50.134
+  },
+  {
+   "scene": "s05",
+   "text": "আর Firecrawl-এর নতুন Google",
+   "start": 51.434,
+   "end": 53.168
+  },
+  {
+   "scene": "s05",
+   "text": "Cloud Integration দিয়ে",
+   "start": 53.208,
+   "end": 54.688
+  },
+  {
+   "scene": "s05",
+   "text": "Gemini-ভিত্তিক AI Agent-কে",
+   "start": 54.728,
+   "end": 56.398
+  },
+  {
+   "scene": "s05",
+   "text": "ওয়েবের হালনাগাদ তথ্যের সঙ্গে",
+   "start": 56.438,
+   "end": 58.298
+  },
+  {
+   "scene": "s05",
+   "text": "যুক্ত করা যাবে।",
+   "start": 58.338,
+   "end": 59.352
+  },
+  {
+   "scene": "s06",
+   "text": "এদিকে যুক্তরাষ্ট্রের সরকারি IT",
+   "start": 60.652,
+   "end": 62.723
+  },
+  {
+   "scene": "s06",
+   "text": "সিস্টেমে DeepSeek ব্যবহারে",
+   "start": 62.763,
+   "end": 64.561
+  },
+  {
+   "scene": "s06",
+   "text": "বিধিনিষেধের নোটিশ এসেছে। তবে",
+   "start": 64.601,
+   "end": 66.536
+  },
+  {
+   "scene": "s06",
+   "text": "এটি বিশ্বব্যাপী নিষেধাজ্ঞা",
+   "start": 66.576,
+   "end": 68.374
+  },
+  {
+   "scene": "s06",
+   "text": "নয়। AI ব্যবহারে ডেটা",
+   "start": 68.414,
+   "end": 69.872
+  },
+  {
+   "scene": "s06",
+   "text": "নিরাপত্তা গুরুত্বপূর্ণ।",
+   "start": 69.912,
+   "end": 71.546
+  },
+  {
+   "scene": "s07",
+   "text": "নতুন AI শিখুন, ফ্রি টুল",
+   "start": 72.846,
+   "end": 74.653
+  },
+  {
+   "scene": "s07",
+   "text": "পরীক্ষা করুন, আর তথ্য যাচাই",
+   "start": 74.693,
+   "end": 76.807
+  },
+  {
+   "scene": "s07",
+   "text": "করতে ভুলবেন না। প্রতিদিনের AI",
+   "start": 76.847,
+   "end": 79.116
+  },
+  {
+   "scene": "s07",
+   "text": "নিউজ পেতে আমাদের সঙ্গে থাকুন!",
+   "start": 79.156,
+   "end": 81.464
+  }
+ ]
+}
