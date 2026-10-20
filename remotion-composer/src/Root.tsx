@@ -16,6 +16,7 @@ import { ProductReveal, ProductRevealProps } from "./components/ProductReveal";
 import { CaptionOverlay, WordCaption } from "./components/CaptionOverlay";
 import { CollageBurst, CollageBurstProps } from "./CollageBurst";
 import { LyricOverlay, LyricOverlayProps } from "./LyricOverlay";
+import { AINews, AINewsProps } from "./AINews";
 
 // ---------------------------------------------------------------------------
 // Theme System — prevents every video from looking like dark fintech
@@ -329,6 +330,24 @@ export const Root: React.FC = () => {
           fadeOutSeconds: 1.5,
           overlay: true,
         } as EndTagProps}
+      />
+      <Composition
+        id="AINews"
+        component={AINews}
+        // Vertical daily-news explainer; real props come from --props (timings measured from the voice).
+        durationInFrames={2550}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={{
+          voice: "ainews/vo.mp3",
+          music: "ainews/music.mp3",
+          host: "ainews/host.png",
+          amp: [],
+          dateLabel: "",
+          scenes: [],
+          sentences: [],
+        } as AINewsProps}
       />
     </>
   );
