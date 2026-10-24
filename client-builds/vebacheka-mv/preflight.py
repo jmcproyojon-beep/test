@@ -40,13 +40,13 @@ good(f"bundled {f.name} ({f.stat().st_size // 1024} KB)") if f.exists() else \
     bad(f"missing {f}")
 
 print("\nlyrics")
-srt = Path("projects/vebacheka-mv/assets/lyrics.srt")
+sys.path.insert(0, str(HERE))
+from srt_lyrics import SRT as srt, lines
 if srt.exists():
-    sys.path.insert(0, str(HERE))
-    from srt_lyrics import lines
     ls = lines()
-    good(f"{len(ls)} lines, {ls[0]['start']:.1f}s .. {ls[-1]['end']:.1f}s")
+    good(f"{srt.name}: {len(ls)} lines, {ls[0]['start']:.1f}s .. {ls[-1]['end']:.1f}s")
 else:
+    ls = []
     bad(f"missing {srt}")
 
 if len(sys.argv) > 1:
@@ -65,7 +65,7 @@ if len(sys.argv) > 1:
             d = json.loads(r.stdout); st = d["streams"][0]
             dur = float(d["format"]["duration"])
             good(f"{st['width']}x{st['height']}, {dur:.1f}s, {src.stat().st_size/1048576:.0f} MB")
-            if srt.exists() and ls[-1]["end"] > dur + 0.05:
+            if ls and ls[-1]["end"] > dur + 0.05:
                 print(f"  NOTE  last lyric ends {ls[-1]['end']:.1f}s but the video is "
                       f"{dur:.1f}s — the tail would be cut off")
 

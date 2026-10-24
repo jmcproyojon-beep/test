@@ -2,7 +2,13 @@
 import re
 from pathlib import Path
 
-SRT = Path("projects/vebacheka-mv/assets/lyrics.srt")
+# The client's SRT lives beside this script, NOT under projects/ — that path is
+# gitignored, so a copy there does not survive a clone and a fresh checkout
+# comes up with no lyrics at all.
+SRT = Path(__file__).parent/"lyrics.srt"
+_LEGACY = Path("projects/vebacheka-mv/assets/lyrics.srt")
+if not SRT.exists() and _LEGACY.exists():
+    SRT = _LEGACY
 TC = re.compile(r"(\d+):(\d+):(\d+)[,.](\d+)\s*-->\s*(\d+):(\d+):(\d+)[,.](\d+)")
 
 
