@@ -2,6 +2,9 @@
 import re
 from pathlib import Path
 
+# The client's SRT lives beside this script, NOT under projects/ — that path is
+# gitignored, so a copy there does not survive a clone and a fresh checkout
+# comes up with no lyrics at all.
 SRT = Path(__file__).parent/"lyrics.srt"
 TC = re.compile(r"(\d+):(\d+):(\d+)[,.](\d+)\s*-->\s*(\d+):(\d+):(\d+)[,.](\d+)")
 
