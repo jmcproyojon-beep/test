@@ -40,14 +40,14 @@ good(f"bundled {f.name} ({f.stat().st_size // 1024} KB)") if f.exists() else \
     bad(f"missing {f}")
 
 print("\nlyrics")
-srt = Path("projects/vebacheka-mv/assets/lyrics.srt")
+sys.path.insert(0, str(HERE))
+from srt_lyrics import SRT as srt, lines
 if srt.exists():
-    sys.path.insert(0, str(HERE))
-    from srt_lyrics import lines
     ls = lines()
     good(f"{len(ls)} lines, {ls[0]['start']:.1f}s .. {ls[-1]['end']:.1f}s")
 else:
-    bad(f"missing {srt}")
+    bad(f"missing {srt} — put the client's SRT there (it is tracked, so it\n"
+        "        survives between machines and cloud containers)")
 
 if len(sys.argv) > 1:
     print("\nsource video")

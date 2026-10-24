@@ -2,7 +2,7 @@
 import re
 from pathlib import Path
 
-SRT = Path("projects/vebacheka-mv/assets/lyrics.srt")
+SRT = Path(__file__).parent/"lyrics.srt"
 TC = re.compile(r"(\d+):(\d+):(\d+)[,.](\d+)\s*-->\s*(\d+):(\d+):(\d+)[,.](\d+)")
 
 
