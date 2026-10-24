@@ -7,9 +7,20 @@ the audio is copied through untouched.
 ## Run
 
 ```bash
-python3 client-builds/vebacheka-mv/cinematic.py "Vebacheka Ukulele Cover.mp4"
+git clone https://github.com/jmcproyojon-beep/test
+cd test
+git checkout claude/openmontage-setup-i6a0qy
+
+python3 client-builds/vebacheka-mv/preflight.py "Vebacheka Ukulele Cover.mp4"
+python3 client-builds/vebacheka-mv/cinematic.py  "Vebacheka Ukulele Cover.mp4"
 # -> projects/vebacheka-mv/renders/<name>-lyrics-cinematic.mp4
 ```
+
+Run `preflight.py` first — it checks ffmpeg, Pillow, raqm, the font and the
+video, and says READY or names what is missing. It takes a second; the render
+takes considerably longer.
+
+Needs only ffmpeg and `pip install "pillow[raqm]"`. The font is bundled.
 
 It probes the source and scales the lyric type, outline, shadow and margin to
 whatever resolution comes in, so 1080p and 4K both land correctly. `crf` and
@@ -35,6 +46,11 @@ reorders vowel signs and misplaces trailing punctuation —
           wanted:  অচেনা শহর, নতুন সকাল
   libass rendered: ,অচনো শহর, নতুন সকাল        <- ে moved onto ন, comma jumped to the front
 ```
+
+**Pillow needs raqm for the same reason.** Without it Pillow falls back to
+basic layout and reorders the vowel signs exactly as libass does, silently.
+`make_lyrics.py` refuses to run rather than burn mangled text into a finished
+video, and `preflight.py` checks for it up front.
 
 So lyrics are rendered with Pillow (which uses raqm, and shapes correctly) and
 composited as images. Each line is drawn in one call per row — splitting a
