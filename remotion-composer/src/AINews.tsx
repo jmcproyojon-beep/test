@@ -39,7 +39,7 @@ export type AINewsProps = {
   sentences: AINewsSentence[];
 };
 
-const C = {
+export const C = {
   bg0: "#05060f",
   bg1: "#0b1030",
   blue: "#3b82f6",
@@ -54,12 +54,12 @@ const C = {
   panel: "rgba(15, 23, 60, 0.72)",
   line: "rgba(148, 163, 184, 0.25)",
 };
-const BN = "'Noto Sans Bengali', 'Noto Sans', sans-serif";
-const EN = "'Noto Sans', 'DejaVu Sans', sans-serif";
+export const BN = "'Noto Sans Bengali', 'Noto Sans', sans-serif";
+export const EN = "'Noto Sans', 'DejaVu Sans', sans-serif";
 
-const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
+export const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
-const useAppear = (delay = 0, damping = 14) => {
+export const useAppear = (delay = 0, damping = 14) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   return spring({ frame: frame - delay, fps, config: { damping, stiffness: 110, mass: 0.9 } });
@@ -67,7 +67,7 @@ const useAppear = (delay = 0, damping = 14) => {
 
 // --------------------------------------------------------------------------- background
 
-const Background: React.FC = () => {
+export const Background: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / 30;
   const dots = useMemo(
@@ -112,7 +112,7 @@ const Background: React.FC = () => {
 
 // --------------------------------------------------------------------------- chrome
 
-const TopBar: React.FC<{ dateLabel: string }> = ({ dateLabel }) => {
+export const TopBar: React.FC<{ dateLabel: string }> = ({ dateLabel }) => {
   const frame = useCurrentFrame();
   const pulse = 0.55 + 0.45 * Math.abs(Math.sin(frame / 12));
   return (
@@ -153,7 +153,7 @@ const TopBar: React.FC<{ dateLabel: string }> = ({ dateLabel }) => {
   );
 };
 
-const Panel: React.FC<{ tag: string; children: React.ReactNode }> = ({ tag, children }) => {
+export const Panel: React.FC<{ tag: string; children: React.ReactNode }> = ({ tag, children }) => {
   const a = useAppear(0, 16);
   return (
     <div
@@ -206,7 +206,7 @@ const Panel: React.FC<{ tag: string; children: React.ReactNode }> = ({ tag, chil
   );
 };
 
-const HostCard: React.FC<{ host: string; amp: number[] }> = ({ host, amp }) => {
+export const HostCard: React.FC<{ host: string; amp: number[] }> = ({ host, amp }) => {
   const frame = useCurrentFrame();
   const a = useAppear(4, 18);
   const level = amp[Math.min(frame, amp.length - 1)] ?? 0;
@@ -270,7 +270,7 @@ const HostCard: React.FC<{ host: string; amp: number[] }> = ({ host, amp }) => {
   );
 };
 
-const Captions: React.FC<{ sentences: AINewsSentence[] }> = ({ sentences }) => {
+export const Captions: React.FC<{ sentences: AINewsSentence[] }> = ({ sentences }) => {
   const frame = useCurrentFrame();
   const t = frame / 30;
   const s = sentences.find((x) => t >= x.start - 0.05 && t <= x.end + 0.25);
@@ -311,9 +311,10 @@ const Captions: React.FC<{ sentences: AINewsSentence[] }> = ({ sentences }) => {
   );
 };
 
-const Ticker: React.FC = () => {
+export const Ticker: React.FC<{ text?: string }> = ({ text: custom }) => {
   const frame = useCurrentFrame();
   const text =
+    custom ??
     "NEW AI MODEL  •  FREE AI  •  SECURITY  •  MINIMAX M3.1 FLASH  •  OPENROUTER FREE TIER  •  LOCAL LANGUAGE AI  •  FIRECRAWL × GOOGLE CLOUD  •  AI SECURITY UPDATE  •  ";
   const x = -((frame * 4) % 2400);
   return (
@@ -367,9 +368,9 @@ const Ticker: React.FC = () => {
 
 // --------------------------------------------------------------------------- shared pieces
 
-const countries = (feature as any)(world110, (world110 as any).objects.countries).features as any[];
+export const countries = (feature as any)(world110, (world110 as any).objects.countries).features as any[];
 
-const Globe: React.FC<{ size: number; speed?: number; highlight?: string[]; trails?: boolean }> = ({
+export const Globe: React.FC<{ size: number; speed?: number; highlight?: string[]; trails?: boolean }> = ({
   size,
   speed = 0.25,
   highlight = [],
@@ -426,7 +427,7 @@ const Globe: React.FC<{ size: number; speed?: number; highlight?: string[]; trai
   );
 };
 
-const Chip: React.FC<{ text: string; color: string; delay: number; font?: string; size?: number }> = ({
+export const Chip: React.FC<{ text: string; color: string; delay: number; font?: string; size?: number }> = ({
   text,
   color,
   delay,
@@ -455,7 +456,7 @@ const Chip: React.FC<{ text: string; color: string; delay: number; font?: string
   );
 };
 
-const Processor: React.FC<{ size: number }> = ({ size }) => {
+export const Processor: React.FC<{ size: number }> = ({ size }) => {
   const frame = useCurrentFrame();
   const glow = 0.5 + 0.5 * Math.sin(frame / 8);
   const pins = 9;
@@ -518,7 +519,7 @@ const SceneHook: React.FC = () => {
   );
 };
 
-const Bar: React.FC<{ label: string; value: number; color: string; delay: number }> = ({ label, value, color, delay }) => {
+export const Bar: React.FC<{ label: string; value: number; color: string; delay: number }> = ({ label, value, color, delay }) => {
   const a = useAppear(delay, 20);
   return (
     <div style={{ marginBottom: 26 }}>
