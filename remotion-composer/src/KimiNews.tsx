@@ -25,8 +25,10 @@ import {
   Panel,
   Processor,
   Ticker,
+  TimeScale,
   TopBar,
   useAppear,
+  useSceneFrame,
 } from "./AINews";
 
 // ---------------------------------------------------------------------------
@@ -41,7 +43,8 @@ export type KimiNewsProps = {
   amp?: number[];
   music: string;
   dateLabel: string;
-  scenes: { start: number; end: number; tag: string }[];
+  scenes: { start: number; end: number; tag: string; timeScale?: number }[];
+  durationSec?: number;
   sentences: AINewsSentence[];
 };
 
@@ -75,7 +78,7 @@ const Big: React.FC<{ children: React.ReactNode; size?: number; color?: string; 
 };
 
 const Shield: React.FC<{ size: number; delay?: number }> = ({ size, delay = 0 }) => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const a = useAppear(delay);
   return (
     <svg width={size} height={size * 1.2} viewBox="0 0 100 120" style={{ opacity: a }}>
@@ -95,7 +98,7 @@ const Shield: React.FC<{ size: number; delay?: number }> = ({ size, delay = 0 })
 // --------------------------------------------------------------------------- scenes (inside the 1000x930 panel)
 
 const S1Hook: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const zoom = interpolate(frame, [0, 300], [1, 1.1], clamp);
   return (
     <AbsoluteFill style={{ transform: `scale(${zoom})` }}>
@@ -120,7 +123,7 @@ const S1Hook: React.FC = () => {
 };
 
 const S2Kimi: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const tiles = [
     { t: "Coding", c: C.purple },
     { t: "3D Creation", c: C.cyan },
@@ -202,7 +205,7 @@ const S2Kimi: React.FC = () => {
 };
 
 const S3Limit: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const needle = interpolate(frame, [60, 150], [62, -10], clamp); // degrees: high -> lower
   const rows = [
     { t: "Misuse risk", s: "REDUCED", c: C.green, d: 160 },
@@ -262,7 +265,7 @@ const S3Limit: React.FC = () => {
 };
 
 const S4UK: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const proj = geoMercator().center([-3.5, 54.5]).scale(2300).translate([300, 470]);
   const path = geoPath(proj);
   const uk = countries.filter((f) => ["826", "372"].includes(String(f.id)));
@@ -317,7 +320,7 @@ const S4UK: React.FC = () => {
 };
 
 const S5Lab: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const partners = ["OpenAI", "Anthropic"];
   return (
     <AbsoluteFill>
@@ -367,7 +370,7 @@ const S5Lab: React.FC = () => {
 };
 
 const S6Takeaway: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const steps = [
     { t: "AI Agent", s: "wants to act", c: C.purple },
     { t: "Permission check", s: "least privilege", c: C.cyan },
@@ -403,7 +406,7 @@ const S6Takeaway: React.FC = () => {
 };
 
 const S7Outro: React.FC = () => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   return (
     <AbsoluteFill>
       <div style={{ position: "absolute", left: 230, top: 120 }}>
@@ -469,7 +472,7 @@ const FactCard: React.FC<{ i: number }> = ({ i }) => {
 export const KimiNews: React.FC<KimiNewsProps> = ({ voice, host, amp, music, dateLabel, scenes, sentences }) => {
   const { fps, durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
-  const withPresenter = Boolean(voice && host);
+  const withPresenter = Boolean(voice && host && amp && amp.length);
   return (
     <AbsoluteFill style={{ backgroundColor: C.bg0 }}>
       <Background />
@@ -479,10 +482,12 @@ export const KimiNews: React.FC<KimiNewsProps> = ({ voice, host, amp, music, dat
         const dur = Math.round((s.end - s.start) * fps);
         return (
           <Sequence key={i} from={from} durationInFrames={dur} layout="none">
-            <Panel tag={s.tag}>
-              <Comp />
-            </Panel>
-            {!withPresenter && <FactCard i={i} />}
+            <TimeScale.Provider value={s.timeScale ?? 1}>
+              <Panel tag={s.tag}>
+                <Comp />
+              </Panel>
+              {!withPresenter && <FactCard i={i} />}
+            </TimeScale.Provider>
           </Sequence>
         );
       })}

@@ -59,8 +59,12 @@ export const EN = "'Noto Sans', 'DejaVu Sans', sans-serif";
 
 export const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
+/** Per-scene time scale: >1 plays a scene's animations faster so they fit a shorter slot. */
+export const TimeScale = React.createContext(1);
+export const useSceneFrame = () => useCurrentFrame() * React.useContext(TimeScale);
+
 export const useAppear = (delay = 0, damping = 14) => {
-  const frame = useCurrentFrame();
+  const frame = useSceneFrame();
   const { fps } = useVideoConfig();
   return spring({ frame: frame - delay, fps, config: { damping, stiffness: 110, mass: 0.9 } });
 };

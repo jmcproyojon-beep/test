@@ -13,6 +13,9 @@ const KimiRoot: React.FC = () => (
     width={1080}
     height={1920}
     defaultProps={{ music: "kimi/music.mp3", dateLabel: "", scenes: [], sentences: [] } as KimiNewsProps}
+    calculateMetadata={({ props }) => ({
+      durationInFrames: Math.round((props.durationSec ?? 85) * 30),
+    })}
   />
 );
 
