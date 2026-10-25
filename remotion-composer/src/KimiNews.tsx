@@ -45,6 +45,8 @@ export type KimiNewsProps = {
   dateLabel: string;
   scenes: { start: number; end: number; tag: string; timeScale?: number }[];
   durationSec?: number;
+  /** Rendered inside a wrapper that supplies the music bed and transitions. */
+  embedded?: boolean;
   sentences: AINewsSentence[];
 };
 
@@ -469,7 +471,7 @@ const FactCard: React.FC<{ i: number }> = ({ i }) => {
 
 // --------------------------------------------------------------------------- composition
 
-export const KimiNews: React.FC<KimiNewsProps> = ({ voice, host, amp, music, dateLabel, scenes, sentences }) => {
+export const KimiNews: React.FC<KimiNewsProps> = ({ voice, host, amp, music, dateLabel, scenes, sentences, embedded }) => {
   const { fps, durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
   const withPresenter = Boolean(voice && host && amp && amp.length);
@@ -496,15 +498,19 @@ export const KimiNews: React.FC<KimiNewsProps> = ({ voice, host, amp, music, dat
       <Captions sentences={sentences} />
       <Ticker text="KIMI K3.1 PRO  •  SAFETY CONTROLS  •  UK AI SECURITY INVESTMENT  •  AI BIOSECURITY LAB  •  OPENAI + ANTHROPIC  •  POWERFUL AI NEEDS SAFETY  •  " />
       {voice && <Audio src={staticFile(voice)} />}
-      <Audio
-        src={staticFile(music)}
-        volume={(f) =>
-          (voice ? 0.13 : 0.5) *
-          interpolate(f, [0, 20], [0, 1], clamp) *
-          interpolate(f, [durationInFrames - 60, durationInFrames], [1, 0], clamp)
-        }
-      />
-      <AbsoluteFill style={{ background: "black", opacity: interpolate(frame, [0, 10], [1, 0], clamp), pointerEvents: "none" }} />
+      {!embedded && music && (
+        <Audio
+          src={staticFile(music)}
+          volume={(f) =>
+            (voice ? 0.13 : 0.5) *
+            interpolate(f, [0, 20], [0, 1], clamp) *
+            interpolate(f, [durationInFrames - 60, durationInFrames], [1, 0], clamp)
+          }
+        />
+      )}
+      {!embedded && (
+        <AbsoluteFill style={{ background: "black", opacity: interpolate(frame, [0, 10], [1, 0], clamp), pointerEvents: "none" }} />
+      )}
     </AbsoluteFill>
   );
 };
