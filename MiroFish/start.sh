@@ -6,7 +6,8 @@
 #   ./start.sh --check    # stop after the key check
 #
 # Keys come from MiroFish/.env, or from environment variables of the same name
-# (LLM_API_KEY, LLM_BASE_URL, LLM_MODEL_NAME, ZEP_API_KEY). Environment
+# (LLM_API_KEY, LLM_BASE_URL, LLM_MODEL_NAME, ZEP_API_KEY; or OPENROUTER_API_KEY
+# in place of the three LLM_* ones). Environment
 # variables are written into .env, because the backend loads .env with
 # override=True and placeholder values there would otherwise win.
 set -euo pipefail
@@ -23,6 +24,13 @@ command -v uv   >/dev/null || die "uv is required: https://docs.astral.sh/uv/"
 
 placeholder() { [ -z "${1:-}" ] || [[ "$1" == your_* ]] || [[ "$1" == "..." ]]; }
 env_get() { [ -f .env ] && sed -n "s/^$1=//p" .env | tail -1 || true; }
+
+# OpenRouter is OpenAI-compatible; an OPENROUTER_API_KEY fills in the LLM settings.
+if placeholder "${LLM_API_KEY:-}" && ! placeholder "${OPENROUTER_API_KEY:-}"; then
+  LLM_API_KEY=$OPENROUTER_API_KEY
+  LLM_BASE_URL=${LLM_BASE_URL:-https://openrouter.ai/api/v1}
+  LLM_MODEL_NAME=${LLM_MODEL_NAME:-openai/gpt-4o-mini}
+fi
 
 llm_key=$(env_get LLM_API_KEY); zep_key=$(env_get ZEP_API_KEY)
 if { placeholder "$llm_key" || placeholder "$zep_key"; } \

@@ -43,6 +43,11 @@ LLM_MODEL_NAME=qwen-plus # or gpt-4o-mini, etc.
 ZEP_API_KEY=...          # free tier at https://app.getzep.com/
 ```
 
+**OpenRouter** works too (OpenAI-compatible, and the OASIS simulation scripts
+honour the same base URL): `LLM_BASE_URL=https://openrouter.ai/api/v1`,
+`LLM_MODEL_NAME=openai/gpt-4o-mini` (or any OpenRouter model id). With
+`start.sh`, exporting `OPENROUTER_API_KEY` alone fills in all three.
+
 Optional: `LLM_BOOST_API_KEY` / `LLM_BOOST_BASE_URL` / `LLM_BOOST_MODEL_NAME`
 for a faster secondary model (leave the lines out entirely if unused),
 `OASIS_DEFAULT_MAX_ROUNDS` (default 10). Simulations burn a lot of tokens —
