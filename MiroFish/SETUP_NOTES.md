@@ -31,7 +31,10 @@ cp .env.example .env     # then fill in keys
 
 ## Configure — the only step left
 
-Edit `MiroFish/.env` (git-ignored). The backend refuses to start without both keys:
+Edit `MiroFish/.env` (git-ignored), or export the same variables and `start.sh`
+writes them into `.env` (the backend loads `.env` with `override=True`, so
+placeholders left there would beat real environment variables). The backend
+refuses to start without both keys:
 
 ```env
 LLM_API_KEY=...          # any OpenAI-compatible API
@@ -49,7 +52,9 @@ start with under 40 rounds.
 
 ```bash
 cd MiroFish
-npm run dev              # backend :5001 + frontend :3000 together
+./start.sh               # installs missing deps, checks both keys live, then starts everything
+./start.sh --check       # key check only
+npm run dev              # skip the checks: backend :5001 + frontend :3000 together
 # or: npm run backend / npm run frontend
 ```
 
@@ -63,6 +68,9 @@ Docker alternative: `docker compose up -d` (reads the same `.env`).
 | backend boot (placeholder keys) | `GET /health` → `{"status":"ok"}`, `/api/graph/project/list` → 200 |
 | frontend dev server | serves on :3000, `/api` proxy reaches backend |
 | `npm run build` | builds clean (chunk-size warning only) |
+
+In a Claude cloud session the default network policy also blocks
+`api.openai.com` / `api.getzep.com`; those hosts must be allowed there.
 
 Not verified: a real end-to-end prediction run — this container has no LLM or
 Zep keys. Once keys are in `.env`, `backend/scripts/validate_zep_cloud_integration.py`
