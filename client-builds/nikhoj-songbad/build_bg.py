@@ -38,9 +38,17 @@ KEYS = [
 
 
 def lerp_expr(idx):
-    """Piecewise-linear ffmpeg expression over t through the keyframes."""
+    """Piecewise-linear ffmpeg expression over t through the keyframes.
+
+    Built back to front. Each wrap becomes the OUTERMOST test, so the pairs
+    must be added latest-first for the earliest boundary to end up outside.
+    Building it forwards leaves `lt(t,<end of song>)` outermost, which is true
+    at every t, so the whole song gets the final segment's slope extrapolated
+    backwards — at t=5 that asked for saturation 2.16 and brightness +0.36
+    instead of 0.46 and -0.14, and rendered a blown-out yellow frame.
+    """
     expr = f"{KEYS[-1][idx]:.4f}"
-    for (t0, *a), (t1, *b) in zip(KEYS, KEYS[1:]):
+    for (t0, *a), (t1, *b) in reversed(list(zip(KEYS, KEYS[1:]))):
         v0, v1 = a[idx - 1], b[idx - 1]
         span = t1 - t0
         seg = f"({v0:.4f}+({v1 - v0:.4f})*(t-{t0:.2f})/{span:.2f})"
@@ -48,7 +56,34 @@ def lerp_expr(idx):
     return expr
 
 
+def _check_expressions():
+    """Evaluate what we hand ffmpeg and compare it with the intended curve.
+
+    A wrong grade expression still renders happily; it just looks wrong. So
+    this is checked, not eyeballed.
+    """
+    def ev(expr, t):
+        return eval(expr.replace("if(", "IF(").replace("lt(", "LT("),
+                    {"IF": lambda c, a, b: a if c else b,
+                     "LT": lambda a, b: a < b, "t": t})
+
+    def intended(t, i):
+        for k0, k1 in zip(KEYS, KEYS[1:]):
+            if k0[0] <= t < k1[0]:
+                return k0[i] + (k1[i] - k0[i]) * (t - k0[0]) / (k1[0] - k0[0])
+        return KEYS[-1][i]
+
+    for idx, name in ((1, "saturation"), (2, "brightness"), (3, "contrast")):
+        expr = lerp_expr(idx)
+        for t in (0.0, 5.0, 62.0, 110.0, 200.0, 300.0, 345.0, 351.0):
+            got, want = ev(expr, t), intended(t, idx)
+            if abs(got - want) > 1e-6:
+                raise SystemExit(f"{name} expression wrong at t={t}: "
+                                 f"{got:.4f}, want {want:.4f}")
+
+
 def build():
+    _check_expressions()
     # Scale the square cover well past frame size so a slow drifting crop has
     # somewhere to travel, then blur it down into a bed for the type.
     # Drifting around the whole square cover does not work: its left edge
