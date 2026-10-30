@@ -28,9 +28,15 @@ whatever resolution comes in, so 1080p and 4K both land correctly. `crf` and
 
 ## Lyrics
 
-`projects/vebacheka-mv/assets/lyrics.srt` is the client's file, stored
-verbatim — their wording and their timings are authoritative. 31 lines,
-27.0s to 242.5s, no overlaps.
+`client-builds/vebacheka-mv/lyrics.srt` is the client's file, stored
+verbatim and tracked in git — their wording and their timings are
+authoritative. 31 lines, 27.0s to 242.5s, no overlaps.
+
+It is kept here, beside the scripts that read it, rather than under
+`projects/` — that directory is gitignored (generated assets and renders),
+so the client's own file would not survive a fresh clone or a new cloud
+container. `srt_lyrics.SRT` resolves it relative to this directory, so the
+scripts can be run from anywhere.
 
 `cinematic.py` prints a warning if any line runs past the end of the video,
 which is the one thing that would silently drop lyrics.
