@@ -19,21 +19,21 @@ DUR = 351.17
 
 # t, saturation, brightness, contrast — read off the section analysis
 KEYS = [
-    (0.0,   0.50, -0.070, 1.04),   # intro, mirror talking in the dark
-    (27.0,  0.62, -0.050, 1.05),   # instrumental
-    (59.0,  0.58, -0.055, 1.05),   # verse 1
-    (81.0,  0.82, -0.020, 1.08),   # pre-chorus lifts
-    (96.5,  1.18,  0.035, 1.12),   # CHORUS
-    (139.0, 1.30,  0.055, 1.14),   # drop
-    (157.0, 0.58, -0.055, 1.05),   # verse 2
-    (194.0, 0.82, -0.020, 1.08),
-    (209.0, 1.18,  0.035, 1.12),   # chorus 2
-    (238.0, 0.70, -0.045, 1.06),
-    (247.0, 0.88, -0.010, 1.07),   # bridge, warm and close
-    (277.0, 0.98,  0.005, 1.09),   # final build
-    (288.0, 1.34,  0.065, 1.15),   # FINAL CHORUS, hottest
-    (330.0, 0.72, -0.030, 1.05),   # outro settles
-    (351.2, 0.60, -0.060, 1.04),
+    (0.0,   0.44, -0.145, 1.04),   # intro, mirror talking in the dark
+    (27.0,  0.55, -0.125, 1.05),   # instrumental
+    (59.0,  0.51, -0.130, 1.05),   # verse 1
+    (81.0,  0.72, -0.095, 1.08),   # pre-chorus lifts
+    (96.5,  1.04, -0.040, 1.12),   # CHORUS
+    (139.0, 1.14, -0.020, 1.14),   # drop
+    (157.0, 0.51, -0.130, 1.05),   # verse 2
+    (194.0, 0.72, -0.095, 1.08),
+    (209.0, 1.04, -0.040, 1.12),   # chorus 2
+    (238.0, 0.62, -0.120, 1.06),
+    (247.0, 0.77, -0.085, 1.07),   # bridge, warm and close
+    (277.0, 0.86, -0.070, 1.09),   # final build
+    (288.0, 1.18, -0.010, 1.15),   # FINAL CHORUS, hottest
+    (330.0, 0.63, -0.105, 1.05),   # outro settles
+    (351.2, 0.53, -0.135, 1.04),
 ]
 
 
@@ -51,16 +51,20 @@ def lerp_expr(idx):
 def build():
     # Scale the square cover well past frame size so a slow drifting crop has
     # somewhere to travel, then blur it down into a bed for the type.
+    # Biased right and tightened: drifting too far left parks the cover's own
+    # title block behind the lyrics, and even blurred its red reads as text.
     zoom = (f"scale=2700:2700:flags=lanczos,"
             f"crop={W}:{H}:"
-            f"x='(iw-{W})/2 + 240*sin(t/47)':"
-            f"y='(ih-{H})/2 + 300*sin(t/61) - 120'")
+            f"x='(iw-{W})/2 + 80 + 150*sin(t/47)':"
+            f"y='(ih-{H})/2 - 180 + 150*sin(t/61)'")
     grade = (f"eq=eval=frame:saturation='{lerp_expr(1)}':"
              f"brightness='{lerp_expr(2)}':contrast='{lerp_expr(3)}'")
-    chain = (f"{zoom},gblur=sigma=34,{grade},"
+    # sigma 58, not 34: at 34 the artwork's lettering stays legible behind the
+    # lyrics. This has to read as colour and light, not as a second picture.
+    chain = (f"{zoom},gblur=sigma=58,{grade},"
              # a cool wash so the warm artwork reads as night, and a vignette
-             "colorbalance=rs=-0.05:gs=-0.015:bs=0.07:bh=-0.03,"
-             "vignette=angle=PI/4.4:mode=forward,"
+             "colorbalance=rs=-0.06:gs=-0.02:bs=0.10:bh=-0.04,"
+             "vignette=angle=PI/4.0:mode=forward,"
              "noise=alls=4:allf=t+u,format=yuv420p")
 
     cmd = ["ffmpeg", "-v", "error", "-stats",
