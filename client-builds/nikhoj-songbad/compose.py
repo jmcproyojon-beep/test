@@ -137,11 +137,24 @@ def run():
     subprocess.run(["ffmpeg", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(lst),
                     "-c", "copy", str(P/"assets/silent.mp4"), "-y"], check=True)
 
-    fade_at = DUR - 4.0
+    # The chunks land a frame or so under the song, and -shortest would then
+    # trim the AUDIO. Hold the last frame past the end so the song is always
+    # the shorter stream and the delivered file is exactly its length.
+    song = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries",
+                                 "format=duration", "-of", "csv=p=0", str(SONG)],
+                                capture_output=True, text=True).stdout.strip())
+    vid = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries",
+                                "format=duration", "-of", "csv=p=0",
+                                str(P/"assets/silent.mp4")],
+                               capture_output=True, text=True).stdout.strip())
+    pad = max(0.0, song - vid) + 0.2
+    print(f"song {song:.3f}s, picture {vid:.3f}s -> holding last frame {pad:.3f}s")
+    fade_at = song - 4.0
     subprocess.run(["ffmpeg", "-v", "error", "-stats",
                     "-i", str(P/"assets/silent.mp4"), "-i", str(SONG),
                     "-filter_complex",
-                    f"[0:v]fade=t=in:st=0:d=1.5,fade=t=out:st={fade_at:.2f}:d=4.0[v];"
+                    f"[0:v]tpad=stop_mode=clone:stop_duration={pad:.3f},"
+                    f"fade=t=in:st=0:d=1.5,fade=t=out:st={fade_at:.2f}:d=4.0[v];"
                     f"[1:a]afade=t=out:st={fade_at:.2f}:d=4.0[a]",
                     "-map", "[v]", "-map", "[a]",
                     "-c:v", "libx264", "-crf", "20", "-preset", "medium",
