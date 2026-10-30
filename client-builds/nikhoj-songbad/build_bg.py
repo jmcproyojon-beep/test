@@ -51,19 +51,25 @@ def lerp_expr(idx):
 def build():
     # Scale the square cover well past frame size so a slow drifting crop has
     # somewhere to travel, then blur it down into a bed for the type.
-    # Biased right and tightened: drifting too far left parks the cover's own
-    # title block behind the lyrics, and even blurred its red reads as text.
-    zoom = (f"scale=2700:2700:flags=lanczos,"
+    # Drifting around the whole square cover does not work: its left edge
+    # carries the title, the credits and the wall graffiti top to bottom, so
+    # some lettering is always in frame and even heavily blurred its red reads
+    # as text behind the lyrics. Take the one text-free part of the artwork
+    # instead — the figure watching the sunset over the city, which is already
+    # 16:9 — and drift inside that.
+    zoom = (f"crop=585:330:430:585,"
+            f"scale=2560:-2:flags=lanczos,"
             f"crop={W}:{H}:"
-            f"x='(iw-{W})/2 + 80 + 150*sin(t/47)':"
-            f"y='(ih-{H})/2 - 180 + 150*sin(t/61)'")
+            f"x='(iw-{W})/2 + 230*sin(t/53)':"
+            f"y='(ih-{H})/2 + 120*sin(t/41)'")
     grade = (f"eq=eval=frame:saturation='{lerp_expr(1)}':"
              f"brightness='{lerp_expr(2)}':contrast='{lerp_expr(3)}'")
-    # sigma 58, not 34: at 34 the artwork's lettering stays legible behind the
-    # lyrics. This has to read as colour and light, not as a second picture.
-    chain = (f"{zoom},gblur=sigma=58,{grade},"
+    # With no lettering left to hide, the blur only has to push the picture
+    # behind the type — sigma 30 keeps the skyline and the sun readable as
+    # shape and glow.
+    chain = (f"{zoom},gblur=sigma=30,{grade},"
              # a cool wash so the warm artwork reads as night, and a vignette
-             "colorbalance=rs=-0.06:gs=-0.02:bs=0.10:bh=-0.04,"
+             "colorbalance=rs=-0.05:gs=-0.015:bs=0.09:bh=-0.04,"
              "vignette=angle=PI/4.0:mode=forward,"
              "noise=alls=4:allf=t+u,format=yuv420p")
 
@@ -72,8 +78,11 @@ def build():
            "-vf", chain, "-frames:v", str(int(DUR * FPS)), "-r", str(FPS),
            "-c:v", "libx264", "-crf", "20", "-preset", "veryfast",
            "-pix_fmt", "yuv420p", "-an", str(OUT), "-y"]
+    done = OUT.with_suffix(".done")
+    done.unlink(missing_ok=True)
     subprocess.run(cmd, check=True)
-    print("wrote", OUT)
+    done.write_text("ok")      # a sentinel to wait on: matching the ffmpeg
+    print("wrote", OUT)        # command line also matches the watcher itself
 
 
 if __name__ == "__main__":
