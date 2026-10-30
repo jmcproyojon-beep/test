@@ -160,7 +160,11 @@ def run():
                     "-c:v", "libx264", "-crf", "20", "-preset", "medium",
                     "-maxrate", "7000k", "-bufsize", "14000k", "-pix_fmt", "yuv420p",
                     "-c:a", "aac", "-b:a", "320k", "-ar", "48000",
-                    "-movflags", "+faststart", "-shortest",
+                    "-movflags", "+faststart",
+                    # -t, not -shortest: with a filtergraph, -shortest stops at
+                    # the shortest INPUT, so it ended the file at the unpadded
+                    # picture length and still clipped the song by a frame.
+                    "-t", f"{song:.3f}",
                     str(R/"nikhoj-songbad-lyric-video.mp4"), "-y"], check=True)
     (P/"assets/silent.mp4").unlink()
     print("wrote", R/"nikhoj-songbad-lyric-video.mp4")
