@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "vectorcraft": {
+      "command": "vectorcraft-cli",
+      "args": ["mcp", "--headless"]
+    }
+  }
+}
