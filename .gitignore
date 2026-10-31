@@ -104,3 +104,7 @@ venv/
 
 # Local Wan / diffusers GPU environment
 .venv-wan/
+
+# Nikhoj music video: the master, fonts and generated textures are rebuilt by
+# client-builds/nikhoj-mv/prep_assets.py — the song is not committed.
+remotion-composer/public/nikhoj/
