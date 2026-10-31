@@ -687,6 +687,7 @@ The `.agents/skills/` directory is large. When you're not coming in through a to
 | **Avatar / lip-sync** | `avatar-video`, `heygen`, `create-video`, `faceswap`, `video-translate`, `agents` |
 | **Capture** | `playwright-recording` (browser flows), `ffmpeg` (post) |
 | **Visualization** | `beautiful-mermaid`, `d3-viz`, `manim-composer`, `manimce-best-practices`, `manimgl-best-practices` |
+| **Vector art** | `vectorcraft` (posters, title cards, icons, SVG/PDF/PNG overlays via the VectorCraft MCP server or `vectorcraft-cli`; install with `scripts/install_vectorcraft.sh`) |
 | **Media editing** | `video-edit`, `video-download`, `video-understand`, `video-toolkit`, `visual-style` |
 
 **When in doubt, read the category's meta routing file first:**
