@@ -2,8 +2,10 @@
 import React from "react";
 import { Composition, registerRoot } from "remotion";
 import { MusicVideo, MVProps } from "./MusicVideo";
+import { VerticalMV, VerticalMVProps } from "./VerticalMV";
 
 const MVRoot: React.FC = () => (
+  <>
   <Composition
     id="MusicVideo"
     component={MusicVideo}
@@ -15,6 +17,18 @@ const MVRoot: React.FC = () => (
       title: "নিখোঁজ সংবাদ", subtitle: "Escape of Life", artist: "", editor: "" } as MVProps}
     calculateMetadata={({ props }) => ({ durationInFrames: Math.floor(props.durationSec * 30) })}
   />
+  <Composition
+    id="VerticalMV"
+    component={VerticalMV}
+    durationInFrames={1650}
+    fps={30}
+    width={1080}
+    height={1920}
+    defaultProps={{ song: "mv/song.mp3", durationSec: 351.1, beats: [], bass: [], rms: [], onset: [], sections: [], lines: [],
+      title: "নিখোঁজ সংবাদ", subtitle: "Escape of Life", artist: "", editor: "", cutStart: 80.8, cutEnd: 136 } as VerticalMVProps}
+    calculateMetadata={({ props }) => ({ durationInFrames: Math.round((props.cutEnd - props.cutStart) * 30) })}
+  />
+  </>
 );
 
 registerRoot(MVRoot);

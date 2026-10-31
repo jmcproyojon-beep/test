@@ -32,6 +32,9 @@ export type MVProps = {
   subtitle: string;
   artist: string;
   editor: string;
+  /** for the vertical wrapper: it draws its own lyrics and plays the audio */
+  hideLyrics?: boolean;
+  muted?: boolean;
 };
 
 const W = 1920;
@@ -56,7 +59,7 @@ const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
 // --------------------------------------------------------------------------- audio context
 
-type AudioCtx = { frame: number; fps: number; bass: number; rms: number; onset: number; beat: number; t: number };
+type AudioCtx = { frame: number; fps: number; bass: number; rms: number; onset: number; beat: number; t: number; hideLyrics?: boolean };
 const AudioState = createContext<AudioCtx>({ frame: 0, fps: 30, bass: 0, rms: 0, onset: 0, beat: 0, t: 0 });
 const useA = () => useContext(AudioState);
 
@@ -171,7 +174,8 @@ const Lyric: React.FC<{
   box?: boolean;
   shadow?: string;
 }> = ({ line, size = 72, color = "#fff", accent = K.neonPink, font = BN, y = 860, align = "center", x = 160, maxWidth = 1600, box, shadow }) => {
-  const { t, bass } = useA();
+  const { t, bass, hideLyrics } = useA();
+  if (hideLyrics) return null;
   const words = line.text.split(/\s+/);
   const dur = Math.max(0.6, line.end - line.start);
   const vis = interpolate(t, [line.start - 0.2, line.start, line.end + 0.25, line.end + 0.55], [0, 1, 1, 0], clamp);
@@ -690,7 +694,7 @@ export const MusicVideo: React.FC<MVProps> = (p) => {
   let last = -10;
   for (let k = 0; k < p.beats.length && p.beats[k] <= t; k++) last = p.beats[k];
   const beat = Math.exp(-(t - last) * 9);
-  const ctx: AudioCtx = { frame, fps, t, bass: p.bass[i] ?? 0, rms: p.rms[i] ?? 0, onset: p.onset[i] ?? 0, beat };
+  const ctx: AudioCtx = { frame, fps, t, bass: p.bass[i] ?? 0, rms: p.rms[i] ?? 0, onset: p.onset[i] ?? 0, beat, hideLyrics: p.hideLyrics };
   return (
     <AudioState.Provider value={ctx}>
       <AbsoluteFill style={{ background: K.night }}>
@@ -714,7 +718,7 @@ export const MusicVideo: React.FC<MVProps> = (p) => {
           const o = interpolate(t, [s.start - 0.12, s.start, s.start + 0.18], [0, 0.85, 0], clamp);
           return o > 0 ? <AbsoluteFill key={s.id} style={{ background: "#000", opacity: o }} /> : null;
         })}
-        <Audio src={staticFile(p.song)} />
+        {!p.muted && <Audio src={staticFile(p.song)} />}
       </AbsoluteFill>
     </AudioState.Provider>
   );
