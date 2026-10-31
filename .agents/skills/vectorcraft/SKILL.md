@@ -19,7 +19,7 @@ Both use an in-process engine with a CPU renderer — no GPU or display needed.
 ## Install / check
 
 ```sh
-command -v vectorcraft-cli || scripts/install_vectorcraft.sh   # builds from source, ~10-20 min first time
+command -v vectorcraft-cli || scripts/install_vectorcraft.sh   # builds from source, ~12 min first time
 vectorcraft-cli --help
 ```
 
@@ -80,12 +80,15 @@ Example batch:
   {"id":"file.new","params":{"width":1920,"height":1080}},
   {"id":"draw_shape","params":{"shape":"rectangle","x":0,"y":0,"width":1920,"height":1080,"fill":"#0f1226","stroke":"none"}},
   {"id":"draw_shape","params":{"shape":"ellipse","x":760,"y":240,"width":400,"height":400,"fill":"#ff6b35","stroke":"none",
-     "effects":[{"effect":"stylize.outerGlow"}]}},
+     "effects":[{"effect":"stylize.outerGlow","params":{"color":"#ff6b35","blur":40,"opacity":90}}]}},
   {"id":"draw_path","params":{"d":"M0 760 L480 520 L820 700 L1200 480 L1920 760 L1920 1080 L0 1080 Z","fill":"#2a1e5c","stroke":"none"}}
 ]}}
 ```
 
-(Check effect ids with `apply_effect {}` before relying on one.)
+Effect defaults are subtle (Outer Glow defaults to a 5 pt yellow glow), so set `params` explicitly.
+Check effect ids and their params with `apply_effect {}` (or `vectorcraft://effect/{id}`) before relying on one.
+
+Put text on top with `add_text {text, x, y, size, color, justify: "center"}`: with `justify: "center"`, `x` is the line centre.
 
 ## CLI workflow (no MCP needed)
 
@@ -121,8 +124,9 @@ vectorcraft-cli info file.ai
 ## Gotchas
 
 - Confine file access when needed: `vectorcraft-cli mcp --automation-read-root DIR --automation-write-root DIR`.
-- Fonts: the source build has no bundled font set; type falls back to a default face unless
-  system fonts are present. Use `outlineText: true` on SVG export when the viewer may lack the font.
+- Fonts: type renders with the built-in face or installed system fonts; list them with
+  `run_command {command: "text.fontList"}` (also `text.missingFonts`, `text.replaceFont`). Use `outlineText: true` on SVG export so the SVG does not
+  depend on the viewer having the font.
 - Large documents: drill with `inspect_document {depth: 0}`, `run_command document.find {...}`
   and `document.node {id, summary: true}` instead of dumping the whole model.
 - UI-only tools (`inspect_ui`, `type_text`, `answer_dialog`, `open_panel`, `screenshot {window:true}`)
