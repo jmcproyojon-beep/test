@@ -1,0 +1,38 @@
+@font-face { font-family: "Hind Siliguri"; font-weight: 700; src: url(assets/fonts/hind-siliguri-bengali-700-normal.woff2); unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+200C-200D, U+25CC, U+2026; }
+@font-face { font-family: "Hind Siliguri"; font-weight: 700; src: url(assets/fonts/hind-siliguri-latin-700-normal.woff2); unicode-range: U+0000-00FF, U+2000-206F; }
+@font-face { font-family: "Inter"; font-weight: 800; src: url(assets/fonts/inter-latin-800-normal.woff2); }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0A0A0A; }
+#root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #0A0A0A; font-family: "Hind Siliguri", sans-serif; }
+.clip { position: absolute; }
+#stage { left: 0; top: 0; width: 1920px; height: 1080px; }
+.bgsec { left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden;
+  background-image: radial-gradient(circle at 20% 30%, rgba(255,215,0,.07) 0 2px, transparent 3px), radial-gradient(circle at 70% 60%, rgba(0,229,255,.06) 0 2px, transparent 3px); background-size: 60px 60px, 90px 90px; }
+.halo { position: absolute; left: 460px; top: 40px; width: 1000px; height: 1000px; border-radius: 50%; background: radial-gradient(circle, rgba(255,215,0,.35), rgba(230,0,35,.15) 45%, transparent 70%); opacity: .25; }
+.line { left: 0; top: 0; width: 1920px; height: 1080px; }
+.prop { position: absolute; top: 230px; width: 560px; height: 560px; }
+.prop.l { left: 120px; } .prop.r { left: 1240px; } .prop.c { left: 680px; }
+.paper { position: absolute; left: 0; top: 0; background: #F3EBD8; display: flex; align-items: center; justify-content: center; box-shadow: 0 30px 60px rgba(0,0,0,.6); }
+.paper svg { display: block; }
+.lyr { position: absolute; top: 300px; width: 1100px; display: flex; flex-wrap: wrap; align-content: center; gap: 6px 26px; min-height: 480px; }
+.lyr.tl { left: 90px; justify-content: flex-start; } .lyr.tr { left: 730px; justify-content: flex-end; } .lyr.tc { left: 160px; width: 1600px; justify-content: center; }
+.w { display: inline-block; font: 700 110px/1.25 "Hind Siliguri", sans-serif; color: #FFFFFF; -webkit-text-stroke: 3px #0A0A0A; paint-order: stroke fill;
+  text-shadow: 7px 7px 0 #E60023, 14px 14px 0 rgba(0,0,0,.55); }
+.w.key { color: #FFD700; text-shadow: 7px 7px 0 #E60023, 0 0 34px rgba(255,215,0,.6), 14px 14px 0 rgba(0,0,0,.55); }
+.huge .w { font-size: 150px; } .huge .w.key { font-size: 170px; }
+#bg_hook .halo, #bg_hook2 .halo { background: radial-gradient(circle, rgba(255,215,0,.5), rgba(10,10,10,.25) 50%, transparent 70%); }
+#bg_v2 .halo { background: radial-gradient(circle, rgba(0,229,255,.35), rgba(255,46,147,.18) 45%, transparent 70%); }
+.tunnel { position: absolute; inset: 0; perspective: 800px; }
+.ring { position: absolute; left: 780px; top: 360px; width: 360px; height: 360px; }
+.ring svg { width: 360px; height: 360px; }
+.flash { left: 0; top: 0; width: 1920px; height: 1080px; background: #fff; mix-blend-mode: difference; }
+#title, #credit { left: 0; top: 0; width: 1920px; height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.tclock svg { width: 300px; height: 300px; }
+.ttl { font: 700 190px/1.1 "Hind Siliguri", sans-serif; color: #FFD700; -webkit-text-stroke: 4px #0A0A0A; paint-order: stroke fill; text-shadow: 10px 10px 0 #E60023, 0 0 60px rgba(255,215,0,.5); margin-top: 10px; }
+.tsub { font: 800 38px/1 "Inter", sans-serif; letter-spacing: 14px; color: #00E5FF; margin-top: 18px; }
+#tex { left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; overflow: hidden; }
+.grain { position: absolute; left: -100px; top: -100px; width: 2120px; height: 1280px; opacity: .16; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>"); }
+.scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 5px); opacity: .5; }
+.leak { position: absolute; left: 1100px; top: -300px; width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(255,120,40,.28), transparent 65%); mix-blend-mode: screen; }
+.vig { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.6) 100%); }
