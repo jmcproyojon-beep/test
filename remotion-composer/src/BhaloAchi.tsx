@@ -298,7 +298,7 @@ const SlamLine: React.FC<{ l: BALine; invert: boolean }> = ({ l, invert }) => {
           if (f < 0) return <span key={k} style={{ fontFamily: BN, fontWeight: 800, fontSize: size, opacity: 0 }}>{w}</span>;
           return (
             <span key={k} style={{ display: "inline-block", fontFamily: BN, fontWeight: 800, fontStretch: "85%", fontSize: size, lineHeight: 1.15, letterSpacing: "-0.01em",
-              transform: `scale(${interpolate(s, [0, 1], [3, 1])})`, filter: `blur(${interpolate(s, [0, 1], [20, 0], clamp)}px)`, opacity: Math.min(1, s * 2),
+              transform: `scale(${interpolate(s, [0, 1], [2.2, 1])})`, filter: `blur(${interpolate(s, [0, 1], [20, 0], clamp)}px)`, opacity: Math.min(1, s * 2),
               ...(key ? iridescent(t * 30) : { color: fg }), WebkitTextStroke: key ? undefined : undefined,
               textShadow: key ? undefined : invert ? "none" : `0 0 ${30 * u}px rgba(43,134,197,0.6)` }}>
               {w}
