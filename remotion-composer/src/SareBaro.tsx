@@ -25,8 +25,6 @@ export type SBProps = {
   editor: string;
 };
 
-const W = 1080;
-const H = 1920;
 const BN = "'Noto Sans Bengali', 'Noto Sans', sans-serif";
 const EN = "'Noto Sans', 'DejaVu Sans', sans-serif";
 const P = {
@@ -72,6 +70,8 @@ const DistortDefs: React.FC = () => {
 };
 
 const VHS: React.FC = () => {
+  const { width: W, height: H } = useVideoConfig();
+  const wide = W > H;
   const { frame, onset } = useA();
   const barY = (frame * 23) % (H + 300) - 150;
   return (
@@ -104,6 +104,8 @@ const SECTION_COLORS: Record<string, [string, string, string]> = {
 };
 
 const Tunnel: React.FC<{ kind: "rect" | "clock" | "ring"; color: string; speed?: number }> = ({ kind, color, speed = 1 }) => {
+  const { width: W, height: H } = useVideoConfig();
+  const wide = W > H;
   const { frame, bass, beat } = useA();
   const n = 14;
   return (
@@ -113,11 +115,11 @@ const Tunnel: React.FC<{ kind: "rect" | "clock" | "ring"; color: string; speed?:
         const s = Math.pow(z, 2.2) * 2.6 + 0.02;
         const op = Math.min(1, z * 1.6) * (1 - Math.max(0, z - 0.85) * 6);
         const cx = W / 2 + Math.sin(frame / 50 + k) * 20 * (1 - z);
-        const cy = H * 0.42 + Math.cos(frame / 60 + k) * 30 * (1 - z);
+        const cy = H * (wide ? 0.5 : 0.42) + Math.cos(frame / 60 + k) * 30 * (1 - z);
         const sw = 4 + z * 10 + bass * 8;
         const col = k % 3 === 0 ? color : k % 3 === 1 ? P.magenta : P.yellow;
         if (kind === "rect")
-          return <rect key={k} x={cx - 520 * s} y={cy - 820 * s} width={1040 * s} height={1640 * s} fill="none" stroke={col} strokeWidth={sw} opacity={op}
+          return <rect key={k} x={cx - W * 0.48 * s} y={cy - H * 0.43 * s} width={W * 0.96 * s} height={H * 0.86 * s} fill="none" stroke={col} strokeWidth={sw} opacity={op}
             transform={`rotate(${(k * 7 + frame * 0.3) % 360} ${cx} ${cy})`} />;
         if (kind === "ring")
           return <circle key={k} cx={cx} cy={cy} r={700 * s * (1 + beat * 0.05)} fill="none" stroke={col} strokeWidth={sw} opacity={op} />;
@@ -369,6 +371,8 @@ const Icon: React.FC<{ id: string; p: number }> = ({ id, p }) => {
 };
 
 const PropStage: React.FC<{ lines: SBLine[] }> = ({ lines }) => {
+  const { width: W, height: H } = useVideoConfig();
+  const wide = W > H;
   const { t, beat, bass, frame } = useA();
   const l = lines.find((x) => x.icon !== "hook" && x.icon !== "outro" && t >= x.start - 0.25 && t <= x.end + 0.6);
   if (!l) return null;
@@ -377,7 +381,7 @@ const PropStage: React.FC<{ lines: SBLine[] }> = ({ lines }) => {
   const sc = interpolate(p, [0, 0.7, 1], [0.2, 1.12, 1]) * (1 + beat * 0.06 + bass * 0.03);
   return (
     <svg width={W} height={H} style={{ position: "absolute" }}>
-      <g transform={`translate(${W / 2} ${H * 0.4}) scale(${sc * out}) rotate(${(1 - p) * -25 + Math.sin(frame / 12) * 3})`}>
+      <g transform={`translate(${wide ? W * 0.3 : W / 2} ${H * (wide ? 0.5 : 0.4)}) scale(${sc * out * (wide ? 0.95 : 1)}) rotate(${(1 - p) * -25 + Math.sin(frame / 12) * 3})`}>
         <Icon id={l.icon} p={p} />
       </g>
     </svg>
@@ -387,12 +391,14 @@ const PropStage: React.FC<{ lines: SBLine[] }> = ({ lines }) => {
 // --------------------------------------------------------------------------- hook visuals
 
 const HookStage: React.FC = () => {
+  const { width: W, height: H } = useVideoConfig();
+  const wide = W > H;
   const { t, beat, bass, onset, frame } = useA();
   const flick = onset > 0.75 || (frame % 9 === 0 && bass > 0.6);
   const digits = "১২:৩০";
   return (
     <AbsoluteFill>
-      <div style={{ position: "absolute", top: 560, left: 0, right: 0, textAlign: "center", fontFamily: BN, fontWeight: 900,
+      <div style={{ position: "absolute", top: wide ? 70 : 560, left: 0, right: 0, textAlign: "center", fontFamily: BN, fontWeight: 900,
         fontSize: 330 + beat * 50, color: flick ? P.black : P.yellow, WebkitTextStroke: `10px ${P.crimson}`,
         textShadow: `16px 0 ${P.magenta}, -16px 0 ${P.cyan}`, transform: `skewX(${Math.sin(t * 7) * 8}deg) rotate(${Math.sin(t * 3) * 4}deg)`,
         letterSpacing: 6 }}>
@@ -401,9 +407,10 @@ const HookStage: React.FC = () => {
       {/* melting drips under the digits */}
       <svg width={W} height={H} style={{ position: "absolute" }}>
         {Array.from({ length: 9 }, (_, i) => {
-          const x = 170 + i * 92;
+          const x = W / 2 - 370 + i * 92;
+          const y0 = wide ? 440 : 930;
           const len = 40 + ((frame * (2 + rnd(i) * 3) + i * 40) % 260);
-          return <path key={i} d={`M ${x} 930 V ${930 + len} a 18 18 0 0 0 36 0 V 930 Z`} fill={i % 2 ? P.yellow : P.crimson} opacity={0.9} />;
+          return <path key={i} d={`M ${x} ${y0} V ${y0 + len * (wide ? 0.6 : 1)} a 18 18 0 0 0 36 0 V ${y0} Z`} fill={i % 2 ? P.yellow : P.crimson} opacity={0.9} />;
         })}
       </svg>
     </AbsoluteFill>
@@ -413,6 +420,8 @@ const HookStage: React.FC = () => {
 // --------------------------------------------------------------------------- lyrics
 
 const Lyrics: React.FC<{ lines: SBLine[] }> = ({ lines }) => {
+  const { width: W, height: H } = useVideoConfig();
+  const wide = W > H;
   const { t, bass, beat } = useA();
   const l = lines.find((x) => t >= x.start - 0.12 && t <= x.end + 0.2);
   if (!l) return null;
@@ -425,7 +434,7 @@ const Lyrics: React.FC<{ lines: SBLine[] }> = ({ lines }) => {
   const col = hook ? colors[idx % colors.length] : "#fff";
   const sp = 8 + bass * 18;
   return (
-    <div style={{ position: "absolute", top: hook ? 1240 : 1360, left: 50, right: 50, textAlign: "center", fontFamily: BN, fontWeight: 900,
+    <div style={{ position: "absolute", top: wide ? (hook ? 780 : 360) : hook ? 1240 : 1360, left: wide && !hook ? 1000 : 50, right: wide && !hook ? 70 : 50, textAlign: "center", fontFamily: BN, fontWeight: 900,
       fontSize: size, lineHeight: 1.22, color: col, whiteSpace: hook ? "nowrap" : undefined, transform: hook ? `scale(${1 + beat * 0.12}) rotate(${idx % 2 ? -3 : 3}deg)` : undefined,
       textShadow: `${sp}px 0 ${P.magenta}, ${-sp}px 0 ${P.cyan}, 0 10px 0 ${P.black}` }}>
       {hook && (
@@ -449,6 +458,8 @@ const Lyrics: React.FC<{ lines: SBLine[] }> = ({ lines }) => {
 // --------------------------------------------------------------------------- intro / silence / end
 
 const Intro: React.FC<{ title: string; artist: string }> = ({ title, artist }) => {
+  const { width: W, height: H } = useVideoConfig();
+  const wide = W > H;
   const { t, frame } = useA();
   const on = interpolate(t, [0.2, 0.6], [0.01, 1], clamp);
   return (
@@ -476,6 +487,8 @@ const Silence: React.FC = () => {
 };
 
 const End: React.FC<{ title: string; artist: string; editor: string; durationSec: number }> = ({ title, artist, editor, durationSec }) => {
+  const { width: W, height: H } = useVideoConfig();
+  const wide = W > H;
   const { t } = useA();
   const card = interpolate(t, [122.6, 123.4], [0, 1], clamp);
   const off = interpolate(t, [durationSec - 1.2, durationSec - 0.2], [1, 0.004], clamp);
