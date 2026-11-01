@@ -17,6 +17,7 @@ export type BDProps = {
   lines: BDLine[];
   title: string;
   credits: { role: string; name: string }[];
+  scenes?: [string, number, number][];
 };
 
 const W = 1920;
@@ -30,14 +31,14 @@ const P = {
 };
 
 // scene timeline (seconds) — matched to the song's sections
-type SceneId = "roofNight" | "call" | "title" | "room" | "pocket" | "traffic" | "home" | "stage" | "dhol" | "bkash" | "tea" | "kitchen" | "bus" | "stageNight" | "village" | "river" | "roofFinal" | "roofCalm" | "end";
+type SceneId = "roofNight" | "call" | "title" | "room" | "teaCup" | "pocket" | "mirror" | "bazaar" | "traffic" | "boss" | "home" | "timelapse" | "stage" | "busRoof" | "dhol" | "mela" | "bkash" | "feed" | "late" | "tea" | "kitchen" | "bus" | "stageNight" | "busRoofNight" | "school" | "files" | "village" | "river" | "homecoming" | "roofFinal" | "parade" | "roofCalm" | "end";
 const SCENES: [SceneId, number, number][] = [
   ["roofNight", 0, 12.4], ["call", 12.4, 25.6], ["title", 25.6, 43.5], ["room", 43.5, 53.4], ["pocket", 53.4, 63.3], ["traffic", 63.3, 72.6],
   ["home", 72.6, 84.6], ["stage", 84.6, 113.2], ["dhol", 113.2, 133.4], ["bkash", 133.4, 145.3], ["tea", 145.3, 151.2], ["kitchen", 151.2, 157.4],
   ["bus", 157.4, 164.6], ["stageNight", 164.6, 186.7], ["village", 186.7, 195.2], ["river", 195.2, 209.5], ["roofNight", 209.5, 215.6],
   ["roofFinal", 215.6, 261.6], ["roofCalm", 261.6, 274.2], ["end", 274.2, 999],
 ];
-const BIG: SceneId[] = ["stage", "stageNight", "roofFinal", "dhol"];
+const BIG: SceneId[] = ["stage", "stageNight", "roofFinal", "dhol", "busRoof", "busRoofNight", "mela", "parade"];
 
 // ------------------------------------------------------------------ fonts
 const useFonts = () => {
@@ -57,7 +58,7 @@ const useFonts = () => {
 };
 
 // ------------------------------------------------------------------ context
-type Ctx = { frame: number; t: number; fps: number; bass: number; beat: number; bi: number; st: number; scene: SceneId; line?: BDLine; cue?: string; singing: boolean };
+type Ctx = { bounds: number[]; frame: number; t: number; fps: number; bass: number; beat: number; bi: number; st: number; scene: SceneId; line?: BDLine; cue?: string; singing: boolean };
 const A = createContext<Ctx>(null as unknown as Ctx);
 const useA = () => useContext(A);
 
@@ -384,8 +385,7 @@ const CallScene: React.FC = () => {
         <rect x={-210} y={-420} width={420} height={840} rx={50} fill={P.ink} stroke={P.yellow} strokeWidth={10} />
         <rect x={-180} y={-370} width={360} height={720} rx={20} fill={P.teal} />
         <circle cx={0} cy={-200} r={90} fill={P.cream} stroke={P.ink} strokeWidth={6} />
-        <Person kind="ma" x={0} y={-60} s={0.4} pose="idle" />
-        <text x={0} y={30} textAnchor="middle" fontFamily={BN} fontWeight={800} fontSize={64} fill={P.white}>আম্মা</text>
+        <circle cx={0} cy={-225} r={34} fill={P.navy} /><path d="M-60 -140 q60 -70 120 0z" fill={P.navy} />
         <text x={0} y={90} textAnchor="middle" fontFamily={EN} fontWeight={600} fontSize={30} fill={P.navy}>{ring ? "calling…" : `00:${String(Math.floor(st)).padStart(2, "0")}`}</text>
         <circle cx={-100} cy={250} r={50} fill={P.red} /><circle cx={100} cy={250} r={50} fill={P.green} />
       </g>
@@ -774,6 +774,278 @@ const EndScene: React.FC<{ title: string; credits: BDProps["credits"] }> = ({ ti
   );
 };
 
+
+// ------------------------------------------------------------------ extra story scenes
+const TeaCupScene: React.FC = () => {
+  const { frame, st } = useA();
+  return (
+    <svg width={W} height={H}>
+      <Rays cx={W / 2} cy={H / 2} colors={[P.orange, P.yellow]} speed={0.15} />
+      <ellipse cx={W / 2} cy={980} rx={760} ry={90} fill={P.pink} stroke={P.ink} strokeWidth={8} />
+      <path d={`M${W / 2 - 520} 300 h1040 v300 a520 380 0 0 1 -1040 0z`} fill={P.white} stroke={P.ink} strokeWidth={10} />
+      <path d={`M${W / 2 + 520} 380 a150 130 0 1 1 0 260`} fill="none" stroke={P.ink} strokeWidth={30} />
+      <path d={`M${W / 2 + 520} 380 a150 130 0 1 1 0 260`} fill="none" stroke={P.white} strokeWidth={18} />
+      <ellipse cx={W / 2} cy={300} rx={520} ry={70} fill="#8b4513" stroke={P.ink} strokeWidth={8} />
+      {/* calendar pages of 'yesterday' sinking */}
+      {[0, 1, 2].map((i) => {
+        const y = 260 + ((st * 40 + i * 50) % 120);
+        return <g key={i} transform={`translate(${W / 2 - 220 + i * 210} ${y}) rotate(${Math.sin(frame / 12 + i) * 14})`} opacity={interpolate(y, [260, 380], [1, 0], clamp)}><rect x={-60} y={-70} width={120} height={140} fill={P.white} stroke={P.ink} strokeWidth={4} /><rect x={-60} y={-70} width={120} height={36} fill={P.red} /><text y={50} textAnchor="middle" fontFamily={BN} fontWeight={800} fontSize={40} fill={P.ink}>কাল</text></g>;
+      })}
+      {[0, 1, 2, 3].map((i) => <path key={i} d={`M${W / 2 - 240 + i * 160} 200 q-30 -60 0 -120 q30 -60 0 -120`} stroke={P.white} strokeWidth={14} fill="none" opacity={0.5 + Math.sin(frame / 8 + i) * 0.3} />)}
+      <Person x={W / 2} y={360 + Math.sin(frame / 10) * 8} s={0.5} pose="sad" mood="sad" />
+    </svg>
+  );
+};
+
+const MirrorScene: React.FC = () => {
+  const { frame, cue } = useA();
+  const sad = cue === "heartbreak" || cue === "mask";
+  return (
+    <svg width={W} height={H}>
+      <rect width={W} height={H} fill="#ffcad4" />
+      {Array.from({ length: 12 }, (_, i) => <rect key={i} x={i * 170} y={0} width={80} height={H} fill="#f4acb7" opacity={0.5} />)}
+      <rect y={860} width={W} height={220} fill="#9d8189" />
+      <Person x={560} y={1000} s={1.3} pose="shrug" mood="smile" />
+      {/* mirror shows the real face */}
+      <g transform="translate(1340 520)">
+        <ellipse rx={330} ry={420} fill="#d8f3dc" stroke={P.yellow} strokeWidth={26} />
+        <ellipse rx={300} ry={390} fill="#b7e4c7" />
+        <Person x={0} y={420} s={1.1} pose="sad" mood={sad ? "sad" : "smile"} flip />
+        {sad && [0, 1].map((i) => <path key={i} d={`M${-22 + i * 44} ${-30 + ((frame * 2 + i * 20) % 60)} q6 14 0 22 q-6 -8 0 -22z`} fill={P.blue} />)}
+        <path d="M-240 -260 l90 -80 M-200 -180 l60 -50" stroke={P.white} strokeWidth={14} opacity={0.6} />
+      </g>
+    </svg>
+  );
+};
+
+const BazaarScene: React.FC = () => {
+  const { frame, st, beat } = useA();
+  const price = Math.round(60 + st * 18);
+  return (
+    <svg width={W} height={H}>
+      <Sky top="#ffe066" bottom="#ffb703" />
+      {/* tarp canopy */}
+      <path d={`M0 0 H${W} V220 q-240 60 -480 0 q-240 60 -480 0 q-240 60 -480 0 q-240 60 -480 0z`} fill={P.blue} stroke={P.ink} strokeWidth={6} />
+      <rect y={760} width={W} height={320} fill="#a68a64" />
+      {/* baskets */}
+      {[[260, "#e63946", "টমেটো"], [700, "#80b918", "লাউ"], [1140, "#ff8c1a", "পেঁয়াজ"], [1580, "#adb5bd", "ইলিশ"]].map(([x, c, n], i) => (
+        <g key={i} transform={`translate(${x} 760)`}>
+          <path d="M-170 0 h340 l-30 140 h-280z" fill="#bc6c25" stroke={P.ink} strokeWidth={6} />
+          {Array.from({ length: 7 }, (_, k) => <ellipse key={k} cx={-120 + k * 40} cy={-14 - (k % 2) * 20} rx={i === 3 ? 70 : 30} ry={i === 3 ? 18 : 28} fill={c as string} stroke={P.ink} strokeWidth={4} />)}
+          <g transform={`translate(0 -150) rotate(${Math.sin(frame / 9 + i) * 6}) scale(${1 + (i === Math.floor(st) % 4 ? beat * 0.2 : 0)})`}>
+            <rect x={-110} y={-50} width={220} height={100} fill={P.white} stroke={P.ink} strokeWidth={5} />
+            <text y={-6} textAnchor="middle" fontFamily={BN} fontWeight={800} fontSize={34} fill={P.ink}>{n}</text>
+            <text y={38} textAnchor="middle" fontFamily={BN} fontWeight={800} fontSize={40} fill={P.red}>৳{price + i * 40}</text>
+          </g>
+        </g>
+      ))}
+      <Person x={W / 2 - 220} y={1040} s={0.95} pose="shrug" mood="wow" />
+      <Person kind="driver" x={W / 2 + 220} y={1040} s={0.9} pose="point" seed={2} />
+    </svg>
+  );
+};
+
+const BossScene: React.FC = () => {
+  const { st, fps } = useA();
+  const stamp = spring({ frame: Math.round((st - 2.2) * fps), fps, config: { damping: 9, stiffness: 160 } });
+  return (
+    <svg width={W} height={H}>
+      <rect width={W} height={H} fill="#e9ecef" />
+      <rect x={1300} y={120} width={420} height={480} fill={P.white} stroke={P.ink} strokeWidth={8} />
+      <rect x={1300} y={120} width={420} height={110} fill={P.red} />
+      <text x={1510} y={200} textAnchor="middle" fontFamily={BN} fontWeight={800} fontSize={60} fill={P.white}>ক্যালেন্ডার</text>
+      {Array.from({ length: 5 }, (_, r) => Array.from({ length: 7 }, (_, c) => <rect key={`${r}${c}`} x={1320 + c * 56} y={250 + r * 66} width={44} height={50} fill={r === 2 && c === 5 ? P.yellow : "#dee2e6"} />))}
+      <rect y={760} width={W} height={320} fill="#8d6e63" />
+      <rect x={200} y={640} width={900} height={60} fill="#5d4037" stroke={P.ink} strokeWidth={6} />
+      <Person kind="baba" x={650} y={640} s={0.9} pose="point" mood="sad" seed={5} />
+      <Person x={1150} y={1040} s={1.0} pose="shrug" mood="wow" />
+      <g transform={`translate(700 380) scale(${stamp}) rotate(-14)`} opacity={stamp}>
+        <rect x={-260} y={-90} width={520} height={180} rx={20} fill="none" stroke={P.red} strokeWidth={16} />
+        <text y={30} textAnchor="middle" fontFamily={BN} fontWeight={800} fontSize={100} fill={P.red}>ছুটি নাই!</text>
+      </g>
+    </svg>
+  );
+};
+
+const TimelapseScene: React.FC = () => {
+  const { frame, st } = useA();
+  const a = st * 2.2;
+  const day = (Math.sin(a) + 1) / 2;
+  return (
+    <svg width={W} height={H}>
+      <rect width={W} height={H} fill={`rgb(${Math.round(20 + day * 120)},${Math.round(30 + day * 160)},${Math.round(80 + day * 160)})`} />
+      <circle cx={W / 2 + Math.cos(a) * 800} cy={760 - Math.sin(a) * 600} r={90} fill={P.yellow} />
+      <circle cx={W / 2 - Math.cos(a) * 800} cy={760 + Math.sin(a) * 600} r={70} fill={P.cream} />
+      <Skyline y={760} night={day < 0.4} seed="tl" />
+      <rect y={760} width={W} height={320} fill="#6c757d" />
+      {Array.from({ length: 14 }, (_, i) => <g key={i} opacity={0.55}><Person kind={(["f1", "f2", "driver"] as Kind[])[i % 3]} x={((i * 160 + frame * (18 + (i % 3) * 6)) % (W + 300)) - 150} y={1020} s={0.5} pose="idle" seed={i} /></g>)}
+      <Person x={W / 2} y={1040} s={0.95} pose="sad" mood="sad" />
+      <g transform="translate(1640 200)"><circle r={110} fill={P.white} stroke={P.ink} strokeWidth={8} /><line x2={Math.sin(frame / 2) * 80} y2={-Math.cos(frame / 2) * 80} stroke={P.ink} strokeWidth={8} /><line x2={Math.sin(frame / 24) * 50} y2={-Math.cos(frame / 24) * 50} stroke={P.red} strokeWidth={10} /></g>
+    </svg>
+  );
+};
+
+const BusRoofScene: React.FC<{ night?: boolean }> = ({ night }) => {
+  const { frame } = useA();
+  return (
+    <svg width={W} height={H}>
+      {night ? <Sky top="#10002b" bottom="#7b2cbf" /> : <Sky top="#00b4ff" bottom="#90e0ef" />}
+      {night && <Stars />}
+      <g transform={`translate(${-((frame * 6) % 400)} 0)`}><Skyline y={780} night={night} seed="br" dx={0} /></g>
+      <rect y={780} width={W} height={300} fill="#495057" />
+      <path d={`M0 960 H${W}`} stroke={P.yellow} strokeWidth={10} strokeDasharray="80 60" strokeDashoffset={frame * 14} />
+      <Bus x={300} y={1020} s={1.75} heads={false} />
+      <Person x={620} y={460} s={0.75} pose="dance" mood="sing" />
+      <Person kind="f1" x={900} y={460} s={0.7} pose="dance" seed={1} />
+      <Person kind="f2" x={1180} y={460} s={0.7} pose="dance" seed={2} />
+      <Person kind="driver" x={1450} y={460} s={0.7} pose="dance" seed={3} />
+    </svg>
+  );
+};
+
+const MelaScene: React.FC = () => {
+  const { frame, beat, bi } = useA();
+  return (
+    <svg width={W} height={H}>
+      <Rays cx={W / 2} cy={H / 2} colors={bi % 2 ? [P.red, P.white] : [P.white, P.red]} n={20} speed={0.6} />
+      {/* nagordola */}
+      <g transform="translate(1500 470)">
+        <path d="M0 0 L-180 520 M0 0 L180 520" stroke={P.ink} strokeWidth={16} />
+        <g transform={`rotate(${frame * 2})`}>
+          <circle r={330} fill="none" stroke={P.yellow} strokeWidth={16} />
+          {Array.from({ length: 8 }, (_, i) => <line key={i} x2={Math.cos(i / 8 * Math.PI * 2) * 330} y2={Math.sin(i / 8 * Math.PI * 2) * 330} stroke={P.ink} strokeWidth={8} />)}
+          {Array.from({ length: 8 }, (_, i) => <g key={i} transform={`translate(${Math.cos(i / 8 * Math.PI * 2) * 330} ${Math.sin(i / 8 * Math.PI * 2) * 330}) rotate(${-frame * 2})`}><rect x={-46} y={0} width={92} height={70} rx={10} fill={[P.pink, P.blue, P.green, P.orange][i % 4]} stroke={P.ink} strokeWidth={5} /></g>)}
+        </g>
+      </g>
+      {/* Boishakhi masks */}
+      {[[300, P.yellow], [620, P.blue]].map(([x, c], i) => (
+        <g key={i} transform={`translate(${x} ${330 + Math.sin(frame / 10 + i) * 20}) scale(${1 + beat * 0.08})`}>
+          <ellipse rx={140} ry={170} fill={c as string} stroke={P.ink} strokeWidth={8} />
+          <ellipse cx={-50} cy={-30} rx={34} ry={44} fill={P.white} stroke={P.ink} strokeWidth={6} /><ellipse cx={50} cy={-30} rx={34} ry={44} fill={P.white} stroke={P.ink} strokeWidth={6} />
+          <circle cx={-50} cy={-26} r={14} fill={P.ink} /><circle cx={50} cy={-26} r={14} fill={P.ink} />
+          <path d="M-70 60 q70 60 140 0" fill={P.red} stroke={P.ink} strokeWidth={6} />
+          <path d="M-140 -60 q-40 -120 40 -150 M140 -60 q40 -120 -40 -150" stroke={P.red} strokeWidth={14} fill="none" />
+        </g>
+      ))}
+      <Person x={520} y={1040} s={0.9} pose="dance" mood="sing" />
+      <Person kind="f2" x={820} y={1040} s={0.85} pose="dance" seed={2} />
+    </svg>
+  );
+};
+
+const FeedScene: React.FC = () => {
+  const { frame, st } = useA();
+  return (
+    <svg width={W} height={H}>
+      <rect width={W / 2} height={H} fill={P.pink} />
+      <rect x={W / 2} width={W / 2} height={H} fill="#adb5bd" />
+      <g transform="translate(480 540)">
+        <rect x={-260} y={-460} width={520} height={920} rx={50} fill={P.ink} />
+        <rect x={-230} y={-420} width={460} height={840} rx={20} fill={P.white} />
+        {[0, 1, 2].map((i) => <g key={i} transform={`translate(0 ${-300 + i * 260 - ((st * 60) % 260)})`}><rect x={-200} y={-100} width={400} height={220} rx={16} fill={[P.yellow, P.teal, P.orange][i]} /><Person x={0} y={110} s={0.32} pose="dance" mood="sing" seed={i} /><text x={150} y={100} fontFamily={EN} fontWeight={900} fontSize={30} fill={P.red}>♥ {(9 + i) * 111}</text></g>)}
+      </g>
+      <text x={480} y={60} textAnchor="middle" fontFamily={BN} fontWeight={800} fontSize={48} fill={P.white}>ফোনে</text>
+      <text x={1440} y={60} textAnchor="middle" fontFamily={BN} fontWeight={800} fontSize={48} fill={P.ink}>বাস্তবে</text>
+      {/* real life: buried in work */}
+      <rect x={1060} y={760} width={760} height={40} fill="#6c584c" />
+      {Array.from({ length: 9 }, (_, i) => <rect key={i} x={1120 + (i % 3) * 40} y={730 - i * 34} width={200} height={34} fill={[P.white, P.cream, "#e9ecef"][i % 3]} stroke={P.ink} strokeWidth={3} transform={`rotate(${Math.sin(frame / 6 + i) * 2} 1220 ${730 - i * 34})`} />)}
+      <Person x={1560} y={1040} s={0.95} pose="shrug" mood="wow" />
+    </svg>
+  );
+};
+
+const LateScene: React.FC = () => {
+  const { frame, st } = useA();
+  const x = interpolate(st, [0, 2.6], [-200, 900], clamp);
+  return (
+    <svg width={W} height={H}>
+      <Sky top="#ffd166" bottom="#f8961e" />
+      <g transform={`translate(${-((frame * 10) % 600)} 0)`}><Skyline y={760} seed="lt" /></g>
+      <rect y={760} width={W} height={320} fill="#6c757d" />
+      <Person x={x} y={1040} s={0.95} pose="dance" mood="wow" />
+      {[0, 1, 2].map((i) => <line key={i} x1={x - 200 - i * 60} y1={700 + i * 60} x2={x - 120 - i * 60} y2={700 + i * 60} stroke={P.white} strokeWidth={10} />)}
+      <Person kind="f1" x={1500} y={1040} s={0.9} pose="shrug" seed={1} mood="sad" />
+      <Person kind="f2" x={1740} y={1040} s={0.9} pose="point" seed={2} />
+      <g transform="translate(1600 260)"><circle r={130} fill={P.white} stroke={P.ink} strokeWidth={8} /><line x2={Math.sin(frame / 3) * 100} y2={-Math.cos(frame / 3) * 100} stroke={P.red} strokeWidth={10} /><text y={200} textAnchor="middle" fontFamily={BN} fontWeight={800} fontSize={50} fill={P.navy}>৫ মিনিট?!</text></g>
+    </svg>
+  );
+};
+
+const SchoolScene: React.FC = () => {
+  const { frame } = useA();
+  return (
+    <svg width={W} height={H}>
+      <rect width={W} height={H} fill="#caf0f8" />
+      <rect x={260} y={120} width={1000} height={520} fill="#2d6a4f" stroke="#6f4518" strokeWidth={24} />
+      <text x={760} y={320} textAnchor="middle" fontFamily={BN} fontWeight={700} fontSize={70} fill={P.white}>আমার স্বপ্ন:</text>
+      <text x={760} y={440} textAnchor="middle" fontFamily={BN} fontWeight={700} fontSize={60} fill={P.yellow}>পাইলট • ডাক্তার • হিরো</text>
+      <rect y={820} width={W} height={260} fill="#d4a373" />
+      {[0, 1, 2].map((i) => <rect key={i} x={300 + i * 480} y={820} width={300} height={40} fill="#6f4518" />)}
+      <Person kind="f1" x={380} y={1000} s={0.55} pose="wave" seed={1} />
+      <Person x={900} y={1000} s={0.6} pose="wave" mood="sing" />
+      <Person kind="f2" x={1400} y={1000} s={0.55} pose="idle" seed={2} />
+      <g transform={`translate(1560 260) rotate(${Math.sin(frame / 10) * 10})`}><path d="M-120 0 l240 -30 l-60 30 l60 30z" fill={P.white} stroke={P.ink} strokeWidth={5} /></g>
+      <Kite x={1700} y={520} c={P.pink} seed={4} />
+    </svg>
+  );
+};
+
+const FilesScene: React.FC = () => {
+  const { frame, st } = useA();
+  const n = Math.min(14, Math.floor(st * 5));
+  return (
+    <svg width={W} height={H}>
+      <rect width={W} height={H} fill="#adb5bd" />
+      <rect y={800} width={W} height={280} fill="#6c757d" />
+      {Array.from({ length: n }, (_, i) => <rect key={i} x={560 + (i % 2) * 30 + Math.sin(i) * 20} y={760 - i * 46} width={360} height={44} fill={[P.white, P.cream, "#dee2e6"][i % 3]} stroke={P.ink} strokeWidth={4} />)}
+      {Array.from({ length: Math.max(0, n - 3) }, (_, i) => <rect key={i} x={1060 + Math.sin(i * 2) * 30} y={760 - i * 46} width={340} height={44} fill={[P.cream, P.white][i % 2]} stroke={P.ink} strokeWidth={4} />)}
+      <Person x={980} y={1040} s={1.0} pose="sad" mood="sad" />
+      <g transform="translate(1640 220)"><circle r={120} fill={P.white} stroke={P.ink} strokeWidth={8} /><line x2={Math.sin(frame / 3) * 90} y2={-Math.cos(frame / 3) * 90} stroke={P.ink} strokeWidth={8} /></g>
+    </svg>
+  );
+};
+
+const HomecomingScene: React.FC = () => {
+  const { st, frame, cue } = useA();
+  const x = interpolate(st, [0, 2.4], [-150, 760], clamp);
+  return (
+    <svg width={W} height={H}>
+      <Sky top="#ffafcc" bottom="#ffd6a5" />
+      <circle cx={1500} cy={300} r={120} fill={P.orange} />
+      <rect y={720} width={W} height={360} fill="#80b918" />
+      <g transform="translate(1100 720)"><path d="M0 0 v-260 h460 v260z" fill="#d4a373" stroke={P.ink} strokeWidth={6} /><path d="M-50 -260 L230 -420 L510 -260z" fill="#adb5bd" stroke={P.ink} strokeWidth={6} /><rect x={180} y={-150} width={100} height={150} fill="#6f4518" /></g>
+      <Person kind="ma" x={1180} y={990} s={0.9} pose={st > 2 ? "wave" : "idle"} mood="sing" />
+      <Person kind="baba" x={1420} y={990} s={0.9} pose={st > 2 ? "wave" : "idle"} mood="smile" />
+      <Person x={x} y={1000} s={0.95} pose={st > 2.4 ? "wave" : "dance"} mood="sing" />
+      <g transform={`translate(${x - 120} 960)`}><rect x={-50} y={-90} width={100} height={90} rx={10} fill={P.red} stroke={P.ink} strokeWidth={5} /><path d="M-30 -90 q30 -40 60 0" fill="none" stroke={P.ink} strokeWidth={6} /></g>
+      {(cue === "sunset" || cue === "heart") && Array.from({ length: 8 }, (_, i) => <path key={i} transform={`translate(${1000 + i * 70} ${600 - ((frame * 2 + i * 50) % 300)}) scale(0.5)`} d="M0 40 l-40 -40 a24 24 0 0 1 40 -32 a24 24 0 0 1 40 32z" fill={P.red} stroke={P.ink} strokeWidth={5} />)}
+    </svg>
+  );
+};
+
+const ParadeScene: React.FC = () => {
+  const { frame, beat } = useA();
+  return (
+    <svg width={W} height={H}>
+      <Rays cx={W / 2} cy={260} colors={[P.yellow, P.pink, P.blue, P.green]} speed={0.6} />
+      <Skyline y={700} seed="pd" scale={0.7} />
+      <rect y={700} width={W} height={380} fill="#495057" />
+      {/* bunting */}
+      <path d={`M0 330 Q${W / 2} 420 ${W} 330`} stroke={P.ink} strokeWidth={4} fill="none" />
+      {Array.from({ length: 16 }, (_, i) => { const x = i * 124 + 40; const y = 330 + Math.sin((x / W) * Math.PI) * 88; return <path key={i} d={`M${x} ${y} l50 0 l-25 ${55 + Math.sin(frame / 6 + i) * 6}z`} fill={[P.pink, P.yellow, P.blue, P.green][i % 4]} stroke={P.ink} strokeWidth={3} />; })}
+      {[0, 1].map((i) => (
+        <g key={i} transform={`translate(${((i * 1100 + frame * 6) % (W + 1100)) - 600} 0)`}>
+          <Rickshaw x={0} y={1050} s={1.25} hue={[P.pink, P.blue][i]}>
+            <Person kind={(["bablu", "f1"] as Kind[])[i]} x={-100} y={-170} s={0.6} pose="dance" seed={i} mood="sing" />
+          </Rickshaw>
+        </g>
+      ))}
+      {Array.from({ length: 6 }, (_, i) => <Person key={i} kind={(["f2", "ma", "baba", "f1", "driver", "f2"] as Kind[])[i]} x={160 + i * 320} y={1075} s={0.55} pose="dance" seed={i + 3} />)}
+      {Array.from({ length: 24 }, (_, i) => <Flower key={i} x={(random(`pf${i}`) * W + frame * 2) % W} y={(frame * (2 + (i % 3)) + random(`pfy${i}`) * 600) % 600} r={24 + beat * 6} spin={frame * 4} c1={[P.pink, P.blue, P.green][i % 3]} />)}
+    </svg>
+  );
+};
+
 // ------------------------------------------------------------------ lyrics
 const wordTimes = (l: BDLine) => {
   const words = l.text.split(/\s+/).filter(Boolean);
@@ -845,9 +1117,9 @@ const PaintedChorus: React.FC<{ l: BDLine }> = ({ l }) => {
 
 // ------------------------------------------------------------------ transitions
 const Wipe: React.FC = () => {
-  const { t, frame } = useA();
+  const { t, frame, bounds } = useA();
   let p = -1;
-  for (const [, s] of SCENES) if (s > 0 && Math.abs(t - s) < 0.25) p = (t - s + 0.25) / 0.5;
+  for (const s of bounds) if (s > 0 && Math.abs(t - s) < 0.2) p = (t - s + 0.2) / 0.4;
   if (p < 0) return null;
   const x = interpolate(p, [0, 1], [-W * 1.2, W * 1.2]);
   return (
@@ -872,7 +1144,8 @@ export const BabluDhaka: React.FC<BDProps> = (p) => {
   let bi = -1;
   for (let k = 0; k < p.beats.length && p.beats[k] <= t; k++) bi = k;
   const beat = bi >= 0 ? Math.exp(-(t - p.beats[bi]) * 9) : 0;
-  const sc = SCENES.find(([, s, e]) => t >= s && t < e) ?? SCENES[SCENES.length - 1];
+  const SC = (p.scenes as [SceneId, number, number][] | undefined) ?? SCENES;
+  const sc = SC.find(([, s, e]) => t >= s && t < e) ?? SC[SC.length - 1];
   const [scene, s0] = sc;
   let line: BDLine | undefined;
   for (const l of p.lines) if (t >= l.start && t < l.end) line = l;
@@ -880,7 +1153,7 @@ export const BabluDhaka: React.FC<BDProps> = (p) => {
   // cue: icon of the latest line that started inside this scene
   let cue: string | undefined;
   for (const l of p.lines) if (l.start <= t + 0.05 && l.start >= s0 - 0.2 && l.icon) cue = l.icon;
-  const ctx: Ctx = { frame, t, fps, bass: p.bass[i] ?? 0, beat, bi, st: t - s0, scene, line, cue, singing: !!line };
+  const ctx: Ctx = { bounds: SC.map((x) => x[1]), frame, t, fps, bass: p.bass[i] ?? 0, beat, bi, st: t - s0, scene, line, cue, singing: !!line };
   const big = BIG.includes(scene);
   const zoom = 1 + beat * (big ? 0.012 : 0.004) + Math.min(0.04, (t - s0) * 0.003);
   return (
@@ -905,6 +1178,20 @@ export const BabluDhaka: React.FC<BDProps> = (p) => {
           {scene === "river" && <RiverScene />}
           {scene === "roofFinal" && <RoofFinal />}
           {scene === "roofCalm" && <RoofCalm />}
+          {scene === "teaCup" && <TeaCupScene />}
+          {scene === "mirror" && <MirrorScene />}
+          {scene === "bazaar" && <BazaarScene />}
+          {scene === "boss" && <BossScene />}
+          {scene === "timelapse" && <TimelapseScene />}
+          {scene === "busRoof" && <BusRoofScene />}
+          {scene === "busRoofNight" && <BusRoofScene night />}
+          {scene === "mela" && <MelaScene />}
+          {scene === "feed" && <FeedScene />}
+          {scene === "late" && <LateScene />}
+          {scene === "school" && <SchoolScene />}
+          {scene === "files" && <FilesScene />}
+          {scene === "homecoming" && <HomecomingScene />}
+          {scene === "parade" && <ParadeScene />}
           {scene === "end" && <EndScene title={p.title} credits={p.credits} />}
         </AbsoluteFill>
         {line && !line.who && scene !== "call" && (big ? <PaintedChorus key={line.start} l={line} /> : <Signboard key={line.start} l={line} />)}
