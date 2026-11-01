@@ -1,0 +1,3 @@
+{"tempo": 1.6, "gap": 0.4,
+ "windows": [[0.0, 121.0], [136.5, 196.0], [233.0, 247.25]],
+ "why": "ElevenLabs credits cover ~125 s of a 247 s song. The final chorus (196-233 s) repeats chorus 1 word for word and is located from the music instead; everything else is sent at 1.6x tempo (pitch kept) and mapped back."}
