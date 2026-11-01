@@ -23,6 +23,7 @@ export type SBProps = {
   title: string;
   artist: string;
   editor: string;
+  credits?: { role: string; name: string }[];
 };
 
 const BN = "'Noto Sans Bengali', 'Noto Sans', sans-serif";
@@ -486,7 +487,7 @@ const Silence: React.FC = () => {
   );
 };
 
-const End: React.FC<{ title: string; artist: string; editor: string; durationSec: number }> = ({ title, artist, editor, durationSec }) => {
+const End: React.FC<{ title: string; artist: string; editor: string; durationSec: number; credits?: SBProps["credits"] }> = ({ title, artist, editor, durationSec, credits }) => {
   const { width: W, height: H } = useVideoConfig();
   const wide = W > H;
   const { t } = useA();
@@ -496,8 +497,19 @@ const End: React.FC<{ title: string; artist: string; editor: string; durationSec
     <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", opacity: card }}>
       <div style={{ width: W, height: H * off, background: P.black, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 20, overflow: "hidden" }}>
         <div style={{ fontFamily: BN, fontWeight: 900, fontSize: 200, color: P.yellow, WebkitTextStroke: `6px ${P.crimson}`, textShadow: `12px 0 ${P.magenta}, -12px 0 ${P.cyan}` }}>{title}</div>
-        <div style={{ fontFamily: EN, fontSize: 42, color: "#fff", letterSpacing: 6 }}>{artist}</div>
-        <div style={{ fontFamily: EN, fontSize: 34, color: P.cyan, letterSpacing: 4 }}>Edited by {editor}</div>
+        {credits && credits.length ? (
+          credits.map((c, i) => (
+            <div key={i} style={{ fontFamily: EN, fontSize: i === 0 ? 46 : 36, color: i === 0 ? "#fff" : P.cyan, letterSpacing: 4,
+              opacity: interpolate(t, [123 + i * 0.35, 123.5 + i * 0.35], [0, 1], clamp) }}>
+              <span style={{ opacity: 0.7, fontSize: "0.75em", letterSpacing: 6 }}>{c.role.toUpperCase()}  </span>{c.name}
+            </div>
+          ))
+        ) : (
+          <>
+            <div style={{ fontFamily: EN, fontSize: 42, color: "#fff", letterSpacing: 6 }}>{artist}</div>
+            <div style={{ fontFamily: EN, fontSize: 34, color: P.cyan, letterSpacing: 4 }}>Edited by {editor}</div>
+          </>
+        )}
       </div>
     </AbsoluteFill>
   );
@@ -530,7 +542,7 @@ export const SareBaro: React.FC<SBProps> = (p) => {
           {(sec === "hook1" || sec === "hook2") && <HookStage />}
           <PropStage lines={p.lines} />
           {sec === "silence" && <Silence />}
-          {sec === "end" && <End title={p.title} artist={p.artist} editor={p.editor} durationSec={p.durationSec} />}
+          {sec === "end" && <End title={p.title} artist={p.artist} editor={p.editor} durationSec={p.durationSec} credits={p.credits} />}
         </AbsoluteFill>
         <AbsoluteFill style={{ filter: invert ? "invert(1)" : undefined, transform: `translate(${Math.sin(frame * 1.9) * shake * 0.5}px, 0) skewX(${Math.sin(frame / 9) * 2}deg)` }}>
           <Lyrics lines={p.lines} />
