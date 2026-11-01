@@ -107,13 +107,21 @@ def align(a, b, floor=0.55):
     return pairs
 
 
+# The final chorus was not sent for transcription (credits): it is chorus 1
+# word for word, and chroma correlation of the music puts it +109.9 s later
+# (r = 0.94). Its lines take chorus 1's timings, shifted.
+COPY = {"Final Chorus": ("Chorus", 109.9)}
+
+
 def build():
     """Lines with line-level and per-word timings, cleaned for display."""
     tw = [w for w in json.load(open(WORDS, encoding="utf-8"))["words"] if w.get("type") == "word"]
     t_norm = [norm(w["text"]) for w in tw]
 
-    lines = []
+    lines, held = [], []
     for e in read_sheet():
+        if e["section"] in COPY:
+            held.append(e); continue
         for chunk in split_display(e["text"]):
             lines.append({**e, "text": chunk})
 
@@ -176,6 +184,19 @@ def build():
             last = w["s"]
         l["words"] = words
         l["start"], l["end"] = round(l["start"], 2), round(l["end"], 2)
+
+    for sec, (src, dt) in COPY.items():
+        for l in [x for x in lines if x["section"] == src]:
+            lines.append({**l, "section": sec, "copied": True,
+                          "start": round(l["start"] + dt, 2), "end": round(l["end"] + dt, 2),
+                          "words": [{**w, "s": round(w["s"] + dt, 3), "e": round(w["e"] + dt, 3)} for w in l["words"]]})
+    lines.sort(key=lambda l: l["start"])
+    for i, l in enumerate(lines[:-1]):
+        nxt = lines[i + 1]["start"]
+        if l["end"] > nxt - GAP:
+            l["end"] = round(max(l["start"] + 0.4, nxt - GAP), 2)
+            for w in l["words"]:
+                w["s"] = min(w["s"], l["end"]); w["e"] = min(w["e"], l["end"])
     return lines
 
 

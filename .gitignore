@@ -108,3 +108,5 @@ venv/
 # Nikhoj music video: the master, fonts and generated textures are rebuilt by
 # client-builds/nikhoj-mv/prep_assets.py — the song is not committed.
 remotion-composer/public/nikhoj/
+remotion-composer/public/signal/
+remotion-composer/.stills.mjs

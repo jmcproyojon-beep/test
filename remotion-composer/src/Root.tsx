@@ -18,6 +18,8 @@ import { CollageBurst, CollageBurstProps } from "./CollageBurst";
 import { LyricOverlay, LyricOverlayProps } from "./LyricOverlay";
 import { NikhojMV } from "./nikhoj/NikhojMV";
 import { FRAMES as NIKHOJ_FRAMES } from "./nikhoj/lib";
+import { SignalMV } from "./signal/SignalMV";
+import { FRAMES as SIGNAL_FRAMES } from "./signal/lib";
 
 // ---------------------------------------------------------------------------
 // Theme System — prevents every video from looking like dark fintech
@@ -137,6 +139,7 @@ const calculateMetadata: CalculateMetadataFunction<ExplainerProps> = async ({
 export const Root: React.FC = () => {
   return (
     <>
+      <Composition id="SignalMV" component={SignalMV} durationInFrames={SIGNAL_FRAMES} fps={30} width={1920} height={1080} />
       <Composition id="NikhojMV" component={NikhojMV}
         durationInFrames={NIKHOJ_FRAMES} fps={30} width={1920} height={1080} />
       <Composition
