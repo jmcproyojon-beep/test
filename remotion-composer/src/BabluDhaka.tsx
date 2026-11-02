@@ -20,12 +20,12 @@ export type BDProps = {
   scenes?: [string, number, number][];
 };
 
-const W = 1920;
-const H = 1080;
-const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
-const BN = "'Anek Bangla', 'Noto Sans Bengali', sans-serif";
-const EN = "'Montserrat', 'Noto Sans', sans-serif";
-const P = {
+export const W = 1920;
+export const H = 1080;
+export const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
+export const BN = "'Anek Bangla', 'Noto Sans Bengali', sans-serif";
+export const EN = "'Montserrat', 'Noto Sans', sans-serif";
+export const P = {
   pink: "#ff2d87", yellow: "#ffd60a", blue: "#00b4ff", green: "#1db954", red: "#e63946", orange: "#ff8c1a",
   navy: "#14213d", purple: "#7b2ff7", cream: "#fff4d6", skin: "#c68642", ink: "#1a1423", teal: "#06d6a0", white: "#ffffff",
 };
@@ -41,7 +41,7 @@ const SCENES: [SceneId, number, number][] = [
 const BIG: SceneId[] = ["stage", "stageNight", "roofFinal", "dhol", "busRoof", "busRoofNight", "mela", "parade"];
 
 // ------------------------------------------------------------------ fonts
-const useFonts = () => {
+export const useFonts = () => {
   const [h] = useState(() => delayRender("fonts"));
   useEffect(() => {
     const f = (fam: string, file: string, d: FontFaceDescriptors = {}) => new FontFace(fam, `url(${staticFile("bab/fonts/" + file)})`, d);
@@ -58,12 +58,12 @@ const useFonts = () => {
 };
 
 // ------------------------------------------------------------------ context
-type Ctx = { bounds: number[]; frame: number; t: number; fps: number; bass: number; beat: number; bi: number; st: number; scene: SceneId; line?: BDLine; cue?: string; singing: boolean };
-const A = createContext<Ctx>(null as unknown as Ctx);
-const useA = () => useContext(A);
+export type Ctx = { bounds: number[]; frame: number; t: number; fps: number; bass: number; beat: number; bi: number; st: number; scene: SceneId; line?: BDLine; cue?: string; singing: boolean };
+export const A = createContext<Ctx>(null as unknown as Ctx);
+export const useA = () => useContext(A);
 
 // ------------------------------------------------------------------ rickshaw-art primitives
-const Flower: React.FC<{ x: number; y: number; r: number; c1?: string; c2?: string; spin?: number }> = ({ x, y, r, c1 = P.pink, c2 = P.yellow, spin = 0 }) => (
+export const Flower: React.FC<{ x: number; y: number; r: number; c1?: string; c2?: string; spin?: number }> = ({ x, y, r, c1 = P.pink, c2 = P.yellow, spin = 0 }) => (
   <g transform={`translate(${x} ${y}) rotate(${spin})`}>
     {Array.from({ length: 8 }, (_, i) => (
       <ellipse key={i} cx={0} cy={-r * 0.55} rx={r * 0.28} ry={r * 0.5} fill={i % 2 ? c1 : P.white} stroke={P.ink} strokeWidth={r * 0.05} transform={`rotate(${i * 45})`} />
@@ -73,7 +73,7 @@ const Flower: React.FC<{ x: number; y: number; r: number; c1?: string; c2?: stri
   </g>
 );
 
-const Rays: React.FC<{ cx: number; cy: number; colors: string[]; n?: number; speed?: number }> = ({ cx, cy, colors, n = 24, speed = 0.3 }) => {
+export const Rays: React.FC<{ cx: number; cy: number; colors: string[]; n?: number; speed?: number }> = ({ cx, cy, colors, n = 24, speed = 0.3 }) => {
   const { frame } = useA();
   return (
     <g transform={`translate(${cx} ${cy}) rotate(${frame * speed})`}>
@@ -88,8 +88,8 @@ const Rays: React.FC<{ cx: number; cy: number; colors: string[]; n?: number; spe
 };
 
 // ------------------------------------------------------------------ people
-type Kind = "bablu" | "f1" | "f2" | "ma" | "baba" | "driver";
-type Pose = "idle" | "dance" | "phone" | "shrug" | "sleep" | "tea" | "point" | "sit" | "drum" | "wave" | "sad";
+export type Kind = "bablu" | "f1" | "f2" | "ma" | "baba" | "driver" | "rafi" | "teen" | "teen2" | "tutul";
+export type Pose = "idle" | "dance" | "phone" | "shrug" | "sleep" | "tea" | "point" | "sit" | "drum" | "wave" | "sad";
 const LOOK: Record<Kind, { shirt: string; check: string; lower: string; lungi: boolean; hair: string }> = {
   bablu: { shirt: P.yellow, check: P.red, lower: P.blue, lungi: false, hair: "#111" },
   f1: { shirt: P.teal, check: P.navy, lower: "#5a3e2b", lungi: false, hair: "#222" },
@@ -97,9 +97,13 @@ const LOOK: Record<Kind, { shirt: string; check: string; lower: string; lungi: b
   ma: { shirt: P.red, check: P.green, lower: P.red, lungi: true, hair: "#111" },
   baba: { shirt: P.white, check: "#ddd", lower: P.white, lungi: false, hair: "#888" },
   driver: { shirt: "#7fb069", check: P.cream, lower: P.blue, lungi: true, hair: "#111" },
+  rafi: { shirt: "#3a86ff", check: "#8ecae6", lower: "#22223b", lungi: false, hair: "#111" },
+  teen: { shirt: "#ffffff", check: "#e0e0e0", lower: "#1d3557", lungi: false, hair: "#111" },
+  teen2: { shirt: "#ffffff", check: "#e0e0e0", lower: "#1d3557", lungi: false, hair: "#3b2416" },
+  tutul: { shirt: "#e76f51", check: "#f4a261", lower: "#264653", lungi: false, hair: "#222" },
 };
 
-const Person: React.FC<{ kind?: Kind; x: number; y: number; s?: number; pose?: Pose; flip?: boolean; mood?: "smile" | "sad" | "wow" | "sing"; seed?: number }> = ({
+export const Person: React.FC<{ kind?: Kind; x: number; y: number; s?: number; pose?: Pose; flip?: boolean; mood?: "smile" | "sad" | "wow" | "sing"; seed?: number }> = ({
   kind = "bablu", x, y, s = 1, pose = "idle", flip = false, mood = "smile", seed = 0,
 }) => {
   const { frame, beat, bi, singing } = useA();
@@ -196,7 +200,7 @@ const Person: React.FC<{ kind?: Kind; x: number; y: number; s?: number; pose?: P
 };
 
 // ------------------------------------------------------------------ Dhaka scenery
-const Skyline: React.FC<{ y: number; night?: boolean; tint?: string; seed?: string; scale?: number; dx?: number }> = ({ y, night, tint, seed = "a", scale = 1, dx = 0 }) => {
+export const Skyline: React.FC<{ y: number; night?: boolean; tint?: string; seed?: string; scale?: number; dx?: number }> = ({ y, night, tint, seed = "a", scale = 1, dx = 0 }) => {
   const { frame } = useA();
   const cols = night ? ["#2b2d42", "#3d405b", "#22223b", "#4a4e69"] : ["#f4a261", "#e9c46a", "#90be6d", "#f28482", "#84a59d", "#bde0fe", "#ffafcc"];
   let x = -60 + dx;
@@ -234,7 +238,7 @@ const Skyline: React.FC<{ y: number; night?: boolean; tint?: string; seed?: stri
   );
 };
 
-const Wheel: React.FC<{ x: number; y: number; r: number; rot: number }> = ({ x, y, r, rot }) => (
+export const Wheel: React.FC<{ x: number; y: number; r: number; rot: number }> = ({ x, y, r, rot }) => (
   <g transform={`translate(${x} ${y}) rotate(${rot})`}>
     <circle r={r} fill="none" stroke={P.ink} strokeWidth={10} />
     {Array.from({ length: 12 }, (_, i) => <line key={i} x1={0} y1={0} x2={Math.cos((i / 12) * Math.PI * 2) * r} y2={Math.sin((i / 12) * Math.PI * 2) * r} stroke={P.ink} strokeWidth={3} />)}
@@ -243,7 +247,7 @@ const Wheel: React.FC<{ x: number; y: number; r: number; rot: number }> = ({ x, 
 );
 
 /** Side-view cycle rickshaw with a painted hood and back plate. (x,y) = ground under rear wheel. */
-const Rickshaw: React.FC<{ x: number; y: number; s?: number; rolling?: boolean; driver?: boolean; children?: React.ReactNode; hue?: string }> = ({ x, y, s = 1, rolling = true, driver = true, children, hue = P.pink }) => {
+export const Rickshaw: React.FC<{ x: number; y: number; s?: number; rolling?: boolean; driver?: boolean; children?: React.ReactNode; hue?: string }> = ({ x, y, s = 1, rolling = true, driver = true, children, hue = P.pink }) => {
   const { frame, beat } = useA();
   const rot = rolling ? frame * 6 : 0;
   return (
@@ -271,7 +275,7 @@ const Rickshaw: React.FC<{ x: number; y: number; s?: number; rolling?: boolean; 
   );
 };
 
-const CNG: React.FC<{ x: number; y: number; s?: number }> = ({ x, y, s = 1 }) => {
+export const CNG: React.FC<{ x: number; y: number; s?: number }> = ({ x, y, s = 1 }) => {
   const { frame } = useA();
   return (
     <g transform={`translate(${x} ${y + Math.sin(frame / 3) * 2}) scale(${s})`}>
@@ -286,7 +290,7 @@ const CNG: React.FC<{ x: number; y: number; s?: number }> = ({ x, y, s = 1 }) =>
   );
 };
 
-const Bus: React.FC<{ x: number; y: number; s?: number; heads?: boolean }> = ({ x, y, s = 1, heads = true }) => {
+export const Bus: React.FC<{ x: number; y: number; s?: number; heads?: boolean }> = ({ x, y, s = 1, heads = true }) => {
   const { frame } = useA();
   return (
     <g transform={`translate(${x} ${y + Math.sin(frame / 4) * 3}) scale(${s})`}>
@@ -307,7 +311,7 @@ const Bus: React.FC<{ x: number; y: number; s?: number; heads?: boolean }> = ({ 
   );
 };
 
-const Kite: React.FC<{ x: number; y: number; c: string; seed: number }> = ({ x, y, c, seed }) => {
+export const Kite: React.FC<{ x: number; y: number; c: string; seed: number }> = ({ x, y, c, seed }) => {
   const { frame } = useA();
   const dx = Math.sin(frame / 40 + seed) * 40;
   const dy = Math.cos(frame / 33 + seed) * 30;
@@ -320,7 +324,7 @@ const Kite: React.FC<{ x: number; y: number; c: string; seed: number }> = ({ x, 
   );
 };
 
-const SpeakerBubble: React.FC<{ x: number; y: number; text: string; dir?: 1 | -1; color?: string }> = ({ x, y, text, dir = 1, color = P.white }) => (
+export const SpeakerBubble: React.FC<{ x: number; y: number; text: string; dir?: 1 | -1; color?: string }> = ({ x, y, text, dir = 1, color = P.white }) => (
   <g transform={`translate(${x} ${y})`}>
     <rect x={-210} y={-80} width={420} height={120} rx={40} fill={color} stroke={P.ink} strokeWidth={6} />
     <path d={`M${dir * 40} 38 l${dir * 50} 60 l${dir * 10} -60z`} fill={color} stroke={P.ink} strokeWidth={6} />
@@ -330,7 +334,7 @@ const SpeakerBubble: React.FC<{ x: number; y: number; text: string; dir?: 1 | -1
 );
 
 // ------------------------------------------------------------------ scenes
-const Sky: React.FC<{ top: string; bottom: string }> = ({ top, bottom }) => (
+export const Sky: React.FC<{ top: string; bottom: string }> = ({ top, bottom }) => (
   <>
     <defs>
       <linearGradient id={`sky${top.slice(1)}${bottom.slice(1)}`} x1="0" y1="0" x2="0" y2="1">
@@ -342,12 +346,12 @@ const Sky: React.FC<{ top: string; bottom: string }> = ({ top, bottom }) => (
   </>
 );
 
-const Stars: React.FC = () => {
+export const Stars: React.FC = () => {
   const { frame } = useA();
   return <>{Array.from({ length: 70 }, (_, i) => <circle key={i} cx={random(`sx${i}`) * W} cy={random(`sy${i}`) * 520} r={1.5 + random(`sr${i}`) * 2.5} fill={P.white} opacity={0.4 + 0.6 * Math.abs(Math.sin(frame / 20 + i))} />)}</>;
 };
 
-const Roof: React.FC<{ y?: number; color?: string }> = ({ y = 880, color = "#8d99ae" }) => (
+export const Roof: React.FC<{ y?: number; color?: string }> = ({ y = 880, color = "#8d99ae" }) => (
   <g>
     <rect x={0} y={y} width={W} height={H - y} fill={color} stroke={P.ink} strokeWidth={6} />
     <rect x={0} y={y - 60} width={W} height={60} fill="#adb5bd" stroke={P.ink} strokeWidth={6} />
@@ -1047,7 +1051,7 @@ const ParadeScene: React.FC = () => {
 };
 
 // ------------------------------------------------------------------ lyrics
-const wordTimes = (l: BDLine) => {
+export const wordTimes = (l: BDLine) => {
   const words = l.text.split(/\s+/).filter(Boolean);
   const total = words.reduce((s, w) => s + w.length, 0);
   const span = Math.max(0.3, (l.end - l.start) * 0.85);
