@@ -11,7 +11,7 @@ fs.mkdirSync(out, { recursive: true });
 const root = process.cwd();   // run from remotion-composer/ (its node_modules)
 const serveUrl = await bundle({ entryPoint: path.join(root, "src/index.tsx"), publicDir: path.join(root, "public") });
 const browserExecutable = process.env.REMOTION_BROWSER_EXECUTABLE;
-const composition = await selectComposition({ serveUrl, id: "SignalMV", browserExecutable });
+const composition = await selectComposition({ serveUrl, id: process.env.COMP || "SignalMV", browserExecutable });
 for (const s of secs) {
   const frame = Math.round(parseFloat(s) * 30);
   const output = path.join(out, `s${String(s).padStart(6, "0")}.jpg`);

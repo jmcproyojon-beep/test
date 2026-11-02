@@ -19,6 +19,9 @@ import { LyricOverlay, LyricOverlayProps } from "./LyricOverlay";
 import { NikhojMV } from "./nikhoj/NikhojMV";
 import { FRAMES as NIKHOJ_FRAMES } from "./nikhoj/lib";
 import { SignalMV } from "./signal/SignalMV";
+import { CastSheet } from "./sarebaro/CastSheet";
+import { SareBaroMV } from "./sarebaro/SareBaroMV";
+import { FRAMES as SAREBARO_FRAMES } from "./sarebaro/lib";
 import { FRAMES as SIGNAL_FRAMES } from "./signal/lib";
 
 // ---------------------------------------------------------------------------
@@ -139,6 +142,8 @@ const calculateMetadata: CalculateMetadataFunction<ExplainerProps> = async ({
 export const Root: React.FC = () => {
   return (
     <>
+      <Composition id="SareBaroMV" component={SareBaroMV} durationInFrames={SAREBARO_FRAMES} fps={30} width={1920} height={1080} />
+      <Composition id="SareBaroCast" component={CastSheet} durationInFrames={1} fps={30} width={1920} height={1080} />
       <Composition id="SignalMV" component={SignalMV} durationInFrames={SIGNAL_FRAMES} fps={30} width={1920} height={1080} />
       <Composition id="NikhojMV" component={NikhojMV}
         durationInFrames={NIKHOJ_FRAMES} fps={30} width={1920} height={1080} />
