@@ -9,6 +9,16 @@ version: 0.1.0
 Vendored from [iart-ai/motion-skills](https://github.com/iart-ai/motion-skills) and its 19 pack repos (MIT). See `PROVENANCE.md` for commits.
 Every sibling skill listed below is a self-contained `SKILL.md` + `references/` folder in `.agents/skills/`.
 
+## Getting started (fresh machine or container)
+
+```bash
+bash .agents/skills/motion-skills/setup.sh
+```
+
+This installs and checks the npm deps for skill scripts (`talking-head`, `ascii-animation`), Playwright, and Manim with Cairo, Pango and LaTeX. It also reports which transcription engine and API keys are available. You can run it again safely. Verified working in this repo: `lower-thirds` (WebM with alpha), `javascript-animation` (MP4), `seek-shot.sh` + `contact-sheet.sh`, `probe-mp4.sh`, `manim` (MathTex), `ascii-animation`.
+
+Paid or optional parts: `talking-head` needs `FAL_KEY` and `ELEVENLABS_API_KEY`. `talking-head-b-roll` transcribes with `ELEVENLABS_API_KEY` or a local whisper.cpp with a ggml model in `~/.cache/whisper/` (setup does not build whisper.cpp).
+
 ## How these fit OpenMontage
 
 - These are **Layer 3 craft knowledge** (how a pro builds the motion), not pipelines. **Rule Zero still applies**: any video request runs through a `pipeline_defs/` pipeline and its stage director skills; read the matching skill below when a stage needs that craft (e.g. `chart-animation` during an animated-explainer scene build, `caption-animation` at compose).
