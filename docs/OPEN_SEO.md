@@ -66,8 +66,19 @@ Work is grouped into **projects**, one per website. Use the switcher at the top 
 
 ## Using it from Claude (MCP + skills)
 
-- **Agent setup** in the app shows the MCP endpoint for this instance. For the
-  local dev server it is under `http://localhost:3001`.
+**Claude Code (local instance):** the repo's `.mcp.json` registers `openseo` at
+`http://localhost:3001/mcp`. In `local_noauth` mode it needs no login and exposes
+81 tools (projects, keywords, SERPs, domains, backlinks, rank tracking, local
+SEO, AI visibility, Search Console/GA4, site audits, reports). Start the dev
+server first, then approve the project server the first time Claude Code asks
+(or check it with `claude mcp list`).
+
+**claude.ai / Claude Desktop / mobile:** these cannot reach `localhost`. Add the
+hosted **OpenSEO** connector from the connector directory (Settings → Connectors),
+or add a custom connector with `https://app.openseo.so/mcp`, or with the
+`/mcp` URL of your own public Docker/Cloudflare deploy.
+
+- **Agent setup** in the app shows the MCP endpoint for this instance.
 - Ready-made agent skills live in `open-seo/plugins/openseo/skills/`:
   `keyword-research`, `keyword-clustering`, `competitor-analysis`,
   `competitive-landscape`, `link-prospecting`, `seo-audit`, `local-seo`,
