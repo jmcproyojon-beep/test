@@ -111,3 +111,6 @@ remotion-composer/public/nikhoj/
 remotion-composer/public/signal/
 remotion-composer/.stills.mjs
 remotion-composer/public/baul/
+
+# OpenSEO clone (installed by scripts/setup_open_seo.sh)
+open-seo/
