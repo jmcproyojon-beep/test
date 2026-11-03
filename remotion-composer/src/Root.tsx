@@ -20,6 +20,7 @@ import { NikhojMV } from "./nikhoj/NikhojMV";
 import { FRAMES as NIKHOJ_FRAMES } from "./nikhoj/lib";
 import { SignalMV } from "./signal/SignalMV";
 import { CastSheet } from "./sarebaro/CastSheet";
+import { BaulMV, BaulMVVertical, BAUL_FRAMES } from "./baul/BaulMV";
 import { SareBaroMV } from "./sarebaro/SareBaroMV";
 import { FRAMES as SAREBARO_FRAMES } from "./sarebaro/lib";
 import { FRAMES as SIGNAL_FRAMES } from "./signal/lib";
@@ -143,6 +144,8 @@ export const Root: React.FC = () => {
   return (
     <>
       <Composition id="SareBaroMV" component={SareBaroMV} durationInFrames={SAREBARO_FRAMES} fps={30} width={1920} height={1080} />
+      <Composition id="BaulMV" component={BaulMV} durationInFrames={BAUL_FRAMES} fps={30} width={1920} height={1080} />
+      <Composition id="BaulMVVertical" component={BaulMVVertical} durationInFrames={BAUL_FRAMES} fps={30} width={1080} height={1920} />
       <Composition id="SareBaroCast" component={CastSheet} durationInFrames={1} fps={30} width={1920} height={1080} />
       <Composition id="SignalMV" component={SignalMV} durationInFrames={SIGNAL_FRAMES} fps={30} width={1920} height={1080} />
       <Composition id="NikhojMV" component={NikhojMV}
