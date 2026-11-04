@@ -4,13 +4,14 @@ import "../signal/fonts";
 import { Grain } from "../signal/kit";
 import { D, Q, FPS, smooth, pulse } from "./lib";
 import { Brand, Timer, Captions } from "./ui";
-import { Intro, Child, Stairs, Record, Routine, Wait, Run, Lessons, Outro } from "./scenes";
+import { Intro, Child, Stairs, Record, Routine, Wait, Run, Lessons, Outro } from "./story";
 
 // "১০০ সেকেন্ডে শিখি — আর্লিং হালান্ড": a vertical (9:16) motion-graphics
 // short for Reels / Shorts / TikTok, from Rubel Miah's script. Voice, music,
 // effects and every cue come from client-builds/haaland-100s (see README).
-// Scenes switch at the start of each voiced section; each switch gets a
-// quick zoom + flash on the whoosh.
+// Told as a story (story.tsx): Rubel frames it, the boy from Bryne lives
+// it. Scenes switch at the start of each voiced section with a quick zoom +
+// flash on the whoosh.
 
 const SCENES: [string, React.FC<{ t: number }>][] = [
   ["intro", Intro], ["child", Child], ["stairs", Stairs], ["record", Record], ["routine", Routine],

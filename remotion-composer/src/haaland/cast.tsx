@@ -8,7 +8,7 @@ import { C, lerp, clamp } from "./lib";
 export type Limb = [number, number];           // [upper angle, bend]
 export type Pose = { armB: Limb; armF: Limb; legB: Limb; legF: Limb; lean?: number; bob?: number };
 export type Face = { eyes?: "open" | "closed" | "wide" | "sleepy"; mouth?: "smile" | "o" | "flat" | "shout" | "grin" | "sad"; look?: number; brows?: number; sweat?: number; spiky?: number };
-export type Outfit = "home" | "office" | "guard" | "kid" | "boss" | "host" | "kit" | "norway";
+export type Outfit = "home" | "office" | "guard" | "kid" | "boss" | "host" | "kit" | "norway" | "saree" | "train";
 
 export const P = {
   stand: (): Pose => ({ armB: [-0.15, 0.1], armF: [0.15, 0.1], legB: [-0.06, 0], legF: [0.06, 0] }),
@@ -41,6 +41,8 @@ const OUT: Record<Outfit, { torso: string; sleeve: string; leg: string; shoe: st
   guard: { torso: C.orange, sleeve: C.orange, leg: "#B34700", shoe: "#000", arm: C.orange },
   kid: { torso: C.magenta, sleeve: C.magenta, leg: C.skin, shoe: C.sun, arm: C.skin },
   host: { torso: C.bdGreen, sleeve: C.bdGreen, leg: "#2B3A67", shoe: "#FFFFFF", arm: C.skin },
+  saree: { torso: "#C2185B", sleeve: "#C2185B", leg: "#C2185B", shoe: "#8A5A3A", arm: C.skin },
+  train: { torso: "#22304F", sleeve: "#22304F", leg: "#22304F", shoe: "#111", arm: C.nordSkin },
   kit: { torso: C.sky, sleeve: C.sky, leg: "#F4F4F4", shoe: "#111", arm: C.nordSkin },
   norway: { torso: C.red, sleeve: C.red, leg: "#F4F4F4", shoe: "#111", arm: C.nordSkin },
   boss: { torso: C.violet, sleeve: C.violet, leg: "#3A0050", shoe: "#000", arm: C.violet },
@@ -59,10 +61,10 @@ const LungiPattern: React.FC = () => (
 export const Hero: React.FC<{
   x: number; y: number; s?: number; pose?: Pose; face?: Face; outfit?: Outfit; flip?: boolean; rot?: number;
   mustache?: boolean; cap?: boolean; belly?: number; tie?: boolean; bandage?: boolean; watch?: boolean; opacity?: number;
-  bun?: boolean; num?: string;
-}> = ({ x, y, s = 1, pose = P.stand(), face = {}, outfit = "home", flip = false, rot = 0, mustache, cap, belly = 0, tie, bandage, watch, opacity = 1, bun, num }) => {
+  bun?: boolean; num?: string; gray?: boolean;
+}> = ({ x, y, s = 1, pose = P.stand(), face = {}, outfit = "home", flip = false, rot = 0, mustache, cap, belly = 0, tie, bandage, watch, opacity = 1, bun, num, gray }) => {
   const SK = bun ? C.nordSkin : C.skin;
-  const HR = bun ? C.blond : C.hair;
+  const HR = gray ? "#EEEEEE" : bun ? C.blond : C.hair;
   const o = OUT[outfit];
   const bob = pose.bob ?? 0;
   const hipY = -128 - bob;
@@ -140,7 +142,7 @@ export const Hero: React.FC<{
         <ellipse cx={0} cy={headY} rx={38} ry={42} fill={SK} stroke={C.ink} strokeWidth={7} />
         <ellipse cx={-38} cy={headY + 2} rx={8} ry={11} fill={SK} stroke={C.ink} strokeWidth={5} />
         <path d={hair} fill={HR} stroke={C.ink} strokeWidth={4} strokeLinejoin="round" />
-        {bun && <ellipse cx={0} cy={headY - 50} rx={15} ry={13} fill={HR} stroke={C.ink} strokeWidth={4} />}
+        {(bun || gray) && <ellipse cx={0} cy={headY - 50} rx={15} ry={13} fill={HR} stroke={C.ink} strokeWidth={4} />}
         {num && <text x={0} y={hipY - 34} textAnchor="middle" fontFamily="SigDisplay" fontWeight={800} fontSize={44} fill="#fff" stroke={C.ink} strokeWidth={2}>{num}</text>}
         {cap && <><path d={`M-40 ${headY - 18} Q0 ${headY - 70} 40 ${headY - 18} Z`} fill="#00A152" stroke={C.ink} strokeWidth={5} /><rect x={20} y={headY - 24} width={34} height={9} rx={4} fill="#006B36" stroke={C.ink} strokeWidth={4} /></>}
         {eye(-14)}{eye(14)}
