@@ -704,7 +704,7 @@ export const Run: React.FC<SP> = ({ t }) => {
       {/* journey map */}
       <div style={{ position: "absolute", left: 40, right: 40, top: 300, display: "flex", justifyContent: "space-between", alignItems: "center", opacity: ramp(t, Math.max(Q.sen, s0 + 2.3), 0.3) }}>
         {MATCHES.map(([c, k, name, , , won], i) => {
-          const done = t >= Q[k] + 0.9 || (k === "bra" && t >= Q.nb21);
+          const done = k === "bra" ? t >= Q.nb21 - 0.3 : t >= Q[k] + 0.9;   // Brazil only once the 2–1 is up
           const reached = t >= Q[k] - 0.1;
           return (
             <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, opacity: reached ? 1 : 0.35, transform: `scale(${i === m ? 1.12 : 0.95})` }}>
