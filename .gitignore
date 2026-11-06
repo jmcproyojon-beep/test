@@ -114,3 +114,6 @@ remotion-composer/public/baul/
 
 # OpenSEO clone (installed by scripts/setup_open_seo.sh)
 open-seo/
+
+# awesome-osint clone (installed by scripts/setup_awesome_osint.sh)
+awesome-osint/
