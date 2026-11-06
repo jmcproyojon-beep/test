@@ -15,7 +15,7 @@ from pathlib import Path
 HERE = Path(__file__).parent
 P = Path(__file__).resolve().parents[2]/"projects/manobotar-dak"
 LYRICS = HERE/"lyrics.md"
-WORDS = P/"assets/audio/words.json"
+WORDS = HERE/"whisper_words.json"   # transcribe.py output, kept in git so the timing can be rebuilt
 
 SECTION = re.compile(r"^#{2,}\s*\[(.+?)\]\s*$")
 PUNCT = re.compile(r"[।?!,.\"'…—\-“”‘’*]+")

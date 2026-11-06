@@ -22,6 +22,8 @@ import { SignalMV } from "./signal/SignalMV";
 import { CastSheet } from "./sarebaro/CastSheet";
 import { BaulMV, BaulMVVertical, BAUL_FRAMES } from "./baul/BaulMV";
 import { HaalandShort } from "./haaland/HaalandShort";
+import { ManobotarMV } from "./manobotar/ManobotarMV";
+import { FRAMES as MANOBOTAR_FRAMES } from "./manobotar/lib";
 import { FRAMES as HAALAND_FRAMES } from "./haaland/lib";
 import { SareBaroMV } from "./sarebaro/SareBaroMV";
 import { FRAMES as SAREBARO_FRAMES } from "./sarebaro/lib";
@@ -146,6 +148,7 @@ export const Root: React.FC = () => {
   return (
     <>
       <Composition id="SareBaroMV" component={SareBaroMV} durationInFrames={SAREBARO_FRAMES} fps={30} width={1920} height={1080} />
+      <Composition id="ManobotarMV" component={ManobotarMV} durationInFrames={MANOBOTAR_FRAMES} fps={30} width={1920} height={1080} />
       <Composition id="HaalandShort" component={HaalandShort} durationInFrames={HAALAND_FRAMES} fps={30} width={1080} height={1920} />
       <Composition id="BaulMV" component={BaulMV} durationInFrames={BAUL_FRAMES} fps={30} width={1920} height={1080} />
       <Composition id="BaulMVVertical" component={BaulMVVertical} durationInFrames={BAUL_FRAMES} fps={30} width={1080} height={1920} />

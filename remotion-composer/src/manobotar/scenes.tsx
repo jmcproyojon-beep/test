@@ -73,7 +73,7 @@ export const IntroWorld: React.FC<SP> = ({ t, a, b }) => {
           })}
           {/* the hand of power */}
           {hand > 0 && (
-            <g transform={`translate(${lerp(1500, 1180, hand)} ${lerp(-500, 40, hand)}) rotate(-25)`} opacity={0.92}>
+            <g transform={`translate(${lerp(1600, 1220, hand)} ${lerp(-700, 60, hand)}) rotate(-22) scale(1.7)`} opacity={0.94}>
               <path d="M-90 -400 L-60 60 L60 60 L90 -400 Z" fill="#1E1E26" stroke={C.ink} strokeWidth={5} />
               <path d="M-70 40 Q-120 140 -80 200 L-40 180 L-40 260 L0 270 L10 180 L40 260 L70 240 L60 150 L100 190 L120 160 L70 60 Z" fill="#5A5650" stroke={C.ink} strokeWidth={5} />
               {[0, 1, 2, 3].map((i) => <line key={i} x1={-50 + i * 40} y1={270} x2={-50 + i * 40 + rand(i) * 20} y2={520} stroke="#F4ECD8" strokeWidth={2} opacity={0.7} />)}
@@ -161,9 +161,9 @@ export const Capitals: React.FC<SP> = ({ t, a, b }) => {
         {CAPS.map(([key, Land, name], i) => {
           if (t < pinT[i] - 0.1) return null;
           const k = backOut((t - pinT[i] + 0.1) / 0.4);
-          const x = 1020 + (i % 2) * 460, y = 520 + Math.floor(i / 2) * 460;
+          const x = 1040 + (i % 2) * 460, y = 470 + Math.floor(i / 2) * 400;
           return (
-            <Cut key={key} t={t} id={50 + i} x={x} y={y + (1 - clamp(k)) * 300} s={0.75}>
+            <Cut key={key} t={t} id={50 + i} x={x} y={y + (1 - clamp(k)) * 300} s={0.68}>
               <Land />
               <g transform="translate(-150 30)"><rect width={300} height={70} fill="#F4ECD8" stroke={C.ink} strokeWidth={4} />
                 <text x={150} y={50} textAnchor="middle" fontFamily={DISPLAY} fontWeight={800} fontSize={44} fill={C.ink}>{name}</text></g>
@@ -172,7 +172,7 @@ export const Capitals: React.FC<SP> = ({ t, a, b }) => {
         })}
         {/* the people's call rises from each city */}
         {call && CAPS.map((_, i) => {
-          const x = 1020 + (i % 2) * 460, y = 520 + Math.floor(i / 2) * 460 - 220;
+          const x = 1040 + (i % 2) * 460, y = 470 + Math.floor(i / 2) * 400 - 200;
           return [0, 1, 2].map((r) => {
             const p = ((t * 0.8 + r / 3 + i * 0.2) % 1);
             return <circle key={`${i}${r}`} cx={x} cy={y} r={20 + p * 160} fill="none" stroke={C.gold} strokeWidth={6 * (1 - p)} opacity={heard * (1 - p)} />;
@@ -234,6 +234,10 @@ export const HandsTogether: React.FC<SP & { second?: boolean }> = ({ t, a, b, se
       <Svg>
         {!second && [0, 1, 2, 3].map((i) => <Cloud key={i} x={((i * 560 + t * 30) % 2400) - 200} y={120 + (i % 2) * 70} s={1.1} dark />)}
         {second && Array.from({ length: 9 }).map((_, i) => <path key={i} d={`M960 -40 L${700 + i * 65} 1080 L${740 + i * 65} 1080 Z`} fill={C.sun} opacity={0.08 + 0.04 * Math.sin(t * 2 + i)} />)}
+        {!second && Array.from({ length: 7 }).map((_, i) => {
+          const fall = ramp(t, st("কেঁপে ওঠে") + 0.3 + i * 0.12, 0.5) * (i % 2);
+          return <Cut key={i} t={t} id={180 + i}><House x={140 + i * 280 + (rand(Math.floor(t * 24) + i) - 0.5) * quake * 20} y={900 + fall * 40} s={1.1} i={i} broken={fall} /></Cut>;
+        })}
         {quake > 0.05 && <path d="M0 860 L300 900 L520 840 L760 920 L1000 850 L1300 930 L1600 860 L1920 900" stroke={C.gold} strokeWidth={6} fill="none" />}
         <rect x={0} y={900} width={W} height={180} fill="#14141E" />
         {/* a chain of people holding hands */}
@@ -258,28 +262,28 @@ export const HandsTogether: React.FC<SP & { second?: boolean }> = ({ t, a, b, se
 // Sunrise. The storm is pushed back; people of every nation rise with their
 // arms up, the hero seen from behind facing the dawn; "শেষ আলো জ্বলবেই!"
 export const Chorus: React.FC<SP & { n: number }> = ({ t, a, b, n }) => {
-  const sec = ["Chorus", "Chorus 2", "Final Chorus"][n];
+  const sec = ["Chorus", "Chorus 2", "Final Chorus", "Reprise"][n];
   const lines = D.lines.filter((l) => l.section === sec);
   const rise = easeOut((t - a) / 3);
   const db = downbeatPulse(t, 4);
   const flags = n >= 1;
   const morning = lines.find((l) => l.text.includes("সকাল") || l.text.includes("সূর্য"));
-  const rebuilt = n === 2 ? ramp(t, st("ভাঙা পৃথিবী"), 2) : 0;
+  const rebuilt = n === 2 ? ramp(t, st("ভাঙা পৃথিবী"), 2) : n === 3 ? 1 : 0;
   return (
     <AbsoluteFill>
       <Paper tex="cream" tint="#E9A23B" tintO={0.25 + rise * 0.2} />
       <Svg>
         <Sun x={960} y={lerp(1000, 520, rise)} r={150 + db * 12} t={t} />
         {[0, 1, 2, 3].map((i) => <Cloud key={i} x={(i < 2 ? -1 : 1) * lerp(300, 1300, rise) + 960 + (i % 2) * 200 * (i < 2 ? -1 : 1)} y={260 + (i % 2) * 120} s={1.2} dark />)}
-        {n === 2 && <g opacity={rebuilt}>{[0, 1, 2, 3, 4, 5].map((i) => <Cut key={i} t={t} id={140 + i}><House x={140 + i * 330} y={800 + (1 - rebuilt) * 300} s={0.9} i={i} /></Cut>)}</g>}
+        {n >= 2 && <g opacity={rebuilt}>{[0, 1, 2, 3, 4, 5].map((i) => <Cut key={i} t={t} id={140 + i}><House x={140 + i * 330} y={800 + (1 - rebuilt) * 300} s={0.9} i={i} /></Cut>)}</g>}
         {flags && FLAGS.map((c, i) => (
           <Cut key={c} t={t} id={110 + i} x={60 + i * 95} y={620 + (i % 2) * 30 + (1 - rise) * 400} s={0.45}><Flag code={c} x={0} y={0} w={150} wave={1} t={t} /></Cut>
         ))}
         <Crowd t={t} n={13} y={1080} s={1.25} arms={rise * (0.7 + db * 0.3)} sing={1} seed={n * 40 + 3} rows={2} />
         {morning && t >= morning.s && n !== 2 && [0, 1, 2].map((i) => <Cut key={i} t={t} id={150 + i} x={lerp(-200, 1900, clamp((t - morning.s - i * 0.4) / 4))} y={200 + i * 60} s={0.6}><Dove x={0} y={0} flap={Math.sin(t * 10 + i)} /></Cut>)}
-        {n === 2 && Array.from({ length: 10 }).map((_, i) => <Cut key={i} t={t} id={160 + i} x={((i * 260 + t * 120 * (1 + rand(i))) % 2300) - 200} y={150 + rand(i) * 300} s={0.45}><Dove x={0} y={0} flap={Math.sin(t * 10 + i)} /></Cut>)}
+        {n >= 2 && Array.from({ length: n === 3 ? 18 : 10 }).map((_, i) => <Cut key={i} t={t} id={160 + i} x={((i * 260 + t * 120 * (1 + rand(i))) % 2300) - 200} y={150 + rand(i) * 300} s={0.45}><Dove x={0} y={0} flap={Math.sin(t * 10 + i)} /></Cut>)}
       </Svg>
-      <Hero t={t} img={n === 1 ? "hero_front" : "hero_back"} x={960} y={1080} h={lerp(560, 760, rise)} glow={0.7 + db * 0.3} bob={db * 6} />
+      <Hero t={t} img={n === 1 || n === 3 ? "hero_front" : "hero_back"} x={960} y={1080} h={lerp(560, n === 3 ? 820 : 760, rise)} glow={0.7 + db * 0.3 + (n === 3 ? 0.3 : 0)} bob={db * 6} />
     </AbsoluteFill>
   );
 };
@@ -400,22 +404,22 @@ export const Voices: React.FC<SP> = ({ t, a, b }) => {
       <Paper tex="cream" tint="#E9DCC0" tintO={0.2} />
       <Svg>
         {!mom && <g>
-          <Cut t={t} id={250} x={1300} y={900} s={1.4}><House x={0} y={0} i={2} /><rect x={-90} y={-150} width={180} height={30} fill="#3A5A8A" /><text x={0} y={-128} textAnchor="middle" fontFamily={DISPLAY} fontWeight={800} fontSize={22} fill="#fff">স্কুল</text></Cut>
+          <Cut t={t} id={250} x={1350} y={900} s={2.3}><House x={0} y={0} i={2} /><rect x={-90} y={-150} width={180} height={30} fill="#3A5A8A" /><text x={0} y={-128} textAnchor="middle" fontFamily={DISPLAY} fontWeight={800} fontSize={22} fill="#fff">স্কুল</text></Cut>
           <rect x={0} y={900} width={W} height={180} fill="#9A8A6A" />
-          <Cut t={t} id={251}><Person x={lerp(300, 900, clamp((t - a) / 6))} y={1020} s={1.6} i={4} child facing={1} arms={0.1} /></Cut>
+          <Cut t={t} id={251}><Person x={lerp(360, 940, clamp((t - a) / 6))} y={1040} s={2.6} i={4} child facing={1} arms={0.1} /></Cut>
         </g>}
         {mom && !man && <g>
-          <Cut t={t} id={252} x={960} y={1000} s={2}><rect x={-120} y={-360} width={240} height={360} fill="#5A3A24" /><rect x={-110} y={-350} width={220} height={340} fill="#F5C04A" opacity={ramp(t, st("আমার সন্তান"), 1)} /></Cut>
-          <Cut t={t} id={253}><Person x={700} y={1020} s={1.7} i={8} scarf facing={1} /></Cut>
-          <Candle x={760} y={860} s={1.2} t={t} />
+          <Cut t={t} id={252} x={1150} y={1000} s={1.7}><rect x={-120} y={-360} width={240} height={360} fill="#5A3A24" /><rect x={-110} y={-350} width={220} height={340} fill="#F5C04A" opacity={ramp(t, st("আমার সন্তান"), 1)} /></Cut>
+          <Cut t={t} id={253}><Person x={760} y={1040} s={2.6} i={8} scarf facing={1} arms={0.35} /></Cut>
+          <Candle x={880} y={800} s={1.8} t={t} />
         </g>}
       </Svg>
       {man && <>
         <Hero t={t} img="hero_front" x={960} y={1080} h={860} glow={chain * 0.8} />
         <Svg>
           {[-1, 1].map((sd) => (
-            <g key={sd} transform={`translate(${960 + sd * (150 + chain * 260)} ${700 + chain * 200}) rotate(${sd * chain * 40})`}>
-              {Array.from({ length: 5 }).map((_, i) => <ellipse key={i} cx={sd * i * 40} cy={0} rx={26} ry={14} fill="none" stroke="#5A5650" strokeWidth={9} />)}
+            <g key={sd} transform={`translate(${960 + sd * (110 + chain * 420)} ${640 + chain * 260}) rotate(${sd * chain * 70})`} opacity={1 - ramp(t, st("আমি ভয় ছাড়া") + 1.2, 0.8)}>
+              {Array.from({ length: 6 }).map((_, i) => <ellipse key={i} cx={sd * i * 52} cy={0} rx={34} ry={18} fill="none" stroke="#3A3630" strokeWidth={12} />)}
             </g>
           ))}
         </Svg>

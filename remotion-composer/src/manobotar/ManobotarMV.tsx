@@ -34,6 +34,9 @@ const SHOTS: Shot[] = [
   { from: st("যুদ্ধ নয়") - 0.2, render: (t, a, b) => <Sc.Chants t={t} a={a} b={b} /> },
   { from: S("Final Chorus") - 0.2, render: (t, a, b) => <Sc.Chorus t={t} a={a} b={b} n={2} /> },
   { from: S("Outro") - 0.5, render: (t, a, b) => <Sc.Outro t={t} a={a} b={b} /> },
+  // the climax after the outro repeats the hook (not on the sheet; see export_data.py)
+  { from: S("Reprise") - 0.3, render: (t, a, b) => <Sc.Chorus t={t} a={a} b={b} n={3} /> },
+  { from: 351.0, render: (t, a, b) => <Sc.Outro t={t} a={a} b={b} /> },
 ];
 const HOOK = (text: string) => text.includes("আলো জ্বলবেই");
 
