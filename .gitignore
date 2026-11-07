@@ -104,3 +104,7 @@ venv/
 
 # Local Wan / diffusers GPU environment
 .venv-wan/
+mg-styles-15/
+films/*/assets/src/
+films/*/assets/song.mp3
+films/*/out/

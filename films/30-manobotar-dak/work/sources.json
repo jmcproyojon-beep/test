@@ -1,0 +1,148 @@
+{
+ "mother": {
+  "title": "Mother and Child",
+  "creator": "unknown",
+  "date": "c. 1860–65",
+  "source": "https://clevelandart.org/art/2002.31",
+  "license": "CC0"
+ },
+ "boy": {
+  "title": "Untitled (young boy with lace collar and toy rifle)",
+  "creator": "Reutlinger Studios (French, active 1850s-1937)",
+  "date": "1880–99",
+  "source": "https://clevelandart.org/art/2022.356",
+  "license": "CC0"
+ },
+ "girl": {
+  "title": "Matra Reinhard",
+  "creator": "Jacques-Philippe Potteau (French, 1807–1876)",
+  "date": "1868",
+  "source": "https://clevelandart.org/art/1999.114",
+  "license": "CC0"
+ },
+ "man": {
+  "title": "Untitled (Portrait of a Man)",
+  "creator": "Etienne Carjat (French, 1828–1906)",
+  "date": "1879",
+  "source": "https://clevelandart.org/art/2017.8.1",
+  "license": "CC0"
+ },
+ "king": {
+  "title": "Henri II, King of France, at the age of 28",
+  "creator": "Nicolo della Casa (French, active 1543–48)",
+  "date": "1547",
+  "source": "https://clevelandart.org/art/1946.308",
+  "license": "CC0"
+ },
+ "globe": {
+  "title": "Composition - Globe",
+  "creator": "Augustus Peck (American, 1906–1975)",
+  "date": "1929",
+  "source": "https://clevelandart.org/art/1929.425",
+  "license": "CC0"
+ },
+ "court": {
+  "title": "Mosaique: The Imperial Court of Napoleon III",
+  "creator": "André Adolphe-Eugène Disdéri (French, 1819–1889)",
+  "date": "c. 1866",
+  "source": "https://clevelandart.org/art/2019.69",
+  "license": "CC0"
+ },
+ "goya_a": {
+  "title": "The Disasters of War:  And There's No Help for it",
+  "creator": "Francisco de Goya (Spanish, 1746–1828)",
+  "date": "1810–1820",
+  "source": "https://clevelandart.org/art/1987.56",
+  "license": "CC0"
+ },
+ "goya_b": {
+  "title": "Disasters of War: Pl. 58, It is no use shouting ",
+  "creator": "Francisco de Goya (Spanish, 1746–1828)",
+  "date": "1810–1813",
+  "source": "https://clevelandart.org/art/2015.25",
+  "license": "CC0"
+ },
+ "goya_c": {
+  "title": "Disasters of War: Pl. 33, What more can one do?  ",
+  "creator": "Francisco de Goya (Spanish, 1746–1828)",
+  "date": "1810–1813",
+  "source": "https://clevelandart.org/art/2015.23",
+  "license": "CC0"
+ },
+ "goya_d": {
+  "title": "Disasters of War: Pl. 37, This is worse ",
+  "creator": "Francisco de Goya (Spanish, 1746–1828)",
+  "date": "1810–1813",
+  "source": "https://clevelandart.org/art/2015.24",
+  "license": "CC0"
+ },
+ "map_a": {
+  "title": "Nuova pianta di Roma data in luce da Giambattista Nolli l’anno MDCCXLVII, known as La Pianta Grande di Roma",
+  "creator": "Giovanni Battista Nolli (Italian, 1701–1756)",
+  "date": "1748",
+  "source": "https://clevelandart.org/art/2020.276.2",
+  "license": "CC0"
+ },
+ "map_b": {
+  "title": "Nuova pianta di Roma data in luce da Giambattista Nolli l’anno MDCCXLVII, known as La Pianta Grande di Roma",
+  "creator": "Giovanni Battista Nolli (Italian, 1701–1756)",
+  "date": "1748",
+  "source": "https://clevelandart.org/art/2020.276.11",
+  "license": "CC0"
+ },
+ "flowers": {
+  "title": "Collection of Flowers and Fruits Painted after Nature:  Bouquet of Foxglove, Clematis, Pansy, Peony, Poppy, and Yellow Day Lily",
+  "creator": "Louis Charles Ruotte (French, 1754–1806)",
+  "date": "1805",
+  "source": "https://clevelandart.org/art/1951.419",
+  "license": "CC0"
+ },
+ "birds": {
+  "title": "Birds on Plum Branches",
+  "creator": "unknown",
+  "date": "1700–1750",
+  "source": "https://clevelandart.org/art/2025.110",
+  "license": "CC0"
+ },
+ "ruins": {
+  "title": "Delhi. Great Arch and Iron Pillar Near the Kootub Minar, Ruin of Old Delhi",
+  "creator": "Samuel Bourne (British, 1834–1912)",
+  "date": "1863–70",
+  "source": "https://clevelandart.org/art/2024.5.32",
+  "license": "CC0"
+ },
+ "hands": {
+  "title": "Study of Hands",
+  "creator": "Jean-Auguste-Dominique Ingres (French, 1780–1867)",
+  "date": "1842",
+  "source": "https://clevelandart.org/art/2003.37",
+  "license": "CC0"
+ },
+ "aircraft": {
+  "title": "Building Aircraft: Making the Engine",
+  "creator": "Christopher Nevinson (British, 1889–1946)",
+  "date": "1917",
+  "source": "https://clevelandart.org/art/2018.298",
+  "license": "CC0"
+ },
+ "children": {
+  "title": "Untitled (Semi-Circle of Children, Central Girl Dressed as an Angel Holding the Baby Jesus)",
+  "creator": "Andrés and Francisco Hernández (Costa Rican, active c. 1910s–30s)",
+  "date": "c. 1910s",
+  "source": "https://clevelandart.org/art/2022.342",
+  "license": "CC0"
+ },
+ "sun": {
+  "title": "SDO:AIA Full-Disk View of Launching Filament",
+  "creator": "NASA",
+  "source": "https://images.nasa.gov/details/GSFC_20171208_Archive_e002069",
+  "license": "Public domain (NASA)"
+ },
+ "earth": {
+  "title": "View of the Earth seen by the Apollo 17 crew (The Blue Marble)",
+  "creator": "NASA / Apollo 17 crew",
+  "date": "1972",
+  "source": "https://images.nasa.gov/details/as17-148-22727",
+  "license": "Public domain (NASA)"
+ }
+}

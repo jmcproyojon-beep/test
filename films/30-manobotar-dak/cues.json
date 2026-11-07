@@ -1,0 +1,33 @@
+{
+ "title": "মানবতার ডাক",
+ "concept": "One head, one world. The singer's head is a collage box: power cuts the Earth into borders and flags, war's prints pile up on the page, and every chorus the cap flips open like a lid and light, doves and flowers spill out. At the hero moment the cut-up Earth is taped back together and everyone holds hands around it.",
+ "sections": [
+  ["intro",     0.0,   24.46],
+  ["borders",   24.46, 48.2],
+  ["warprints", 48.2,  71.3],
+  ["palace",    71.3,  91.0],
+  ["family",    91.0,  97.84],
+  ["dark",      97.84, 109.1],
+  ["chorus1",   109.1, 143.0],
+  ["spillout",  143.0, 151.32],
+  ["history",   151.32, 182.96],
+  ["prayer",    182.96, 193.9],
+  ["chorus2",   193.9, 227.7],
+  ["bridge",    227.7, 246.26],
+  ["oneworld",  246.26, 255.68],
+  ["chant",     255.68, 268.0],
+  ["sunrise",   268.0, 293.0],
+  ["light",     293.0, 317.82],
+  ["ours",      317.82, 327.2],
+  ["finale",    327.2, 350.8],
+  ["end",       350.8, 366.81]
+ ],
+ "lid_open": [[109.1, 150.2], [193.9, 226.6], [250.8, 254.6], [298.5, 316.6], [327.2, 352.0]],
+ "hits": {
+  "portrait_slap": 0.0,
+  "scissor_cut": [26.56, 27.6, 126.3],
+  "earth_mend": [246.26, 247.6],
+  "tear": [274.9],
+  "page_flip": 350.8
+ }
+}

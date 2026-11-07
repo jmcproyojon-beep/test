@@ -1,0 +1,850 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'Anek Bangla'; src: url('/demos/30-manobotar-dak/assets/fonts/anek-bangla-bengali-standard-normal.woff2') format('woff2');
+  font-weight: 100 800; font-stretch: 75% 125%; unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+200C-200D, U+25CC; }
+@font-face { font-family: 'Anek Bangla'; src: url('/demos/30-manobotar-dak/assets/fonts/anek-bangla-latin-standard-normal.woff2') format('woff2');
+  font-weight: 100 800; font-stretch: 75% 125%; }
+html,body{margin:0;background:#16130F;overflow:hidden}canvas{display:block}
+</style>
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+</head><body><canvas id="c" width="1920" height="1080"></canvas>
+<script type="module">
+// 30-manobotar-dak — 「মানবতার ডাক」 Humanity's Call. Collage / cut-out lyric film, 1920x1080, 30 fps, length = the song.
+// Canvas2D; every frame is a pure function of t. Motion is quantised to 12 fps (resting pieces boil at 6 fps) with seeded
+// ±2 px hand-placement jitter. Pieces are CC0/PD cutouts with baked halftone + scissor-cut white rims (work/prep.py).
+const W = 1920, H = 1080, D = '/demos/30-manobotar-dak/', D6 = '/demos/06-collage/';
+const C = await (await fetch(D + 'cues.json')).json();
+const A = await (await fetch(D + 'cues_audio.json')).json();
+const DUR = A.duration;
+window.DEMO = { width: W, height: H, fps: 30, duration: DUR };
+const cv = document.getElementById('c'), X = cv.getContext('2d');
+const LAY = await (await fetch(D + 'assets/gen/layout.json')).json();
+const LAY6 = await (await fetch(D6 + 'assets/gen/layout.json')).json();
+const load = src => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => no(src); i.src = src; });
+const I = {};
+const GEN = ['boy', 'girl', 'man', 'mother', 'king', 'flowers', 'bird_b', 'earth', 'sun', 'goya_a', 'goya_b', 'goya_c', 'goya_d',
+  'globe', 'court', 'map_a', 'map_b', 'ruins', 'aircraft', 'children'];
+const GEN6 = ['p_lid', 'p_jaw', 'p_face', 'space_wedge', 'bird_hawk', 'rose_purple', 'rose_centi', 'bfly_a', 'bfly_b',
+  'rocket', 'flame0', 'flame1', 'news_a', 'news_b', 'manicule'];
+// hero (the singer): if assets/gen/hero_*.png exist they replace the stand-in portrait (same piece layout contract)
+const HERO = LAY.hero_face ? 'hero' : null;
+await Promise.all([
+  ...GEN.map(async n => I[n] = await load(D + 'assets/gen/' + n + '.png')),
+  ...GEN6.map(async n => I[n] = await load(D6 + 'assets/gen/' + n + '.png')),
+  ...(HERO ? ['hero_face', 'hero_lid', 'hero_jaw', 'hero_cavity', 'hero_body', 'hero_profile', 'hero_back'].filter(n => LAY[n]).map(async n => I[n] = await load(D + 'assets/gen/' + n + '.png')) : []),
+  (async () => I.kraft = await load(D6 + 'assets/gen/page_kraft.jpg'))(),
+  (async () => I.red = await load(D6 + 'assets/gen/page_red.jpg'))(),
+  (async () => I.grain = await load('/assets/textures/grain/grain_film35_2048.png'))(),
+  (async () => I.dust1 = await load('/assets/textures/dust/dust_01_3840x2160.png'))(),
+  (async () => I.dust2 = await load('/assets/textures/dust/dust_03_3840x2160.png'))(),
+  (async () => I.paper = await load('/assets/textures/paper/Paper001_4K_color.jpg'))(),
+  (async () => I.tapeW = await load('/assets/textures/washi/washi_solid_14.png'))(),
+  (async () => I.tapeK = await load('/assets/textures/washi/washi_solid_12.png'))(),
+]);
+await Promise.all(Object.values(I).map(i => i.decode()));
+const BN = '"Anek Bangla"';
+for (const f of [`800 100px ${BN}`, `600 100px ${BN}`, `500 30px "IBM Plex Mono"`, `400 100px "Anton"`])
+  await document.fonts.load(f, 'মানবতার ডাক শেষ আলো জ্বলবেই যুদ্ধ নয় শান্তি চাই ঘৃণা ভালোবাসা ক্ষমতা মানুষ বাঁচুক ০১২৩৪৫৬৭৮৯ — ? ! । ABC');
+await document.fonts.ready;
+
+// ------------------------------------------------------------------ helpers
+const PI = Math.PI, DEG = PI / 180;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, u) => a + (b - a) * u;
+const eOut = x => 1 - Math.pow(1 - clamp(x), 3);
+const eIO = x => (x = clamp(x), x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const eBack = x => { x = clamp(x); const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+function hash(a, b = 0) { let h = (Math.round(a * 1000) * 374761393 + b * 668265263 + 1013904223) | 0; h = Math.imul(h ^ (h >>> 13), 1274126177); h ^= h >>> 16; return (h >>> 0) / 4294967296; }
+const K = t => Math.floor(t * 12 + 1e-4);              // 12 fps step index
+const Q = t => K(t) / 12;                               // quantised time
+const ks = (t, t0) => K(t) - Math.round(t0 * 12);       // steps since cue
+function jit(id, t, amp = 2, fps = 12) {                // seeded hand-placement jitter (px, px, rad)
+  const k = Math.floor(t * fps + 1e-4);
+  return [(hash(id, k) * 2 - 1) * amp, (hash(id + 71, k) * 2 - 1) * amp, (hash(id + 913, k) * 2 - 1) * amp * 0.25 * DEG];
+}
+// slap: a piece drops from "camera" onto the page, hitting exactly on t0 (squash on impact, shadow collapses)
+function slap(t, t0, pre = 3) {
+  const k = ks(t, t0);
+  if (k < -pre) return null;
+  if (k < 0) { const u = -k / pre; return { s: 1 + 0.42 * u * u + 0.05 * u, lift: u, k }; }
+  if (k === 0) return { s: 0.968, lift: 0, k, sq: 1 };
+  if (k === 1) return { s: 1.012, lift: 0.03, k };
+  return { s: 1, lift: 0, k };
+}
+function shadow(c, lift = 0, a = 0.34) {
+  c.shadowColor = `rgba(34,20,8,${a + 0.1 * Math.min(lift, 1)})`;
+  c.shadowBlur = 4 + lift * 30; c.shadowOffsetX = 3 + lift * 22; c.shadowOffsetY = 5 + lift * 30;
+}
+function noShadow(c) { c.shadowColor = 'transparent'; c.shadowBlur = 0; c.shadowOffsetX = 0; c.shadowOffsetY = 0; }
+const off = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+const PAL = { ink: '#16130F', red: '#D2261C', cream: '#F2ECDF', news: '#E9E0CB', kraft: '#B9935F', blue: '#1F4E8C', gold: '#E2A72E' };
+const PAT = { red: X.createPattern(I.red, 'repeat'), news: X.createPattern(I.news_a, 'repeat'), kraft: X.createPattern(I.kraft, 'repeat') };
+
+// one call places a piece: slapped in at t0, boiling at rest, yanked off (3 steps) at t1
+function put(c, t, img, x, y, o = {}) {
+  const { s = 1, rot = 0, t0 = -1, t1 = 1e9, id = 1, amp, ax = .5, ay = .5, flip = false, pre = 3, sh = true, yank = [0, -1], alpha = 1, sx = 1, sy = 1 } = o;
+  if (t < t0 - pre / 12) return null;
+  const S = t0 >= 0 ? slap(t, t0, pre) : { s: 1, lift: 0, k: 99 };
+  if (!S) return null;
+  let dx = 0, dy = 0, r2 = 0, lift = S.lift;
+  const ky = ks(t, t1);
+  if (ky >= 0) { if (ky > 3) return null; const u = [0.08, 0.35, 0.75, 1.3][ky]; dx = yank[0] * u * 1400; dy = yank[1] * u * 1100; r2 = u * 14 * DEG * (hash(id, 3) > .5 ? 1 : -1); lift = 0.3 + u; }
+  const moving = S.k < 3 || ky >= 0;
+  const [jx, jy, jr] = jit(id, t, amp ?? (moving ? 2 : 1.1), moving ? 12 : 6);
+  c.save(); c.translate(x + dx + jx, y + dy + jy); c.rotate(rot + r2 + jr);
+  c.scale(s * S.s * sx * (flip ? -1 : 1) * (S.sq ? 1.02 : 1), s * S.s * sy * (S.sq ? 0.97 : 1));
+  if (sh) shadow(c, lift); c.globalAlpha = alpha;
+  c.drawImage(img, -img.width * ax, -img.height * ay);
+  c.restore(); noShadow(c);
+  return S;
+}
+// paper fibre / dust flecks puffing out of an impact for 2 steps
+function flecks(c, x, y, k, seed, n = 10, rad = 200) {
+  if (k < 0 || k > 1) return;
+  c.save(); noShadow(c); c.lineCap = 'round';
+  for (let i = 0; i < n; i++) {
+    const a = hash(seed, i) * 2 * PI, d = rad * (0.8 + hash(seed + 1, i) * 0.6) + (k + 1) * 26;
+    const px = x + Math.cos(a) * d, py = y + Math.sin(a) * d * 0.7;
+    c.globalAlpha = k ? 0.4 : 0.9; c.strokeStyle = i % 3 ? PAL.cream : PAL.ink; c.lineWidth = 2 + hash(seed + 2, i) * 3;
+    c.beginPath(); c.moveTo(px, py); c.lineTo(px + Math.cos(a) * 14, py + Math.sin(a) * 10); c.stroke();
+  }
+  c.restore();
+}
+function cutQuad(c, w, h, seed, j = 5) {
+  const p = [[-w / 2, -h / 2], [w / 2, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]];
+  c.beginPath();
+  p.forEach(([x, y], i) => { const dx = (hash(seed, i) * 2 - 1) * j, dy = (hash(seed + 5, i) * 2 - 1) * j; i ? c.lineTo(x + dx, y + dy) : c.moveTo(x + dx, y + dy); });
+  c.closePath();
+}
+function tornRect(c, w, h, seed, rough = 9) {
+  c.beginPath(); c.moveTo(-w / 2, -h / 2);
+  const n = Math.max(8, Math.round(w / 40)), m = Math.max(4, Math.round(h / 30));
+  for (let i = 1; i <= n; i++) c.lineTo(-w / 2 + w * i / n, -h / 2 + (hash(seed, i) - .5) * rough);
+  for (let i = 1; i <= m; i++) c.lineTo(w / 2 + (hash(seed + 1, i) - .5) * rough, -h / 2 + h * i / m);
+  for (let i = 1; i <= n; i++) c.lineTo(w / 2 - w * i / n, h / 2 + (hash(seed + 2, i) - .5) * rough);
+  for (let i = 1; i < m; i++) c.lineTo(-w / 2 + (hash(seed + 3, i) - .5) * rough, h / 2 - h * i / m);
+  c.closePath();
+}
+function tape(c, x, y, w, rot, seed, t, kraft = false) {
+  const img = kraft ? I.tapeK : I.tapeW, [jx, jy] = jit(seed, t, 1, 6);
+  c.save(); c.translate(x + jx, y + jy); c.rotate(rot); shadow(c, 0, 0.18); c.globalAlpha = 0.9;
+  c.drawImage(img, 0, 0, img.width, img.height, -w / 2, -22, w, 44); c.restore(); noShadow(c);
+}
+// red constructivist tape strip (solid, torn ends) — crossing out, underlining, mending
+function redTape(c, x, y, w, rot, seed, t, col = PAL.red, hgt = 46) {
+  const [jx, jy, jr] = jit(seed, t, 1.2, 6);
+  c.save(); c.translate(x + jx, y + jy); c.rotate(rot + jr); shadow(c, 0.02, 0.3);
+  tornRect(c, w, hgt, seed, 7); c.fillStyle = col; c.fill(); noShadow(c);
+  c.globalCompositeOperation = 'multiply'; c.globalAlpha = 0.25; c.fillStyle = PAT.red; c.fill(); c.restore();
+}
+
+// ------------------------------------------------------------------ type
+function setFont(c, size, w = 800, stretch = 'normal') { c.font = `${w} ${size}px ${BN}`; c.fontStretch = stretch; }
+// a word on its own scissor-cut chip (ransom / magazine type)
+function chip(c, word, x, y, size, o = {}) {
+  const { bg = PAL.cream, fg = PAL.ink, rot = 0, seed = 1, t = 0, t0 = -1, stretch = 'normal', w = 800, pad = 0.32, rim = true, s0 = 1 } = o;
+  const S = t0 >= 0 ? slap(t, t0, 2) : { s: 1, lift: 0, k: 99 };
+  if (!S) return 0;
+  setFont(c, size, w, stretch);
+  const tw = c.measureText(word).width, bw = tw + size * pad * 2, bh = size * 1.32;
+  const [jx, jy, jr] = jit(seed, t, S.k < 3 ? 2 : 1, S.k < 3 ? 12 : 6);
+  c.save(); c.translate(x + jx, y + jy); c.rotate(rot + jr); c.scale(S.s * s0, S.s * s0);
+  if (rim) { cutQuad(c, bw + 12, bh + 12, seed, 4); c.fillStyle = PAL.cream; shadow(c, S.lift); c.fill(); noShadow(c); }
+  cutQuad(c, bw, bh, seed + 9, 3); c.fillStyle = bg; if (!rim) shadow(c, S.lift); c.fill(); noShadow(c);
+  if (bg === PAT.news) { c.fillStyle = 'rgba(236,229,214,.6)'; c.fill(); }
+  c.fillStyle = fg; c.textAlign = 'center'; c.textBaseline = 'middle'; setFont(c, size, w, stretch);
+  c.fillText(word, 0, size * 0.06);
+  c.restore();
+  return bw;
+}
+const wordsOf = s => s.split(/\s+/).filter(Boolean);
+function wordTimes(l) {
+  const ws = wordsOf(l.text), n = ws.reduce((a, w) => a + Math.max(2, w.length), 0), span = Math.max(0.35, (l.t1 - l.t0) * 0.82);
+  let acc = 0; return ws.map(w => { const at = l.t0 + acc / n * span; acc += Math.max(2, w.length); return { w, at }; });
+}
+// lines that get the big constructivist treatment instead of the lyric strip
+const BIG = /^(শেষ আলো জ্বলবেই|আলো জ্বলবেই|যুদ্ধ নয়|শান্তি চাই|ঘৃণা নয়|ভালোবাসা চাই|ক্ষমতা নয়|মানুষ বাঁচুক|একটি মানবতার ডাক)/;
+const LINES = A.lines.map((l, i) => ({ ...l, i, big: BIG.test(l.text) }));
+const lineAt = t => { let r = null; for (const l of LINES) if (t >= l.t0 - 0.05 && t < Math.min(l.t1 + 0.6, (LINES[l.i + 1]?.t0 ?? 1e9) - 0.02)) r = l; return r; };
+const L = i => LINES[i];                                 // 0-based SRT index
+// lyric strip: a torn newsprint strip slapped on the lower third, each word slapped on its sung time
+function lyricStrip(c, t) {
+  const l = lineAt(t);
+  if (!l || l.big) return;
+  const ws = wordTimes(l), size = l.text.length > 26 ? 66 : 74;
+  setFont(c, size, 800);
+  const gap = size * 0.3, widths = ws.map(({ w }) => c.measureText(w).width), tot = widths.reduce((a, b) => a + b, 0) + gap * (ws.length - 1);
+  const bw = tot + 120, bh = size * 1.75, side = l.i % 2 ? 1 : -1;
+  const S = slap(t, l.t0 - 0.08, 2); if (!S) return;
+  const hold = Math.min(l.t1 + 0.6, (LINES[l.i + 1]?.t0 ?? 1e9) - 0.02), ky = ks(t, hold - 0.17);
+  let dy = 0, rr = 0; if (ky >= 0) { dy = [20, 120, 380][Math.min(ky, 2)]; rr = ky * 3 * side * DEG; }
+  const [jx, jy, jr] = jit(l.i * 7 + 3, t, S.k < 3 ? 2 : 1, S.k < 3 ? 12 : 6);
+  c.save(); c.translate(W / 2 + side * 18 + jx, 948 + dy + jy); c.rotate(side * 1.2 * DEG + rr + jr); c.scale(S.s, S.s);
+  tornRect(c, bw + 14, bh + 12, l.i * 13 + 1, 10); c.fillStyle = PAL.cream; shadow(c, S.lift); c.fill(); noShadow(c);
+  tornRect(c, bw, bh, l.i * 13 + 5, 8); c.fillStyle = PAT.news; c.fill(); c.fillStyle = 'rgba(240,233,216,.82)'; c.fill();
+  c.fillStyle = PAL.red; c.fillRect(-bw / 2 + 26, -bh / 2 + 14, 12, bh - 28);         // red rule, editorial finish
+  c.textBaseline = 'middle'; c.textAlign = 'left';
+  let x = -tot / 2 + 12;
+  ws.forEach(({ w, at }, k) => {
+    const kk = ks(t, at);
+    if (kk >= -1) {
+      const pop = kk < 0 ? 1.25 : kk === 0 ? 1.1 : 1;
+      c.save(); c.translate(x + widths[k] / 2, size * 0.06 + (kk < 0 ? -10 : 0)); c.scale(pop, pop); c.globalAlpha = kk < 0 ? 0.45 : 1;
+      setFont(c, size, 800); c.fillStyle = /শান্তি|মানুষ|আলো|পৃথিবী|যুদ্ধ|ক্ষমতা|ভালোবাসা|সকাল|সূর্য/.test(w) ? PAL.red : PAL.ink;
+      c.textAlign = 'center'; c.fillText(w, 0, 0); c.restore();
+    }
+    x += widths[k] + gap;
+  });
+  c.restore();
+}
+// big constructivist type: words on a diagonal, alternating red slabs and ink chips, each slapped on its sung time
+function bigType(c, t, l, o = {}) {
+  const { x = W / 2, y = 760, rot = -8 * DEG, size = 150, scheme = 0 } = o;
+  const ws = wordTimes(l);
+  setFont(c, size, 800);
+  const widths = ws.map(({ w }) => c.measureText(w).width + size * 0.64), tot = widths.reduce((a, b) => a + b, 0) + 18 * (ws.length - 1);
+  const sc = Math.min(1, 1700 / tot);
+  let cx = -tot / 2;
+  c.save(); c.translate(x, y); c.rotate(rot); c.scale(sc, sc);
+  ws.forEach(({ w, at }, k) => {
+    const pal = [[PAL.red, PAL.cream], [PAL.ink, PAL.cream], [PAL.cream, PAL.ink]][(k + scheme) % 3];
+    const yo = (k % 2 ? 1 : -1) * size * 0.16;
+    chip(c, w, cx + widths[k] / 2, yo, size, { bg: pal[0], fg: pal[1], rot: (hash(l.i, k) - .5) * 6 * DEG, seed: l.i * 31 + k, t, t0: at, stretch: 'semi-condensed' });
+    cx += widths[k] + 18;
+  });
+  c.restore();
+}
+function bigLine(c, t, o) { const l = lineAt(t); if (l && l.big) bigType(c, t, l, o); }
+
+// ------------------------------------------------------------------ shapes cut from paper
+function dovePath(c, flap) {               // stylised dove facing right, ~220 px wide; flap 0 = wings up, 1 = down
+  c.beginPath();
+  c.moveTo(98, -14); c.lineTo(112, -9); c.lineTo(97, -4);
+  c.bezierCurveTo(92, 6, 70, 12, 46, 13); c.bezierCurveTo(16, 15, -22, 12, -52, 6);
+  c.lineTo(-104, 26); c.lineTo(-92, 6); c.lineTo(-108, -6); c.lineTo(-60, -7);
+  c.bezierCurveTo(-26, -15, 18, -11, 40, -15); c.bezierCurveTo(56, -27, 80, -30, 98, -14); c.closePath();
+  if (flap < 0.5) { c.moveTo(22, -12); c.bezierCurveTo(6, -62, -30, -100, -66, -118); c.lineTo(-54, -92); c.lineTo(-78, -96); c.lineTo(-56, -70); c.lineTo(-80, -66); c.bezierCurveTo(-48, -40, -30, -18, -14, -6); c.closePath(); }
+  else { c.moveTo(22, -4); c.bezierCurveTo(8, 40, -20, 78, -56, 96); c.lineTo(-44, 70); c.lineTo(-70, 72); c.lineTo(-44, 48); c.lineTo(-64, 40); c.bezierCurveTo(-36, 20, -24, 6, -14, -2); c.closePath(); }
+}
+function dove(c, x, y, s, t, seed, o = {}) {
+  const { rot = 0, flapFps = 6, col = PAL.cream, flip = false, lift = 0.2 } = o;
+  const flap = Math.floor(t * flapFps + hash(seed) * 4) % 2, [jx, jy, jr] = jit(seed, t, 2, 12);
+  c.save(); c.translate(x + jx, y + jy); c.rotate(rot + jr); c.scale(s * (flip ? -1 : 1), s);
+  c.lineJoin = 'miter'; dovePath(c, flap); c.lineWidth = 9; c.strokeStyle = PAL.cream; shadow(c, lift); c.stroke(); noShadow(c);
+  c.fillStyle = col; c.fill(); c.fillStyle = 'rgba(22,19,15,.9)'; c.beginPath(); c.arc(84, -15, 3.2, 0, 2 * PI); c.fill();
+  c.restore();
+}
+function dollPath(c) {                     // one paper doll, hands at x = ±48 (so a chain joins hand to hand)
+  c.beginPath();
+  c.moveTo(-48, -40); c.lineTo(-18, -50); c.lineTo(-9, -56);
+  c.arc(0, -76, 21, PI * 0.62, PI * 2.38, false);
+  c.lineTo(18, -50); c.lineTo(48, -40); c.lineTo(48, -26); c.lineTo(20, -28); c.lineTo(22, 10); c.lineTo(30, 70); c.lineTo(10, 70);
+  c.lineTo(0, 22); c.lineTo(-10, 70); c.lineTo(-30, 70); c.lineTo(-22, 10); c.lineTo(-20, -28); c.lineTo(-48, -26); c.closePath();
+}
+// an accordion-fold paper-doll chain, unfolding one doll per 12 fps step from t0
+function dolls(c, t, x, y, n, s, t0, seed, o = {}) {
+  const { fills = [PAL.red, PAL.cream, PAT.news, PAL.ink], hop = true, step = 1 } = o;
+  const k = ks(t, t0); if (k < 0) return;
+  const shown = Math.min(n, Math.floor(k / step) + 1);
+  for (let i = 0; i < shown; i++) {
+    const bob = hop ? (Math.floor(t * 6 + i) % 2) * -6 : 0, [jx, jy, jr] = jit(seed + i, t, 1.5, 6);
+    c.save(); c.translate(x + (i - (n - 1) / 2) * 96 * s + jx, y + bob + jy); c.rotate(jr); c.scale(s, s);
+    dollPath(c); c.lineWidth = 7; c.strokeStyle = PAL.cream; c.lineJoin = 'miter'; shadow(c, i === shown - 1 && k < n * step ? 0.4 : 0.05); c.stroke(); noShadow(c);
+    c.fillStyle = fills[i % fills.length]; c.fill(); if (fills[i % fills.length] === PAT.news) { c.fillStyle = 'rgba(236,229,214,.55)'; c.fill(); }
+    c.restore();
+  }
+}
+// invented flags (no real national flags): paper rectangles on sticks
+const FLAGS = [[PAL.red, PAL.ink], [PAL.blue, PAL.cream, PAL.blue], [PAL.gold, PAL.ink], [PAL.ink, PAL.red, PAL.cream], [PAL.cream, PAL.red]];
+function flag(c, x, y, s, t, t0, seed) {
+  const S = slap(t, t0, 2); if (!S) return;
+  const f = FLAGS[seed % FLAGS.length], [jx, jy, jr] = jit(seed, t, 1.4, 6), wave = Math.floor(t * 6 + seed) % 2 ? 1 : -1;
+  c.save(); c.translate(x + jx, y + jy); c.rotate(jr + (hash(seed) - .5) * 0.2); c.scale(s * S.s, s * S.s); shadow(c, S.lift, 0.3);
+  c.fillStyle = PAL.ink; c.fillRect(-4, -160, 8, 160);
+  c.beginPath(); c.moveTo(4, -160); c.lineTo(110, -154 + wave * 4); c.lineTo(106, -98 - wave * 3); c.lineTo(4, -104); c.closePath(); c.fillStyle = f[0]; c.fill(); noShadow(c);
+  c.save(); c.clip();
+  for (let i = 1; i < f.length; i++) { c.fillStyle = f[i]; c.fillRect(4, -160 + i * 56 / f.length, 110, 56 / f.length / (i % 2 ? 1 : 2)); }
+  c.restore(); c.restore();
+}
+// big red / black cut-paper question mark and X
+function question(c, x, y, s, t, t0, seed) {
+  const S = slap(t, t0, 2); if (!S) return;
+  c.save(); c.translate(x, y); const [jx, jy, jr] = jit(seed, t, 1.5, 6); c.translate(jx, jy); c.rotate(jr - 6 * DEG); c.scale(s * S.s, s * S.s);
+  setFont(c, 520, 800); c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.lineWidth = 22; c.strokeStyle = PAL.cream; c.lineJoin = 'round'; shadow(c, S.lift); c.strokeText('?', 0, 0); noShadow(c); c.fillStyle = PAL.red; c.fillText('?', 0, 0);
+  c.restore();
+}
+// scissors (two cut-paper blades on a pivot), opening at 12 fps
+function scissors(c, x, y, rot, open, s = 1) {
+  c.save(); c.translate(x, y); c.rotate(rot); c.scale(s, s);
+  for (const pass of [0, 1]) for (const sgn of [-1, 1]) {
+    c.save(); c.rotate(sgn * open);
+    c.beginPath(); c.moveTo(-8, 0); c.lineTo(110, 0); c.lineTo(86, 5 * sgn); c.lineTo(30, 10 * sgn); c.lineTo(-8, 9 * sgn); c.closePath();
+    c.lineWidth = pass ? 0 : 11; c.strokeStyle = PAL.cream; c.fillStyle = PAL.ink; c.lineJoin = 'miter';
+    if (!pass) { shadow(c, 0.25); c.stroke(); noShadow(c); } else c.fill();
+    c.beginPath(); c.ellipse(-50, 18 * -sgn, 22, 15, 0.25 * sgn, 0, 2 * PI);
+    c.lineWidth = pass ? 9 : 19; c.strokeStyle = pass ? (sgn > 0 ? PAL.red : PAL.ink) : PAL.cream; c.stroke();
+    c.beginPath(); c.moveTo(-4, 0); c.lineTo(-32, 11 * -sgn); c.lineWidth = pass ? 8 : 18; c.stroke();
+    c.restore();
+  }
+  c.beginPath(); c.arc(0, 0, 4, 0, 2 * PI); c.fillStyle = PAL.cream; c.fill();
+  c.restore();
+}
+// constructivist sunburst: alternating red / cream rays turning at 6 fps
+function rays(c, x, y, t, o = {}) {
+  const { n = 24, r = 1500, a = 1, cols = [PAL.red, '#E9DCC0'], speed = 4 } = o;
+  const rot = Math.floor(t * 6) / 6 * speed * DEG;
+  c.save(); c.translate(x, y); c.rotate(rot); c.globalAlpha = a;
+  for (let i = 0; i < n; i++) {
+    const a0 = i / n * 2 * PI, a1 = (i + 0.5) / n * 2 * PI;
+    c.beginPath(); c.moveTo(0, 0); c.lineTo(Math.cos(a0) * r, Math.sin(a0) * r); c.lineTo(Math.cos(a1) * r, Math.sin(a1) * r); c.closePath();
+    c.fillStyle = cols[i % cols.length]; c.fill();
+  }
+  c.restore();
+}
+
+// ------------------------------------------------------------------ the hero head (the singer — or the stand-in portrait)
+// open-skull cavity: the lid's silhouette (slightly grown) filled with Hubble deep space, darkened at the rim
+function makeCavity(lid) {
+  const c = off(lid.width, lid.height), x = c.getContext('2d');
+  for (let i = 0; i < 16; i++) { const a = i / 16 * 2 * Math.PI; x.drawImage(lid, Math.cos(a) * 4, Math.sin(a) * 4 + 6); }
+  x.globalCompositeOperation = 'source-in';
+  x.drawImage(I.space_wedge, 300, 120, 1300, 420, 0, 0, lid.width, lid.height * 0.62);
+  const g = x.createLinearGradient(0, lid.height * 0.4, 0, 0); g.addColorStop(0, 'rgba(5,4,20,.85)'); g.addColorStop(1, 'rgba(5,4,20,0)');
+  x.globalCompositeOperation = 'source-atop'; x.fillStyle = g; x.fillRect(0, 0, lid.width, lid.height);
+  return c;
+}
+I.p_cavity = makeCavity(I.p_lid);
+if (HERO && !I.hero_cavity) I.hero_cavity = makeCavity(I.hero_lid);
+const PL = LAY6.portrait, HC = PL.head_center, HG = PL.hinge, JAWH = PL.jaw_hinge;
+const HL = HERO ? LAY.hero_face : null;
+const head = HERO ? { face: I.hero_face, lid: I.hero_lid, jaw: I.hero_jaw, cav: I.hero_cavity, hc: HL.head_center, hg: HL.hinge, jh: HL.jaw_hinge, jawDrop: HL.jaw_drop || 40 }
+  : { face: I.p_face, lid: I.p_lid, jaw: I.p_jaw, cav: I.p_cavity, hc: HC, hg: HG, jh: JAWH, jawDrop: 92 };
+// jaw from the vocal envelope, 3 replacement poses on the 12 fps grid, only while a line is being sung
+function jawAt(t) {
+  const l = lineAt(t); if (!l || t > l.t1 + 0.05) return 0;
+  const v = A.voc[Math.min(A.voc.length - 1, Math.floor(Q(t) * 30))] || 0;
+  return v > 0.62 ? 1 : v > 0.3 ? 0.5 : 0;
+}
+function lidAngle(t) {             // flip-top: POP open (overshoot) on the cue, hinge flop, slam shut at the end
+  for (const [a, b] of C.lid_open) {
+    const k = ks(t, a), kb = ks(t, b);
+    if (k >= -2 && kb < 4) {
+      if (k < 0) return [0, -4 * DEG][k + 2] ?? 0;                        // anticipation: lid twitches
+      if (kb >= 0) return [-60, -25, 4, 0][kb] * DEG;                      // slams shut, tiny bounce
+      const open = [-70, -128, -112, -100, -96][Math.min(k, 4)];
+      return (open + (k > 4 ? Math.sin(Math.floor(t * 6) * 1.7) * 2 : 0)) * DEG;
+    }
+  }
+  return 0;
+}
+function drawHead(c, t, x, y, s, o = {}) {
+  const { rot = 0, t0 = -1, id = 500, inner = null, lift = 0 } = o;
+  const S = t0 >= 0 ? slap(t, t0, 3) : { s: 1, lift: 0, k: 99 }; if (!S) return;
+  const [jx, jy, jr] = jit(id, t, S.k < 3 ? 2 : 1.1, S.k < 3 ? 12 : 6);
+  const la = lidAngle(t), j = jawAt(t), hd = head;
+  c.save(); c.translate(x + jx, y + jy); c.rotate(rot + jr); c.scale(s * S.s * (S.sq ? 1.02 : 1), s * S.s * (S.sq ? 0.96 : 1));
+  c.translate(-hd.hc[0], -hd.hc[1]);
+  if (la < -20 * DEG) {                       // open skull: deep space and whatever spills out
+    c.save(); shadow(c, 0.1, 0.3); c.drawImage(hd.cav, 0, 0); noShadow(c); c.restore();
+    if (inner) { c.save(); inner(c, t); c.restore(); }
+  }
+  shadow(c, S.lift + lift); c.drawImage(hd.face, 0, 0); noShadow(c);
+  c.save(); c.translate(hd.jh[0], hd.jh[1] + j * hd.jawDrop); c.rotate(j * 9 * DEG); c.translate(-hd.jh[0], -hd.jh[1]);
+  shadow(c, S.lift + lift + j * 0.25); c.drawImage(hd.jaw, 0, 0); c.restore(); noShadow(c);
+  c.save(); c.translate(hd.hg[0], hd.hg[1]); c.rotate(la); c.translate(-hd.hg[0], -hd.hg[1]);
+  shadow(c, S.lift + lift + (la < -5 * DEG ? 0.3 : 0)); c.drawImage(hd.lid, 0, 0); c.restore(); noShadow(c);
+  brad(c, hd.hg[0], hd.hg[1]);
+  c.restore();
+  if (S.k === 0) flecks(c, x, y, 0, id, 12, 260 * s); if (S.k === 1) flecks(c, x, y, 1, id, 12, 260 * s);
+}
+function brad(c, x, y) {                                   // brass paper fastener (the puppet joint)
+  c.save(); shadow(c, 0.05, 0.5);
+  const g = c.createRadialGradient(x - 5, y - 6, 1, x, y, 16); g.addColorStop(0, '#FFE9A6'); g.addColorStop(0.35, '#D6A945'); g.addColorStop(1, '#7A5516');
+  c.beginPath(); c.arc(x, y, 15, 0, 2 * PI); c.fillStyle = g; c.fill(); noShadow(c);
+  c.lineWidth = 1.6; c.strokeStyle = 'rgba(60,38,8,.9)'; c.stroke(); c.restore();
+}
+// world-space position of the open skull (for spill launches), given the head transform
+const skullTop = (x, y, s) => [x + (HERO ? 0 : 0), y - (head.hc[1] - (HERO ? LAY.hero_face.head_top[1] : PL.head_top[1])) * s];
+
+// spill: items fly out of the open head on 12 fps parabolas, land and boil
+function spill(c, t, t0, sx, sy, items) {
+  for (const it of items) {
+    const tl = t - (t0 + it.d); if (tl < 0) continue;
+    const k = Math.floor(tl * 12 + 1e-4), dur = it.dur || 0.75, u = clamp(k / (dur * 12));
+    const e = eOut(u), x = lerp(sx, it.x, e), y = lerp(sy, it.y, e) - Math.sin(u * PI) * (it.arc ?? 260);
+    const s = lerp(0.25, it.s, eBack(u)), rot = lerp(it.r0 ?? -40 * DEG, it.rot || 0, e);
+    if (it.n === 'dove') dove(c, x, y, s, t, it.id, { rot, flip: it.flip, lift: u < 1 ? 0.6 : 0.15 });
+    else put(c, t, I[it.n], x, y, { s, rot, id: it.id, amp: u < 1 ? 0 : 1.2, sh: true });
+    if (it.n === 'rocket' && u >= 0) put(c, t, I[Math.floor(t * 12) % 2 ? 'flame0' : 'flame1'], x - 12 * s, y + 230 * s, { s, rot: rot, id: it.id + 1, ay: 0 });
+  }
+}
+
+// ------------------------------------------------------------------ backgrounds
+function page(c, kind, t, seed = 0) {
+  c.save(); noShadow(c);
+  if (kind === 'red') c.drawImage(I.red, 0, 0, W, H);
+  else if (kind === 'kraft') c.drawImage(I.kraft, 0, 0, W, H);
+  else if (kind === 'ink') { c.fillStyle = '#17130F'; c.fillRect(0, 0, W, H); c.globalAlpha = 0.18; c.globalCompositeOperation = 'screen'; c.drawImage(I.kraft, 0, 0, W, H); }
+  else if (kind === 'news') { c.drawImage(I.paper, 0, 0, W, H); c.globalAlpha = 0.45; c.fillStyle = PAT.news; c.fillRect(0, 0, W, H); }
+  else { c.drawImage(I.paper, 0, 0, W, H); }
+  c.restore();
+}
+// big flat colour blocks (constructivist layer under the photos)
+function block(c, t, x, y, w, h, rot, col, seed, t0 = -1) {
+  const S = t0 >= 0 ? slap(t, t0, 2) : { s: 1, lift: 0, k: 9 }; if (!S) return;
+  const [jx, jy, jr] = jit(seed, t, 1, 6);
+  c.save(); c.translate(x + jx, y + jy); c.rotate(rot + jr); c.scale(S.s, S.s); shadow(c, S.lift, 0.28);
+  tornRect(c, w, h, seed, 8); c.fillStyle = col; c.fill(); noShadow(c);
+  if (col === PAL.red) { c.globalCompositeOperation = 'multiply'; c.globalAlpha = 0.3; c.fillStyle = PAT.red; c.fill(); }
+  c.restore();
+}
+function disc(c, t, x, y, r, col, seed, t0 = -1) {
+  const S = t0 >= 0 ? slap(t, t0, 2) : { s: 1, lift: 0, k: 9 }; if (!S) return;
+  const [jx, jy] = jit(seed, t, 1, 6);
+  c.save(); c.translate(x + jx, y + jy); c.scale(S.s, S.s); shadow(c, S.lift, 0.25);
+  c.beginPath(); for (let i = 0; i <= 48; i++) { const a = i / 48 * 2 * PI, rr = r + (hash(seed, i) - .5) * 5; i ? c.lineTo(Math.cos(a) * rr, Math.sin(a) * rr) : c.moveTo(rr, 0); }
+  c.fillStyle = col; c.fill(); c.restore(); noShadow(c);
+}
+// newspaper masthead strip (invented title)
+function masthead(c, t, x, y, t0, rot = -2 * DEG) {
+  const S = slap(t, t0, 2); if (!S) return;
+  const [jx, jy, jr] = jit(77, t, 1, 6);
+  c.save(); c.translate(x + jx, y + jy); c.rotate(rot + jr); c.scale(S.s, S.s);
+  tornRect(c, 880, 150, 91, 10); c.fillStyle = PAL.cream; shadow(c, S.lift); c.fill(); noShadow(c);
+  c.fillStyle = PAT.news; c.globalAlpha = 0.25; c.fill(); c.globalAlpha = 1;
+  c.fillStyle = PAL.ink; c.textAlign = 'center'; setFont(c, 86, 800, 'semi-condensed'); c.fillText('দৈনিক পৃথিবী', 0, 26);
+  c.fillRect(-400, -52, 800, 4); c.fillRect(-400, 46, 800, 3);
+  c.font = '500 19px "IBM Plex Mono"'; c.fillText('বিশেষ সংখ্যা  ·  মানুষের পাতা  ·  মূল্য: একটি হাসি', 0, -60 + 0);
+  c.restore();
+}
+// dateline chips (cities named in the lyric), newspaper-cut
+function dateline(c, t, txt, x, y, t0, seed, rot) {
+  chip(c, txt, x, y, 64, { bg: PAT.news, fg: PAL.ink, rot, seed, t, t0, w: 800 });
+}
+
+// ------------------------------------------------------------------ the Earth: cut into borders, then mended
+const CUTS = [ // border polylines across the Earth disc (local coords, disc radius ~450)
+  [[-470, -120], [-200, -60], [-60, -170], [140, -90], [470, -150]],
+  [[-60, -470], [-20, -200], [60, -40], [10, 160], [80, 470]],
+  [[-470, 210], [-180, 140], [10, 160], [230, 260], [470, 180]],
+];
+function pieceClip(c, qx, qy) {          // one of 6 fragments: a band between two cut lines, on one side of the vertical cut
+  const L0 = CUTS[0], L1 = CUTS[1], L2 = CUTS[2], top = qy < 0, mid = qy === 0, left = qx < 0;
+  const yTop = top ? [[-470, -700], [470, -700]] : mid ? L0 : L2;
+  const yBot = top ? L0 : mid ? L2 : [[-470, 700], [470, 700]];
+  c.beginPath();
+  c.moveTo(-700, yTop[0][1]); for (const p of yTop) c.lineTo(p[0], p[1]); c.lineTo(700, yTop[yTop.length - 1][1]);
+  c.lineTo(700, yBot[yBot.length - 1][1]); for (const p of [...yBot].reverse()) c.lineTo(p[0], p[1]); c.lineTo(-700, yBot[0][1]);
+  c.closePath(); c.clip();
+  const side = left ? -700 : 700;
+  c.beginPath(); c.moveTo(L1[0][0], -700); for (const p of L1) c.lineTo(p[0], p[1]); c.lineTo(L1[L1.length - 1][0], 700); c.lineTo(side, 700); c.lineTo(side, -700); c.closePath(); c.clip();
+}
+const FRAG = [[-1, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [1, 1]];
+// split: 0 = whole, 1 = fully apart. cutProg: how much of the red dashed borders is drawn (0..1)
+function earth(c, t, x, y, s, o = {}) {
+  const { split = 0, cutProg = 0, t0 = -1, id = 600, shake = 0, mendTape = 0, flagsAt = null } = o;
+  const S = t0 >= 0 ? slap(t, t0, 3) : { s: 1, lift: 0, k: 99 }; if (!S) return;
+  const [jx, jy, jr] = jit(id, t, (S.k < 3 ? 2 : 1.1) + shake, shake ? 12 : S.k < 3 ? 12 : 6);
+  c.save(); c.translate(x + jx, y + jy); c.rotate(jr); c.scale(s * S.s, s * S.s);
+  const img = I.earth, R = img.width / 2;
+  if (split <= 0.001) { shadow(c, S.lift); c.drawImage(img, -R, -R); noShadow(c); }
+  else for (let f = 0; f < 6; f++) {
+    const [qx, qy] = FRAG[f], d = split * (70 + hash(id, f) * 50), [fx, fy] = jit(id + f * 7, t, 1.5, 6);
+    c.save(); c.translate(qx * d + fx, qy * d * 0.8 + fy); c.rotate(split * (hash(id + 3, f) - .5) * 14 * DEG);
+    c.save(); pieceClip(c, qx, qy); shadow(c, 0.08 + split * 0.2); c.drawImage(img, -R, -R); noShadow(c); c.restore();
+    c.restore();
+  }
+  if (cutProg > 0 && split < 0.05) {           // red dashed border lines being cut in
+    c.save(); c.setLineDash([22, 14]); c.lineWidth = 9; c.strokeStyle = PAL.red; c.lineCap = 'butt';
+    CUTS.forEach((ln, i) => {
+      const p = clamp(cutProg * 3 - i); if (p <= 0) return;
+      c.beginPath(); const n = ln.length - 1, upto = p * n;
+      ln.forEach((pt, j) => { if (j === 0) c.moveTo(pt[0], pt[1]); else if (j <= upto) c.lineTo(pt[0], pt[1]); else if (j - 1 < upto) { const u = upto - (j - 1), a = ln[j - 1]; c.lineTo(lerp(a[0], pt[0], u), lerp(a[1], pt[1], u)); } });
+      c.stroke();
+    });
+    c.restore();
+  }
+  if (flagsAt) flagsAt.forEach(([fx, fy, ft], i) => { const [qx, qy] = FRAG[i % 6], d = split * (70 + hash(id, i % 6) * 50); flag(c, fx + qx * d, fy + qy * d * 0.8, 1.15, t, ft, 40 + i); });
+  if (mendTape > 0) CUTS.forEach((ln, i) => ln.slice(1, -1).forEach((p, j) => { if (mendTape * 9 > i * 3 + j) tape(c, p[0], p[1], 120, (hash(i, j) - .5) * 1.4, 300 + i * 9 + j, t); }));
+  c.restore();
+  if (S.k === 0 || S.k === 1) flecks(c, x, y, S.k, id, 14, 470 * s);
+}
+
+// ------------------------------------------------------------------ rostrum camera (6 fps steps) + shake
+function camFor(sec, t) {
+  const u = clamp((t - sec[1]) / (sec[2] - sec[1])), q = Math.floor(u * (sec[2] - sec[1]) * 6) / ((sec[2] - sec[1]) * 6);
+  const z = { intro: [1.0, 1.04], borders: [1.0, 1.05], warprints: [1.02, 1.0], palace: [1.0, 1.06], family: [1.03, 1.0], dark: [1.0, 1.04],
+    chorus1: [1.0, 1.03], spillout: [1.02, 1.0], history: [1.0, 1.05], prayer: [1.05, 1.0], chorus2: [1.0, 1.03], bridge: [1.0, 1.04],
+    oneworld: [1.04, 1.0], chant: [1.0, 1.0], sunrise: [1.0, 1.05], light: [1.02, 1.0], ours: [1.0, 1.03], finale: [1.0, 1.06], end: [1.0, 1.0] }[sec[0]] || [1, 1];
+  return lerp(z[0], z[1], eIO(q));
+}
+let SHAKE = 0;
+function hitShake(t, t0, amp = 10) { const k = ks(t, t0); if (k >= 0 && k < 3) SHAKE = Math.max(SHAKE, amp * [1, -0.6, 0.3][k]); }
+
+// ------------------------------------------------------------------ scenes (each draws the whole page at time t)
+const SC = {};
+const lt0 = (i) => L(i).t0;
+SC.intro = (c, t) => {
+  page(c, 'red', t);
+  block(c, t, 1500, 300, 900, 260, -18 * DEG, PAL.ink, 11, 1.67);
+  disc(c, t, 1440, 640, 300, PAL.cream, 12, 5.0);
+  masthead(c, t, 1350, 150, 3.34);
+  put(c, t, I.news_b, 300, 720, { s: 1.15, rot: 8 * DEG, t0: 6.7, id: 13 });
+  earth(c, t, 1440, 640, 0.55, { t0: 10.0, id: 601 });
+  drawHead(c, t, 640, 560, 0.95, { t0: 0.0, id: 501 });
+  hitShake(t, 0.0, 14);
+  chip(c, 'মানবতার', 1300, 860, 120, { bg: PAL.ink, fg: PAL.cream, rot: -6 * DEG, seed: 21, t, t0: 13.4, stretch: 'semi-condensed' });
+  chip(c, 'ডাক', 1690, 900, 150, { bg: PAL.cream, fg: PAL.red, rot: 5 * DEG, seed: 22, t, t0: 15.07, stretch: 'semi-condensed' });
+  if (t > 18.4 && t < 23.4) { const k = ks(t, 18.4); scissors(c, 1150 + Math.min(k, 30) * 9, 520 - Math.min(k, 30) * 2, -0.2, Math.abs(Math.sin(k * 1.3)) * 0.4, 1.2); }
+  chip(c, '“একটা পৃথিবী... কতগুলো সীমানা”', 520, 1000, 34, { bg: PAL.cream, fg: PAL.ink, rot: 1.5 * DEG, seed: 23, t, t0: 20.07, w: 600 });
+};
+SC.borders = (c, t) => {
+  page(c, 'kraft', t);
+  block(c, t, 300, 160, 700, 140, -12 * DEG, PAL.red, 31, 24.3);
+  const sky = ks(t, lt0(2));
+  if (sky >= -3) put(c, t, I.space_wedge, W / 2, 140 + Math.max(0, -sky) * -60, { s: 1.0, id: 32, ay: 0.5, amp: 1 });
+  const cut = clamp((t - lt0(1)) / 1.6), split = clamp((t - lt0(1) - 1.9) / 0.8);
+  earth(c, t, 960, 520, 0.82, { t0: lt0(0), id: 602, cutProg: cut, split: split > 0 ? eOut(Math.floor(split * 6) / 6) : 0,
+    flagsAt: t > lt0(3) - 0.2 ? [[-260, -120, lt0(3)], [200, -150, lt0(3) + 0.42], [-240, 120, lt0(3) + 0.84], [240, 140, lt0(3) + 1.26], [-30, 300, lt0(3) + 1.68]] : null });
+  if (t > lt0(1) - 0.2 && t < lt0(1) + 1.9) { const u = clamp((t - lt0(1)) / 1.6), k = K(t); scissors(c, 960 - 400 + u * 820, 520 - 100 + Math.sin(u * 6) * 40, 0.05, (k % 2) * 0.35 + 0.05, 1.3); }
+  if (t >= lt0(4) - 0.1) put(c, t, I.king, 300, 560, { s: 0.98, t0: lt0(4), id: 33, rot: -3 * DEG });
+  hitShake(t, lt0(4), 9);
+  if (t >= lt0(5) - 0.2) { const u = clamp((t - lt0(5)) / 4.5), q = Math.floor(u * 18) / 18; dove(c, lerp(1560, 1780, q), lerp(330, 150, q), lerp(1.0, 0.18, eOut(q)), t, 34, { rot: -10 * DEG }); }
+  lyricStrip(c, t);
+};
+SC.warprints = (c, t) => {
+  page(c, 'news', t);
+  const T0 = 48.2, B = 60 / A.tempo * 8;      // a new print every 2 bars
+  const P = [['goya_a', 520, 420, -5], ['goya_c', 1380, 460, 4], ['aircraft', 980, 520, -2], ['goya_d', 600, 640, 6], ['goya_b', 1300, 680, -4], ['globe', 960, 540, 3]];
+  block(c, t, 960, 540, 2200, 220, -24 * DEG, PAL.red, 41, T0 + 0.2);
+  P.forEach(([n, x, y, r], i) => { put(c, t, I[n], x, y, { s: n === 'globe' ? 0.9 : 0.78, rot: r * DEG, t0: T0 + 0.6 + i * B, id: 40 + i }); hitShake(t, T0 + 0.6 + i * B, 6); });
+  // red tape crosses out each print as the next lands
+  P.slice(0, 5).forEach(([n, x, y], i) => { const ta = T0 + 0.6 + (i + 1) * B - 0.42; if (t > ta) { redTape(c, x, y, 640, 38 * DEG, 50 + i, t); if (t > ta + 0.17) redTape(c, x, y, 640, -38 * DEG, 60 + i, t); } });
+  chip(c, 'যুদ্ধ', 360, 160, 96, { bg: PAL.ink, fg: PAL.cream, rot: -8 * DEG, seed: 47, t, t0: T0 + 0.6 + 2 * B });
+  chip(c, 'আর', 610, 190, 96, { bg: PAL.cream, fg: PAL.ink, rot: 4 * DEG, seed: 48, t, t0: T0 + 0.6 + 2 * B + 0.42 });
+  chip(c, 'নয়', 820, 160, 110, { bg: PAL.red, fg: PAL.cream, rot: -3 * DEG, seed: 49, t, t0: T0 + 0.6 + 2 * B + 0.84 });
+  drawHead(c, t, 1620, 860, 0.5, { t0: T0 + 0.6 + 5 * B + 1.6, id: 502, rot: 8 * DEG });
+};
+SC.palace = (c, t) => {
+  page(c, 'paper', t);
+  put(c, t, I.map_b, 960, 560, { s: 1.32, rot: 1.5 * DEG, t0: 71.3, id: 71, amp: 1 });
+  put(c, t, I.map_a, 1360, 400, { s: 0.62, rot: -4 * DEG, t0: lt0(6) + 0.3, id: 72 });
+  put(c, t, I.king, 1380, 520, { s: 0.7, t0: lt0(6) + 1.0, id: 73, rot: 2 * DEG });
+  // the manicule draws the new border on the map in red
+  const u = clamp((t - lt0(7)) / 2.2);
+  if (u > 0) {
+    const path = [[260, 760], [420, 640], [560, 700], [700, 520], [860, 560], [980, 400]], n = path.length - 1, up = Math.floor(u * 18) / 18 * n;
+    c.save(); c.lineWidth = 14; c.strokeStyle = PAL.red; c.lineJoin = 'round'; c.setLineDash([30, 12]); c.beginPath();
+    let tip = path[0];
+    path.forEach((p, j) => { if (j === 0) c.moveTo(...p); else if (j <= up) { c.lineTo(...p); tip = p; } else if (j - 1 < up) { const v = up - (j - 1), a = path[j - 1]; tip = [lerp(a[0], p[0], v), lerp(a[1], p[1], v)]; c.lineTo(...tip); } });
+    c.stroke(); c.restore();
+    if (t < lt0(8) + 0.5) put(c, t, I.manicule, tip[0], tip[1], { s: 0.8, ax: LAY6.manicule.tip[0] / I.manicule.width, ay: LAY6.manicule.tip[1] / I.manicule.height, rot: -20 * DEG, id: 74, amp: 2 });
+  }
+  if (t > lt0(8) - 0.3) { const k = ks(t, lt0(8)); put(c, t, I.aircraft, 1640 - Math.max(0, 6 - k) * 70, 260 + Math.max(0, 6 - k) * -30, { s: 0.55, rot: -12 * DEG, id: 75, amp: 2 }); }
+  if (t > lt0(9) - 0.2) put(c, t, I.court, 520, 560, { s: 0.85, rot: -5 * DEG, t0: lt0(9), id: 76, amp: 5 });
+  // datelines
+  [['ওয়াশিংটন', 380, 230, 10], ['মস্কো', 760, 300, 10.5], ['বেইজিং', 1150, 230, 11], ['দিল্লি', 1500, 310, 11.5]].forEach(([s, x, y], i) => {
+    const l = i < 2 ? L(10) : L(11), at = i % 2 ? l.t0 + (l.t1 - l.t0) * 0.55 : l.t0;
+    dateline(c, t, s, x, y, at, 80 + i, (hash(i, 5) - .5) * 12 * DEG);
+  });
+  if (t > lt0(12) - 0.2) chip(c, 'ক্ষমতার হিসাব', 960, 470, 92, { bg: PAL.ink, fg: PAL.cream, rot: -4 * DEG, seed: 85, t, t0: lt0(12) });
+  if (t > lt0(12) + 0.4) redTape(c, 960, 474, 700, -4 * DEG, 86, t, PAL.red, 14);
+  if (t > lt0(13) - 0.3) drawHead(c, t, 960, 600, 0.9, { t0: lt0(13), id: 503 });
+  hitShake(t, lt0(13), 10);
+  lyricStrip(c, t);
+};
+SC.family = (c, t) => {
+  page(c, 'kraft', t);
+  disc(c, t, 960, 470, 340, PAL.cream, 91, 91.0);
+  block(c, t, 960, 900, 2100, 300, 0, PAL.ink, 92, 91.0);
+  put(c, t, I.boy, 520, 560, { s: 0.86, t0: lt0(14), id: 93, rot: -3 * DEG });
+  put(c, t, I.mother, 1400, 520, { s: 0.82, t0: lt0(15), id: 94, rot: 4 * DEG });
+  const yk = t > lt0(17) + 0.5 ? Math.min(3, ks(t, lt0(17) + 0.5)) : -1;
+  if (t > lt0(16) - 0.2 && yk < 3) earth(c, t, 960 + (yk >= 0 ? [0, 30, 90][yk] : 0), 470 - (yk >= 0 ? [40, 260, 700][yk] : 0), 0.32, { t0: lt0(16), id: 603 });
+  if (t > lt0(17) - 0.2) { const k = ks(t, lt0(17)); put(c, t, I.aircraft, 1900 - Math.min(k, 10) * 150, 120 + Math.min(k, 10) * 10, { s: 0.42, rot: -20 * DEG, id: 95, amp: 2 }); }
+  lyricStrip(c, t);
+};
+SC.dark = (c, t) => {
+  page(c, 'ink', t);
+  const shake = t > lt0(19) && t < lt0(20) ? 9 : 0;
+  earth(c, t, 960, 470, 0.62, { t0: 97.84, id: 604, shake });
+  if (shake) SHAKE = Math.max(SHAKE, 4);
+  dolls(c, t, 960, 800, 13, 1.1, lt0(20), 120, { step: 1 });
+  if (t > lt0(22) - 0.2) drawHead(c, t, 1640, 430, 0.55, { t0: lt0(22), id: 504, rot: -6 * DEG });
+  if (t > lt0(23) - 0.2) drawHead(c, t, 290, 430, 0.55, { t0: lt0(23), id: 505, rot: 6 * DEG });
+  lyricStrip(c, t);
+};
+// chorus: the flip-top head, spill, big type, standing row, sun, doves
+const SPILL_A = [
+  { n: 'sun', x: 960, y: 250, s: 0.55, d: 0.05, id: 701, arc: 200, dur: 0.8 },
+  { n: 'dove', x: 400, y: 200, s: 0.9, d: 0.15, id: 702, rot: -12 * DEG, flip: true },
+  { n: 'dove', x: 1520, y: 180, s: 1.0, d: 0.25, id: 703, rot: 10 * DEG },
+  { n: 'flowers', x: 300, y: 620, s: 0.62, d: 0.35, id: 704, rot: -14 * DEG },
+  { n: 'rose_purple', x: 1640, y: 640, s: 1.0, d: 0.4, id: 705, rot: 16 * DEG },
+  { n: 'bfly_a', x: 600, y: 330, s: 0.8, d: 0.5, id: 706, rot: -20 * DEG },
+  { n: 'bfly_b', x: 1330, y: 360, s: 0.8, d: 0.55, id: 707, rot: 18 * DEG },
+  { n: 'bird_hawk', x: 1500, y: 430, s: 0.75, d: 0.62, id: 708, rot: -6 * DEG },
+  { n: 'rose_centi', x: 470, y: 470, s: 0.9, d: 0.7, id: 709, rot: 10 * DEG },
+  { n: 'dove', x: 760, y: 120, s: 0.7, d: 0.8, id: 710, rot: -6 * DEG, flip: true },
+  { n: 'bird_b', x: 1760, y: 300, s: 0.55, d: 0.9, id: 711, rot: 8 * DEG },
+];
+function chorus(c, t, T, base) {
+  // T: lyric index of the first "শেষ আলো জ্বলবেই!" of this chorus
+  const t0 = lt0(T), storm = lt0(T + 2), stand = lt0(T + 3), hate = lt0(T + 5), together = lt0(T + 6), morning = lt0(T + 7), again = lt0(T + 8);
+  page(c, t < storm ? 'red' : 'paper', t);
+  const sunUp = t > morning ? eOut(clamp((Q(t) - morning) / 1.2)) : 0;
+  if (t < storm) {
+    rays(c, 960, 380, t, { a: 1, cols: [PAL.red, '#B81F17'] });
+    drawHead(c, t, 960, 560, 1.0, { id: 510, inner: null });
+    spill(c, t, t0 + 0.1, ...skullTop(960, 560, 1.0), SPILL_A);
+    hitShake(t, t0, 16);
+    bigLine(c, t, { y: 880, rot: -6 * DEG, size: 140, scheme: base });
+  } else {
+    block(c, t, 960, 600, 2400, 420, -9 * DEG, PAL.ink, 721 + base, storm);
+    disc(c, t, 1560, 300, 210, PAL.red, 722 + base, storm + 0.25);
+    block(c, t, 300, 180, 640, 120, 6 * DEG, PAL.red, 723 + base, storm + 0.5);
+    if (t > morning - 0.2) { rays(c, 960, lerp(1100, 560, sunUp), t, { a: 0.9 }); put(c, t, I.sun, 960, lerp(1150, 520, sunUp), { s: 0.9, id: 720, amp: 1 }); }
+    // the storm: torn newsprint and goya scraps blowing across
+    if (t < stand + 0.5) for (let i = 0; i < 9; i++) { const k = ks(t, storm) + i * 3, x = ((k * 70 + i * 260) % 2400) - 240, y = 120 + hash(i, 9) * 700;
+      c.save(); c.translate(x, y + Math.sin(k * 0.7 + i) * 30); c.rotate(k * 0.3 + i); shadow(c, 0.5); tornRect(c, 220, 120, i, 12); c.fillStyle = i % 3 ? PAT.news : PAL.ink; c.fill(); noShadow(c); c.restore(); }
+    // people stand up, one per beat
+    const row = I.hero_body ? [['boy', 230, 0.74], ['mother', 600, 0.72], ['hero_body', 960, 0.62], ['girl', 1330, 0.76], ['man', 1700, 0.68]]
+      : [['boy', 330, 0.8], ['mother', 760, 0.78], ['girl', 1170, 0.82], ['man', 1590, 0.74]];
+    row.forEach(([n, x, s], i) => { if (t > stand - 0.3) put(c, t, I[n], x, 600, { s, t0: stand + i * 60 / A.tempo * 2, id: 730 + i, rot: (i % 2 ? 2 : -2) * DEG }); });
+    if (t > hate - 0.3 && t < together + 1) { const k = ks(t, hate + 1.2); put(c, t, I.king, 960, 560 + (k > 0 ? Math.min(k, 6) ** 2 * 30 : 0), { s: 0.52, t0: hate, id: 740, rot: (k > 0 ? k * 9 : 0) * DEG });
+      if (t > hate + 0.5 && t < hate + 1.3) scissors(c, 960 - 200 + ks(t, hate + 0.5) * 40, 430, 0.1, (K(t) % 2) * 0.4, 1.2); }
+    if (t > together - 0.2) for (let i = 0; i < 5; i++) { const u = clamp((t - together - i * 0.2) / 2.5), q = Math.floor(u * 24) / 24; if (u > 0) dove(c, lerp(-150, 2100, q) , 200 + i * 60 + Math.sin(q * 8 + i) * 30, 0.6 + i * 0.08, t, 750 + i, { rot: -8 * DEG }); }
+    dolls(c, t, 960, 960, 15, 0.85, together, 760);
+    if (t > again - 0.2) bigLine(c, t, { y: 200, rot: -5 * DEG, size: 130, scheme: base + 1 });
+  }
+  lyricStrip(c, t);
+};
+SC.chorus1 = (c, t) => chorus(c, t, 24, 0);
+SC.chorus2 = (c, t) => chorus(c, t, 52, 1);
+SC.spillout = (c, t) => {
+  page(c, 'red', t);
+  rays(c, 960, 380, t, { cols: [PAL.red, '#B81F17'] });
+  drawHead(c, t, 960, 600, 0.95, { id: 511 });
+  spill(c, t, 109.2, ...skullTop(960, 600, 0.95), SPILL_A);
+  const u = clamp((t - 144.2) / 4.0), q = Math.floor(u * 48) / 48;
+  if (u > 0 && u < 1) { const x = lerp(-200, 2100, q), y = lerp(900, 120, q); put(c, t, I.rocket, x, y, { s: 0.8, rot: 60 * DEG, id: 770, amp: 1 }); put(c, t, I[K(t) % 2 ? 'flame0' : 'flame1'], x - 190, y + 110, { s: 0.8, rot: 60 * DEG, id: 771, amp: 1 }); }
+  chip(c, 'শেষ আলো', 380, 950, 110, { bg: PAL.ink, fg: PAL.cream, rot: -6 * DEG, seed: 772, t, t0: 145.9 });
+  chip(c, 'জ্বলবেই', 1560, 960, 120, { bg: PAL.cream, fg: PAL.red, rot: 5 * DEG, seed: 773, t, t0: 147.6 });
+};
+SC.history = (c, t) => {
+  page(c, 'news', t);
+  block(c, t, 1500, 540, 820, 1300, 8 * DEG, PAL.ink, 81, 151.3);
+  put(c, t, I.king, 1480, 560, { s: 0.9, t0: lt0(34), id: 801, rot: -2 * DEG });
+  chip(c, 'ক্ষমতার', 560, 260, 130, { bg: PAL.ink, fg: PAL.cream, rot: -5 * DEG, seed: 802, t, t0: lt0(35) });
+  chip(c, 'ইতিহাস', 560, 420, 150, { bg: PAL.red, fg: PAL.cream, rot: 3 * DEG, seed: 803, t, t0: lt0(35) + 0.84 });
+  if (t > lt0(36) - 0.2) { question(c, 1480, 500, 1.0, t, lt0(36), 804); hitShake(t, lt0(36), 8); }
+  if (t > lt0(37) - 0.2 && t < lt0(38) + 0.2) { const p = Math.floor(t * 6) % 2; earth(c, t, 560, 650, 0.42 * (p ? 1.03 : 0.97), { t0: lt0(37), id: 605 }); }
+  if (t > lt0(38) - 0.2) put(c, t, I.ruins, 600, 600, { s: 0.85, rot: -4 * DEG, t0: lt0(38), id: 805 });
+  if (t > lt0(39) - 0.2) put(c, t, I.mother, 840, 560, { s: 0.6, rot: 6 * DEG, t0: lt0(39), id: 806 });
+  if (t > lt0(40) - 0.3) {                                  // the white flag goes up the pole (6 fps steps)
+    const u = clamp((t - lt0(40)) / 2.6), q = Math.floor(u * 16) / 16, y = lerp(900, 380, eOut(q));
+    c.save(); shadow(c, 0.1); c.fillStyle = PAL.ink; c.fillRect(1754, 300, 12, 800); noShadow(c); c.restore();
+    const wave = Math.floor(t * 6) % 2;
+    c.save(); c.translate(1760, y); shadow(c, 0.2); c.beginPath(); c.moveTo(0, 0); c.lineTo(-260, 10 + wave * 8); c.lineTo(-250, 160 - wave * 6); c.lineTo(0, 150); c.closePath(); c.fillStyle = PAL.cream; c.fill(); noShadow(c);
+    c.restore(); if (u > 0.4) dove(c, 1633, y + 75, 0.42, t, 807, { flip: true });
+  }
+  if (t > lt0(42) - 0.3) {                                  // the assembly hall: the court mosaic + talk scraps
+    put(c, t, I.court, 520, 560, { s: 1.0, rot: 3 * DEG, t0: lt0(42), id: 808 });
+    for (let i = 0; i < 7; i++) chip(c, 'আলোচনা…', 300 + (i % 3) * 270, 220 + Math.floor(i / 3) * 230 + (i % 2) * 40, 46, { bg: i % 2 ? PAL.cream : PAT.news, fg: PAL.ink, rot: (hash(i, 8) - .5) * 20 * DEG, seed: 810 + i, t, t0: lt0(43) + i * 0.6, w: 600 });
+  }
+  if (t > lt0(44) - 0.3) put(c, t, I.children, 960, 520, { s: 0.95, rot: -2 * DEG, t0: lt0(44), id: 820 });
+  lyricStrip(c, t);
+};
+SC.prayer = (c, t) => {
+  page(c, 'red', t);
+  rays(c, 960, 520, t, { cols: ['#E9DCC0', PAL.red], n: 32, speed: 3 });
+  disc(c, t, 960, 520, 360, PAL.gold, 851, 182.96);
+  drawHead(c, t, 960, 600, 0.9, { t0: 182.96, id: 512 });
+  if (I.hero_profile && t > lt0(48) - 0.2) put(c, t, I.hero_profile, 420, 470, { s: 0.75, t0: lt0(48), id: 854, rot: -14 * DEG });
+  // proportion play: life (the girl) towers over power (a tiny king)
+  if (t > lt0(50) - 0.2) { put(c, t, I.girl, 1520, 560, { s: 1.05, t0: lt0(50), id: 852, rot: -2 * DEG }); put(c, t, I.king, 330, 860, { s: 0.22, t0: lt0(50) + 0.42, id: 853 }); }
+  if (t > lt0(51) - 0.2) for (let i = 0; i < 14; i++) { const k = ks(t, lt0(51)), a = i / 14 * 2 * PI, d = 120 + Math.min(k, 20) * 40;
+    c.save(); c.translate(960 + Math.cos(a) * d, 520 + Math.sin(a) * d * 0.7); c.rotate(a + k * 0.2); shadow(c, 0.3); tornRect(c, 140, 70, i, 8); c.fillStyle = i % 2 ? PAT.news : PAL.cream; c.fill(); noShadow(c); c.restore(); }
+  lyricStrip(c, t);
+};
+SC.bridge = (c, t) => {
+  page(c, 'kraft', t);
+  // three testimonies, each a portrait on its own colour block, with a chalk slate / house / birds
+  const g = lt0(62), m = lt0(64), p = lt0(66);
+  block(c, t, 380, 520, 560, 820, -3 * DEG, PAL.cream, 901, g - 0.2);
+  put(c, t, I.girl, 380, 500, { s: 0.78, t0: g, id: 902 });
+  if (t > lt0(63) - 0.2) {                                    // school slate with chalk letters, written at 12 fps
+    const S = slap(t, lt0(63), 2);
+    if (S) { c.save(); c.translate(400, 900); c.rotate(-4 * DEG); c.scale(S.s, S.s); shadow(c, S.lift); c.fillStyle = '#6b4a2a'; c.fillRect(-190, -95, 380, 190); noShadow(c); c.fillStyle = '#26302b'; c.fillRect(-170, -76, 340, 152);
+      const txt = 'অ আ ক খ', n = Math.min(txt.length, Math.max(0, ks(t, lt0(63)) - 2)); c.fillStyle = '#EDEBE4'; setFont(c, 74, 600); c.textAlign = 'center'; c.fillText(txt.slice(0, n), 0, 26); c.restore(); }
+  }
+  block(c, t, 960, 520, 560, 820, 2 * DEG, PAL.red, 903, m - 0.2);
+  if (t > lt0(65) - 0.2) {                                    // a red paper house slapped behind the mother
+    const S = slap(t, lt0(65), 2); if (S) { c.save(); c.translate(960, 330); c.scale(S.s, S.s); shadow(c, S.lift); c.beginPath(); c.moveTo(-200, 0); c.lineTo(0, -170); c.lineTo(200, 0); c.lineTo(160, 0); c.lineTo(160, 260); c.lineTo(-160, 260); c.lineTo(-160, 0); c.closePath(); c.fillStyle = PAL.cream; c.fill(); noShadow(c); c.restore(); }
+  }
+  put(c, t, I.mother, 960, 560, { s: 0.74, t0: m, id: 904 });
+  block(c, t, 1540, 520, 560, 820, -2 * DEG, PAL.ink, 905, p - 0.2);
+  put(c, t, I.man, 1540, 500, { s: 0.8, t0: p, id: 906 });
+  if (t > lt0(67) - 0.2) for (let i = 0; i < 4; i++) { const u = clamp((t - lt0(67) - i * 0.3) / 2.2), q = Math.floor(u * 18) / 18; if (u > 0) dove(c, 1540 + (i - 1.5) * 90 + q * (i - 1.5) * 200, 380 - q * 330, 0.45, t, 907 + i, { flip: i % 2 === 0 }); }
+  lyricStrip(c, t);
+};
+SC.oneworld = (c, t) => {             // HERO: the Earth is mended, everyone joins hands around it, the head opens
+  page(c, 'paper', t);
+  const a = lt0(68), b = lt0(69), cc = lt0(70);
+  rays(c, 960, 520, t, { a: t > cc ? 1 : 0.0, cols: [PAL.red, '#E9DCC0'], n: 28 });
+  if (t > b - 0.2) put(c, t, I.space_wedge, 960, 140, { s: 1.0, t0: b, id: 911 });
+  const mend = clamp((t - a) / 1.6), split = 1 - eOut(Math.floor(mend * 12) / 12);
+  earth(c, t, 960, 540, 0.78, { split: Math.max(0, split), mendTape: clamp((t - a - 1.4) / 1.5), id: 606 });
+  if (ks(t, a + 1.33) === 0) SHAKE = 12;
+  if (t > cc - 0.3) {
+    const ring = [['boy', 320, 640, 0.6], ['girl', 1600, 640, 0.6], ['mother', 520, 300, 0.48], ['man', 1400, 300, 0.48]];
+    ring.forEach(([n, x, y, s], i) => put(c, t, I[n], x, y, { s, t0: cc + i * 0.21, id: 912 + i, rot: (i % 2 ? 4 : -4) * DEG }));
+    dolls(c, t, 960, 990, 17, 0.8, cc + 0.3, 920);
+    drawHead(c, t, 960, 330, 0.42, { t0: cc, id: 513, rot: 0 });
+    hitShake(t, cc, 18);
+  }
+  bigLine(c, t, { y: 180, rot: -4 * DEG, size: 130 });
+  if (!(lineAt(t)?.big)) lyricStrip(c, t);
+};
+SC.chant = (c, t) => {               // constructivist slams: NO / YES pairs on full-frame diagonals
+  const pairs = [[71, 72, 'goya_a', 'dove'], [73, 74, 'goya_c', 'flowers'], [75, 76, 'king', 'children']];
+  let idx = 0; for (let i = 0; i < 6; i++) if (t >= lt0(71 + i) - 0.1) idx = i;
+  const no = idx % 2 === 0, [, , imgNo, imgYes] = pairs[Math.floor(idx / 2)];
+  page(c, no ? 'ink' : 'red', t);
+  if (no) { block(c, t, 960, 540, 2600, 520, -18 * DEG, PAL.cream, 950 + idx, lt0(71 + idx));
+    put(c, t, I[imgNo], 1320, 520, { s: imgNo === 'king' ? 0.85 : 0.9, rot: 6 * DEG, t0: lt0(71 + idx) + 0.08, id: 951 + idx });
+    if (t > lt0(71 + idx) + 0.5) { redTape(c, 1320, 520, 900, 34 * DEG, 960 + idx, t, PAL.red, 70); if (t > lt0(71 + idx) + 0.67) redTape(c, 1320, 520, 900, -34 * DEG, 970 + idx, t, PAL.red, 70); } }
+  else { rays(c, 1300, 540, t, { cols: [PAL.red, '#E9DCC0'] });
+    if (imgYes === 'dove') dove(c, 1320, 520, 2.6, t, 980, { rot: -8 * DEG }); else put(c, t, I[imgYes], 1320, 540, { s: imgYes === 'children' ? 0.95 : 0.95, t0: lt0(71 + idx) + 0.08, id: 981 + idx }); }
+  hitShake(t, lt0(71 + idx), 14);
+  const l = lineAt(t); if (l && l.big) bigType(c, t, l, { x: 620, y: no ? 560 : 540, rot: (no ? -18 : -6) * DEG, size: 190, scheme: no ? 1 : 0 });
+};
+SC.sunrise = (c, t) => {
+  const tear = C.hits.tear[0], up = t > lt0(80) ? eOut(Math.floor(clamp((t - lt0(80)) / 1.4) * 12) / 12) : 0;
+  page(c, t < tear ? 'red' : 'paper', t);
+  if (t < tear + 0.2) { rays(c, 960, 420, t, { cols: [PAL.red, '#B81F17'] }); bigLine(c, t, { y: 560, rot: -7 * DEG, size: 170 }); }
+  if (t >= tear) {
+    rays(c, 960, lerp(1000, 520, up), t, { a: 1 });
+    put(c, t, I.sun, 960, lerp(1200, 500, up), { s: 1.05, id: 1001, amp: 1 });
+    const row = I.hero_body ? [['boy', 220], ['mother', 590], ['hero_body', 960], ['girl', 1330], ['man', 1710]] : [['boy', 250], ['mother', 640], ['girl', 1280], ['man', 1680]];
+    if (t > lt0(81) - 0.3) row.forEach(([n, x], i) => put(c, t, I[n], x, 640, { s: 0.7, t0: lt0(81) + i * 0.42, id: 1010 + i }));
+    if (t > lt0(82) - 0.3) earth(c, t, 960, 760, 0.42, { t0: lt0(82), id: 607, mendTape: clamp((t - lt0(82)) / 1.2) });
+    if (t > lt0(83) - 0.3) dolls(c, t, 960, 1010, 19, 0.72, lt0(83), 1020);
+    if (t > lt0(84) - 0.3) for (let i = 0; i < 6; i++) { const u = clamp((t - lt0(84) - i * 0.25) / 3), q = Math.floor(u * 24) / 24; if (u > 0) dove(c, lerp(2050, -150, q), 160 + i * 55, 0.55, t, 1030 + i, { flip: true }); }
+  }
+  // the tear: the red page rips open down the middle (2 steps), revealing the sunrise page
+  const kt = ks(t, tear);
+  if (kt >= 0 && kt < 6) {
+    const open = [0.05, 0.2, 0.5, 0.85, 1.3, 1.9][kt] * 520;
+    for (const sgn of [-1, 1]) { c.save(); c.beginPath(); for (let i = 0; i <= 20; i++) { const y = i / 20 * H, x = W / 2 + (hash(7, i) - .5) * 60 + sgn * open; i ? c.lineTo(x, y) : c.moveTo(x, y); } c.lineTo(sgn > 0 ? W + 400 : -400, H); c.lineTo(sgn > 0 ? W + 400 : -400, 0); c.closePath();
+      shadow(c, 0.6); c.fillStyle = PAT.red; c.fill(); noShadow(c); c.lineWidth = 10; c.strokeStyle = PAL.cream; c.stroke(); c.restore(); }
+    if (kt < 2) SHAKE = 10;
+  }
+  lyricStrip(c, t);
+};
+SC.light = (c, t) => {
+  page(c, 'red', t);
+  rays(c, 960, 360, t, { cols: [PAL.gold, PAL.red], n: 30, speed: 6 });
+  disc(c, t, 960, 360, 300, PAL.cream, 1101, 293.0);
+  drawHead(c, t, 960, 620, 1.0, { id: 514, t0: 293.0 });
+  spill(c, t, 298.6, ...skullTop(960, 620, 1.0), SPILL_A.map(s => ({ ...s, id: s.id + 400 })));
+  hitShake(t, 298.5, 16);
+  bigLine(c, t, { y: 900, rot: -5 * DEG, size: 150, scheme: 2 });
+  if (!(lineAt(t)?.big)) lyricStrip(c, t);
+};
+SC.ours = (c, t) => {               // quiet: one Earth held by everyone, 6 fps boil only
+  page(c, 'paper', t);
+  disc(c, t, 960, 470, 420, PAL.cream, 1201, 317.82);
+  earth(c, t, 960, 470, 0.72, { t0: 317.9, id: 608 });
+  const tiny = ['boy', 'girl', 'mother', 'man', 'boy', 'girl', 'mother', 'man'];
+  tiny.forEach((n, i) => { const a = PI + (i / (tiny.length - 1)) * PI, x = 960 + Math.cos(a) * 470, y = 470 - Math.sin(a) * -1 * 0 + Math.sin(a) * 300 + 380;
+    put(c, t, I[n], 960 + (i - 3.5) * 200, 860, { s: 0.3, t0: lt0(90) + i * 0.3, id: 1210 + i, flip: i > 3 }); });
+  lyricStrip(c, t);
+};
+SC.finale = (c, t) => {             // seven times "শেষ আলো জ্বলবেই!": every repeat slaps another layer onto the poster
+  page(c, 'red', t);
+  const r = (i) => lt0(92 + i);
+  let n = 0; for (let i = 0; i < 7; i++) if (t >= r(i) - 0.1) n = i + 1;
+  rays(c, 960, 460, t, { a: n >= 2 ? 1 : 0, cols: [PAL.red, '#E9DCC0'], n: 28 });
+  if (n >= 1) put(c, t, I.sun, 960, 420, { s: 1.0, t0: r(0), id: 1301 });
+  if (n >= 3) (I.hero_body ? ['boy', 'mother', 'hero_body', 'girl', 'man'] : ['boy', 'mother', 'girl', 'man']).forEach((k, i, arr) => put(c, t, I[k], 230 + i * (1460 / (arr.length - 1)), 650, { s: k === 'hero_body' ? 0.6 : 0.62, t0: r(2) + i * 0.21, id: 1310 + i }));
+  if (n >= 4) for (let i = 0; i < 7; i++) dove(c, 160 + i * 270, 140 + (i % 2) * 80, 0.55, t, 1320 + i, { flip: i % 2 === 0 });
+  if (n >= 5) { put(c, t, I.flowers, 160, 760, { s: 0.6, t0: r(4), id: 1330, rot: -10 * DEG }); put(c, t, I.flowers, 1760, 760, { s: 0.6, t0: r(4) + 0.21, id: 1331, rot: 10 * DEG, flip: true }); }
+  if (n >= 6) dolls(c, t, 960, 1010, 21, 0.72, r(5), 1340);
+  if (n >= 2) drawHead(c, t, 960, 470, 0.55, { t0: r(1), id: 515, inner: null });
+  if (n >= 7) earth(c, t, 1720, 260, 0.26, { t0: r(6), id: 609 });
+  const l = lineAt(t); if (l && l.big) bigType(c, t, l, { y: [820, 260, 860, 520, 880, 300, 760][Math.max(0, n - 1)], rot: [-6, 5, -4, -8, 3, -5, -3][Math.max(0, n - 1)] * DEG, size: 150, scheme: n });
+  if (n >= 1) hitShake(t, r(n - 1), 10);
+};
+SC.end = (c, t) => {
+  page(c, 'paper', t);
+  block(c, t, 960, 420, 2400, 360, -10 * DEG, PAL.red, 1401, 350.8);
+  disc(c, t, 1500, 420, 250, PAL.ink, 1402, 351.4);
+  earth(c, t, 1500, 420, 0.42, { t0: 351.6, id: 610 });
+  drawHead(c, t, 420, 520, 0.62, { t0: 352.1, id: 516 });
+  chip(c, 'মানবতার', 900, 380, 150, { bg: PAL.ink, fg: PAL.cream, rot: -10 * DEG, seed: 1403, t, t0: 352.6, stretch: 'semi-condensed' });
+  chip(c, 'ডাক', 1180, 470, 170, { bg: PAL.cream, fg: PAL.red, rot: -6 * DEG, seed: 1404, t, t0: 353.0, stretch: 'semi-condensed' });
+  dolls(c, t, 700, 990, 9, 0.62, 353.5, 1405);
+  for (let i = 0; i < 3; i++) dove(c, 1180 + i * 200, 180 + i * 30, 0.45, t, 1410 + i, { rot: -8 * DEG });
+  if (I.hero_back) put(c, t, I.hero_back, 1760, 760, { s: 0.42, t0: 353.9, id: 1430 });
+  const cred = [['কণ্ঠ ও কথা', 'Rapar Rubel (Rubel Miah)'], ['সম্পাদনা', 'Paloan']];
+  cred.forEach(([r, n], i) => { if (t > 354.5 + i * 0.6) chip(c, `${r} — ${n}`, 1450, 860 + i * 74, 40, { bg: i ? PAT.news : PAL.cream, fg: PAL.ink, rot: (i ? 1 : -1) * DEG, seed: 1420 + i, t, t0: 354.5 + i * 0.6, w: 600 }); });
+};
+
+// ------------------------------------------------------------------ transitions (elements, never crossfades)
+// the next page is slapped on from the side with a torn leading edge in 4 steps (12 fps), casting a shadow
+function pageOver(c, t, prev, sec, prevSec) {
+  const k = ks(t, sec[1]), steps = 4;
+  if (k >= steps || !prev) return false;
+  c.save(); c.save(); drawSec(c, prevSec, sec[1] - 1 / 30); c.restore();
+  const dir = hash(sec[1]) > 0.5 ? 1 : -1, u = [0.32, 0.66, 0.9, 1.0][Math.max(0, k)];
+  const edge = dir > 0 ? W * (1 - u) : W * u;
+  c.beginPath();
+  for (let i = 0; i <= 24; i++) { const y = i / 24 * H, x = edge + (hash(sec[1], i) - .5) * 40 * dir; i ? c.lineTo(x, y) : c.moveTo(x, y); }
+  c.lineTo(dir > 0 ? W + 60 : -60, H); c.lineTo(dir > 0 ? W + 60 : -60, 0); c.closePath();
+  c.save(); shadow(c, 0.9, 0.45); c.fillStyle = PAL.cream; c.fill(); noShadow(c); c.restore();
+  c.clip(); drawSec(c, sec, t);
+  c.restore();
+  c.save(); c.lineWidth = 8; c.strokeStyle = PAL.cream; c.beginPath();
+  for (let i = 0; i <= 24; i++) { const y = i / 24 * H, x = edge + (hash(sec[1], i) - .5) * 40 * dir; i ? c.lineTo(x, y) : c.moveTo(x, y); }
+  c.stroke(); c.restore();
+  return true;
+}
+function drawSec(c, sec, t) {
+  c.save(); SHAKE = 0;
+  const z = camFor(sec, t); c.translate(W / 2, H / 2); c.scale(z, z); c.translate(-W / 2, -H / 2);
+  (SC[sec[0]] || SC.intro)(c, t);
+  c.restore();
+  return SHAKE;
+}
+
+// ------------------------------------------------------------------ finishing: grain, dust, vignette
+const dustC = [I.dust1, I.dust2];
+function finish(c, t) {
+  const k = K(t);
+  c.save(); c.globalCompositeOperation = 'overlay'; c.globalAlpha = 0.24;
+  c.drawImage(I.grain, -Math.floor(hash(k, 1) * 120), -Math.floor(hash(k, 2) * 900)); c.restore();
+  c.save(); c.globalCompositeOperation = 'multiply'; c.globalAlpha = 0.3; c.drawImage(dustC[Math.floor(k / 2) % 2], (k % 3) * -3, 0, W + 6, H); c.restore();
+  const g = c.createRadialGradient(W / 2, H / 2, H * 0.45, W / 2, H / 2, H * 1.05);
+  g.addColorStop(0, 'rgba(40,20,5,0)'); g.addColorStop(1, 'rgba(40,20,5,.3)');
+  c.save(); c.globalCompositeOperation = 'multiply'; c.fillStyle = g; c.fillRect(0, 0, W, H); c.restore();
+}
+const buf = off(W, H), BX = buf.getContext('2d');
+window.renderAt = async (t) => {
+  t = Math.min(Math.max(t, 0), DUR - 1e-3);
+  const si = C.sections.findIndex(s => t >= s[1] && t < s[2]), sec = C.sections[Math.max(0, si)], prev = si > 0 ? C.sections[si - 1] : null;
+  BX.setTransform(1, 0, 0, 1, 0, 0); noShadow(BX); BX.globalAlpha = 1; BX.globalCompositeOperation = 'source-over';
+  BX.fillStyle = PAL.ink; BX.fillRect(0, 0, W, H);
+  if (!pageOver(BX, t, prev, sec, prev)) drawSec(BX, sec, t);
+  const sh = SHAKE;
+  X.setTransform(1, 0, 0, 1, 0, 0); X.fillStyle = PAL.ink; X.fillRect(0, 0, W, H);
+  const sx = sh ? (hash(K(t), 41) - .5) * 2 * sh : 0, sy = sh ? (hash(K(t), 42) - .5) * 2 * sh : 0;
+  X.drawImage(buf, sx - Math.abs(sh), sy - Math.abs(sh), W + 2 * Math.abs(sh), H + 2 * Math.abs(sh));
+  finish(X, t);
+};
+await window.renderAt(0);
+window.__ready = true;
+</script>
+</body></html>
