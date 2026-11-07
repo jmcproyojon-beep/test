@@ -610,7 +610,7 @@ function chorus(c, t, T, base) {
     if (t < stand + 0.5) for (let i = 0; i < 9; i++) { const k = ks(t, storm) + i * 3, x = ((k * 70 + i * 260) % 2400) - 240, y = 120 + hash(i, 9) * 700;
       c.save(); c.translate(x, y + Math.sin(k * 0.7 + i) * 30); c.rotate(k * 0.3 + i); shadow(c, 0.5); tornRect(c, 220, 120, i, 12); c.fillStyle = i % 3 ? PAT.news : PAL.ink; c.fill(); noShadow(c); c.restore(); }
     // people stand up, one per beat
-    const row = I.hero_body ? [['boy', 230, 0.74], ['mother', 600, 0.72], ['hero_body', 960, 0.62], ['girl', 1330, 0.76], ['man', 1700, 0.68]]
+    const row = I.hero_body ? [['boy', 230, 0.74], ['mother', 600, 0.72], ['hero_body', 960, 0.8], ['girl', 1330, 0.76], ['man', 1700, 0.68]]
       : [['boy', 330, 0.8], ['mother', 760, 0.78], ['girl', 1170, 0.82], ['man', 1590, 0.74]];
     row.forEach(([n, x, s], i) => { if (t > stand - 0.3) put(c, t, I[n], x, 600, { s, t0: stand + i * 60 / A.tempo * 2, id: 730 + i, rot: (i % 2 ? 2 : -2) * DEG }); });
     if (t > hate - 0.3 && t < together + 1) { const k = ks(t, hate + 1.2); put(c, t, I.king, 960, 560 + (k > 0 ? Math.min(k, 6) ** 2 * 30 : 0), { s: 0.52, t0: hate, id: 740, rot: (k > 0 ? k * 9 : 0) * DEG });
@@ -769,7 +769,7 @@ SC.finale = (c, t) => {             // seven times "শেষ আলো জ্�
   let n = 0; for (let i = 0; i < 7; i++) if (t >= r(i) - 0.1) n = i + 1;
   rays(c, 960, 460, t, { a: n >= 2 ? 1 : 0, cols: [PAL.red, '#E9DCC0'], n: 28 });
   if (n >= 1) put(c, t, I.sun, 960, 420, { s: 1.0, t0: r(0), id: 1301 });
-  if (n >= 3) (I.hero_body ? ['boy', 'mother', 'hero_body', 'girl', 'man'] : ['boy', 'mother', 'girl', 'man']).forEach((k, i, arr) => put(c, t, I[k], 230 + i * (1460 / (arr.length - 1)), 650, { s: k === 'hero_body' ? 0.6 : 0.62, t0: r(2) + i * 0.21, id: 1310 + i }));
+  if (n >= 3) (I.hero_body ? ['boy', 'mother', 'hero_body', 'girl', 'man'] : ['boy', 'mother', 'girl', 'man']).forEach((k, i, arr) => put(c, t, I[k], 230 + i * (1460 / (arr.length - 1)), 650, { s: k === 'hero_body' ? 0.78 : 0.62, t0: r(2) + i * 0.21, id: 1310 + i }));
   if (n >= 4) for (let i = 0; i < 7; i++) dove(c, 160 + i * 270, 140 + (i % 2) * 80, 0.55, t, 1320 + i, { flip: i % 2 === 0 });
   if (n >= 5) { put(c, t, I.flowers, 160, 760, { s: 0.6, t0: r(4), id: 1330, rot: -10 * DEG }); put(c, t, I.flowers, 1760, 760, { s: 0.6, t0: r(4) + 0.21, id: 1331, rot: 10 * DEG, flip: true }); }
   if (n >= 6) dolls(c, t, 960, 1010, 21, 0.72, r(5), 1340);
