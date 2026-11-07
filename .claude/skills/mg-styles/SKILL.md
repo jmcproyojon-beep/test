@@ -21,6 +21,8 @@ fetches the Latin fonts from npm @fontsource (Google Fonts is blocked) and links
 - `MG_CPU=1 scripts/mg-render.sh demos/<slug> --workers 4` → `demos/<slug>/out/video.mp4` (builds audio first if missing).
 - Stills: `... --stills 0.5,2,4 --scale 0.5 --noaudio`. Part: `--from 10 --to 14 --out x.mp4`.
 - `MG_CPU=1` (CPU canvas) is ~10–15x faster for Canvas2D/SVG films; WebGL/Three.js films need the default SwiftShader mode.
+- Long films: the harness buffers lossless FFV1 frames in /tmp (~2.3 MB/frame at 1080p: a 6-min film needs ~26 GB) — render in
+  ~74 s chunks (`--from/--to --noaudio --crf 16 --out chunkN.mp4`), then concat with `-c copy` and mux `out/audio.wav`.
 - Deliverables over 30 MB: two-pass x264 re-encode to fit SendUserFile.
 
 ## Our films
