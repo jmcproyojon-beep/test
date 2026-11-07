@@ -1,0 +1,554 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'Atma'; src: url('/demos/31-amader-jawa/assets/fonts/atma-bengali-600-normal.woff2') format('woff2'); font-weight: 600; unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+200C-200D, U+25CC; }
+@font-face { font-family: 'Atma'; src: url('/demos/31-amader-jawa/assets/fonts/atma-bengali-500-normal.woff2') format('woff2'); font-weight: 500; unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+200C-200D, U+25CC; }
+@font-face { font-family: 'Atma'; src: url('/demos/31-amader-jawa/assets/fonts/atma-latin-500-normal.woff2') format('woff2'); font-weight: 500 600; }
+@font-face { font-family: 'Galada'; src: url('/demos/31-amader-jawa/assets/fonts/galada-bengali-400-normal.woff2') format('woff2'); font-weight: 400; unicode-range: U+0951-0952, U+0964-0965, U+0980-09FE, U+200C-200D, U+25CC; }
+@font-face { font-family: 'Galada'; src: url('/demos/31-amader-jawa/assets/fonts/galada-latin-400-normal.woff2') format('woff2'); font-weight: 400; }
+html,body{margin:0;background:#EFE3C8;overflow:hidden}canvas{display:block}
+</style></head><body><canvas id="c" width="1920" height="1080"></canvas>
+<script type="module">
+// 31-amader-jawa — «আমাদের আর যাওয়া হলো না» (We never got to go). Frame-by-frame cel / line-boil lyric film, 1920×1080, 24 fps.
+// Story: two people planned a small trip "not very far" — a kash-phool field by a river ghat at sunset. Life happened.
+// The place stays beautiful; the two of them are drawn there only as a boiling dashed outline. In the end he goes alone,
+// keeps the photo for himself, and learns to walk his own road.
+import { PI, DEG, clamp, lerp, eOut, eIn, eIO, eBack, hash, sh, FPS, F, on2, on3, boilK, bez, spline, ellipsePts, boil, ink, fill, shape,
+  puff, star, sparks, speedLines, smear, letter, textW } from './cel.js';
+import { ami, tumi, COL } from './chars.js';
+const W = 1920, H = 1080, D = '/demos/31-amader-jawa/';
+const A = await (await fetch(D + 'cues_audio.json')).json();
+const LN = await (await fetch(D + 'lines.json')).json();
+const DUR = A.duration;
+window.DEMO = { width: W, height: H, fps: 24, duration: DUR };
+const cv = document.getElementById('c'), X = cv.getContext('2d');
+const loadImg = src => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => no(src); i.src = src; });
+const paper = await loadImg('/assets/textures/paper/Paper001_4K_color.jpg');
+const grain = await loadImg('/assets/textures/grain/grain_fine_2048.png');
+await Promise.all([paper.decode(), grain.decode()]);
+for (const f of ['600 60px "Atma"', '500 60px "Atma"', '400 120px "Galada"'])
+  await document.fonts.load(f, 'আমাদের আর যাওয়া হলো না সেই জায়গাটায় কণ্ঠ ও কথা সম্পাদনা সিলেট কক্সবাজার রাঙামাটি ২ জন ঢাকা — “” ABC');
+await document.fonts.ready;
+
+const C = COL, INK = C.ink;
+const LINES = LN.map((l, i) => ({ ...l, i }));
+const L = i => LINES[i];
+const t0 = i => LINES[i].t0;
+// sections: [name, first lyric line] — each starts a little before its first line
+const SEC_DEF = [['open', -1], ['rooftop', 0], ['phone', 8], ['office', 12], ['alone', 16], ['words', 20], ['place1', 24], ['house', 32],
+  ['street', 40], ['lost', 48], ['place2', 52], ['bridge', 60], ['final', 68], ['outro', 80]];
+const SECS = SEC_DEF.map(([n, li], i) => [n, i === 0 ? 0 : Math.max(0, t0(li) - (n === 'place1' || n === 'place2' || n === 'final' ? 0.9 : 0.6))]);
+SECS.forEach((s, i) => s.push(SECS[i + 1] ? SECS[i + 1][1] : DUR + 1));
+const secAt = t => SECS.find(s => t >= s[1] && t < s[2]) || SECS[SECS.length - 1];
+const lineAt = t => { let r = null; for (const l of LINES) if (t >= l.t0 - 0.05 && t < Math.min(l.t1 + 0.7, (LINES[l.i + 1]?.t0 ?? 1e9) - 0.04)) r = l; return r; };
+const vocAt = t => A.voc[Math.min(A.voc.length - 1, Math.floor(on2(t) * 24))] || 0;
+const singing = t => { const l = lineAt(t); return l && t < l.t1 + 0.05 ? clamp((vocAt(t) - 0.25) / 0.5) : 0; };
+
+// ------------------------------------------------------------------ paper ground + finishing
+function ground(c, col = C.paper) { c.fillStyle = col; c.fillRect(0, 0, W, H); }
+function finish(c, t) {
+  const k = boilK(t);
+  c.save(); c.globalCompositeOperation = 'multiply'; c.globalAlpha = 0.13; c.drawImage(paper, (k % 2) * -40, (k >> 1) * -30, W + 80, H + 60); c.restore();
+  c.save(); c.globalCompositeOperation = 'overlay'; c.globalAlpha = 0.12; c.drawImage(grain, -(k * 97 % 300), -(k * 53 % 300)); c.restore();
+  const g = c.createRadialGradient(W / 2, H / 2, H * 0.5, W / 2, H / 2, H * 1.05); g.addColorStop(0, 'rgba(70,40,10,0)'); g.addColorStop(1, 'rgba(70,40,10,.16)');
+  c.save(); c.globalCompositeOperation = 'multiply'; c.fillStyle = g; c.fillRect(0, 0, W, H); c.restore();
+}
+// flat horizontal colour bands (no gradients: cel painting)
+function bands(c, ys, cols) { cols.forEach((col, i) => { c.fillStyle = col; c.fillRect(0, ys[i], W, (ys[i + 1] ?? H) - ys[i] + 1); }); }
+// a drawn stroke revealed progressively (draw-on), u = 0..1
+function drawOn(c, pts, u, w, o = {}) { const n = Math.max(2, Math.floor(pts.length * clamp(u))); if (u > 0) ink(c, pts.slice(0, n), w, o); }
+
+function rrect(x0, y0, x1, y1, r, n = 5) {
+  const out = [], C4 = [[x1 - r, y0 + r, -PI / 2], [x1 - r, y1 - r, 0], [x0 + r, y1 - r, PI / 2], [x0 + r, y0 + r, PI]];
+  for (const [cx, cy, a0] of C4) for (let i = 0; i <= n; i++) { const a = a0 + i / n * PI / 2; out.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r]); }
+  return out;
+}
+// ------------------------------------------------------------------ world pieces
+function sun(c, x, y, r, k, col = C.red, rays = 0, id = 5) {
+  if (rays) for (let i = 0; i < 14; i++) { const a = i / 14 * 2 * PI + (k % 2) * 0.04; ink(c, [[x + Math.cos(a) * r * 1.18, y + Math.sin(a) * r * 1.18], [x + Math.cos(a) * r * (1.18 + rays), y + Math.sin(a) * r * (1.18 + rays)]], 4, { id: id + i, k }); }
+  shape(c, ellipsePts(x, y, r, r, 36), col, { w: 4, id, k, reg: 4 });
+}
+function river(c, y0, y1, t, k, col = '#E7C27A', o = {}) {
+  const { flow = 1, glint = true, sunX = 1240, id = 900 } = o;
+  c.fillStyle = col; c.fillRect(0, y0, W, y1 - y0);
+  ink(c, spline([[0, y0], [480, y0 - 4], [960, y0 + 3], [1440, y0 - 3], [1920, y0 + 2]], false, 8), 4, { id, k });
+  for (let r = 0; r < 7; r++) {                                   // wave dashes drifting on 2s
+    const yy = y0 + 18 + r * (y1 - y0 - 30) / 7, off = (on2(t) * 40 * flow + r * 137) % 220;
+    for (let i = -1; i < 10; i++) { const x = i * 220 + off - 110 + (r % 2) * 90, l = 40 + 30 * hash(id, r, i); ink(c, [[x, yy], [x + l * 0.5, yy - 3], [x + l, yy]], 2.6, { id: id + r * 20 + i, k }); }
+  }
+  if (glint) for (let i = 0; i < 6; i++) { const yy = y0 + 14 + i * 20, ww = 120 - i * 14; fill(c, ellipsePts(sunX + sh(id, i, k) * 6, yy, ww, 4, 12), C.red, { id: id + 90 + i, k, reg: 0 }); }
+}
+function farBank(c, y, k, col = '#D9B97E') {
+  const pts = [[-10, y + 40], [-10, y]];
+  for (let i = 0; i <= 24; i++) pts.push([i * 80, y - 14 - 22 * hash(77, i) - (i % 5 === 2 ? 36 : 0)]);
+  pts.push([1930, y], [1930, y + 40]);
+  shape(c, spline(pts, true, 3), col, { w: 3, id: 950, k, reg: 2 });
+}
+function kash(c, x, y, h, t, k, id, wind = 0) {                 // kash-phool: a stalk with a white feathery plume, swaying on 2s
+  const sw = Math.sin(on2(t) * 1.6 + id) * 6 + wind * 40;
+  const tip = [x + sw, y - h], mid = [x + sw * 0.35, y - h * 0.55];
+  ink(c, [[x, y], mid, tip], 2.6, { id, k, taper: 0.6 });
+  const lean = 0.45 + wind * 0.9 + sh(id, 6) * 0.15, len = 96 + 26 * hash(id, 7), wid = 12 + 5 * hash(id, 8);
+  const ax = Math.sin(lean) * len, ay = -Math.cos(lean) * len;
+  const plume = [];                                   // a feathery lens: wavy edges like kash fluff
+  for (let i = 0; i <= 12; i++) { const u = i / 12, bulge = Math.sin(u * PI) * wid * (1 + 0.18 * Math.sin(i * 2.3));
+    plume.push([tip[0] + ax * u + Math.cos(lean) * bulge, tip[1] + ay * u + Math.sin(lean) * bulge]); }
+  for (let i = 12; i >= 0; i--) { const u = i / 12, bulge = Math.sin(u * PI) * wid * 0.55 * (1 + 0.2 * Math.cos(i * 1.9));
+    plume.push([tip[0] + ax * u - Math.cos(lean) * bulge, tip[1] + ay * u - Math.sin(lean) * bulge]); }
+  shape(c, plume, '#FBF6EA', { w: 1.7, id: id + 3, k, reg: 2 });
+  for (let i = 1; i < 5; i++) ink(c, [[tip[0] + ax * i / 5, tip[1] + ay * i / 5], [tip[0] + ax * (i + 0.6) / 5 + Math.cos(lean) * 12, tip[1] + ay * (i + 0.6) / 5 + Math.sin(lean) * 12]], 1.4, { id: id + 10 + i, k, col: 'rgba(31,26,23,.45)' });
+}
+function kashField(c, y, t, k, n = 46, wind = 0, seed = 0, gone = null, clear = [880, 1480]) {
+  for (let i = 0; i < n; i++) {
+    if (i % 2 && n > 30) { const xb = (i / n) * 2000 - 10; if (!(clear && xb > clear[0] && xb < clear[1])) kash(c, xb, y - 40 + hash(seed + 7, i) * 30, 90 + hash(seed + 8, i) * 60, t, k, 2600 + seed * 100 + i, wind); }
+    const x = (i / n) * 2000 - 40 + sh(seed + 3, i) * 18, yy = y + hash(seed, i) * 90, h = 120 + hash(seed + 1, i) * 90;
+    if (gone && gone(i)) continue;
+    if (clear && x > clear[0] && x < clear[1] && h > 130) continue;
+    kash(c, x, yy, h, t, k, 2000 + seed * 100 + i, wind);
+  }
+}
+function krishnachura(c, x, y, k, t, bloom = 1, id = 3000) {     // the flame tree: dark trunk, red blossom clusters
+  shape(c, [[x - 18, y], [x - 10, y - 220], [x - 40, y - 300], [x - 22, y - 304], [x + 4, y - 250], [x + 30, y - 320], [x + 46, y - 312], [x + 14, y - 220], [x + 20, y]], '#5C4A3E', { w: 3.6, id, k });
+  const cl = [[x - 150, y - 330, 90], [x - 40, y - 400, 110], [x + 90, y - 360, 100], [x + 190, y - 300, 70], [x - 220, y - 270, 60], [x + 20, y - 290, 80]];
+  cl.forEach(([cx, cy, r], i) => shape(c, spline(Array.from({ length: 9 }, (_, j) => { const a = j / 9 * 2 * PI; const rr = r * (0.8 + 0.3 * hash(id, i, j)) * bloom; return [cx + Math.cos(a) * rr * 1.25, cy + Math.sin(a) * rr * 0.8]; }), true, 3), i % 2 ? C.red : '#C93A28', { w: 3.4, id: id + 10 + i, k }));
+  for (let i = 0; i < 26; i++) { const a = hash(id, i) * 2 * PI, d = hash(id + 1, i) * 200; c.fillStyle = C.yellow; c.beginPath(); c.arc(x - 30 + Math.cos(a) * d * 1.2, y - 340 + Math.sin(a) * d * 0.5, 3.5, 0, 2 * PI); c.fill(); }
+}
+function bench(c, x, y, k, id = 3100) {
+  shape(c, [[x - 190, y - 70], [x + 190, y - 70], [x + 190, y - 52], [x - 190, y - 52]], '#9C6B3E', { w: 3.4, id, k });
+  shape(c, [[x - 190, y - 120], [x + 190, y - 120], [x + 190, y - 100], [x - 190, y - 100]], '#9C6B3E', { w: 3.4, id: id + 1, k });
+  for (const lx of [-170, 160]) shape(c, [[x + lx, y - 52], [x + lx + 14, y - 52], [x + lx + 14, y], [x + lx, y]], '#7A5230', { w: 3, id: id + 2 + lx, k });
+  for (const lx of [-150, 140]) shape(c, [[x + lx, y - 120], [x + lx + 12, y - 120], [x + lx + 12, y - 52], [x + lx, y - 52]], '#7A5230', { w: 3, id: id + 5 + lx, k });
+}
+function nouka(c, x, y, s, k, t, id = 3200, sail = true) {      // a country boat with a patched sail
+  c.save(); c.translate(x, y + Math.sin(on2(t) * 2) * 3); c.scale(s, s);
+  shape(c, spline([[-130, -10], [-60, 14], [60, 14], [140, -16], [100, -2], [-100, -2]], true, 4), '#5C4A3E', { w: 3.4, id, k });
+  if (sail) { ink(c, [[-6, -2], [-6, -170]], 4, { id: id + 1, k }); shape(c, [[-2, -165], [70, -150], [84, -30], [-2, -14]], C.cream, { w: 3.2, id: id + 2, k });
+    shape(c, [[30, -120], [70, -112], [76, -70], [34, -76]], C.red, { w: 2.4, id: id + 3, k }); }
+  c.restore();
+}
+function crow(c, x, y, s, t, k, id) { const f = Math.floor(on2(t) * 6 + id) % 2; ink(c, [[x - 18 * s, y - (f ? 8 : -4) * s], [x, y], [x + 18 * s, y - (f ? 8 : -4) * s]], 3.2 * s, { id, k, taper: 0.8 }); }
+// lyric lettering: hand-lettered on a drawn paper card in the lower third; each word inks in on its sung time (2-frame scribble-in)
+function lyric(c, t, o = {}) {
+  const l = lineAt(t); if (!l) return;
+  const { y = 968, size = 58, card = true, col = INK, dark = false } = o;
+  const k = boilK(t), ws = l.text.split(/\s+/).filter(Boolean);
+  const n = ws.reduce((a, w) => a + Math.max(2, w.length), 0), span = Math.max(0.35, (l.t1 - l.t0) * 0.85);
+  const gap = size * 0.32, widths = ws.map(w => textW(w, size, '"Atma"', 600)), tot = widths.reduce((a, b) => a + b, 0) + gap * (ws.length - 1);
+  const hold = Math.min(l.t1 + 0.7, (LINES[l.i + 1]?.t0 ?? 1e9) - 0.04), out = clamp((t - (hold - 0.25)) / 0.25);
+  if (card) {
+    const cw = tot + 110, ch = size * 1.6, sq = F(t) - F(l.t0) < 2 ? 0.92 + 0.04 * (F(t) - F(l.t0)) : 1;
+    c.save(); c.translate(W / 2, y + out * 30); c.scale(sq, sq); c.globalAlpha = 1 - out;
+    shape(c, spline([[-cw / 2, -ch / 2], [0, -ch / 2 - 6], [cw / 2, -ch / 2], [cw / 2 + 10, 0], [cw / 2, ch / 2], [0, ch / 2 + 5], [-cw / 2, ch / 2], [-cw / 2 - 10, 0]], true, 4), dark ? INK : C.cream, { w: 3, id: 7000 + l.i, k, reg: 3, ic: dark ? C.cream : INK });
+    c.restore();
+  }
+  let acc = 0, x = W / 2 - tot / 2;
+  ws.forEach((w, j) => {
+    const at = l.t0 + acc / n * span; acc += Math.max(2, w.length);
+    const df = F(t) - F(at);
+    if (df >= 0) {
+      const pop = df === 0 ? 1.18 : df === 1 ? 1.06 : 1;
+      c.save(); c.globalAlpha = 1 - out; c.translate(x + widths[j] / 2, y + out * 30); c.scale(pop, pop);
+      const hot = /যাওয়া|জায়গা|বিকেল|কথা|আমরা|তুমি|বাড়ি|জানালা|সম্ভাবনা|সুন্দর|পথে|পথেও|সত্যি|আবার|সময়/.test(w);
+      letter(c, w, 0, 0, { size, col: dark ? C.cream : hot ? C.red : col, k, id: 7100 + l.i * 20 + j, weight: 600 });
+      c.restore();
+    }
+    x += widths[j] + gap;
+  });
+}
+
+// ------------------------------------------------------------------ scenes
+const SC = {};
+// OPEN — hook: a match is struck on a rooftop at dusk (smear on 1s), the flame lights a small paper lantern of memory
+SC.open = (c, t) => {
+  const k = boilK(t), q = on2(t);
+  bands(c, [0, 640, 760], ['#F4CE7E', '#EFB66A', '#E9A35E']);
+  sun(c, 1360, 690, 150, k, C.red);
+  skyline(c, 760, k, t);
+  rooftop(c, t, k);
+  // the hook (0–0.5 s): a phone screen lights up in close-up — a photo of the place, the camera pulls back on 2s
+  const pull = eOut(clamp(q / 3.2));
+  const ph = [lerp(960, 1520, pull), lerp(560, 760, pull)], s = lerp(2.4, 0.42, pull);
+  phone(c, ph[0], ph[1], s, t, k, 'place', 0.0);
+  if (t > 3.2) { ami(c, 1460, 930, 1.05, t, k, { aR: 0.9, eR: 1.4, look: 0.6, blink: F(t) % 96 < 3 }, { id: 100 }); }
+  if (t > 6) titleCard(c, t, 6);
+};
+function titleCard(c, t, ta) {
+  const k = boilK(t, 3), u = eBack(clamp((on2(t) - ta) / 0.6)), out = clamp((t - (L(0).t0 - 1.2)) / 0.4);
+  if (u <= 0 || out >= 1) return;
+  c.save(); c.translate(560, 330); c.scale(u, u); c.rotate(-3 * DEG); c.globalAlpha = 1 - out;
+  letter(c, 'আমাদের আর', 0, -70, { size: 92, font: '"Galada"', weight: 400, col: INK, k, id: 8100 });
+  letter(c, 'যাওয়া হলো না', 30, 40, { size: 118, font: '"Galada"', weight: 400, col: C.red, k, id: 8101 });
+  ink(c, spline([[-260, 120], [-60, 132], [160, 118], [300, 128]], false, 6), 6, { id: 8102, k });
+  c.restore();
+}
+function skyline(c, y, k, t, col = '#E2C48E') {
+  const pts = [[-10, y + 10]];
+  let x = -10; for (let i = 0; x < 1940; i++) { const w = 70 + 90 * hash(51, i), h = 60 + 150 * hash(52, i); pts.push([x, y - h], [x + w, y - h]); x += w + 4; }
+  pts.push([1940, y + 10]);
+  shape(c, pts, col, { w: 3, id: 1200, k, reg: 2 });
+  for (let i = 0; i < 60; i++) { const wx = hash(53, i) * W, wy = y - 20 - hash(54, i) * 120; if (hash(55, i) > 0.4) { c.fillStyle = C.yellow; c.fillRect(wx, wy, 10, 14); } }
+}
+function rooftop(c, t, k) {
+  shape(c, [[-20, 800], [1940, 800], [1940, 1100], [-20, 1100]], '#D7B98A', { w: 3.4, id: 1300, k, reg: 2 });
+  shape(c, [[-20, 760], [1940, 760], [1940, 806], [-20, 806]], '#C9A274', { w: 3.4, id: 1301, k, reg: 2 });
+  for (let i = 0; i < 12; i++) ink(c, [[i * 170 + 30, 760], [i * 170 + 30, 806]], 2.4, { id: 1310 + i, k });
+  // water tank + clothesline with a red saree and a yellow gamchha fluttering on 2s
+  shape(c, rrect(180, 548, 380, 760, 30), '#8E8270', { w: 3.6, id: 1320, k });
+  for (let i = 0; i < 4; i++) ink(c, [[186, 590 + i * 44], [374, 590 + i * 44]], 2.4, { id: 1324 + i, k });
+  shape(c, rrect(240, 528, 320, 552, 8), '#6E6252', { w: 3, id: 1328, k });
+  ink(c, [[420, 520], [1100, 560]], 2.4, { id: 1321, k });
+  const fl = Math.floor(on2(t) * 2) % 2;
+  shape(c, [[520, 528], [660, 536], [652 + fl * 8, 680], [528 - fl * 6, 690]], C.red, { w: 3, id: 1322, k });
+  shape(c, [[760, 541], [860, 546], [856 - fl * 6, 640], [764, 636]], C.yellow, { w: 3, id: 1323, k });
+  for (let i = 0; i < 3; i++) crow(c, 1500 + i * 70 + (on2(t) * 30) % 200, 220 + i * 26, 1, t, k, 1330 + i);
+  // potted plant
+  shape(c, [[1720, 806], [1800, 806], [1790, 760], [1730, 760]], C.red, { w: 3, id: 1340, k });
+  for (let i = 0; i < 5; i++) shape(c, ellipsePts(1760 + (i - 2) * 16, 730 - (i % 2) * 18, 14, 26, 10, i), '#7C8A3C', { w: 2.4, id: 1341 + i, k });
+}
+// phone with a photo of a place in it (postcards are tiny drawn scenes)
+function phone(c, x, y, s, t, k, which = 'place', flip = 0) {
+  c.save(); c.translate(x, y); c.scale(s, s);
+  shape(c, rrect(-116, -200, 116, 200, 26), INK, { w: 3.4, id: 1400, k, reg: 2 });
+  c.save(); c.beginPath(); c.rect(-100, -180, 200, 360); c.clip();
+  c.fillStyle = '#F6D27A'; c.fillRect(-100, -180, 200, 360);
+  postcard(c, which, 0, 0, 200 / 1920, t, k);
+  c.restore(); c.restore();
+}
+function postcard(c, which, x, y, sc, t, k) {      // a miniature drawn scene (the places on her phone)
+  c.save(); c.translate(x, y); c.scale(sc * 1.85, sc * 1.85); c.translate(-W / 2, -H / 2);
+  if (which === 'place') { bands(c, [0, 560], ['#F4CE7E', '#E7C27A']); sun(c, 1240, 500, 160, k); farBank(c, 600, k); river(c, 600, 900, t, k); kashField(c, 900, t, k, 16, 0, 1); }
+  else if (which === 'tea') { bands(c, [0, 420], ['#F6D27A', '#8E9A48']); for (let r = 0; r < 6; r++) ink(c, spline([[0, 480 + r * 100], [480, 450 + r * 100], [960, 490 + r * 100], [1440, 450 + r * 100], [1920, 480 + r * 100]], false, 6), 6, { id: 1500 + r, k }); sun(c, 400, 260, 110, k, C.yellow); }
+  else if (which === 'sea') { bands(c, [0, 520, 760], ['#F6D27A', '#E9A35E', '#E7C27A']); sun(c, 960, 520, 180, k); for (let i = 0; i < 6; i++) ink(c, spline([[0, 800 + i * 50], [600, 780 + i * 50], [1300, 810 + i * 50], [1920, 790 + i * 50]], false, 6), 5, { id: 1510 + i, k }); }
+  else if (which === 'hills') { bands(c, [0], ['#F4CE7E']); shape(c, spline([[-20, 1080], [300, 500], [700, 760], [1100, 380], [1500, 700], [1940, 520], [1940, 1080]], true, 4), '#7C8A3C', { w: 6, id: 1520, k }); for (let i = 0; i < 4; i++) puff(c, 300 + i * 420, 440 + (i % 2) * 120, 90, 0.2, 1530 + i, k); }
+  c.restore();
+}
+SC.rooftop = (c, t) => {
+  const k = boilK(t), q = on2(t);
+  bands(c, [0, 640, 760], ['#F4CE7E', '#EFB66A', '#E9A35E']);
+  sun(c, 1360, 690 + clamp((t - t0(5)) / 6) * 120, 150, k, C.red);
+  skyline(c, 760, k, t); rooftop(c, t, k);
+  // she points at the horizon ("one day we'll go"), he looks; on "সময় হলো" the clock spins; on "যাওয়া হলো না" she becomes an outline
+  const gone = t > t0(7) + 0.3, ghostU = clamp((t - t0(7) - 0.3) / 0.5);
+  const pointing = t > t0(3) - 0.2 && t < t0(5);
+  tumi(c, 820, 940, 1.1, t, k, { aR: pointing ? 2.2 : 0.15, eR: pointing ? 0.05 : 0.1, look: pointing ? 0.8 : -0.5, blink: F(t) % 80 < 3, smile: 1 }, { id: 400, ghost: gone && F(t) % 2 === 0 ? ghostU > 0.4 : gone });
+  ami(c, 1120, 950, 1.12, t, k, { look: -0.7, mouth: singing(t), blink: F(t) % 90 < 3, aL: 0.15, aR: 0.15, tilt: -0.04 }, { id: 100 });
+  if (t > t0(5) - 0.3 && t < t0(7) + 0.4) clock(c, 1630, 300, 120, t, k, t0(5));
+  if (gone && ghostU < 1) { puff(c, 820, 620, 90, ghostU, 9100, k); sparks(c, 820, 650, 160, ghostU, 9101, k, 8, C.cream); }
+  lyric(c, t);
+};
+function clock(c, x, y, r, t, k, ta) {                 // a wall clock whose hands spin (smear on 1s while fast)
+  shape(c, ellipsePts(x, y, r, r, 30), C.cream, { w: 5, id: 1600, k });
+  for (let i = 0; i < 12; i++) { const a = i / 12 * 2 * PI; ink(c, [[x + Math.cos(a) * r * 0.82, y + Math.sin(a) * r * 0.82], [x + Math.cos(a) * r * 0.92, y + Math.sin(a) * r * 0.92]], 3, { id: 1610 + i, k }); }
+  const u = clamp((t - ta) / 2.6), spin = eIO(u) * 2 * PI * 9, fast = u > 0.15 && u < 0.85;
+  const fr = F(t); const ang = fast ? Math.floor(fr) * 0.9 : spin;
+  const hand = (len, a, w, id) => ink(c, [[x, y], [x + Math.sin(a) * len, y - Math.cos(a) * len]], w, { id, k });
+  if (fast) { for (let s = 0; s < 3; s++) { c.globalAlpha = 0.3 + s * 0.3; hand(r * 0.78, ang - (2 - s) * 0.25, 4, 1630 + s); } c.globalAlpha = 1; }
+  else hand(r * 0.78, ang, 5, 1630);
+  hand(r * 0.5, ang / 12 + 1, 7, 1634);
+  c.fillStyle = INK; c.beginPath(); c.arc(x, y, 7, 0, 2 * PI); c.fill();
+}
+SC.phone = (c, t) => {
+  const k = boilK(t), q = on2(t);
+  ground(c, '#F6D27A');
+  for (let i = 0; i < 9; i++) ink(c, spline([[0, 120 + i * 110], [960, 100 + i * 110 + (i % 2) * 20], [1920, 120 + i * 110]], false, 6), 2, { id: 1700 + i, k, col: 'rgba(31,26,23,.25)' });
+  // her phone: postcards swipe on 2s with a 1-frame smear on each swipe
+  const cards = ['place', 'tea', 'sea', 'hills'], per = (t0(10) - t0(8)) / 4;
+  const ci = Math.min(3, Math.floor(clamp((t - t0(8)) / per, 0, 3.99))), into = (t - t0(8)) - ci * per;
+  const swipe = F(t) - F(t0(8) + ci * per);
+  c.save(); c.translate(760, 560);
+  shape(c, rrect(-240, -420, 240, 420, 46), INK, { w: 4, id: 1720, k, reg: 2 });
+  c.beginPath(); c.rect(-212, -390, 424, 780); c.clip();
+  const drawCard = (i, dx) => { c.save(); c.translate(dx, 0); c.fillStyle = '#F6D27A'; c.fillRect(-212, -390, 424, 780); postcard(c, cards[i], 0, -40, 424 / 1920 * 1.3, t, k); c.restore(); };
+  if (swipe >= 0 && swipe < 3 && ci > 0) { const dx = [-260, -420, -470][swipe]; drawCard(ci - 1, dx); drawCard(ci, dx + 470); if (swipe === 0) { c.globalAlpha = 0.4; drawCard(ci, dx + 330); c.globalAlpha = 1; } }
+  else drawCard(ci, 0);
+  c.restore();
+  // her finger swiping + food doodles popping with the "what will we eat" line
+  const fx = swipe >= 0 && swipe < 3 ? [1000, 820, 700][swipe] : 1000;
+  tumiHand(c, fx, 820, k);
+  if (t > t0(10) - 0.2) {
+    const foods = [['fuchka', 1340, 300], ['chai', 1600, 520], ['ilish', 1360, 760]];
+    foods.forEach(([n, x, y], i) => { const ta = t0(10) + i * 0.5, u = eBack(clamp((q - ta) / 0.35)); if (u > 0) food(c, n, x, y, u, t, k); });
+  }
+  lyric(c, t);
+};
+function tumiHand(c, x, y, k) {
+  shape(c, [[x - 30, y + 300], [x - 22, y + 40], [x - 10, y - 30], [x + 8, y - 34], [x + 14, y + 10], [x + 40, y + 30], [x + 44, y + 300]], C.skinT, { w: 3.6, id: 1730, k });
+  shape(c, [[x - 46, y + 160], [x + 60, y + 150], [x + 66, y + 320], [x - 50, y + 320]], C.yellow, { w: 3.6, id: 1731, k });
+}
+function food(c, n, x, y, s, t, k) {
+  c.save(); c.translate(x, y); c.scale(s, s);
+  if (n === 'fuchka') { for (let i = 0; i < 3; i++) shape(c, ellipsePts(-60 + i * 60, 0, 34, 28, 16), '#E9B060', { w: 3.4, id: 1740 + i, k }); shape(c, spline([[-120, 20], [120, 20], [90, 70], [-90, 70]], true, 3), C.red, { w: 3.4, id: 1745, k }); }
+  if (n === 'chai') { shape(c, [[-50, -40], [50, -40], [40, 60], [-40, 60]], C.cream, { w: 3.6, id: 1750, k }); fill(c, ellipsePts(0, -36, 46, 10, 14), '#B8743A', { id: 1751, k }); ink(c, spline([[50, -20], [80, -10], [78, 30], [44, 34]], false, 6), 4, { id: 1752, k });
+    for (let i = 0; i < 3; i++) puff(c, -16 + i * 16, -80, 26, ((on2(t) * 0.6 + i * 0.33) % 1), 1753 + i, k); }
+  if (n === 'ilish') { shape(c, spline([[-120, 0], [-40, -40], [60, -34], [120, 0], [150, -30], [150, 30], [120, 0], [60, 34], [-40, 40]], true, 3), '#D9D2C0', { w: 3.4, id: 1760, k }); c.fillStyle = INK; c.beginPath(); c.arc(-86, -6, 5, 0, 2 * PI); c.fill(); for (let i = 0; i < 4; i++) ink(c, [[-40 + i * 30, -24], [-30 + i * 30, 20]], 2, { id: 1761 + i, k }); }
+  c.restore();
+}
+SC.office = (c, t) => {
+  const k = boilK(t), q = on2(t);
+  ground(c, '#EFE3C8');
+  shape(c, [[0, 760], [1920, 760], [1920, 1080], [0, 1080]], '#D7B98A', { w: 3.4, id: 1800, k, reg: 2 });
+  // wall calendar: pages tear off on 1s (fast) — days going by
+  const pages = Math.floor(clamp((t - t0(12)) / (t0(16) - t0(12))) * 14), tearing = F(t) % 6 < 2 && t > t0(12) && t < t0(15);
+  shape(c, [[300, 160], [560, 160], [560, 470], [300, 470]], C.cream, { w: 4, id: 1810, k });
+  shape(c, [[300, 160], [560, 160], [560, 230], [300, 230]], C.red, { w: 4, id: 1811, k });
+  letter(c, String(12 + pages).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]), 430, 350, { size: 130, font: '"Galada"', weight: 400, k, id: 1812 });
+  if (tearing) { const f2 = F(t) % 6; c.save(); c.translate(430 + 120 * (f2 + 1), 350 - 90 * (f2 + 1)); c.rotate(0.4 * (f2 + 1));
+    smear(c, 0, 0, 1, -0.7, f2 === 0 ? 1.4 : 0.2, cc => shape(cc, [[-90, -80], [90, -80], [90, 80], [-90, 80]], C.cream, { w: 3, id: 1813, k })); c.restore();
+    speedLines(c, 560, 300, -0.6, 140, 120, 4, 1814, F(t)); }
+  // desk + laptop + files, he sits (front), she appears in a thought bubble tapping her watch
+  shape(c, [[620, 760], [1500, 760], [1500, 790], [620, 790]], '#9C6B3E', { w: 3.6, id: 1820, k });
+  ami(c, 1120, 1000, 1.0, t, k, { sit: true, aL: 0.6, eL: 1.2, aR: 0.6, eR: 1.2, look: t > t0(14) ? 0.7 : 0, mouth: singing(t), blink: F(t) % 70 < 3 }, { id: 100, shadow: false });
+  shape(c, [[700, 760], [960, 760], [940, 630], [720, 630]], '#6E6A66', { w: 3.6, id: 1821, k }); fill(c, ellipsePts(830, 695, 14, 14, 10), C.cream, { id: 1826, k, reg: 0 });
+  for (let i = 0; i < 4; i++) shape(c, [[1300, 760 - i * 22], [1460, 760 - i * 22], [1450, 740 - i * 22], [1310, 740 - i * 22]], i % 2 ? C.cream : C.yellow, { w: 3, id: 1822 + i, k });
+  if (t > t0(14) - 0.3) {
+    const u = eBack(clamp((q - t0(14) + 0.3) / 0.4));
+    c.save(); c.translate(1500, 330); c.scale(u, u);
+    shape(c, spline([[-230, -170], [0, -200], [230, -170], [260, 0], [220, 170], [0, 200], [-220, 170], [-260, 0]], true, 4), C.cream, { w: 4, id: 1830, k });
+    for (let i = 0; i < 3; i++) shape(c, ellipsePts(-300 - i * 40, 170 + i * 40, 22 - i * 6, 18 - i * 5, 12), C.cream, { w: 3, id: 1831 + i, k });
+    const tap = Math.floor(on2(t) * 4) % 2;
+    tumi(c, 0, 230, 0.55, t, k, { aR: 1.6 + tap * 0.15, eR: 1.4, aL: 1.0, eL: 1.6, look: 0, smile: -0.6, tilt: 0.06 }, { id: 400, shadow: false });
+    if (t > t0(15) - 0.1) { const kk = F(t) - F(t0(15)); if (kk < 10) { speedLines(c, 0, -60, -PI / 2, 60, 200, 5, 1840, k); } letter(c, '!', 170, -120, { size: 120, font: '"Galada"', col: C.red, k, id: 1841 }); }
+    c.restore();
+  }
+  lyric(c, t);
+};
+SC.alone = (c, t) => {
+  const k = boilK(t), q = on2(t);
+  ground(c, '#EFE3C8');
+  shape(c, [[0, 820], [1920, 820], [1920, 1080], [0, 1080]], '#CDB58A', { w: 3.4, id: 1900, k, reg: 2 });
+  // bus counter board: city names in hand lettering, an arrow next to each
+  shape(c, [[520, 120], [1400, 120], [1400, 640], [520, 640]], '#2E3A2F', { w: 5, id: 1910, k, ic: INK });
+  letter(c, 'কাউন্টার', 960, 175, { size: 54, col: C.yellow, k, id: 1911 });
+  const cities = ['সিলেট', 'কক্সবাজার', 'রাঙামাটি', 'শ্রীমঙ্গল', 'কুয়াকাটা'];
+  cities.forEach((s, i) => { const ta = t0(16) + i * 0.4; if (q >= ta) { letter(c, s, 860, 260 + i * 76, { size: 50, col: C.cream, k, id: 1912 + i });
+    ink(c, [[1060, 260 + i * 76], [1180, 260 + i * 76], [1160, 248 + i * 76]], 3, { id: 1920 + i, k, col: C.cream }); } });
+  ami(c, 960, 1010, 1.05, t, k, { view: 'back', aL: 0.2, aR: 0.2, tilt: Math.sin(on2(t) * 1.2) * 0.06 }, { id: 100 });
+  shape(c, [[900, 690], [1020, 690], [1030, 820], [890, 820]], C.red, { w: 3.6, id: 1930, k });   // backpack
+  if (t > t0(18)) for (let i = 0; i < 3; i++) { const ta = t0(18) + i * 0.6, u = eBack(clamp((q - ta) / 0.3)); if (u > 0) letter(c, '?', 860 + i * 110, 560 - (i % 2) * 50, { size: 110 * u, font: '"Galada"', col: C.red, k, id: 1940 + i }); }
+  lyric(c, t);
+};
+SC.words = (c, t) => {                 // pre-chorus: speech bubbles drift up; some words finished, some torn in half
+  const k = boilK(t), q = on2(t);
+  ground(c, '#F4CE7E');
+  const bub = [['চলো যাই', 420, 0], ['আগে ছুটি', 1100, 0.7], ['এক দিন', 760, 1.4], ['পরে বলব', 1460, 2.1], ['মনে আছে?', 560, 2.8], ['আধখানা', 1260, 3.5]];
+  bub.forEach(([s, x, d], i) => {
+    const ta = t0(20) - 0.6 + d, u = q - ta; if (u < 0) return;
+    const y = 900 - u * 70 - i * 10, sc = eBack(clamp(u / 0.4));
+    c.save(); c.translate(x + Math.sin(u + i) * 20, y); c.scale(sc, sc);
+    const half = i % 2 === 1 && t > t0(22);
+    if (half) { c.save(); c.beginPath(); c.rect(-300, -200, 300, 400); c.clip(); }
+    shape(c, spline([[-170, -70], [0, -86], [170, -70], [186, 0], [160, 70], [0, 82], [-160, 70], [-186, 0]], true, 4), i % 3 === 0 ? C.cream : '#FAF3E3', { w: 4, id: 2000 + i, k });
+    shape(c, [[-40, 70], [10, 70], [-60, 120]], i % 3 === 0 ? C.cream : '#FAF3E3', { w: 3, id: 2010 + i, k });
+    letter(c, s, 0, 0, { size: 56, col: i % 2 ? C.red : INK, k, id: 2020 + i });
+    if (half) { c.restore(); ink(c, spline([[0, -90], [8, -40], [-6, 0], [6, 40], [0, 90]], false, 5), 3, { id: 2030 + i, k }); }
+    c.restore();
+  });
+  lyric(c, t);
+};
+// THE PLACE — kash-phool field by the river ghat at sunset. The two of them on the bench… then only outlines.
+function placeScene(c, t, k, o = {}) {
+  const { rain = 0, wind = 0, morning = 0, sunY = 520, boatX = null } = o;
+  if (morning) bands(c, [0, 380, 520], ['#F6E2A6', '#F6D27A', '#F2C26A']);
+  else bands(c, [0, 300, 470], rain ? ['#D9CBB0', '#CFC0A2', '#C9B796'] : ['#F4CE7E', '#EFB66A', '#E9A35E']);
+  if (!rain) sun(c, 1240, sunY, morning ? 120 : 150, k, morning ? C.yellow : C.red, morning ? 0.35 : 0);
+  farBank(c, 560, k, rain ? '#B8A585' : '#D9B97E');
+  river(c, 560, 820, t, k, rain ? '#C4B392' : '#E7C27A', { glint: !rain, sunX: 1240, flow: 1 + wind * 2 });
+  nouka(c, boatX ?? (560 + (on2(t) * 6) % 900), 640, 0.9, k, t);
+  krishnachura(c, 1560, 860, k, t);
+  shape(c, [[0, 800], [1920, 800], [1920, 1080], [0, 1080]], rain ? '#A9A27A' : '#B9A866', { w: 3.4, id: 3300, k, reg: 2 });
+  bench(c, 1160, 900, k);
+}
+function couple(c, t, k, ghostBoth = false, ghostHer = false) {
+  ami(c, 1080, 1030, 0.86, t, k, { view: 'back', sit: true, aL: 0.1, aR: 0.3, tilt: 0.06 }, { id: 100, ghost: ghostBoth });
+  tumi(c, 1250, 1010, 0.86, t, k, { view: 'back', sit: true, aL: 0.25, aR: 0.1, tilt: -0.12, braidSwing: Math.sin(on2(t) * 2) }, { id: 400, ghost: ghostBoth || ghostHer });
+  bench(c, 1160, 900, k);                      // the backrest over their backs: they sit facing the river
+}
+SC.place1 = (c, t) => {
+  const k = boilK(t);
+  placeScene(c, t, k);
+  // "everything was fine, only we were not there": the couple, solid while the line is a wish, become outlines on L31
+  const ghost = t > t0(31) - 0.1;
+  couple(c, t, k, ghost && F(t) % 4 !== 1, false);
+  if (ghost && t < t0(31) + 0.6) sparks(c, 1170, 700, 240, clamp((t - t0(31)) / 0.6), 3400, k, 10, C.cream);
+  kashField(c, 975, t, k, 44, 0, 3);
+  lyric(c, t);
+};
+SC.house = (c, t) => {                 // the house she imagined, drawn on in the air, line by line
+  const k = boilK(t), q = on2(t);
+  ground(c, '#EFE3C8');
+  const u = (i) => clamp((q - t0(i) + 0.2) / 1.4);
+  const roof = spline([[560, 520], [960, 230], [1360, 520]], false, 10), walls = [[620, 520], [620, 900], [1300, 900], [1300, 520]];
+  drawOn(c, roof, u(32), 7, { id: 3500, k }); drawOn(c, spline(walls, false, 10), u(33), 6, { id: 3501, k });
+  if (u(34) > 0) { const s = eBack(u(34)); c.save(); c.translate(960, 680); c.scale(s, s); shape(c, [[-190, -130], [190, -130], [190, 130], [-190, 130]], '#FAF3E3', { w: 6, id: 3502, k });
+    ink(c, [[0, -130], [0, 130]], 4, { id: 3503, k }); ink(c, [[-190, 0], [190, 0]], 4, { id: 3504, k }); c.restore(); }
+  if (u(35) > 0) { sun(c, 1500, 260, 70, k, C.yellow, 0.5 * u(35)); for (let i = 0; i < 5; i++) { const a = 2.4 + i * 0.12; c.save(); c.globalAlpha = 0.55 * u(35); fill(c, [[1500, 260], [1500 + Math.cos(a) * 700, 260 + Math.sin(a) * 700], [1500 + Math.cos(a + 0.05) * 700, 260 + Math.sin(a + 0.05) * 700]], C.yellow, { id: 3510 + i, k, reg: 0 }); c.restore(); } }
+  if (u(36) > 0) { const n = Math.floor(u(37) * 9); shape(c, [[700, 860], [900, 860], [900, 874], [700, 874]], '#9C6B3E', { w: 3, id: 3520, k });
+    for (let i = 0; i < n; i++) shape(c, [[704 + i * 21, 860], [722 + i * 21, 860], [722 + i * 21, 790 - (i % 3) * 14], [704 + i * 21, 790 - (i % 3) * 14]], [C.red, C.yellow, '#7C8A3C', C.cream][i % 4], { w: 2.6, id: 3521 + i, k }); }
+  if (u(38) > 0) for (const px of [600, 1320]) { shape(c, [[px - 40, 900], [px + 40, 900], [px + 30, 960], [px - 30, 960]], C.red, { w: 3.4, id: 3540 + px, k });
+    const g = clamp(u(39) * 1.2), nl = Math.floor(g * 7); for (let i = 0; i < nl; i++) { const a = -PI / 2 + (i - 3) * 0.35; shape(c, ellipsePts(px + Math.cos(a) * 50, 890 + Math.sin(a) * 60, 14, 26, 10, a), '#7C8A3C', { w: 2.4, id: 3550 + px + i, k }); }
+    if (g > 0.95 && g < 1.1) sparks(c, px, 820, 80, (q - t0(39)) % 1, 3560 + px, k, 6); }
+  tumi(c, 300, 1000, 0.95, t, k, { aR: 2.0 + Math.sin(on2(t) * 2) * 0.2, eR: 0.3, look: 0.6, smile: 1, blink: F(t) % 84 < 3 }, { id: 400 });
+  ami(c, 1640, 1010, 0.95, t, k, { look: -0.7, aL: t > t0(36) - 0.2 ? 1.8 : 0.2, eL: 0.4, mouth: singing(t), blink: F(t) % 96 < 3 }, { id: 100 });
+  lyric(c, t);
+};
+SC.street = (c, t) => {                 // present day: Dhaka street at evening; he walks; a big lit window stops him
+  const k = boilK(t), q = on2(t);
+  bands(c, [0, 700], ['#E9A35E', '#9E8B6E']);
+  const pan = Math.min(q - t0(40), t0(46) - t0(40)) * 90;
+  c.save(); c.translate(-pan * 0.6, 0);
+  for (let b = 0; b < 12; b++) { const bx = b * 330, bh = 380 + 200 * hash(61, b);
+    shape(c, [[bx, 700], [bx, 700 - bh], [bx + 300, 700 - bh], [bx + 300, 700]], ['#D7B98A', '#CFAE7C', '#E2C48E'][b % 3], { w: 3.4, id: 3600 + b, k, reg: 2 });
+    for (let r = 0; r < 4; r++) for (let w = 0; w < 3; w++) { const big = b === 7 && r === 1 && w === 0;
+      const wx = bx + 30 + w * 90, wy = 700 - bh + 40 + r * 90, ww = big ? 240 : 60, wh = big ? 150 : 56;
+      if (!big && b === 7 && r === 1) continue;
+      shape(c, [[wx, wy], [wx + ww, wy], [wx + ww, wy + wh], [wx, wy + wh]], hash(62, b * 12 + r * 3 + w) > 0.45 || big ? C.yellow : '#6E5A4C', { w: 2.6, id: 3620 + b * 12 + r * 3 + w, k, reg: 1.5 }); } }
+  c.restore();
+  shape(c, [[0, 700], [1920, 700], [1920, 1080], [0, 1080]], '#8E7B5E', { w: 3.4, id: 3700, k, reg: 2 });
+  for (let i = 0; i < 8; i++) ink(c, [[i * 260 - (pan % 260), 880], [i * 260 + 120 - (pan % 260), 880]], 5, { id: 3710 + i, k, col: C.cream });
+  // rickshaw passing (on 2s), bell sparkle
+  const rx = 2100 - ((q - t0(40)) * 260) % 2600; rickshaw(c, rx, 840, 0.9, t, k);
+  const stop = t > t0(46) - 0.2, walk = stop ? null : on2(t) * 7;
+  ami(c, 900, 980, 0.95, t, k, { view: 'back', walk, aL: walk == null ? 0.1 : Math.sin(walk) * 0.35, aR: walk == null ? 0.1 : -Math.sin(walk) * 0.35, tilt: stop ? -0.12 : 0 }, { id: 100 });
+  if (stop && F(t) - F(t0(46)) < 8) speedLines(c, 900, 600, -PI / 2, 40, 140, 4, 3720, k);
+  lyric(c, t);
+};
+function rickshaw(c, x, y, s, t, k) {
+  c.save(); c.translate(x, y); c.scale(s, s);
+  const rot = on2(t) * 8;
+  for (const wx of [-120, 90]) { shape(c, ellipsePts(wx, 40, 56, 56, 20), null, { w: 5, id: 3800 + wx, k }); for (let i = 0; i < 6; i++) { const a = rot + i * PI / 3; ink(c, [[wx, 40], [wx + Math.cos(a) * 52, 40 + Math.sin(a) * 52]], 2, { id: 3810 + wx + i, k }); } }
+  shape(c, [[-180, -10], [40, -10], [60, -120], [-150, -140]], C.red, { w: 3.6, id: 3830, k });
+  shape(c, [[-170, -140], [50, -130], [30, -230], [-150, -240]], C.yellow, { w: 3.6, id: 3831, k });
+  for (let i = 0; i < 5; i++) shape(c, ellipsePts(-130 + i * 40, -60, 12, 12, 10), [C.cream, C.yellow][i % 2], { w: 2, id: 3840 + i, k });
+  c.restore();
+}
+SC.lost = (c, t) => {                   // inverted night: paper boats with addresses float away on a river of ink
+  const k = boilK(t), q = on2(t);
+  ground(c, '#221D19');
+  for (let i = 0; i < 70; i++) { const tw = (F(t) + i * 7) % 48 < 4; c.fillStyle = tw ? C.yellow : 'rgba(243,233,210,.7)'; c.beginPath(); c.arc(hash(81, i) * W, hash(82, i) * 520, tw ? 3 : 1.8, 0, 2 * PI); c.fill(); }
+  for (let r = 0; r < 6; r++) ink(c, spline([[0, 640 + r * 70], [480, 630 + r * 70 + (r % 2) * 12], [960, 646 + r * 70], [1440, 630 + r * 70], [1920, 642 + r * 70]], false, 8), 2.4, { id: 3900 + r, k, col: 'rgba(243,233,210,.5)' });
+  const labels = ['সকালের চা', 'ছোট্ট বাড়ি', 'বারান্দা', 'সেই বিকেল', 'বড় জানালা', 'দুজনের ছবি'];
+  labels.forEach((s, i) => { const ta = t0(48) + i * 0.8, u = q - ta; if (u < 0) return;
+    const x = 1700 - u * 120 - i * 40, y = 720 + (i % 3) * 70 + Math.sin(u * 2 + i) * 8, sc = 1.35 - (i % 3) * 0.18;
+    c.save(); c.translate(x, y); c.scale(sc, sc); c.rotate(Math.sin(u * 2 + i) * 0.05);
+    shape(c, [[-120, 0], [120, 0], [80, 50], [-80, 50]], C.cream, { w: 3, id: 3920 + i, k, ic: C.cream });
+    shape(c, [[-60, 0], [0, -110], [60, 0]], C.cream, { w: 3, id: 3930 + i, k, ic: C.cream });
+    c.globalCompositeOperation = 'source-over'; letter(c, s, 0, 24, { size: 30, col: INK, k, id: 3940 + i, weight: 500 });
+    fill(c, ellipsePts(0, -40, 10, 14, 10), C.yellow, { id: 3950 + i, k, reg: 0 });
+    c.restore(); });
+  lyric(c, t, { dark: true });
+};
+SC.place2 = (c, t) => {                 // second chorus: monsoon rain at the place; he alone under a red umbrella, her outline beside him
+  const k = boilK(t), q = on2(t);
+  placeScene(c, t, k, { rain: 1 });
+  ami(c, 1080, 1030, 0.86, t, k, { view: 'back', sit: true, aL: 0.1, aR: 1.6, eR: 1.4 }, { id: 100 });
+  tumi(c, 1250, 1010, 0.86, t, k, { view: 'back', sit: true, tilt: -0.12 }, { id: 400, ghost: true });
+  bench(c, 1160, 900, k);
+  shape(c, spline([[880, 560], [1000, 470], [1160, 450], [1320, 470], [1440, 560], [1360, 548], [1280, 562], [1160, 548], [1040, 562], [960, 548]], true, 3), C.red, { w: 4, id: 4000, k });
+  ink(c, [[1160, 455], [1130, 800]], 4, { id: 4001, k });
+  // rain on 2s + cel splash crowns on the river
+  for (let i = 0; i < 90; i++) { const x = (hash(41, i) * 2100 + F(t) * 3) % 2000 - 40, y = (hash(42, i) * 1100 + Math.floor(F(t) / 2) * 70) % 1100; ink(c, [[x, y], [x - 8, y + 36]], 2.2, { id: 4010 + i, k, col: 'rgba(31,26,23,.55)', amp: 0 }); }
+  for (let i = 0; i < 10; i++) { const ph = (Math.floor(F(t) / 2) + i * 5) % 12; if (ph < 4) { const x = 200 + hash(43, i, Math.floor((F(t) / 2 + i * 5) / 12)) * 1500, y = 600 + hash(44, i) * 200, s = [0.5, 1, 1.2, 0.8][ph];
+    for (let j = -2; j <= 2; j++) ink(c, [[x + j * 6, y], [x + j * 16 * s, y - 26 * s]], 2.4, { id: 4100 + i * 5 + j, k }); } }
+  kashField(c, 975, t, k, 44, 0.15, 3);
+  lyric(c, t);
+};
+SC.bridge = (c, t) => {                  // he goes alone; takes a photo; doesn't send it; keeps the little light for himself
+  const k = boilK(t, 3), q = on3(t);
+  placeScene(c, t, k, { sunY: 560 });
+  const walkIn = clamp((q - t0(60) + 0.5) / 5), arrived = walkIn >= 1;
+  const x = lerp(-120, 1000, eOut(walkIn));
+  ami(c, x, 980, 0.95, t, k, { view: 'back', walk: arrived ? null : on2(t) * 6, aR: t > t0(63) ? 2.4 : 0.15, eR: t > t0(63) ? 0.6 : 0.1, aL: 0.15 }, { id: 100 });
+  if (t > t0(63) && t < t0(64) + 2.2) { const r = [x + 64, 560]; shape(c, rrect(r[0] - 46, r[1] - 80, r[0] + 46, r[1] + 80, 12), INK, { w: 3, id: 4200, k }); fill(c, rrect(r[0] - 38, r[1] - 68, r[0] + 38, r[1] + 66, 6), '#F6D27A', { id: 4202, k, reg: 0 });
+    if (F(t) - F(t0(63) + 0.8) >= 0 && F(t) - F(t0(63) + 0.8) < 6) { star(c, r[0], r[1] - 30, 60 - (F(t) - F(t0(63) + 0.8)) * 8, 4201, k, C.cream); } }
+  if (t > t0(66) - 0.2) { const g = 0.5 + 0.5 * Math.sin(on2(t) * 3); c.save(); c.globalAlpha = 0.85; fill(c, ellipsePts(x - 10, 690, 26 + g * 6, 26 + g * 6, 16), C.yellow, { id: 4210, k, reg: 0 }); c.restore(); sparks(c, x - 10, 690, 70, (q * 0.7) % 1, 4211, k, 6); }
+  kashField(c, 975, t, k, 44, 0, 3, null, [700, 1300]);
+  lyric(c, t);
+};
+SC.final = (c, t) => {                   // HERO: the wind rises — the kash plumes, her outline and the boat all take flight; morning; he walks his own road
+  const k = boilK(t), q = on2(t);
+  const tw = t0(70), wind = clamp((t - tw + 0.4) / 0.8), morning = clamp((t - t0(74)) / 3);
+  placeScene(c, t, k, { wind, morning: morning > 0.5 ? 1 : 0, boatX: lerp(700, 2200, eIn(clamp((t - tw) / 14))) });
+  if (t < t0(78) - 0.3) {
+    ami(c, 1080, 1030, 0.86, t, k, { view: 'back', sit: true, aL: 0.1, aR: 0.2, tilt: -0.04 }, { id: 100 });
+    if (wind < 1) tumi(c, 1250, 1010, 0.86, t, k, { view: 'back', sit: true, tilt: -0.12 }, { id: 400, ghost: true });
+    bench(c, 1160, 900, k);
+  } else {                                    // he stands up and walks the path on his own (back view, walking away on 2s)
+    const u = clamp((q - t0(78) + 0.3) / 8), x = lerp(1150, 1300, u), y = lerp(990, 720, eOut(u)), s = lerp(0.95, 0.42, eOut(u));
+    ink(c, spline([[700, 1080], [1000, 960], [1240, 820], [1290, 700]], false, 8), 60, { id: 4300, k, col: '#D9C79A', taper: 0.95 });
+    ami(c, x, y, s, t, k, { view: 'back', walk: on2(t) * 6, aL: Math.sin(on2(t) * 6) * 0.3, aR: -Math.sin(on2(t) * 6) * 0.3 }, { id: 100 });
+  }
+  // the gust: the plumes break off and fly as cel FX; her outline dissolves into flying birds and seeds
+  const gone = i => wind > 0.3 && i % 3 === 0;
+  kashField(c, 975, t, k, 44, wind * 0.8, 3, gone);
+  if (wind > 0) {
+    for (let i = 0; i < 26; i++) { const lt = (t - tw - i * 0.12) / 4; if (lt < 0 || lt > 1) continue;
+      const x0 = hash(91, i) * 1900, y0 = 900 + hash(92, i) * 80, x = x0 + eOut(lt) * 1300, y = y0 - Math.sin(lt * PI) * 480 - lt * 260;
+      c.save(); c.translate(x, y); c.rotate(lt * 6 + i); shape(c, spline([[0, -26], [10, 0], [0, 26], [-10, 0]], true, 3), C.cream, { w: 2.2, id: 4400 + i, k }); c.restore(); }
+    for (let i = 0; i < 7; i++) { const lt = (t - tw - 0.2 - i * 0.18) / 3.5; if (lt < 0 || lt > 1) continue; crow(c, 1250 + eOut(lt) * (300 + i * 80), 700 - eOut(lt) * (420 + i * 30), 1.4 - lt * 0.6, t, k, 4500 + i); }
+    if (wind < 1) { speedLines(c, 700, 500, 0.08, 520, 600, 9, 4520, F(t)); sparks(c, 1250, 700, 300, wind, 4530, k, 12, C.cream); }
+  }
+  lyric(c, t);
+};
+SC.outro = (c, t) => {                   // a new place; he takes a photo for himself (flash, star burst), the polaroid develops; title holds on 3s
+  const k = boilK(t, 3), q = on3(t);
+  placeScene(c, t, k, { morning: 1, sunY: 420 });
+  const fl = t0(81), df = F(t) - F(fl);
+  if (df >= 0 && df < 3) { c.fillStyle = 'rgba(255,248,226,.9)'; c.fillRect(0, 0, W, H); }
+  if (df >= 0 && df < 10) sparks(c, 960, 420, 420, df / 10, 4600, boilK(t), 14);
+  const dev = clamp((q - fl - 0.3) / 3);
+  if (dev > 0) {
+    const s = eBack(clamp((q - fl - 0.1) / 0.6));
+    c.save(); c.translate(560, 470); c.rotate(-6 * DEG); c.scale(s, s);
+    shape(c, [[-230, -260], [230, -260], [230, 290], [-230, 290]], '#FAF3E3', { w: 4, id: 4610, k });
+    c.save(); c.beginPath(); c.rect(-200, -230, 400, 400); c.clip(); c.fillStyle = '#F6E2A6'; c.fillRect(-200, -230, 400, 400);
+    c.globalAlpha = dev; postcard(c, 'hills', 0, -30, 400 / 1920 * 1.4, t, k); c.restore();
+    letter(c, 'আবার যাব', 0, 230, { size: 52, col: C.red, k, id: 4611 });
+    c.restore();
+  }
+  const end = t0(83) + 2.2;
+  if (t > end) {                             // the end frame: hand-lettered title + a torn two-person ticket, boiling on 3s
+    const u = eBack(clamp((q - end) / 0.7));
+    c.save(); c.translate(1340, 330); c.scale(u, u); c.rotate(-2 * DEG);
+    shape(c, spline([[-420, -200], [0, -220], [420, -200], [440, 0], [420, 200], [0, 214], [-420, 200], [-440, 0]], true, 4), C.cream, { w: 4, id: 4620, k });
+    letter(c, 'আমাদের আর', 0, -90, { size: 84, font: '"Galada"', weight: 400, k, id: 4621 });
+    letter(c, 'যাওয়া হলো না', 0, 20, { size: 108, font: '"Galada"', weight: 400, col: C.red, k, id: 4622 });
+    letter(c, 'কণ্ঠ ও কথা — Rapar Rubel (Rubel Miah)  ·  সম্পাদনা — Paloan', 0, 140, { size: 30, weight: 500, k, id: 4623 });
+    c.restore();
+    c.save(); c.translate(560, 860); c.rotate(8 * DEG);
+    shape(c, [[-170, -60], [150, -60], [150, -30], [140, -14], [154, 0], [140, 16], [150, 30], [150, 60], [-170, 60]], C.red, { w: 3.6, id: 4630, k });
+    letter(c, 'টিকিট · ২ জন', -10, 0, { size: 42, col: C.cream, k, id: 4631 });
+    c.restore();
+  }
+  ami(c, 1600, 1000, 0.9, t, k, { view: 'back', aL: 0.15, aR: t > fl - 0.6 && t < fl + 1.5 ? 2.4 : 0.15, eR: 0.6 }, { id: 100 });
+  if (t <= end) lyric(c, t);
+};
+
+// ------------------------------------------------------------------ transitions: an ink wipe drawn on 1s (a brush stroke sweeps across)
+function wipe(c, t, sec) {
+  const df = F(t) - F(sec[1]); if (df < 0 || df > 7) return false;
+  const u = [0.12, 0.3, 0.52, 0.72, 0.88, 1.0, 1.0, 1.0][df];
+  return u;
+}
+const buf = document.createElement('canvas'); buf.width = W; buf.height = H; const BX = buf.getContext('2d');
+function drawSec(c, sec, t) { c.save(); (SC[sec[0]] || SC.open)(c, t); c.restore(); }
+window.renderAt = async (t) => {
+  t = Math.min(Math.max(t, 0), DUR - 1e-3);
+  const si = SECS.indexOf(secAt(t)), sec = SECS[si], prev = SECS[si - 1];
+  X.setTransform(1, 0, 0, 1, 0, 0); X.globalAlpha = 1; X.globalCompositeOperation = 'source-over';
+  const u = prev ? wipe(X, t, sec) : false;
+  if (u !== false) {                                // the new scene is painted in behind a sweeping ink brush stroke
+    drawSec(X, prev, sec[1] - 1 / FPS);
+    BX.setTransform(1, 0, 0, 1, 0, 0); drawSec(BX, sec, t);
+    const edge = u * (W + 400) - 200;
+    X.save(); X.beginPath(); X.moveTo(-50, -50);
+    for (let i = 0; i <= 12; i++) X.lineTo(edge + sh(sec[1] * 10 | 0, i) * 50 - i * 18, i / 12 * H);
+    X.lineTo(-50, H + 50); X.closePath(); X.clip(); X.drawImage(buf, 0, 0); X.restore();
+    const pts = []; for (let i = 0; i <= 12; i++) pts.push([edge + sh(sec[1] * 10 | 0, i) * 50 - i * 18, i / 12 * H]);
+    if (u < 1) ink(X, pts, 46, { id: 9900 + si, k: F(t), taper: 0.5 });
+  } else drawSec(X, sec, t);
+  finish(X, t);
+};
+await window.renderAt(0);
+window.__ready = true;
+</script>
+</body></html>
