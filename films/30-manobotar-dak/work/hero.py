@@ -74,16 +74,32 @@ def main(path):
         b = panel(sheet, RIG[box], 1.6 if name != 'hero_profile' else up)
         bl = grab(b, (0.05, 0.01, 0.95, 0.995), fg=[(0.4, 0.15, 0.6, 0.85)])
         bc = halftone_cmyk(b, 6.0, 0.5, sat=1.05)
-        if name == 'hero_body':                                     # brand print on the T-shirt -> torn paper patch + red sun
+        if name == 'hero_body':                                     # brand print on the T-shirt -> torn newsprint patch + red paper dove
             x0, y0, x1, y1 = RIG['logo']; Hb, Wb = b.shape[:2]
             rng = np.random.default_rng(9)
             pts = [(x0 * Wb + rng.uniform(-6, 6), y0 * Hb + rng.uniform(-6, 6)), (x1 * Wb + rng.uniform(-6, 6), y0 * Hb + rng.uniform(-6, 6)),
                    (x1 * Wb + rng.uniform(-6, 6), y1 * Hb + rng.uniform(-6, 6)), (x0 * Wb + rng.uniform(-6, 6), y1 * Hb + rng.uniform(-6, 6))]
             pm = poly_mask(Hb, Wb, pts)[..., None]
-            bc = bc * (1 - pm) + np.array([0.95, 0.925, 0.87], np.float32) * pm
-            cx, cy, rr = (x0 + x1) / 2 * Wb, (y0 + y1) / 2 * Hb, min(x1 - x0, y1 - y0) * min(Wb, Hb) * 0.32 * (Hb / Wb if Hb < Wb else 1)
-            yy, xx = np.mgrid[0:Hb, 0:Wb]
-            dm = np.clip(rr + 0.5 - np.hypot(xx - cx, yy - cy), 0, 1)[..., None]
+            news = np.asarray(Image.open(os.path.join(os.path.dirname(OUT.rstrip('/')), '../../06-collage/assets/gen/news_a.png')).convert('RGB')).astype(np.float32) / 255
+            news = resize(news[60:60 + int(news.shape[1] * Hb / Wb * 0.6), 40:], Wb, Hb)
+            news = 0.55 * news + 0.45 * np.array([0.95, 0.925, 0.87], np.float32)
+            bc = bc * (1 - pm) + news * pm
+            # red cut-paper dove (same silhouette as the film's doves), centred on the patch
+            cx, cy = (x0 + x1) / 2 * Wb, (y0 + y1) / 2 * Hb + 4
+            sc = (x1 - x0) * Wb / 260
+            def bez(p0, p1, p2, p3, n=12):
+                tt = np.linspace(0, 1, n)[:, None]
+                return ((1 - tt) ** 3 * p0 + 3 * (1 - tt) ** 2 * tt * p1 + 3 * (1 - tt) * tt ** 2 * p2 + tt ** 3 * p3).tolist()
+            A = np.array
+            body = [[98, -14], [112, -9], [97, -4]] + bez(A([97, -4]), A([92, 6]), A([70, 12]), A([46, 13])) + bez(A([46, 13]), A([16, 15]), A([-22, 12]), A([-52, 6])) \
+                + [[-104, 26], [-92, 6], [-108, -6], [-60, -7]] + bez(A([-60, -7]), A([-26, -15]), A([18, -11]), A([40, -15])) + bez(A([40, -15]), A([56, -27]), A([80, -30]), A([98, -14]))
+            wing = [[22, -12]] + bez(A([22, -12]), A([6, -62]), A([-30, -100]), A([-66, -118])) + [[-54, -92], [-78, -96], [-56, -70], [-80, -66]] \
+                + bez(A([-80, -66]), A([-48, -40]), A([-30, -18]), A([-14, -6]))
+            dm = np.zeros((Hb, Wb), np.float32)
+            for poly in (body, wing):
+                q = [(cx + (px + 4) * sc, cy + (py + 45) * sc) for px, py in poly]
+                dm = np.maximum(dm, poly_mask(Hb, Wb, q))
+            dm = dm[..., None]
             bc = bc * (1 - dm) + np.array([0.82, 0.15, 0.11], np.float32) * dm
         save(name, sticker(np.dstack([bc, bl]), r=5, seed=seed))
     json.dump(layout, open(OUT + 'layout.json', 'w'), indent=1)
