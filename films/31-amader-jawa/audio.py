@@ -27,9 +27,9 @@ place(sfx.shutter('film'), t0(81), 2)
 lvl = meter.integrated_loudness(bus.T + 1e-9 * np.random.default_rng(0).standard_normal(bus.T.shape))
 mix = x + bus * 10 ** ((song_lufs - 18 - lvl) / 20)
 sf.write(f'{tmp}/m.wav', mix.T, SR, subtype='FLOAT')
-r = subprocess.run(['ffmpeg', '-hide_banner', '-i', f'{tmp}/m.wav', '-af', 'loudnorm=I=-14:TP=-1.2:LRA=20:print_format=json', '-f', 'null', '-'], capture_output=True, text=True).stderr
+r = subprocess.run(['ffmpeg', '-hide_banner', '-i', f'{tmp}/m.wav', '-af', 'loudnorm=I=-14:TP=-1.8:LRA=20:print_format=json', '-f', 'null', '-'], capture_output=True, text=True).stderr
 m = json.loads(r[r.rindex('{'):r.rindex('}') + 1])
-af = (f"loudnorm=I=-14:TP=-1.2:LRA=20:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
+af = (f"loudnorm=I=-14:TP=-1.8:LRA=20:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
       f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true,aresample=48000")
 os.makedirs(D + 'out', exist_ok=True)
 subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', f'{tmp}/m.wav', '-af', af, '-ar', '48000', '-c:a', 'pcm_s24le', D + 'out/audio.wav'], check=True)

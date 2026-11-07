@@ -378,7 +378,8 @@ SC.house = (c, t) => {                 // the house she imagined, drawn on in th
   ground(c, '#EFE3C8');
   const u = (i) => clamp((q - t0(i) + 0.2) / 1.4);
   const roof = spline([[560, 520], [960, 230], [1360, 520]], false, 10), walls = [[620, 520], [620, 900], [1300, 900], [1300, 520]];
-  drawOn(c, roof, u(32), 7, { id: 3500, k }); drawOn(c, spline(walls, false, 10), u(33), 6, { id: 3501, k });
+  drawOn(c, roof, u(32), 7, { id: 3500, k }); const wl = []; for (let j = 0; j < walls.length - 1; j++) for (let q2 = 0; q2 < 10; q2++) wl.push([lerp(walls[j][0], walls[j + 1][0], q2 / 10), lerp(walls[j][1], walls[j + 1][1], q2 / 10)]); wl.push(walls[walls.length - 1]);
+  drawOn(c, wl, u(33), 6, { id: 3501, k });
   if (u(34) > 0) { const s = eBack(u(34)); c.save(); c.translate(960, 680); c.scale(s, s); shape(c, [[-190, -130], [190, -130], [190, 130], [-190, 130]], '#FAF3E3', { w: 6, id: 3502, k });
     ink(c, [[0, -130], [0, 130]], 4, { id: 3503, k }); ink(c, [[-190, 0], [190, 0]], 4, { id: 3504, k }); c.restore(); }
   if (u(35) > 0) { sun(c, 1500, 260, 70, k, C.yellow, 0.5 * u(35)); for (let i = 0; i < 5; i++) { const a = 2.4 + i * 0.12; c.save(); c.globalAlpha = 0.55 * u(35); fill(c, [[1500, 260], [1500 + Math.cos(a) * 700, 260 + Math.sin(a) * 700], [1500 + Math.cos(a + 0.05) * 700, 260 + Math.sin(a + 0.05) * 700]], C.yellow, { id: 3510 + i, k, reg: 0 }); c.restore(); } }
@@ -427,8 +428,8 @@ SC.lost = (c, t) => {                   // inverted night: paper boats with addr
   for (let i = 0; i < 70; i++) { const tw = (F(t) + i * 7) % 48 < 4; c.fillStyle = tw ? C.yellow : 'rgba(243,233,210,.7)'; c.beginPath(); c.arc(hash(81, i) * W, hash(82, i) * 520, tw ? 3 : 1.8, 0, 2 * PI); c.fill(); }
   for (let r = 0; r < 6; r++) ink(c, spline([[0, 640 + r * 70], [480, 630 + r * 70 + (r % 2) * 12], [960, 646 + r * 70], [1440, 630 + r * 70], [1920, 642 + r * 70]], false, 8), 2.4, { id: 3900 + r, k, col: 'rgba(243,233,210,.5)' });
   const labels = ['সকালের চা', 'ছোট্ট বাড়ি', 'বারান্দা', 'সেই বিকেল', 'বড় জানালা', 'দুজনের ছবি'];
-  labels.forEach((s, i) => { const ta = t0(48) + i * 0.8, u = q - ta; if (u < 0) return;
-    const x = 1700 - u * 120 - i * 40, y = 720 + (i % 3) * 70 + Math.sin(u * 2 + i) * 8, sc = 1.35 - (i % 3) * 0.18;
+  labels.forEach((s, i) => { const ta = t0(48) + i * 1.5, u = q - ta; if (u < 0) return;
+    const x = 1800 - u * 150, y = 700 + (i % 3) * 110 + Math.sin(u * 2 + i) * 8, sc = 1.35 - (i % 3) * 0.18;
     c.save(); c.translate(x, y); c.scale(sc, sc); c.rotate(Math.sin(u * 2 + i) * 0.05);
     shape(c, [[-120, 0], [120, 0], [80, 50], [-80, 50]], C.cream, { w: 3, id: 3920 + i, k, ic: C.cream });
     shape(c, [[-60, 0], [0, -110], [60, 0]], C.cream, { w: 3, id: 3930 + i, k, ic: C.cream });
