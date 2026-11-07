@@ -662,7 +662,7 @@ SC.prayer = (c, t) => {
   rays(c, 960, 520, t, { cols: ['#E9DCC0', PAL.red], n: 32, speed: 3 });
   disc(c, t, 960, 520, 360, PAL.gold, 851, 182.96);
   drawHead(c, t, 960, 600, 0.9, { t0: 182.96, id: 512 });
-  if (I.hero_profile && t > lt0(48) - 0.2) put(c, t, I.hero_profile, 420, 470, { s: 0.75, t0: lt0(48), id: 854, rot: -14 * DEG });
+  if (I.hero_profile && t > lt0(48) - 0.2) put(c, t, I.hero_profile, 420, 470, { s: 0.75, t0: lt0(48), id: 854, rot: 14 * DEG, flip: true });
   // proportion play: life (the girl) towers over power (a tiny king)
   if (t > lt0(50) - 0.2) { put(c, t, I.girl, 1520, 560, { s: 1.05, t0: lt0(50), id: 852, rot: -2 * DEG }); put(c, t, I.king, 330, 860, { s: 0.22, t0: lt0(50) + 0.42, id: 853 }); }
   if (t > lt0(51) - 0.2) for (let i = 0; i < 14; i++) { const k = ks(t, lt0(51)), a = i / 14 * 2 * PI, d = 120 + Math.min(k, 20) * 40;

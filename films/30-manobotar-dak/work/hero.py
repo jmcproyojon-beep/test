@@ -15,11 +15,11 @@ RIG = {
     'head_front': (0.012, 0.048, 0.258, 0.335), 'profile': (0.262, 0.048, 0.497, 0.335),
     'body_front': (0.012, 0.37, 0.258, 0.948), 'body_back': (0.502, 0.37, 0.740, 0.948),
     # head rig, fractions of the head_front panel
-    'brim_y': 0.36,                      # scissor line between cap (lid) and face
-    'hinge': (0.30, 0.37),               # brass fastener at the left end of the brim
-    'jaw': [(0.40, 0.585), (0.60, 0.585), (0.62, 0.66), (0.57, 0.75), (0.43, 0.75), (0.38, 0.66)],
-    'jaw_hinge': (0.50, 0.585), 'head_top': (0.50, 0.07),
-    'logo': (0.40, 0.22, 0.62, 0.36),    # chest print on body_front (fractions of that panel) -> paper patch
+    'brim_y': 0.305,                      # scissor line between cap (lid) and face
+    'hinge': (0.33, 0.31),               # brass fastener at the left end of the brim
+    'jaw': [(0.43, 0.548), (0.61, 0.548), (0.645, 0.62), (0.595, 0.725), (0.45, 0.725), (0.40, 0.62)],
+    'jaw_hinge': (0.52, 0.548), 'head_top': (0.52, 0.04),
+    'logo': (0.35, 0.205, 0.66, 0.385),    # chest print on body_front (fractions of that panel) -> paper patch
     'up': 3.0,                           # upscale before halftone (the halftone hides the softness)
 }
 
@@ -66,7 +66,7 @@ def main(path):
         if d > 0: pieces[k] = np.pad(pieces[k], ((d, d), (d, d), (0, 0)))
     off = (pieces['hero_face'].shape[1] - W) / 2
     P = lambda fx, fy: [fx * W + off, fy * H + off]
-    meta = dict(head_center=P(0.5, 0.45), hinge=P(*RIG['hinge']), jaw_hinge=P(*RIG['jaw_hinge']), head_top=P(*RIG['head_top']),
+    meta = dict(head_center=P(0.52, 0.45), hinge=P(*RIG['hinge']), jaw_hinge=P(*RIG['jaw_hinge']), head_top=P(*RIG['head_top']),
                 jaw_drop=0.06 * H)
     for k, v in pieces.items(): save(k, v, **(meta if k == 'hero_face' else {}))
     # ---------------- full figures
