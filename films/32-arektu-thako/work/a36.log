@@ -1,0 +1,19 @@
+gemini-3.6-flash 7.5 2
+gemini-3.6-flash 22.5 5
+gemini-3.6-flash 37.5 8
+gemini-3.6-flash 52.5 7
+gemini-3.6-flash 67.5 10
+gemini-3.6-flash 82.5 10
+gemini-3.6-flash 97.5 8
+gemini-3.6-flash 112.5 4
+gemini-3.6-flash 127.5 5
+gemini-3.6-flash 142.5 11
+gemini-3.6-flash 157.5 10
+gemini-3.6-flash 172.5 8
+gemini-3.6-flash 187.5 5
+gemini-3.6-flash 202.5 err 503 HTTP Error 503: Service Unavailable
+gemini-3.6-flash 202.5 5
+gemini-3.6-flash 217.5 4
+gemini-3.6-flash 232.5 0
+gemini-3.6-flash DONE
+ALLDONE

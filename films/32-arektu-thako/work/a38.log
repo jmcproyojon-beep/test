@@ -1,0 +1,28 @@
+gemini-3.8-flash 0.0 err 503 HTTP Error 503: Service Unavailable
+gemini-3.8-flash 0.0 1
+gemini-3.8-flash 15.0 4
+gemini-3.8-flash 30.0 5
+gemini-3.8-flash 45.0 6
+gemini-3.8-flash 60.0 8
+gemini-3.8-flash 75.0 err 503 HTTP Error 503: Service Unavailable
+gemini-3.8-flash 75.0 10
+gemini-3.8-flash 90.0 10
+gemini-3.8-flash 105.0 6
+gemini-3.8-flash 120.0 5
+gemini-3.8-flash 135.0 err 503 HTTP Error 503: Service Unavailable
+gemini-3.8-flash 135.0 9
+gemini-3.8-flash 150.0 11
+gemini-3.8-flash 165.0 10
+gemini-3.8-flash 180.0 err 503 HTTP Error 503: Service Unavailable
+gemini-3.8-flash 180.0 err 503 HTTP Error 503: Service Unavailable
+gemini-3.8-flash 180.0 err 503 HTTP Error 503: Service Unavailable
+gemini-3.8-flash 195.0 5
+gemini-3.8-flash 210.0 err 503 HTTP Error 503: Service Unavailable
+gemini-3.8-flash 210.0 err 429 HTTP Error 429: Too Many Requests
+gemini-3.8-flash 210.0 err 503 HTTP Error 503: Service Unavailable
+gemini-3.8-flash 225.0 err 503 HTTP Error 503: Service Unavailable
+gemini-3.8-flash 225.0 err 503 HTTP Error 503: Service Unavailable
+gemini-3.8-flash 225.0 err 503 HTTP Error 503: Service Unavailable
+gemini-3.8-flash 240.0 err 429 HTTP Error 429: Too Many Requests
+gemini-3.8-flash 240.0 err 429 HTTP Error 429: Too Many Requests
+gemini-3.8-flash 240.0 err 503 HTTP Error 503: Service Unavailable
