@@ -26,3 +26,5 @@ gemini-3.8-flash 225.0 err 503 HTTP Error 503: Service Unavailable
 gemini-3.8-flash 240.0 err 429 HTTP Error 429: Too Many Requests
 gemini-3.8-flash 240.0 err 429 HTTP Error 429: Too Many Requests
 gemini-3.8-flash 240.0 err 503 HTTP Error 503: Service Unavailable
+gemini-3.8-flash DONE
+ALLDONE
