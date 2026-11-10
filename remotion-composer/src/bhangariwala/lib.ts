@@ -43,7 +43,7 @@ export const bn = (n: number | string) => String(n).replace(/[0-9]/g, (d) => BND
 // Modern green / white / dark-gray identity.
 export const C = {
   bg: "#F3F6F5", paper: "#FFFFFF", ink: "#1E2A30", ink2: "#3A4950", mute: "#6B7A80", line: "#C9D3D6", soft: "#E4EAEB",
-  green: "#17A05D", greenD: "#0C6B3D", greenDD: "#08482A", mint: "#DDF3E6", mint2: "#BFE8CF", lime: "#7BD389",
+  green: "#6AAE22", greenD: "#4A8516", greenDD: "#2E5A0C", mint: "#EBF5DE", mint2: "#CDE6AE", lime: "#9CD35A", brand: "#78B728",
   warn: "#E3A13B", warnSoft: "#F7E3BE", red: "#C8574D", redSoft: "#F2D6D2", gray: "#9AA7AB", screen: "#2C3A41",
 };
 
@@ -51,6 +51,11 @@ export const C = {
 // families by unicode-range so mixed lines ("Electronic Waste আছে?") set cleanly.
 const BN = "U+0951-0952,U+0964-0965,U+0980-09FE,U+1CD0-1CF9,U+200C-200D,U+20B9,U+25CC,U+A8F1";
 const LAT = "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+2248,U+FEFF,U+FFFD";
+// Official BhangariWala logo, cut from the client's artwork (client-builds/bhangariwala/logo).
+export const LOGO = { mark: staticFile("bw/logo-mark.png"), word: staticFile("bw/logo-word.png"), markAR: 645 / 648, wordAR: 1368 / 236 };
+export const logoReady = Promise.all([LOGO.mark, LOGO.word].map((src) => new Promise<void>((res) => {
+  const i = new Image(); i.onload = () => { i.decode().then(() => res(), () => res()); }; i.onerror = () => res(); i.src = src;
+})));
 export const SANS = "BwSans";
 export const HEAD = "BwHead";
 const f = (family: string, file: string, weight: string, unicodeRange: string) =>

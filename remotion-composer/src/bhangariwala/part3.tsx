@@ -1,7 +1,7 @@
 import React from "react";
 import { P2_Q } from "./part2";
 import { BDMap, projector, CITIES } from "./map";
-import { Badge, Dev, DevKind, House, LogoMark, Office, Person, QMark, Recycle, Shield, Van, Wordmark } from "./icons";
+import { Badge, Dev, DevKind, House, LogoImg, LogoMark, Office, Person, QMark, Recycle, Shield, Van, Wordmark } from "./icons";
 import { C, HEAD, SANS, backOut, clamp, ease, easeOut, lerp, rand, ramp, smooth, mix } from "./lib";
 
 // PART 3 (20-30 s): the question becomes the BhangariWala mark; a clear
@@ -206,15 +206,15 @@ const Network: React.FC<{ t: number; k: number; dimK: number }> = ({ t, k, dimK 
       })}
       <g transform={`translate(${hx} ${hy - 40 * v.s})`}>
         <circle r={(70 + ((t * 0.8) % 1) * 60) * v.s} fill="none" stroke={C.green} strokeWidth={4} opacity={(1 - ((t * 0.8) % 1)) * 0.6} />
-        <g transform={`scale(${0.62 * v.s * backOut((t - T.net - 0.3) / 0.5)})`}><LogoMark spin={t * 30} /></g>
+        <g transform={`scale(${0.6 * v.s * backOut((t - T.net - 0.3) / 0.5)})`}><LogoMark /></g>
       </g>
     </g>
   );
 };
 
 export const Part3: React.FC<{ t: number }> = ({ t }) => {
-  const mk = keyed(t, { x: P2_Q.x, y: P2_Q.y, s: 1.05 }, { x: 228, y: 302, s: 0.42 }, { x: 540, y: 560, s: 1.1 });
-  const wm = keyed(t, { x: 540, y: 1120, s: 1 }, { x: 630, y: 322, s: 0.6 }, { x: 540, y: 820, s: 1.02 });
+  const mk = keyed(t, { x: P2_Q.x, y: P2_Q.y, s: 1.05 }, { x: 318, y: 302, s: 0.42 }, { x: 540, y: 560, s: 1.1 });
+  const wm = keyed(t, { x: 540, y: 1120, s: 1 }, { x: 608, y: 324, s: 0.6 }, { x: 540, y: 820, s: 1.02 });
   const morph = ramp(t, T.morph + 0.25, 0.75);
   const steps = ramp(t, T.steps[0] - 0.15, 0.35) * (1 - ramp(t, T.net - 0.1, 0.35));
   const net = ramp(t, T.net, 0.4);
@@ -258,13 +258,16 @@ export const Part3: React.FC<{ t: number }> = ({ t }) => {
             {[0, 120, 240].map((a) => <path key={a} transform={`rotate(${a + 52}) translate(150 0)`} d="M-16 -4 L0 18 L16 -4 Z" fill={C.green} />)}
           </g>
         )}
-        <circle r={96} fill={mix(C.ink, C.green, morph)} />
-        <circle r={96} fill="none" stroke={C.greenD} strokeWidth={6} opacity={morph} />
+        <circle r={lerp(96, 108, morph)} fill={mix(C.ink, "#FFFFFF", morph)} />
+        <circle r={lerp(96, 108, morph)} fill="none" stroke={C.mint2} strokeWidth={5} opacity={morph} />
         <g transform={`rotate(${(1 - morph) * -90})`}><QMark p={1 - ramp(t, T.morph, 0.45)} /></g>
-        <Recycle r={56} p={ramp(t, T.morph + 0.3, 0.75)} color="#fff" sw={15} rot={t * 10} />
+        {/* the "?" becomes the official mark: it spins in from the question */}
+        <g transform={`rotate(${(1 - ease((t - T.morph - 0.3) / 0.8)) * -140}) scale(${backOut((t - T.morph - 0.3) / 0.7)})`} opacity={ramp(t, T.morph + 0.3, 0.3)}>
+          <LogoImg size={188} />
+        </g>
       </g>
       <g transform={`translate(${wm.x} ${wm.y}) scale(${wm.s})`}>
-        <Wordmark k={ramp(t, T.morph + 0.7, 0.45)} size={96} sub={t < T.lock + 0.2 || t > T.brand + 0.3} />
+        <Wordmark k={ramp(t, T.morph + 0.7, 0.45)} size={96} />
       </g>
       {/* end frame copy */}
       {brand > 0 && (

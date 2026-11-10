@@ -1,5 +1,5 @@
 import React from "react";
-import { C, HEAD, SANS, clamp, lerp, rand } from "./lib";
+import { C, HEAD, SANS, LOGO, clamp, lerp, rand } from "./lib";
 
 // Flat, premium line-icon kit. Every icon is drawn about the origin in a
 // ~120 unit box; place it with <g transform="translate(x y) scale(s)">.
@@ -144,20 +144,22 @@ export const Recycle: React.FC<{ r?: number; p?: number; color?: string; sw?: nu
 };
 
 /** Placeholder BhangariWala mark (swap for the official logo file when supplied). */
-export const LogoMark: React.FC<{ s?: number; p?: number; spin?: number }> = ({ s = 1, p = 1, spin = 0 }) => (
+/** the official mark (recycling arrows + figure) on a white disc */
+export const LogoMark: React.FC<{ s?: number; disc?: boolean; ring?: boolean }> = ({ s = 1, disc = true, ring = true }) => (
   <g transform={`scale(${s})`}>
-    <circle r={92} fill={C.green} opacity={clamp(p * 2)} />
-    <circle r={92} fill="none" stroke={C.greenD} strokeWidth={6} opacity={clamp(p * 2)} />
-    <Recycle r={54} p={p} color="#fff" sw={15} rot={spin} />
+    {disc && <circle r={108} fill="#fff" />}
+    {ring && <circle r={108} fill="none" stroke={C.mint2} strokeWidth={5} />}
+    <LogoImg size={188} />
   </g>
+);
+export const LogoImg: React.FC<{ size: number }> = ({ size }) => (
+  <image href={LOGO.mark} x={-size / 2} y={-size / 2 / LOGO.markAR} width={size} height={size / LOGO.markAR} />
 );
 
 export const Wordmark: React.FC<{ x?: number; y?: number; size?: number; k?: number; sub?: boolean; dark?: boolean }> = ({ x = 0, y = 0, size = 92, k = 1, sub = true, dark = false }) => (
-  <g transform={`translate(${x} ${y})`} opacity={clamp(k * 1.4)}>
-    <text textAnchor="middle" fontFamily={HEAD} fontWeight={800} fontSize={size} letterSpacing={-size * 0.02} fill={dark ? "#fff" : C.ink}
-      transform={`translate(0 ${(1 - clamp(k)) * 18})`}>Bhangari<tspan fill={C.green}>Wala</tspan></text>
-    {sub && <text y={size * 0.62} textAnchor="middle" fontFamily={SANS} fontWeight={600} fontSize={size * 0.27} letterSpacing={size * 0.06} fill={C.mute}
-      opacity={clamp(k * 2 - 0.6)}>RESPONSIBLE E-WASTE COLLECTION</text>}
+  <g transform={`translate(${x} ${y + (1 - clamp(k)) * 18})`} opacity={clamp(k * 1.4)}>
+    {/* official wordmark artwork; baseline sits near y = 0 like the text it replaced */}
+    <image href={LOGO.word} x={-size * 3.3} y={-size * 0.95} width={size * 6.6} height={(size * 6.6) / LOGO.wordAR} />
   </g>
 );
 
@@ -261,9 +263,8 @@ export const Van: React.FC<{ x: number; y: number; s?: number; t?: number; flip?
     <path d="M-170 -40 V-190 Q-170 -200 -160 -200 H70 Q90 -200 100 -184 L150 -110 Q170 -100 170 -80 V-40 Z" fill={C.paper} stroke={C.ink} strokeWidth={6} strokeLinejoin="round" />
     <path d="M78 -184 L130 -110 H78 Z" fill="#BFE0EE" stroke={C.ink} strokeWidth={5} strokeLinejoin="round" />
     <rect x={-170} y={-96} width={248} height={30} fill={C.green} />
-    <g transform="translate(-136 -146) scale(0.3)"><LogoMark /></g>
-    <text x={-102} y={-136} fontFamily={HEAD} fontWeight={800} fontSize={25} fill={C.ink}>
-      Bhangari<tspan fill={C.green}>Wala</tspan></text>
+    <g transform="translate(-132 -146)"><LogoImg size={62} /></g>
+    <image href={LOGO.word} x={-96} y={-163} width={170} height={170 / LOGO.wordAR} />
     {[-100, 100].map((cx) => <g key={cx} transform={`translate(${cx} -36)`}><circle r={38} fill={C.ink} /><circle r={16} fill="#CED6D8" />
       <line x1={0} y1={0} x2={Math.cos(t * 12) * 14} y2={Math.sin(t * 12) * 14} stroke={C.ink} strokeWidth={4} /></g>)}
   </g>

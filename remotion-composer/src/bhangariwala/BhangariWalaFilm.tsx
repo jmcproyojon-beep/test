@@ -4,7 +4,7 @@ import { Part1 } from "./part1";
 import { Part2 } from "./part2";
 import { Part3 } from "./part3";
 import { LogoMark } from "./icons";
-import { C, D, FPS, SANS, Word, clamp, easeOut, fontsReady, ramp } from "./lib";
+import { C, D, FPS, SANS, Word, clamp, easeOut, fontsReady, logoReady, ramp } from "./lib";
 
 // "Bangladesh E-Waste -> BhangariWala" animated explainer: three 10 s parts
 // in one continuous 30 s film (1080x1920). Each part also stands alone when
@@ -57,7 +57,7 @@ const Chrome: React.FC<{ t: number }> = ({ t }) => {
         <circle cx={-222} cy={0} r={8} fill={C.green} />
         <text x={-202} y={8} fontFamily={SANS} fontWeight={700} fontSize={21} letterSpacing={2.4} fill={C.ink}>PART {part + 1}/3<tspan fill={C.mute} dx={14}>{TITLES[part]}</tspan></text>
       </g>
-      {mini > 0 && <g transform="translate(940 236) scale(0.24)" opacity={mini * ramp(t, 0.3, 0.4)}><LogoMark /></g>}
+      {mini > 0 && <g transform="translate(940 236) scale(0.27)" opacity={mini * ramp(t, 0.3, 0.4)}><LogoMark /></g>}
     </g>
   );
 };
@@ -66,7 +66,7 @@ export const BhangariWalaFilm: React.FC = () => {
   const frame = useCurrentFrame();
   const t = frame / FPS;
   const [handle] = useState(() => delayRender("fonts"));
-  useEffect(() => { fontsReady.then(() => continueRender(handle)); }, [handle]);
+  useEffect(() => { Promise.all([fontsReady, logoReady]).then(() => continueRender(handle)); }, [handle]);
   const bright = ramp(t, 20.1, 0.8);
   return (
     <AbsoluteFill style={{ background: C.bg }}>
