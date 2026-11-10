@@ -112,19 +112,41 @@ letters = np.array([len(re.sub(r"[\s—,;।?-]", "", l["text"])) for l in LINES
 cum = np.concatenate([[0], np.cumsum(letters)]) / letters.sum()
 speech_a, speech_b = words[0]["s"] if words else 0.0, words[-1]["e"] if words else DUR
 P = [(a + b) / 2 for a, b in pauses if a > speech_a + 0.3 and b < speech_b - 0.3]
-bounds = [max(0.0, speech_a - 0.05)]
+# anchors: each line's first heard word; keep the longest in-order subset
+anch = [(k, first[k]) for k in range(nL) if first[k] is not None]
+best, prevk = [1] * len(anch), [-1] * len(anch)
+for x in range(len(anch)):
+    for z in range(x):
+        if anch[z][1] + 0.3 < anch[x][1] and best[z] + 1 > best[x]:
+            best[x], prevk[x] = best[z] + 1, z
+x = int(np.argmax(best)); keep = []
+while x >= 0:
+    keep.append(anch[x]); x = prevk[x]
+keep = dict(reversed(keep))
+keep[0] = max(0.0, speech_a - 0.05)
+known = sorted(keep.items()) + [(nL, speech_b + 0.05)]
+starts = [0.0] * (nL + 1)
+for (ka, ta), (kb, tb) in zip(known, known[1:]):
+    for k in range(ka, kb + 1):
+        starts[k] = ta + (tb - ta) * (cum[k] - cum[ka]) / max(1e-9, cum[kb] - cum[ka])
+# snap to the nearest real pause, staying in order
+bounds = [starts[0]]
 for k in range(1, nL):
-    lo = last[k - 1] if last[k - 1] is not None else None
-    hi = first[k] if first[k] is not None else None
-    guess = lo if lo is not None else hi if hi is not None else speech_a + cum[k] * (speech_b - speech_a)
-    cands = [p for p in P if p > bounds[-1] + 0.4]
-    if lo is not None and hi is not None and hi > lo:
-        inside = [p for p in cands if lo - 0.15 <= p <= hi + 0.15]
-        b = min(inside, key=lambda p: abs(p - (lo + hi) / 2)) if inside else (lo + hi) / 2
-    else:
-        b = min(cands, key=lambda p: abs(p - guess)) if cands else guess
+    nxt = starts[k + 1]
+    cands = [p for p in P if bounds[-1] + 0.5 < p < nxt - 0.4 and abs(p - starts[k]) < (0.35 if k in keep else 0.9)]
+    b = min(cands, key=lambda p: abs(p - starts[k])) if cands else max(starts[k], bounds[-1] + 0.5)
     bounds.append(round(b, 3))
 bounds.append(round(min(DUR, speech_b + 0.1), 3))
+# Boundaries checked by hand where the transcript has holes (start of line, s):
+#  7.0 "প্রতিটা আলোর…": pause 108.03-108.28 (heard "…একটা রঙ্গ আছে" from 108.9)
+#  7.4 "সব লাইট এক টেম্পারেচারে…": pause 118.27-118.46 after "…মিশিয়ে ফেলবেন না —"
+#  9.1 "বড় উৎস…": pause 146.71-146.98 between "বদলায়," and "বডো উচ্ছ"
+#  3.4 "লাইট কাছে থাকলে…": pause 36.26-36.93 after "…Square Law." (the transcript lost "লাইট")
+OVERRIDE = {(3, 4): 36.6, (7, 0): 108.155, (7, 4): 118.365, (9, 1): 146.845}
+for k, l in enumerate(LINES):
+    if (l["scene"], l["i"]) in OVERRIDE:
+        bounds[k] = OVERRIDE[(l["scene"], l["i"])]
+print("anchored lines:", len(keep), "of", nL)
 
 out = []
 for k, l in enumerate(LINES):
