@@ -5,7 +5,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { SCENES, TITLE, INSTRUCTOR, EDITOR, timeLines } from "./src/script.js";
+globalThis.__fs = fs;
+const { SCENES, TITLE, INSTRUCTOR, EDITOR, timeLines } = await import("./src/script.js");
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.resolve(HERE, "../../projects/lighting-masterclass");

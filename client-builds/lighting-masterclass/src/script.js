@@ -84,7 +84,7 @@ const GAP = 0.35;
 const weight = (s) => Math.pow([...s.replace(/[\s—,;।?]/g, "")].length, 0.92) + 2.2;
 
 /** spread each scene's lines over its voiced window, by length */
-export function timeLines(scenes = SCENES) {
+export function timeLines(scenes = SCENES, raw = false) {
   const out = [];
   for (const sc of scenes) {
     const a = sc.start + sc.lead, b = sc.end - sc.tail;
@@ -96,6 +96,15 @@ export function timeLines(scenes = SCENES) {
       out.push({ scene: sc.n, i, text, s: +t.toFixed(2), e: +(t + d).toFixed(2) });
       t += d + GAP;
     });
+  }
+  if (!raw && typeof process !== "undefined" && process.versions?.node) {
+    // the recorded voice's real line times (place_user.py), when present
+    const fs = globalThis.__fs;
+    const file = new URL("../voice-lines.json", import.meta.url);
+    if (fs && fs.existsSync(file)) {
+      const real = JSON.parse(fs.readFileSync(file, "utf8"));
+      for (const l of out) { const r = real.find((x) => x.scene === l.scene && x.i === l.i); if (r) { l.s = r.s; l.e = r.e; } }
+    }
   }
   return out;
 }
