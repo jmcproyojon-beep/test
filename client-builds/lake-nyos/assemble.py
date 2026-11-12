@@ -11,9 +11,9 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-FR = ROOT / "projects/lake-nyos/frames"
+FR = ROOT / "projects/lake-nyos/frames_fast"
 OUT = ROOT / "projects/lake-nyos"
-STEP = {1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2, 8: 2, 9: 1, 10: 1, 11: 1, 12: 2}
+STEP = {n: 2 for n in range(1, 13)}
 LOOK = "scale=1080:1920:flags=lanczos,unsharp=5:5:0.55:5:5:0.0,noise=alls=5:allf=t,format=yuv420p"
 
 

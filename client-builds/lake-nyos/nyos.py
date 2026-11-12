@@ -16,7 +16,7 @@ from mathutils import Vector, noise as mnoise
 
 FPS = 30
 SHOT_LEN = 4.0
-RES = (540, 960)
+RES = (432, 768)
 
 # palette
 MOON = (0.55, 0.86, 0.95)
@@ -25,7 +25,7 @@ FOG = (0.80, 0.93, 0.96)
 
 
 # ============================================================ scene + render
-def reset(res=RES, samples=14, step_rate=6.0):
+def reset(res=RES, samples=10, step_rate=8.0):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     sc = bpy.context.scene
     sc.render.engine = "CYCLES"

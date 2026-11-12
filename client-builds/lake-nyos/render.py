@@ -25,7 +25,7 @@ first = int(nums[1]) if len(nums) > 1 else 0
 last = int(nums[2]) if len(nums) > 2 else 119
 
 res = (270, 480) if preview else nyos.RES
-nyos.reset(res=res, samples=8 if preview else 14)
+nyos.reset(res=res, samples=8 if preview else 10)
 update = shots.SHOTS[shot - 1]()
 sc = nyos.bpy.context.scene
 d = os.path.join(out_root, f"s{shot:02d}")
