@@ -1,0 +1,7 @@
+seg/
+stills/
+silent.mp4
+*.mp4
+audio/*.wav
+audio/lines/
+build.log
