@@ -16,15 +16,15 @@ const CLIPS = [{ src: "proyojon/c1.mp4", s: 0, e: 6.5 }, { src: "proyojon/c2.mp4
 const END = 19.7;
 export const TOTAL = 24.2;
 export const PROYOJON_FRAMES = Math.round(TOTAL * FPS);
-const CREAM = "#fbeaa8", GREEN = "#0f6b2f", F = "Anek, Inter, sans-serif";
+export const CREAM = "#fbeaa8", GREEN = "#0f6b2f", F = "Anek, Inter, sans-serif";
 
-const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-const on = (t: number, a: number, d = 0.25) => clamp((t - a) / d);
-const easeOut = (x: number) => 1 - Math.pow(1 - clamp(x), 3);
-const backOut = (x: number, c = 1.7) => { const k = clamp(x); return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2); };
+export const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+export const on = (t: number, a: number, d = 0.25) => clamp((t - a) / d);
+export const easeOut = (x: number) => 1 - Math.pow(1 - clamp(x), 3);
+export const backOut = (x: number, c = 1.7) => { const k = clamp(x); return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2); };
 
 // ---------------- kinetic words ----------------
-type Sz = "s" | "m" | "b" | "x";
+export type Sz = "s" | "m" | "b" | "x";
 type Line = [string, number, Sz][];
 type Phrase = { s: number; e: number; lines: Line[]; y?: number; extra?: "logo" | "plots" | "call" };
 const PHRASES: Phrase[] = [
@@ -38,9 +38,9 @@ const PHRASES: Phrase[] = [
   { s: 17.04, e: 19.65, lines: [[["জমি", 17.04, "s"], ["দেখতে", 17.74, "s"]], [["আজই", 18.08, "x"]], [["যোগাযোগ", 18.64, "m"], ["করুন", 19.1, "m"]]], extra: "call" },
 ];
 const SIZE: Record<Sz, number> = { s: 58, m: 104, b: 150, x: 230 };
-const shadow = "0 0 2px rgba(0,0,0,.6), 0 6px 0 rgba(0,0,0,.35), 0 10px 40px rgba(0,0,0,.55)";
+export const shadow = "0 0 2px rgba(0,0,0,.6), 0 6px 0 rgba(0,0,0,.35), 0 10px 40px rgba(0,0,0,.55)";
 
-const Word: React.FC<{ w: string; at: number; sz: Sz; t: number }> = ({ w, at, sz, t }) => {
+export const Word: React.FC<{ w: string; at: number; sz: Sz; t: number }> = ({ w, at, sz, t }) => {
   const k = on(t, at, 0.22); if (k <= 0) return null;
   const big = sz !== "s";
   return (
@@ -125,13 +125,13 @@ const Clip: React.FC<{ i: number; t: number }> = ({ i, t }) => {
 };
 
 // ---------------- end card ----------------
-const Row: React.FC<{ icon: React.ReactNode; text: string; a: number; font?: string; size?: number }> = ({ icon, text, a, font = "Inter", size = 34 }) => (
+export const Row: React.FC<{ icon: React.ReactNode; text: string; a: number; font?: string; size?: number }> = ({ icon, text, a, font = "Inter", size = 34 }) => (
   <div style={{ display: "flex", alignItems: "center", gap: 18, opacity: clamp(a * 2), transform: `translateX(${(1 - easeOut(a)) * 40}px)` }}>
     <div style={{ width: 58, height: 58, borderRadius: 29, background: GREEN, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{icon}</div>
     <span style={{ fontFamily: font, fontWeight: 700, fontSize: size, color: "#1d2a22", lineHeight: 1.2 }}>{text}</span>
   </div>
 );
-const Ic = ({ d }: { d: string }) => <svg width={30} height={30} viewBox="0 0 24 24"><path d={d} fill="#fff" /></svg>;
+export const Ic = ({ d }: { d: string }) => <svg width={30} height={30} viewBox="0 0 24 24"><path d={d} fill="#fff" /></svg>;
 const EndCard: React.FC<{ t: number }> = ({ t }) => {
   const lt = t - END; const k = on(lt, 0, 0.45);
   return (

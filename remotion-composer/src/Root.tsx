@@ -26,6 +26,7 @@ import { ManobotarMV } from "./manobotar/ManobotarMV";
 import { BhangariWalaFilm } from "./bhangariwala/BhangariWalaFilm";
 import { WebAIReel } from "./webai/WebAIReel";
 import { ProyojonReel, PROYOJON_FRAMES } from "./proyojon/ProyojonReel";
+import { FlatPlotReel, FLATPLOT_FRAMES } from "./proyojon/FlatPlotReel";
 import { FRAMES as WEBAI_FRAMES } from "./webai/data";
 import { FRAMES as BW_FRAMES } from "./bhangariwala/lib";
 import { FRAMES as MANOBOTAR_FRAMES } from "./manobotar/lib";
@@ -154,6 +155,7 @@ export const Root: React.FC = () => {
     <>
       <Composition id="SareBaroMV" component={SareBaroMV} durationInFrames={SAREBARO_FRAMES} fps={30} width={1920} height={1080} />
       <Composition id="ManobotarMV" component={ManobotarMV} durationInFrames={MANOBOTAR_FRAMES} fps={30} width={1920} height={1080} />
+      <Composition id="FlatPlotReel" component={FlatPlotReel} durationInFrames={FLATPLOT_FRAMES} fps={30} width={1080} height={1920} />
       <Composition id="ProyojonReel" component={ProyojonReel} durationInFrames={PROYOJON_FRAMES} fps={30} width={1080} height={1920} />
       <Composition id="WebAIReel" component={WebAIReel} durationInFrames={WEBAI_FRAMES} fps={30} width={1080} height={1920} />
       <Composition id="BhangariWalaFilm" component={BhangariWalaFilm} durationInFrames={BW_FRAMES} fps={30} width={1080} height={1920} />
