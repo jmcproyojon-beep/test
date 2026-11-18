@@ -1,14 +1,11 @@
 import React from "react";
-import { AbsoluteFill, Img, staticFile, useCurrentFrame } from "remotion";
-import { loadFont } from "@remotion/fonts";
+import { AbsoluteFill, Img, continueRender, delayRender, staticFile, useCurrentFrame } from "remotion";
+import { FONT_CSS } from "./fontcss";
 import { CameraMotionBlur } from "@remotion/motion-blur";
 
 // Website showcase of rubelpublic.github.io in the style of the client's reference
 // (3D-tilted page fly-over with motion blur, isometric card grid, zoom-out to the whole page,
 // title card with floating objects). Section shots: public/portfolio/s00..s14.jpg (1440x900 @2x).
-loadFont({ family: "InterTight", url: staticFile("portfolio/fonts/inter-tight-latin-800-normal.woff2"), weight: "800" });
-loadFont({ family: "Inter", url: staticFile("portfolio/fonts/inter-latin-600-normal.woff2"), weight: "600" });
-loadFont({ family: "Inter", url: staticFile("portfolio/fonts/inter-latin-700-normal.woff2"), weight: "700" });
 
 export const PF_FPS = 30, PF_W = 1350, PF_H = 1080, PF_TOTAL = 16.5;
 export const PF_FRAMES = Math.round(PF_TOTAL * PF_FPS);
@@ -149,10 +146,13 @@ const SceneEnd: React.FC<{ t: number }> = ({ t }) => {
 
 export const PortfolioShowcase: React.FC = () => {
   const t = useCurrentFrame() / PF_FPS;
+  const [h] = React.useState(() => delayRender("inline fonts"));
+  React.useEffect(() => { Promise.all(["800 60px InterTight", "600 40px Inter", "700 40px Inter"].map((f) => document.fonts.load(f))).then(() => continueRender(h), () => continueRender(h)); }, [h]);
   const scene = t < 2.4 ? <SceneHero t={t} /> : t < 8.0 ? <SceneFly t={t} /> : t < 11.0 ? <SceneGrid t={t} /> : t < 13.0 ? <SceneZoomOut t={t} /> : <SceneEnd t={t} />;
   const cut = [2.4, 8.0, 11.0, 13.0].map((c) => Math.max(0, 1 - Math.abs(t - c) / 0.12)).reduce((a, b) => Math.max(a, b), 0);
   return (
     <AbsoluteFill style={{ background: `radial-gradient(ellipse at 50% 35%, #fbf8f2 0%, ${BG} 60%, #e9dfcf 100%)` }}>
+      <style>{FONT_CSS}</style>
       <CameraMotionBlur samples={7} shutterAngle={200}>
         <AbsoluteFill style={{ filter: cut > 0 ? `blur(${cut * 10}px)` : undefined }}>{scene}</AbsoluteFill>
       </CameraMotionBlur>
