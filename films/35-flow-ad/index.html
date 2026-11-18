@@ -1,0 +1,461 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'Hind'; src: url('/demos/35-flow-ad/assets/fonts/hind-siliguri-bengali-500-normal.woff2') format('woff2'); font-weight: 500; unicode-range: U+0964-0965, U+0980-09FE, U+200C-200D, U+25CC; }
+@font-face { font-family: 'Hind'; src: url('/demos/35-flow-ad/assets/fonts/hind-siliguri-bengali-700-normal.woff2') format('woff2'); font-weight: 700; unicode-range: U+0964-0965, U+0980-09FE, U+200C-200D, U+25CC; }
+@font-face { font-family: 'Hind'; src: url('/demos/35-flow-ad/assets/fonts/hind-siliguri-latin-500-normal.woff2') format('woff2'); font-weight: 500; }
+@font-face { font-family: 'Hind'; src: url('/demos/35-flow-ad/assets/fonts/hind-siliguri-latin-700-normal.woff2') format('woff2'); font-weight: 700; }
+@font-face { font-family: 'Mont'; src: url('/demos/35-flow-ad/assets/fonts/montserrat-latin-wght-normal.woff2') format('woff2'); font-weight: 100 900; }
+html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}
+</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script type="module">
+// 35-flow-ad — «ব্র্যান্ডে জ্যাম? Flow করান।» A 60 s vertical motion-graphics ad for Flow Communications.
+// Grammar from the client's sample: a black stage, glowing neon cards that stack and shuffle, glossy chibi characters,
+// dashboards and counters, a glowing logo end card with chevrons. Palette from the Flow logo: crimson + gold on black.
+// Every hit lands on the voice-over's word (times from the cleaned VO, assets/vo.wav).
+const W = 1080, H = 1920, FPS = 30, DUR = 61.0, D = '/demos/35-flow-ad/';
+window.DEMO = { width: W, height: H, fps: FPS, duration: DUR };
+const cv = document.getElementById('c'), X = cv.getContext('2d');
+const ENV = await (await fetch(D + 'env.json')).json();
+const loadImg = s => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => no(s); i.src = s; });
+const LOGO = await loadImg(D + 'assets/logo.png');
+for (const f of ['700 60px Hind', '500 60px Hind', '800 60px Mont', '600 60px Mont']) await document.fonts.load(f, 'ব্র্যান্ড জ্যাম Flow ০১২৩৪৫৬৭৮৯ abc');
+await document.fonts.ready;
+
+// ---------------------------------------------------------------- palette + helpers
+const RED = '#C21D24', REDL = '#FF3B3B', GOLD = '#E3B341', GOLDL = '#FFD86B', GOLDD = '#9C7424', INK = '#07060A', CARD = '#120E10', WHITE = '#F7F1E6', MUTE = '#9C928A';
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x)), lerp = (a, b, u) => a + (b - a) * u;
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const eOut = x => 1 - Math.pow(1 - clamp(x), 3), eIO = x => (x = clamp(x), x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const eBack = x => { x = clamp(x); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const pop = (t, at, d = .35) => t < at ? 0 : eBack((t - at) / d);
+const hash = (a, b = 0) => { const s = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return s - Math.floor(s); };
+const BN = n => String(n).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+const envAt = t => ENV.env[clamp(Math.floor(t * ENV.fps), 0, ENV.env.length - 1)] || 0;
+function rr(c, x, y, w, h, r) { c.beginPath(); c.roundRect(x, y, w, h, r); }
+function glow(c, col, b) { c.shadowColor = col; c.shadowBlur = b; }
+function noGlow(c) { c.shadowBlur = 0; c.shadowColor = 'transparent'; }
+function text(c, s, x, y, o = {}) {
+  const { size = 60, col = WHITE, w = 700, font = 'Hind', align = 'center', base = 'middle', g = 0, gc = col, a = 1, maxW } = o;
+  c.save(); c.globalAlpha *= a; c.font = `${w} ${size}px ${font}`; c.textAlign = align; c.textBaseline = base; c.fillStyle = col;
+  if (g) glow(c, gc, g); c.fillText(s, x, y, maxW); c.restore();
+}
+// a neon card: dark glass body, gradient rim with glow; stack: ghost cards peeking above (like the sample)
+function card(c, x, y, w, h, o = {}) {
+  const { c1 = GOLD, c2 = RED, r = 34, stack = 0, a = 1, lw = 4 } = o;
+  c.save(); c.globalAlpha *= a;
+  for (let i = stack; i >= 1; i--) { const k = i * 22; rr(c, x + k, y - k * 1.1, w - 2 * k, h, r); c.fillStyle = CARD; c.fill(); c.lineWidth = 3; c.strokeStyle = i % 2 ? c2 : c1; c.globalAlpha = a * (.55 - i * .12); c.stroke(); c.globalAlpha = a; }
+  rr(c, x, y, w, h, r); const bg = c.createLinearGradient(0, y, 0, y + h); bg.addColorStop(0, '#1A1316'); bg.addColorStop(1, '#0C090B'); c.fillStyle = bg; c.fill();
+  const gr = c.createLinearGradient(x, y, x + w, y + h); gr.addColorStop(0, c1); gr.addColorStop(1, c2);
+  glow(c, c1, 34); c.lineWidth = lw; c.strokeStyle = gr; c.stroke(); noGlow(c);
+  c.restore();
+}
+// ---------------------------------------------------------------- icons (simple vector)
+function icon(c, kind, x, y, s, col = GOLD) {
+  c.save(); c.translate(x, y); c.scale(s, s); c.strokeStyle = col; c.fillStyle = col; c.lineWidth = 6; c.lineCap = 'round'; c.lineJoin = 'round'; glow(c, col, 18);
+  if (kind === 'like') { rr(c, -34, -4, 18, 40, 5); c.fill(); c.beginPath(); c.moveTo(-12, 36); c.lineTo(22, 36); c.quadraticCurveTo(36, 34, 36, 20); c.lineTo(36, 4); c.quadraticCurveTo(36, -6, 24, -6); c.lineTo(6, -6); c.lineTo(10, -28); c.quadraticCurveTo(10, -40, 0, -40); c.lineTo(-12, -4); c.closePath(); c.fill(); }
+  else if (kind === 'globe') { c.beginPath(); c.arc(0, 0, 36, 0, 7); c.stroke(); c.beginPath(); c.ellipse(0, 0, 15, 36, 0, 0, 7); c.stroke(); c.beginPath(); c.moveTo(-36, 0); c.lineTo(36, 0); c.moveTo(-30, -18); c.lineTo(30, -18); c.moveTo(-30, 18); c.lineTo(30, 18); c.stroke(); }
+  else if (kind === 'play') { rr(c, -40, -30, 80, 60, 14); c.stroke(); c.beginPath(); c.moveTo(-10, -14); c.lineTo(16, 0); c.lineTo(-10, 14); c.closePath(); c.fill(); }
+  else if (kind === 'social') { rr(c, -34, -34, 68, 68, 18); c.stroke(); c.beginPath(); c.arc(0, 0, 15, 0, 7); c.stroke(); c.beginPath(); c.arc(21, -21, 4, 0, 7); c.fill(); }
+  else if (kind === 'star') { c.beginPath(); for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? 16 : 38; c.lineTo(Math.cos(a) * r, Math.sin(a) * r); } c.closePath(); c.fill(); }
+  else if (kind === 'brush') { c.beginPath(); c.moveTo(-30, 30); c.quadraticCurveTo(-34, 6, -14, 10); c.lineTo(28, -32); c.lineTo(34, -26); c.lineTo(-8, 16); c.quadraticCurveTo(-4, 36, -30, 30); c.fill(); }
+  else if (kind === 'cart') { c.beginPath(); c.moveTo(-40, -28); c.lineTo(-26, -28); c.lineTo(-14, 16); c.lineTo(28, 16); c.lineTo(36, -14); c.lineTo(-20, -14); c.stroke(); c.beginPath(); c.arc(-8, 30, 6, 0, 7); c.arc(22, 30, 6, 0, 7); c.fill(); }
+  else if (kind === 'heart') { c.beginPath(); c.moveTo(0, 30); c.bezierCurveTo(-46, 0, -26, -40, 0, -16); c.bezierCurveTo(26, -40, 46, 0, 0, 30); c.fill(); }
+  else if (kind === 'user') { c.beginPath(); c.arc(0, -14, 16, 0, 7); c.fill(); c.beginPath(); c.arc(0, 36, 30, Math.PI, 0); c.fill(); }
+  c.restore();
+}
+// ---------------------------------------------------------------- glossy chibi characters (the sample's glowing figure, in our colours)
+const shade = (hex, k) => { const n = parseInt(hex.slice(1), 16), f = v => clamp(Math.round(v * k), 0, 255); return `rgb(${f(n >> 16)},${f((n >> 8) & 255)},${f(n & 255)})`; };
+function chibi(c, x, y, s, o = {}) {
+  const { col = '#3A6BFF', look = [0, 0], mouth = 0, blink = false, armL = .4, armR = -.4, acc = [], rim = GOLD, tilt = 0, sad = 0, a = 1 } = o;
+  c.save(); c.globalAlpha *= a; c.translate(x, y); c.scale(s, s); c.rotate(tilt);
+  const gloss = (cx, cy, r) => { const g = c.createRadialGradient(cx - r * .35, cy - r * .45, r * .1, cx, cy, r * 1.05); g.addColorStop(0, shade(col, 1.9)); g.addColorStop(.45, col); g.addColorStop(1, shade(col, .35)); return g; };
+  // body
+  glow(c, rim, 30);
+  const arm = (side, ang) => { c.save(); c.translate(side * 52, -120); c.rotate(ang * side); rr(c, -14, 0, 28, 92, 14); c.fillStyle = gloss(0, 40, 50); c.fill(); c.restore(); };
+  arm(-1, armL); arm(1, -armR);
+  rr(c, -62, -150, 124, 150, 58); c.fillStyle = gloss(0, -75, 85); c.fill();
+  // head
+  c.beginPath(); c.arc(0, -232, 92, 0, 7); c.fillStyle = gloss(0, -232, 92); c.fill(); noGlow(c);
+  // face
+  for (const sd of [-1, 1]) {
+    const ex = sd * 32 + look[0] * 8, ey = -238 + look[1] * 6;
+    if (blink) { c.strokeStyle = '#0A0A14'; c.lineWidth = 6; c.beginPath(); c.moveTo(ex - 13, ey); c.lineTo(ex + 13, ey); c.stroke(); }
+    else { c.fillStyle = '#FFFFFF'; c.beginPath(); c.ellipse(ex, ey, 17, 21, 0, 0, 7); c.fill(); c.fillStyle = '#0A0A14'; c.beginPath(); c.ellipse(ex + look[0] * 5, ey + 2 + look[1] * 5, 9, 11, 0, 0, 7); c.fill(); c.fillStyle = '#fff'; c.beginPath(); c.arc(ex + look[0] * 5 - 3, ey - 3, 3.5, 0, 7); c.fill(); }
+    if (sad) { c.strokeStyle = '#0A0A14'; c.lineWidth = 5; c.beginPath(); c.moveTo(ex - 16 * sd, ey - 34 + sad * 6 * sd * sd); c.lineTo(ex + 14 * sd, ey - 30 - sad * 8); c.stroke(); }
+  }
+  c.fillStyle = '#2A0810'; c.beginPath(); c.ellipse(0, -186, 16 - mouth * 3, 4 + mouth * 15, 0, 0, 7); c.fill();
+  // accessories
+  for (const k of acc) {
+    if (k === 'tupi') { c.fillStyle = '#F4F0E6'; c.beginPath(); c.ellipse(0, -300, 74, 34, 0, Math.PI, 0); c.fill(); rr(c, -74, -304, 148, 20, 8); c.fill(); }
+    if (k === 'stache') { c.fillStyle = '#1A0E0A'; c.beginPath(); c.ellipse(-16, -200, 22, 8, -.25, 0, 7); c.ellipse(16, -200, 22, 8, .25, 0, 7); c.fill(); }
+    if (k === 'shades') { c.fillStyle = '#050505'; rr(c, -60, -256, 52, 32, 10); c.fill(); rr(c, 8, -256, 52, 32, 10); c.fill(); c.fillRect(-10, -246, 20, 6); c.fillStyle = 'rgba(255,255,255,.4)'; c.fillRect(-52, -250, 16, 5); c.fillRect(16, -250, 16, 5); }
+    if (k === 'hijab') { c.fillStyle = '#7A1E3A'; c.beginPath(); c.arc(0, -236, 104, Math.PI * .95, Math.PI * 2.05); c.lineTo(84, -150); c.lineTo(-84, -150); c.closePath(); c.fill(); c.fillStyle = gloss(0, -232, 92); c.beginPath(); c.ellipse(0, -222, 70, 78, 0, 0, 7); c.fill(); }
+    if (k === 'headset') { c.strokeStyle = RED; c.lineWidth = 12; c.beginPath(); c.arc(0, -236, 98, Math.PI * 1.08, Math.PI * 1.92); c.stroke(); c.fillStyle = RED; rr(c, -112, -258, 26, 52, 10); c.fill(); rr(c, 86, -258, 26, 52, 10); c.fill(); c.lineWidth = 6; c.beginPath(); c.moveTo(-100, -210); c.quadraticCurveTo(-90, -170, -40, -176); c.stroke(); }
+    if (k === 'cap') { c.fillStyle = '#12B5A8'; c.beginPath(); c.arc(0, -262, 84, Math.PI, 0); c.fill(); rr(c, -10, -270, 120, 20, 10); c.fill(); }
+    if (k === 'mega') { c.save(); c.translate(96, -200); c.rotate(-.35); c.fillStyle = '#F2F2F2'; glow(c, GOLD, 16); c.beginPath(); c.moveTo(0, -18); c.lineTo(110, -56); c.lineTo(110, 56); c.lineTo(0, 18); c.closePath(); c.fill(); c.fillStyle = RED; rr(c, -26, -22, 30, 44, 8); c.fill(); c.restore(); }
+  }
+  c.restore();
+}
+const blinkAt = (t, p = 3.1, o = 0) => ((t + o) % p) < .1;
+
+// ---------------------------------------------------------------- the stage: black with faint moving dots and a slow red/gold breath of light
+function stage(c, t, o = {}) {
+  c.fillStyle = INK; c.fillRect(0, 0, W, H);
+  const g = c.createRadialGradient(W * .5, H * .42, 50, W * .5, H * .42, H * .75); g.addColorStop(0, o.warm ? 'rgba(120,30,30,.35)' : 'rgba(70,20,26,.28)'); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  c.fillStyle = 'rgba(227,179,65,.12)';
+  for (let i = 0; i < 70; i++) { const x = (hash(i, 1) * W + t * 10 * (hash(i, 2) - .5)) % W, y = (hash(i, 3) * H - t * 14 * hash(i, 4) + H * 10) % H; c.beginPath(); c.arc(x, y, 1.5 + hash(i, 5) * 2, 0, 7); c.fill(); }
+}
+
+// ---------------------------------------------------------------- captions: each phrase pops word by word on its sung time
+const P = [
+  [2.02, 3.54, 'ঢাকার জ্যাম তো চেনেন।', ['জ্যাম']], [3.90, 6.40, 'কিন্তু ব্র্যান্ডের জ্যাম চেনেন?', ['ব্র্যান্ডের', 'জ্যাম']],
+  [6.46, 7.47, 'পেজে লাইক তিনটা।', ['তিনটা।']], [8.02, 8.66, 'একটা আম্মুর,', ['আম্মুর,']], [9.06, 9.69, 'একটা খালার…', ['খালার…']],
+  [10.32, 12.48, 'আর একটা রহিম ভাইয়ের নিজেরই সেকেন্ড আইডি।', ['সেকেন্ড', 'আইডি।']],
+  [13.17, 15.11, 'রহিম ভাই ৫০০ টাকা বুস্ট দিলেন।', ['৫০০', 'টাকা']], [15.72, 16.30, 'লাইক আসলো।', ['লাইক']],
+  [16.82, 17.34, 'কাস্টমার?', ['কাস্টমার?']], [17.86, 18.61, 'একটাও না।', ['না।']],
+  [19.66, 21.0, 'ভাইসব, ভাইসব!', ['ভাইসব!']], [21.0, 23.04, 'আপনার ব্র্যান্ডে জ্যাম? পেজে লাইক নাই?', ['জ্যাম?']],
+  [23.40, 25.06, 'একটা দাওয়াই আছে, মাত্র—', ['দাওয়াই']],
+  [25.91, 28.33, 'মামা, এইটা মলমে সারে না।', ['মলমে']], [28.69, 30.08, 'এইটার জন্য টিম লাগে।', ['টিম']],
+  [35.68, 38.40, 'মানে… যেখানে জ্যাম, সেখানেই Flow।', ['Flow।']],
+  [43.95, 45.85, 'দুনিয়ার যেকোনো জায়গা থেকে কাজ করে…', ['দুনিয়ার']], [46.08, 47.93, 'আর জ্যাম ছুটিয়ে দেয়।', ['ছুটিয়ে']],
+  [53.12, 55.43, 'আগে জানলে ভাগ্নেরে দিয়া লোগো করাইতাম না।', ['লোগো']], [56.10, 58.10, 'মামা, আমি তো ফ্রি তে করছিলাম…', ['ফ্রি'], 'whisper'],
+];
+function caption(c, t) {
+  const p = P.find(q => t >= q[0] - .05 && t < Math.min(q[1] + .55, (P[P.indexOf(q) + 1]?.[0] ?? 99) - .05)); if (!p) return;
+  const [t0, t1, s, hot, mode] = p, words = s.split(' '), whisper = mode === 'whisper';
+  const size = whisper ? 54 : 72, y0 = 1560, maxW = 960;
+  c.save(); c.font = `700 ${size}px Hind`;
+  // wrap into lines
+  const lines = [[]]; let lw = 0; const sp = size * .3;
+  for (const wd of words) { const ww = c.measureText(wd).width; if (lw + ww > maxW && lines[lines.length - 1].length) { lines.push([]); lw = 0; } lines[lines.length - 1].push([wd, ww]); lw += ww + sp; }
+  const tot = words.reduce((a, w) => a + w.length, 0); let acc = 0;
+  const out = clamp((t - (t1 + .3)) / .25);
+  lines.forEach((ln, li) => {
+    const lwid = ln.reduce((a, [, ww]) => a + ww, 0) + sp * (ln.length - 1); let x = W / 2 - lwid / 2;
+    const y = y0 + li * size * 1.25 - (lines.length - 1) * size * .6;
+    for (const [wd, ww] of ln) {
+      const at = t0 + (acc / tot) * (t1 - t0) * .85; acc += wd.length;
+      const k = pop(t, at, .28);
+      if (k > 0) {
+        const isHot = hot.includes(wd);
+        c.save(); c.translate(x + ww / 2, y + (1 - k) * 30); c.scale(k, k); c.globalAlpha = clamp(k) * (1 - out);
+        if (whisper) { c.font = `500 ${size}px Hind`; c.fillStyle = 'rgba(247,241,230,.75)'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(wd, 0, 0); }
+        else {
+          c.font = `700 ${size}px Hind`; c.textAlign = 'center'; c.textBaseline = 'middle';
+          c.lineWidth = 12; c.strokeStyle = 'rgba(0,0,0,.85)'; c.lineJoin = 'round'; c.strokeText(wd, 0, 0);
+          if (isHot) glow(c, GOLD, 26); c.fillStyle = isHot ? GOLDL : WHITE; c.fillText(wd, 0, 0);
+        }
+        c.restore();
+      }
+      x += ww + sp;
+    }
+  });
+  c.restore();
+}
+
+// ---------------------------------------------------------------- scenes
+const SC = [];
+const scene = (t0, fn) => SC.push({ t0, fn });
+// 1 · the Dhaka jam → the brand jam
+function vehicle(c, x, y, s, kind, t, i, brand) {
+  c.save(); c.translate(x + Math.sin(t * 9 + i) * 1.5, y); c.scale(s, s);
+  const body = ['#7A1B22', '#2B2E3A', '#8C6A20', '#3A1420'][i % 4];
+  if (kind === 'bus') { rr(c, -150, -120, 300, 120, 18); c.fillStyle = body; c.fill(); for (let k = 0; k < 4; k++) { rr(c, -130 + k * 68, -100, 52, 40, 6); c.fillStyle = '#1B1F2A'; c.fill(); } }
+  else if (kind === 'rick') { c.beginPath(); c.arc(-40, -60, 60, Math.PI, 0); c.fillStyle = RED; c.fill(); rr(c, -100, -60, 120, 50, 10); c.fillStyle = '#3B2A1A'; c.fill(); c.strokeStyle = GOLD; c.lineWidth = 5; c.beginPath(); c.moveTo(20, -30); c.lineTo(80, -30); c.lineTo(90, -80); c.stroke(); }
+  else { rr(c, -110, -70, 220, 70, 22); c.fillStyle = body; c.fill(); rr(c, -70, -110, 130, 48, 16); c.fill(); c.fillStyle = '#151820'; rr(c, -58, -102, 50, 34, 8); c.fill(); rr(c, 0, -102, 50, 34, 8); c.fill(); }
+  // lights: gold head, red tail, glowing
+  glow(c, GOLD, 24); c.fillStyle = GOLDL; c.beginPath(); c.arc(kind === 'bus' ? 146 : 104, -30, 9, 0, 7); c.fill();
+  glow(c, REDL, 24); c.fillStyle = REDL; c.beginPath(); c.arc(kind === 'bus' ? -146 : -104, -30, 8, 0, 7); c.fill(); noGlow(c);
+  for (const wx of kind === 'bus' ? [-90, 90] : kind === 'rick' ? [-60, 60] : [-62, 62]) { c.fillStyle = '#0A0A0A'; c.beginPath(); c.arc(wx, 0, 22, 0, 7); c.fill(); c.strokeStyle = '#555'; c.lineWidth = 4; c.stroke(); }
+  if (brand) { c.fillStyle = 'rgba(0,0,0,.55)'; rr(c, -44, kind === 'bus' ? -110 : -150, 88, 88, 22); c.fill(); icon(c, brand, 0, kind === 'bus' ? -66 : -106, .9, i % 2 ? GOLD : REDL); }
+  c.restore();
+}
+scene(0, (c, t) => {
+  stage(c, t);
+  const brandT = 3.9, b = t > brandT;
+  // three lanes of a jammed road, the camera slowly pushing in
+  const z = 1 + t * .02; c.save(); c.translate(W / 2, 980); c.scale(z, z); c.translate(-W / 2, -980);
+  for (let l = 0; l < 3; l++) { const y = 700 + l * 260; c.strokeStyle = 'rgba(227,179,65,.25)'; c.lineWidth = 4; c.setLineDash([40, 30]); c.beginPath(); c.moveTo(0, y + 40); c.lineTo(W, y + 40); c.stroke(); c.setLineDash([]); }
+  const kinds = ['car', 'bus', 'rick', 'car', 'rick', 'car', 'bus', 'car', 'rick'], brands = ['like', 'globe', 'cart', 'play', 'heart', 'social', 'star', 'brush', 'like'];
+  kinds.forEach((k, i) => { const l = i % 3, col = Math.floor(i / 3); const x = 170 + col * 370 + (l % 2) * 120 + Math.sin(t * .6 + i) * 6, y = 690 + l * 260;
+    const sw = b ? eBack(seg(t, brandT + i * .06, brandT + .3 + i * .06)) : 0;
+    vehicle(c, x, y, .95 - l * .05 + (sw > 0 && sw < 1 ? .08 * Math.sin(sw * Math.PI) : 0), k, t, i, sw > .5 ? brands[i] : null); });
+  // honks
+  [[2.5, 300, 600, 'প্যাঁ!'], [3.0, 760, 860, 'পিপ!'], [5.36, 520, 1110, 'পোঁ!']].forEach(([at, x, y, s]) => { const k = pop(t, at, .25), out = seg(t, at + .7, at + 1); if (k > 0 && out < 1) text(c, s, x, y, { size: 64, col: GOLDL, g: 20, a: 1 - out, font: 'Hind' }); });
+  c.restore();
+  // the sign: «ব্র্যান্ড জ্যাম»
+  const k = pop(t, 4.62, .4);
+  if (k > 0) { c.save(); c.translate(W / 2, 380); c.scale(k, k); card(c, -360, -110, 720, 220, { c1: REDL, c2: GOLD, stack: 2 });
+    text(c, 'ব্র্যান্ড জ্যাম', 0, -10, { size: 104, col: WHITE, g: 24, gc: REDL }); text(c, 'BRAND JAM', 0, 72, { size: 34, font: 'Mont', w: 700, col: GOLD }); c.restore(); }
+  else { const k2 = pop(t, 2.0, .4); if (k2 > 0) { c.save(); c.translate(W / 2, 380); c.scale(k2, k2); text(c, 'ঢাকা', 0, 0, { size: 120, col: WHITE, g: 30, gc: GOLD }); c.restore(); } }
+});
+// 2 · the page: three likes
+scene(6.3, (c, t) => {
+  stage(c, t);
+  const k = eOut(seg(t, 6.3, 6.8)); c.save(); c.translate(0, (1 - k) * 120); c.globalAlpha = k;
+  card(c, 150, 260, 780, 1120, { c1: GOLD, c2: RED, stack: 2 });
+  // cover + profile + name
+  rr(c, 180, 290, 720, 230, 24); const cg = c.createLinearGradient(180, 290, 900, 520); cg.addColorStop(0, '#3A1418'); cg.addColorStop(1, '#2A2010'); c.fillStyle = cg; c.fill();
+  c.save(); c.beginPath(); c.arc(300, 520, 82, 0, 7); c.fillStyle = '#F2E9D8'; c.fill(); c.lineWidth = 8; c.strokeStyle = CARD; c.stroke(); c.restore();
+  text(c, 'R', 300, 526, { size: 86, font: 'Mont', w: 900, col: '#2D7BFF' });   // the nephew's logo
+  text(c, 'রহিম ভাইয়ের দোকান', 410, 560, { size: 52, align: 'left' }); text(c, 'শপিং · ঢাকা', 412, 616, { size: 32, align: 'left', w: 500, col: MUTE });
+  // the like counter
+  const kc = pop(t, 7.04, .45);
+  icon(c, 'like', 300, 760, 1.2, GOLD);
+  if (kc > 0) { c.save(); c.translate(470, 762); c.scale(kc, kc); text(c, BN(3), 0, 0, { size: 150, font: 'Hind', col: GOLDL, g: 30, gc: GOLD }); c.restore(); text(c, 'জন লাইক দিয়েছেন', 560, 770, { size: 44, align: 'left', col: MUTE, w: 500, a: clamp(kc) }); }
+  // the three likers
+  const L = [[8.02, 'আম্মু', ['hijab'], '#C9567A'], [9.06, 'খালা', ['hijab'], '#9C5AC9'], [10.32, 'রহিম ভাই', ['tupi', 'stache', 'shades'], '#2D7BFF']];
+  L.forEach(([at, name, acc, col], i) => {
+    const kk = pop(t, at, .4); if (kk <= 0) return;
+    const y = 930 + i * 140;
+    c.save(); c.translate(0, (1 - clamp(kk)) * 40); c.globalAlpha *= clamp(kk);
+    rr(c, 200, y - 56, 680, 112, 28); c.fillStyle = 'rgba(255,255,255,.05)'; c.fill();
+    c.save(); c.beginPath(); c.arc(270, y, 46, 0, 7); c.clip(); c.fillStyle = '#1D1418'; c.fillRect(220, y - 50, 100, 100); chibi(c, 270, y + 140, .5, { col, acc, blink: blinkAt(t, 2.7, i) }); c.restore();
+    text(c, name, 340, y - 6, { size: 50, align: 'left' });
+    if (i === 2) { const kt = pop(t, 11.98, .35); if (kt > 0) { c.save(); c.translate(700, y); c.scale(kt, kt); rr(c, -120, -32, 240, 64, 32); c.fillStyle = RED; glow(c, REDL, 20); c.fill(); noGlow(c); text(c, 'সেকেন্ড আইডি', 0, 2, { size: 34 }); c.restore(); } }
+    icon(c, 'heart', 840, y, .55, REDL);
+    c.restore();
+  });
+  c.restore();
+});
+// 3 · the boost: likes roll up, customers stay at zero
+scene(12.9, (c, t) => {
+  stage(c, t);
+  // Rahim at his laptop (the sample's pose), bottom left
+  const slump = eOut(seg(t, 17.9, 18.6));
+  chibi(c, 300, 1340, 1.25, { col: '#2D7BFF', acc: ['tupi', 'stache'], look: [.6, slump * .8], blink: blinkAt(t, 2.9), armL: 1.2, armR: -1.2 + (t > 13.75 && t < 14.0 ? .3 : 0), tilt: slump * .08, sad: slump, mouth: 0 });
+  c.save(); c.translate(470, 1160); rr(c, -140, -10, 280, 170, 16); c.fillStyle = '#1A1A22'; glow(c, '#4B7BFF', 30); c.fill(); noGlow(c); c.beginPath(); c.arc(0, 75, 22, 0, 7); c.fillStyle = '#3A3A48'; c.fill(); c.restore();
+  // the boost button + cursor
+  const kb = eOut(seg(t, 12.9, 13.4)); c.save(); c.globalAlpha = kb; c.translate(W / 2, 360);
+  const press = t > 13.8 && t < 14.05 ? .93 : 1; c.scale(press, press);
+  rr(c, -300, -90, 600, 180, 90); const bg = c.createLinearGradient(-300, 0, 300, 0); bg.addColorStop(0, RED); bg.addColorStop(1, '#E8572A'); c.fillStyle = bg; glow(c, REDL, t > 13.8 ? 60 : 30); c.fill(); noGlow(c);
+  text(c, 'বুস্ট করুন · ৳' + BN(500), 0, 6, { size: 62 }); c.restore();
+  const cur = t < 13.8 ? [lerp(900, 640, eIO(seg(t, 13.0, 13.75))), lerp(700, 420, eIO(seg(t, 13.0, 13.75)))] : [640, 420];
+  c.save(); c.translate(...cur); c.fillStyle = WHITE; glow(c, '#000', 8); c.beginPath(); c.moveTo(0, 0); c.lineTo(0, 64); c.lineTo(16, 50); c.lineTo(30, 80); c.lineTo(42, 74); c.lineTo(28, 46); c.lineTo(48, 46); c.closePath(); c.fill(); c.restore();
+  if (t > 13.8 && t < 14.4) { const u = seg(t, 13.8, 14.4); c.strokeStyle = `rgba(255,216,107,${1 - u})`; c.lineWidth = 6; c.beginPath(); c.arc(640, 420, 30 + u * 120, 0, 7); c.stroke(); }
+  // two dashboards: likes (rolling up) and customers (zero)
+  const kd = eOut(seg(t, 14.6, 15.1));
+  c.save(); c.globalAlpha = kd;
+  card(c, 560, 640, 440, 300, { c1: GOLD, c2: GOLDD });
+  text(c, 'লাইক', 780, 700, { size: 44, col: MUTE, w: 500 });
+  const likes = Math.round(3 + (1247 - 3) * eOut(seg(t, 15.76, 16.6)));
+  text(c, BN(likes.toLocaleString('en-US')), 780, 820, { size: 104, col: GOLDL, g: 26, gc: GOLD });
+  card(c, 560, 990, 440, 300, { c1: REDL, c2: RED });
+  text(c, 'কাস্টমার', 780, 1050, { size: 44, col: MUTE, w: 500 });
+  const kz = pop(t, 16.88, .35); if (kz > 0) { c.save(); c.translate(780, 1170); c.scale(kz, kz); text(c, BN(0), 0, 0, { size: 120, col: REDL, g: 30, gc: REDL }); c.restore(); }
+  c.restore();
+  // hearts flying up from the likes card
+  if (t > 15.76) for (let i = 0; i < 14; i++) { const u = (t - 15.76 - i * .08) / 1.4; if (u < 0 || u > 1) continue; icon(c, 'heart', 600 + hash(i, 9) * 380, 940 - u * 520, .5 * (1 - u * .4), i % 2 ? REDL : GOLD); }
+  // the red X on "একটাও না"
+  const kx = pop(t, 17.86, .3); if (kx > 0) { c.save(); c.translate(780, 1140); c.scale(kx * 1.2, kx * 1.2); c.strokeStyle = REDL; c.lineWidth = 22; c.lineCap = 'round'; glow(c, REDL, 30); c.beginPath(); c.moveTo(-90, -90); c.lineTo(90, 90); c.moveTo(90, -90); c.lineTo(-90, 90); c.stroke(); c.restore(); }
+});
+// 4 · the street canvasser and his cure-all
+scene(19.3, (c, t) => {
+  stage(c, t, { warm: 1 });
+  // the stall: awning in red/gold stripes, a table
+  const ka = eOut(seg(t, 19.3, 19.8)); c.save(); c.translate(0, (1 - ka) * -200); c.globalAlpha = ka;
+  for (let i = 0; i < 8; i++) { c.fillStyle = i % 2 ? RED : GOLD; c.beginPath(); c.moveTo(120 + i * 105, 300); c.lineTo(225 + i * 105, 300); c.lineTo(225 + i * 105, 400); c.quadraticCurveTo(172 + i * 105, 440, 120 + i * 105, 400); c.closePath(); c.fill(); }
+  c.restore();
+  rr(c, 160, 1180, 760, 60, 14); c.fillStyle = '#3A2414'; c.fill(); c.fillRect(200, 1240, 24, 260); c.fillRect(856, 1240, 24, 260);
+  // the canvasser shouting into a megaphone; sound rings on "ভাইসব"
+  const talk = t > 19.66 && t < 25.1 ? envAt(t) : 0;
+  chibi(c, 340, 1180, 1.2, { col: '#E8862A', acc: ['mega', 'stache'], mouth: talk, look: [.4, -.2], blink: blinkAt(t, 2.4), armR: -1.4, armL: .3, rim: GOLDL, tilt: Math.sin(t * 7) * .02 });
+  for (const at of [19.66, 20.4]) { const u = seg(t, at, at + .7); if (u > 0 && u < 1) for (let r = 0; r < 3; r++) { c.strokeStyle = `rgba(255,216,107,${(1 - u) * (1 - r * .3)})`; c.lineWidth = 6; c.beginPath(); c.arc(640, 740, 60 + u * 200 + r * 50, -.7, .7); c.stroke(); } }
+  // the jar of "brand balm"
+  const kj = pop(t, 23.82, .4), shake = Math.sin(t * 30) * 4 * (t > 24.5 ? 1 : 0);
+  if (kj > 0) { c.save(); c.translate(720 + shake, 1060); c.scale(kj, kj);
+    rr(c, -110, -150, 220, 190, 30); const g = c.createLinearGradient(0, -150, 0, 40); g.addColorStop(0, '#3DDC84'); g.addColorStop(1, '#0E6B3A'); c.fillStyle = g; glow(c, '#3DDC84', 40); c.fill(); noGlow(c);
+    rr(c, -120, -190, 240, 50, 14); c.fillStyle = '#C9C9C9'; c.fill();
+    rr(c, -90, -110, 180, 100, 12); c.fillStyle = '#F7F1E6'; c.fill(); text(c, 'ব্র্যান্ড মলম', 0, -66, { size: 40, col: '#0E6B3A' }); text(c, 'সব রোগের দাওয়াই', 0, -26, { size: 22, col: '#333', w: 500 });
+    c.restore(); }
+  // the price tag "মাত্র—" (it never gets its price)
+  const kp = pop(t, 24.5, .3); if (kp > 0) { c.save(); c.translate(860, 860); c.rotate(.12 + Math.sin(t * 6) * .05); c.scale(kp, kp); rr(c, -100, -46, 200, 92, 16); c.fillStyle = GOLDL; c.fill(); text(c, 'মাত্র—', 0, 4, { size: 52, col: '#2A1A06' }); c.restore(); }
+});
+// 5 · the Flow team: "this is not for balm, it takes a team"
+scene(25.6, (c, t) => {
+  stage(c, t, { warm: 1 });
+  // the jar gets pushed out of frame by a gold card on "মামা"
+  const push = eIO(seg(t, 25.9, 26.6));
+  c.save(); c.translate(720 - push * 900, 1060); c.rotate(-push * .6);
+  rr(c, -110, -150, 220, 190, 30); c.fillStyle = '#1D7A48'; c.fill(); rr(c, -90, -110, 180, 100, 12); c.fillStyle = '#F7F1E6'; c.fill(); text(c, 'ব্র্যান্ড মলম', 0, -66, { size: 40, col: '#0E6B3A' });
+  c.restore();
+  if (t > 27.38 && t < 28.6) { const k = pop(t, 27.38, .3); c.save(); c.translate(260, 700); c.scale(k, k); text(c, 'মলমে সারে না', 0, 0, { size: 70, col: REDL, g: 24 }); c.restore(); }
+  // the team: three gold figures slide in
+  const ks = eOut(seg(t, 25.75, 26.4));
+  [[560, .85, -.2], [750, .95, 0], [930, .85, .2]].forEach(([x, s, tl], i) => {
+    const talk = i === 1 && t > 25.9 && t < 30.1 ? envAt(t) : 0;
+    chibi(c, x + (1 - ks) * 600, 1380, s, { col: '#C9962E', acc: ['headset'], mouth: talk, look: [-.5, 0], blink: blinkAt(t, 3.3, i), rim: REDL, armL: .3 + (i === 1 ? .8 * eOut(seg(t, 25.9, 26.3)) : 0), tilt: tl * .1 });
+  });
+  // "টিম লাগে": three role cards fan out above them
+  const R = [['ডিজাইন', 'brush'], ['ডেভেলপমেন্ট', 'globe'], ['মার্কেটিং', 'social']];
+  R.forEach(([s, ic], i) => { const k = pop(t, 28.7 + i * .25, .45); if (k <= 0) return;
+    c.save(); c.translate(250 + i * 290, 520 + Math.abs(i - 1) * 60); c.rotate((i - 1) * .12); c.scale(k, k);
+    card(c, -130, -150, 260, 300, { c1: i % 2 ? REDL : GOLD, c2: i % 2 ? GOLD : RED }); icon(c, ic, 0, -40, 1.1, i % 2 ? REDL : GOLDL); text(c, s, 0, 80, { size: 38 }); c.restore(); });
+  const kt = pop(t, 29.46, .35); if (kt > 0) { c.save(); c.translate(W / 2, 200); c.scale(kt, kt); text(c, 'টিম লাগে', 0, 0, { size: 110, col: GOLDL, g: 30, gc: GOLD }); c.restore(); }
+});
+// 6 · what the team does: five neon cards stack up, each on its word
+const SERV = [[31.18, 'ব্র্যান্ডিং', 'brush', GOLD, RED], [32.06, 'ওয়েবসাইট', 'globe', REDL, GOLD], [32.88, 'ভিডিও', 'play', GOLDL, '#E8572A'], [33.56, 'সোশ্যাল মিডিয়া', 'social', REDL, GOLDL], [34.62, 'ইনফ্লুয়েন্সার', 'star', GOLD, REDL]];
+function servMini(c, i, x, y, t) {     // a small live visual inside each card
+  c.save(); c.translate(x, y);
+  if (i === 0) [RED, GOLD, '#F7F1E6', '#2A1A06'].forEach((col, k) => { rr(c, -230 + k * 120, -40, 100, 100, 20); c.fillStyle = col; c.fill(); });
+  if (i === 1) { rr(c, -240, -60, 480, 150, 16); c.strokeStyle = MUTE; c.lineWidth = 3; c.stroke(); for (let k = 0; k < 3; k++) { c.fillStyle = [REDL, GOLD, '#3DDC84'][k]; c.beginPath(); c.arc(-215 + k * 22, -40, 7, 0, 7); c.fill(); } c.fillStyle = 'rgba(227,179,65,.6)'; c.fillRect(-220, -10, 300 * clamp((t - 32.06) * 2), 26); c.fillStyle = 'rgba(255,255,255,.2)'; c.fillRect(-220, 34, 420, 16); c.fillRect(-220, 60, 300, 16); }
+  if (i === 2) { c.fillStyle = 'rgba(255,255,255,.12)'; c.fillRect(-240, 30, 480, 14); c.fillStyle = GOLDL; c.fillRect(-240, 30, 480 * ((t - 32.88) % 2) / 2, 14); for (let k = 0; k < 6; k++) { c.fillStyle = 'rgba(255,255,255,.18)'; rr(c, -240 + k * 82, -70, 72, 80, 8); c.fill(); } }
+  if (i === 3) for (let k = 0; k < 6; k++) { const kk = pop(t, 33.6 + k * .1, .3); c.save(); c.translate(-160 + (k % 3) * 160, -30 + Math.floor(k / 3) * 90); c.scale(kk, kk); rr(c, -66, -38, 132, 76, 12); c.fillStyle = 'rgba(255,255,255,.08)'; c.fill(); icon(c, 'heart', 0, 0, .4, k % 2 ? REDL : GOLD); c.restore(); }
+  if (i === 4) { const n = Math.round(120000 * eOut(seg(t, 34.7, 35.3))); text(c, BN(n.toLocaleString('en-US')), 0, 0, { size: 80, col: GOLDL, g: 20 }); text(c, 'ফলোয়ার', 0, 64, { size: 32, col: MUTE, w: 500 }); }
+  c.restore();
+}
+scene(30.9, (c, t) => {
+  stage(c, t);
+  // the stack: each new card slides up from below over the previous ones; old cards shrink back and up
+  let top = -1; SERV.forEach((s, i) => { if (t >= s[0] - .15) top = i; });
+  SERV.forEach(([at, s, ic, c1, c2], i) => {
+    if (t < at - .15) return;
+    const u = eOut(seg(t, at - .15, at + .3)), back = top - i;
+    const y = lerp(2100, 760 - back * 70, u), sc = 1 - back * .07, a = back > 2 ? 0 : 1 - back * .25;
+    if (a <= 0) return;
+    c.save(); c.translate(W / 2, y); c.scale(sc, sc); c.globalAlpha = a;
+    card(c, -400, -330, 800, 660, { c1, c2, stack: back === 0 ? 2 : 0 });
+    icon(c, ic, -290, -230, 1.0, c1); text(c, s, -220, -226, { size: 72, align: 'left' });
+    if (back === 0) servMini(c, i, 0, 60, t);
+    c.restore();
+  });
+  text(c, 'একটাই টিম · সব কাজ', W / 2, 1560, { size: 56, col: MUTE, w: 500, a: eOut(seg(t, 31.0, 31.6)) });
+});
+// 7 · "where there's a jam, there's Flow": the stuck cars start to flow along a gold ribbon
+const ribbon = (u, t) => [lerp(-120, W + 120, u), 1080 + Math.sin(u * 6.28 + t * 1.2) * 160];
+scene(35.5, (c, t) => {
+  stage(c, t, { warm: 1 });
+  const flowK = eIO(seg(t, 36.8, 38.2));
+  c.save(); glow(c, GOLD, 40); c.strokeStyle = GOLD; c.lineWidth = 14 * flowK + 1; c.globalAlpha = flowK; c.beginPath();
+  for (let i = 0; i <= 60; i++) { const [x, y] = ribbon(i / 60, t); i ? c.lineTo(x, y) : c.moveTo(x, y); } c.stroke(); c.restore();
+  const kinds = ['car', 'rick', 'car', 'bus', 'car'];
+  kinds.forEach((k, i) => {
+    const jamX = 180 + i * 180, jamY = 1180 + (i % 2) * 40;
+    const u = ((t - 36.8) * .18 + i * .2) % 1, [fx, fy] = ribbon(u, t);
+    const x = lerp(jamX, fx, flowK), y = lerp(jamY, fy - 20, flowK);
+    vehicle(c, x, y, .55, k, t, i, ['like', 'globe', 'play', 'social', 'star'][i]);
+  });
+  const kj = pop(t, 36.98, .35); if (kj > 0 && t < 37.7) { c.save(); c.translate(W / 2, 520); c.scale(kj, kj); text(c, 'জ্যাম', 0, 0, { size: 140, col: REDL, g: 30 }); c.restore(); }
+  const kf = pop(t, 38.16, .5); if (kf > 0) { c.save(); c.translate(W / 2, 560); c.scale(kf, kf); glow(c, GOLD, 60);
+    c.drawImage(LOGO, 450, 100, 390, 590, -150, -227, 300, 454); noGlow(c); c.restore(); }   // the gold bulb "O" from the logo
+});
+// 8 · since 2005 · 300+ websites and apps · anywhere in the world · and it clears the jam
+scene(39.4, (c, t) => {
+  stage(c, t);
+  const yr = Math.round(lerp(1990, 2005, eOut(seg(t, 39.58, 40.4))));
+  const k1 = pop(t, 39.58, .4), out1 = eIO(seg(t, 41.5, 41.9));
+  if (k1 > 0) { c.save(); c.translate(W / 2, lerp(620, 330, out1)); c.scale(k1 * lerp(1, .55, out1), k1 * lerp(1, .55, out1)); text(c, BN(yr), 0, 0, { size: 260, col: GOLDL, g: 40, gc: GOLD }); text(c, 'সাল থেকে', 0, 170, { size: 70, col: WHITE }); c.restore(); }
+  // 300+ : a grid of tiny site/app tiles fills in
+  if (t > 41.74) {
+    const n = Math.round(300 * eOut(seg(t, 42.02, 43.3)));
+    const k = pop(t, 41.9, .4); c.save(); c.translate(W / 2, 760); c.scale(k, k); text(c, BN(n) + '+', 0, 0, { size: 200, col: WHITE, g: 30, gc: REDL }); text(c, 'ওয়েবসাইট ও অ্যাপ', 0, 140, { size: 60, col: GOLD }); c.restore();
+    for (let i = 0; i < 60; i++) { const kk = clamp((n / 300) * 60 - i); if (kk <= 0) continue; const x = 150 + (i % 10) * 80, y = 1010 + Math.floor(i / 10) * 64;
+      c.save(); c.globalAlpha = kk * (t > 43.9 ? 1 - seg(t, 43.9, 44.3) : 1); rr(c, x, y, 64, 48, 8); c.strokeStyle = i % 3 ? GOLD : REDL; c.lineWidth = 3; c.stroke(); c.fillStyle = 'rgba(227,179,65,.25)'; c.fillRect(x + 6, y + 8, 30, 6); c.restore(); }
+  }
+  // the globe with pins, anywhere in the world
+  if (t > 43.9) {
+    const k = eOut(seg(t, 43.9, 44.4)), cx = W / 2, cy = 1240, R = 250;
+    c.save(); c.globalAlpha = k * (1 - seg(t, 46.0, 46.4)); glow(c, GOLD, 30); c.strokeStyle = GOLD; c.lineWidth = 5; c.beginPath(); c.arc(cx, cy, R, 0, 7); c.stroke(); noGlow(c);
+    c.lineWidth = 2.5; c.strokeStyle = 'rgba(227,179,65,.6)';
+    for (let m = 0; m < 6; m++) { const ph = (m / 6 + t * .08) % 1, rx = Math.abs(Math.cos(ph * Math.PI)) * R; c.beginPath(); c.ellipse(cx, cy, rx, R, 0, 0, 7); c.stroke(); }
+    for (let p = -2; p <= 2; p++) { c.beginPath(); c.ellipse(cx, cy + p * 90, Math.sqrt(R * R - (p * 90) ** 2), 18, 0, 0, 7); c.stroke(); }
+    [[-.4, -.3], [.2, -.5], [.5, .1], [-.1, .4], [-.6, .2], [.3, .45]].forEach(([u, v], i) => { const kk = pop(t, 44.3 + i * .22, .3); if (kk <= 0) return; const x = cx + u * R, y = cy + v * R;
+      c.save(); c.translate(x, y); c.scale(kk, kk); glow(c, REDL, 20); c.fillStyle = REDL; c.beginPath(); c.arc(0, -26, 16, Math.PI, 0); c.lineTo(0, 0); c.closePath(); c.fill(); c.restore(); });
+    c.restore();
+  }
+  // the knot of jam lines that straightens into one flowing line
+  if (t > 46.0) {
+    const u = eIO(seg(t, 47.0, 47.9)), k = eOut(seg(t, 46.0, 46.4));
+    c.save(); c.globalAlpha = k; glow(c, GOLD, 30); c.lineWidth = 12; c.lineCap = 'round';
+    for (let s = 0; s < 3; s++) { c.strokeStyle = [GOLD, REDL, GOLDL][s]; c.beginPath();
+      for (let i = 0; i <= 80; i++) { const a = i / 80, x = lerp(140, 940, a), knot = Math.sin(a * 22 + s * 2) * 130 * (1 - u) * Math.sin(a * Math.PI), y = 1240 + knot + Math.cos(a * 17 + s) * 60 * (1 - u) + (s - 1) * 40 * (1 - u); i ? c.lineTo(x, y) : c.moveTo(x, y); }
+      c.stroke(); }
+    c.restore();
+  }
+});
+// 9 · the logo: the gold bulb lights first, the red letters write in, then the line; the tagline
+function logoAt(c, cx, cy, w, t, tBulb, tWord, tLine) {
+  const h = w * LOGO.height / LOGO.width, s = w / LOGO.width, x0 = cx - w / 2, y0 = cy - h / 2;
+  const kb = pop(t, tBulb, .5);
+  if (kb > 0) { c.save(); c.translate(x0 + 645 * s, y0 + 395 * s); c.scale(kb, kb); glow(c, GOLD, 70 * (1.4 - clamp(kb) * .6)); c.drawImage(LOGO, 450, 100, 390, 590, -195 * s, -295 * s, 390 * s, 590 * s); c.restore(); }
+  const kw = eIO(seg(t, tWord, tWord + .8));
+  if (kw > 0) { c.save(); c.beginPath(); c.rect(x0, y0, w * kw, h * .82); c.clip(); glow(c, RED, 30);
+    c.drawImage(LOGO, 0, 0, 450, 690, x0, y0, 450 * s, 690 * s); c.drawImage(LOGO, 840, 0, 280, 690, x0 + 840 * s, y0, 280 * s, 690 * s); c.restore(); }
+  const kl = eOut(seg(t, tLine, tLine + .5));
+  if (kl > 0) { c.save(); c.globalAlpha = kl; c.drawImage(LOGO, 0, 690, 1120, 130, x0, y0 + 690 * s + (1 - kl) * 20, w, 130 * s); c.restore(); }
+}
+function chevrons(c, x, y, t, a = 1) { for (let i = 0; i < 3; i++) { const ph = (t * 1.6 - i * .25) % 1; c.save(); c.globalAlpha = a * (1 - ph) * .9; c.strokeStyle = i % 2 ? REDL : GOLD; glow(c, GOLD, 18); c.lineWidth = 12; c.lineCap = 'round'; c.lineJoin = 'round'; c.beginPath(); c.moveTo(x - 50, y + i * 44 - 20); c.lineTo(x, y + i * 44 + 20); c.lineTo(x + 50, y + i * 44 - 20); c.stroke(); c.restore(); } }
+scene(48.3, (c, t) => {
+  stage(c, t, { warm: 1 });
+  // gold sparks converge on the bulb
+  for (let i = 0; i < 40; i++) { const u = eIO(seg(t, 48.3 + hash(i, 1) * .3, 48.95)); if (u >= 1) continue; const a = hash(i, 2) * 6.28, r = (1 - u) * (500 + hash(i, 3) * 300);
+    c.fillStyle = i % 2 ? GOLDL : REDL; glow(c, GOLD, 12); c.beginPath(); c.arc(540 + 30 + Math.cos(a) * r, 760 + Math.sin(a) * r, 5, 0, 7); c.fill(); noGlow(c); }
+  if (t > 48.94 && t < 49.4) { const u = seg(t, 48.94, 49.4); c.strokeStyle = `rgba(255,216,107,${1 - u})`; c.lineWidth = 10; c.beginPath(); c.arc(570, 760, 60 + u * 520, 0, 7); c.stroke(); }
+  logoAt(c, W / 2, 760, 920, t, 48.94, 49.1, 49.7);
+  const k1 = pop(t, 50.46, .35), k2 = pop(t, 51.76, .45);
+  if (k1 > 0) { c.save(); c.translate(W / 2, 1240); c.scale(k1, k1); text(c, 'ব্র্যান্ডে জ্যাম?', 0, 0, { size: 88 }); c.restore(); }
+  if (k2 > 0) { c.save(); c.translate(W / 2, 1390); c.scale(k2, k2); card(c, -330, -90, 660, 180, { c1: GOLD, c2: RED }); text(c, 'Flow করান।', 0, 4, { size: 104, col: GOLDL, g: 30, gc: GOLD }); c.restore(); }
+  chevrons(c, W / 2, 1600, t, eOut(seg(t, 51.9, 52.4)));
+});
+// 10 · Rahim's regret: his nephew's logo, crooked and clip-art
+function rahimLogo(c, t, k) {
+  c.save(); c.translate(W / 2, 560); c.rotate(-.06 + Math.sin(t * 2) * .01); c.scale(k, k);
+  rr(c, -330, -210, 660, 420, 20); c.fillStyle = '#F2E9D8'; c.fill();
+  c.font = '900 150px Mont'; c.textAlign = 'center'; c.textBaseline = 'middle';
+  ['R', 'A', 'H', 'I', 'M'].forEach((ch, i) => { c.save(); c.translate(-240 + i * 120, -40 + Math.sin(i * 2) * 26); c.rotate(Math.sin(i * 3) * .25); c.fillStyle = ['#2D7BFF', '#FF2DB4', '#2DD25A', '#FFB02D', '#8A2DFF'][i]; c.fillText(ch, 0, 0); c.restore(); });
+  c.font = 'italic 700 46px serif'; c.fillStyle = '#E52222'; c.fillText('★ STORE ★', 0, 120);
+  c.restore();
+}
+scene(52.9, (c, t) => {
+  stage(c, t);
+  rahimLogo(c, t, eOut(seg(t, 52.9, 53.4)));
+  const kl = pop(t, 54.72, .3); if (kl > 0) { c.save(); c.translate(860, 330); c.rotate(.2); c.scale(kl, kl); rr(c, -110, -40, 220, 80, 40); c.fillStyle = REDL; glow(c, REDL, 20); c.fill(); noGlow(c); text(c, 'লোগো?!', 0, 4, { size: 44 }); c.restore(); }
+  const face = eOut(seg(t, 54.9, 55.3));
+  chibi(c, 420, 1400, 1.15, { col: '#2D7BFF', acc: ['tupi', 'stache'], mouth: t > 53.1 && t < 55.5 ? envAt(t) : 0, look: [.5, .3], blink: blinkAt(t, 2.6), sad: .6, armR: lerp(-.4, -2.6, face), armL: .3 });
+});
+// 11 · the nephew whispers from the corner
+scene(55.9, (c, t) => {
+  stage(c, t);
+  rahimLogo(c, t, 1);
+  const turn = eIO(seg(t, 56.4, 57.0));
+  chibi(c, 420, 1400, 1.15, { col: '#2D7BFF', acc: ['tupi', 'stache'], look: [lerp(.5, 1, turn), .1], blink: blinkAt(t, 2.6), sad: .3, armL: .3, armR: -.3 });
+  const kn = eOut(seg(t, 55.9, 56.4));
+  chibi(c, 900 + (1 - kn) * 300, 1420, .8, { col: '#12B5A8', acc: ['cap'], mouth: t > 56.1 && t < 58 ? envAt(t) * .6 : 0, look: [-.8, -.2], blink: blinkAt(t, 2.2), rim: GOLDL, tilt: -.1, armL: .9 });
+  // a dotted whisper bubble
+  if (t > 56.1) { const k = pop(t, 56.1, .3); c.save(); c.translate(780, 930); c.scale(k, k); c.setLineDash([10, 10]); c.strokeStyle = WHITE; c.lineWidth = 4; rr(c, -170, -70, 340, 140, 60); c.stroke(); c.setLineDash([]);
+    text(c, 'ফ্রি তে…', 0, 4, { size: 56, col: WHITE, w: 500 }); c.restore(); }
+});
+// 12 · end card
+scene(58.4, (c, t) => {
+  stage(c, t, { warm: 1 });
+  logoAt(c, W / 2, 740, 900, t, 58.45, 58.55, 58.9);
+  const k = eOut(seg(t, 59.0, 59.5));
+  text(c, 'ব্র্যান্ডে জ্যাম? Flow করান।', W / 2, 1180, { size: 70, col: WHITE, a: k });
+  text(c, 'flowsa.com', W / 2, 1300, { size: 52, font: 'Mont', w: 700, col: GOLD, g: 20, a: k });
+  chevrons(c, W / 2, 1520, t, k);
+});
+
+// ---------------------------------------------------------------- compositor: scenes cross with a short glow-zoom
+const A = document.createElement('canvas'); A.width = W; A.height = H; const AX = A.getContext('2d');
+const B = document.createElement('canvas'); B.width = W; B.height = H; const BX = B.getContext('2d');
+const draw = (cx, i, t) => { cx.setTransform(1, 0, 0, 1, 0, 0); cx.globalAlpha = 1; noGlow(cx); cx.save(); SC[i].fn(cx, t); cx.restore(); };
+window.renderAt = async t => {
+  t = clamp(t, 0, DUR - 1e-3);
+  let i = 0; while (i + 1 < SC.length && t >= SC[i + 1].t0) i++;
+  const XF = .3, u = i > 0 ? seg(t, SC[i].t0, SC[i].t0 + XF) : 1;
+  X.setTransform(1, 0, 0, 1, 0, 0); X.globalAlpha = 1;
+  if (u < 1) {
+    draw(AX, i - 1, t); draw(BX, i, t);
+    X.drawImage(A, 0, 0);
+    X.save(); X.globalAlpha = eOut(u); const s = lerp(1.06, 1, eOut(u)); X.translate(W / 2, H / 2); X.scale(s, s); X.translate(-W / 2, -H / 2); X.drawImage(B, 0, 0); X.restore();
+    X.fillStyle = `rgba(255,216,107,${.18 * Math.sin(u * Math.PI)})`; X.fillRect(0, 0, W, H);
+  } else draw(X, i, t);
+  caption(X, t);
+  // a soft vignette over everything
+  const v = X.createRadialGradient(W / 2, H / 2, H * .35, W / 2, H / 2, H * .75); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.55)'); X.fillStyle = v; X.fillRect(0, 0, W, H);
+};
+await window.renderAt(0);
+window.__ready = true;
+</script>
+</body></html>
