@@ -5,7 +5,7 @@ client's reference: dark grunge paper with faint Bangla handwriting, archive pho
 depth, gold serif headings over a white line, dust, scratches, flicker, warm light leaks. The past (1965, family
 photos) is sepia; the present warms into colour. The film ends on «শুভ জন্মদিন» with golden bokeh.
 
-- **Script:** the client's Bangla text, read by a Bangla narrator voice (vidIQ voice-over, voice "Subhajit");
+- **Script:** the client's Bangla text, read in the client's own recording (assets/vo_user.wav; first cut used a vidIQ voice);
   numbers were written out as words so they are read correctly. Each scene starts on its narrated line
   (timings measured from the voice with faster-whisper and silence detection).
 - **Photos:** the client's Google Drive folder (44 WhatsApp images). The zip pack had only source links, no images.
@@ -17,7 +17,7 @@ photos) is sepia; the present warms into colour. The film ends on «শুভ �
 ```sh
 # from mg-styles-15/ (demo copied to demos/37-tarique-doc)
 python3 -I demos/37-tarique-doc/prep.py <folder with p01.jpg … p44.jpg>   # assets/photos + assets/paper.jpg
-python3 demos/37-tarique-doc/audio.py                                    # out/audio.wav (needs assets/vo.wav)
+python3 demos/37-tarique-doc/audio.py                                    # out/audio.wav (needs assets/vo_user.wav)
 MG_CPU=1 ../scripts/mg-render.sh demos/37-tarique-doc --workers 6        # out/37-tarique-doc.mp4
 ```
 Not in git: `assets/photos/` (the client's photos), `assets/vo.*` and `out/`.
