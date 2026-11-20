@@ -14,3 +14,10 @@ Everything is drawn in code (`remotion-composer/src/silver/Silver.tsx`): bullion
 4. From `remotion-composer`: `npx remotion render src/silver/index.tsx Silver out.mp4`.
 
 The uploaded `Generated_Audio_…10_16PM.wav` reads the earlier "5 signals" script, not this one. `align_vo.py` and `script.json` are kept for that version.
+
+## Companion cut: "5 Recovery Signals" (client voiceover)
+This 1:07 cut runs on the client's own recording (`Generated_Audio_…10_16PM.wav` plus its SRT). It reuses the documentary's pieces, exported from `Silver.tsx`.
+- **Alignment:** `align_vo5.py` (Whisper + NW, 114/142 words) writes `audio/vo5.wav` and `src/silver5/vo.json`.
+- **Sound:** `mix5.py` writes `public/silver/mix5.wav`.
+- **Scenes:** hook → signals 1–5 (weak dollar, lower yields, ETF inflows, industrial demand, higher lows) → "no guarantee" checklist → patience + information → RUPMYK card. Bangla subtitles run along the bottom.
+- **Render:** `npx remotion render src/silver5/index.tsx Signals5 out.mp4`.

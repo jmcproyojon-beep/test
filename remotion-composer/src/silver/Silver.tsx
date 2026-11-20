@@ -10,17 +10,17 @@ import VO from "./vo.json";
 export const SV_FPS = 30, SV_W = 1080, SV_H = 1920;
 export const SV_FRAMES = Math.ceil(VO.total * SV_FPS);
 const W = SV_W, H = SV_H;
-const EN = "InterTight, Inter, sans-serif", EB = "Inter, sans-serif";
-const C = { bg: "#060708", char: "#14161a", red: "#e2403f", green: "#35d07f", silver: "#d9dee5", dim: "#7d848e" };
-const SILVER = "linear-gradient(180deg, #ffffff 0%, #dfe4ea 35%, #8e959f 55%, #eef1f5 80%, #b9bfc7 100%)";
+export const EN = "InterTight, Inter, sans-serif", EB = "Inter, sans-serif";
+export const C = { bg: "#060708", char: "#14161a", red: "#e2403f", green: "#35d07f", silver: "#d9dee5", dim: "#7d848e" };
+export const SILVER = "linear-gradient(180deg, #ffffff 0%, #dfe4ea 35%, #8e959f 55%, #eef1f5 80%, #b9bfc7 100%)";
 
 const cl = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 const io = Easing.inOut(Easing.cubic), out = Easing.out(Easing.cubic);
-const iv = (t: number, a: number, b: number, x = 0, y = 1, e: (n: number) => number = io) => interpolate(t, [a, b], [x, y], { ...cl, easing: e });
+export const iv = (t: number, a: number, b: number, x = 0, y = 1, e: (n: number) => number = io) => interpolate(t, [a, b], [x, y], { ...cl, easing: e });
 const rnd = (i: number) => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
 
 // ---- shared pieces ------------------------------------------------------------------------------
-const Defs: React.FC = () => (
+export const Defs: React.FC = () => (
   <svg width={0} height={0} style={{ position: "absolute" }}>
     <defs>
       <linearGradient id="agTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ffffff" /><stop offset="0.45" stopColor="#c8ced6" /><stop offset="0.7" stopColor="#f4f6f8" /><stop offset="1" stopColor="#9aa1aa" /></linearGradient>
@@ -34,7 +34,7 @@ const Defs: React.FC = () => (
 );
 
 // bullion bar in 3/4 view, centred at (x,y), width w
-const Bar: React.FC<{ x: number; y: number; w: number; sweep?: number; dim?: number; tilt?: number; label?: boolean }> = ({ x, y, w, sweep = -1, dim = 0, tilt = 0, label = true }) => {
+export const Bar: React.FC<{ x: number; y: number; w: number; sweep?: number; dim?: number; tilt?: number; label?: boolean }> = ({ x, y, w, sweep = -1, dim = 0, tilt = 0, label = true }) => {
   const s = w / 600;
   return (
     <g transform={`translate(${x} ${y}) rotate(${tilt}) scale(${s})`} opacity={1 - dim * 0.6}>
@@ -53,7 +53,7 @@ const Bar: React.FC<{ x: number; y: number; w: number; sweep?: number; dim?: num
     </g>
   );
 };
-const Coin: React.FC<{ x: number; y: number; r: number; rot?: number; o?: number }> = ({ x, y, r, rot = 0, o = 1 }) => (
+export const Coin: React.FC<{ x: number; y: number; r: number; rot?: number; o?: number }> = ({ x, y, r, rot = 0, o = 1 }) => (
   <g transform={`translate(${x} ${y}) rotate(${rot})`} opacity={o}>
     <circle r={r} fill="url(#coin)" stroke="#5a6068" strokeWidth={r * 0.06} />
     <circle r={r * 0.8} fill="none" stroke="#8b929b" strokeWidth={r * 0.04} strokeDasharray={`${r * 0.08} ${r * 0.06}`} />
@@ -71,7 +71,7 @@ function seriesPath(v: Pt, x: number, y: number, w: number, h: number, k: number
   if (last < n) { const f = m - last, vv = v[last] + (v[last + 1] - v[last]) * f; ex = x + (m / n) * w; ey = y + h - vv * h; pts.push(`${ex},${ey}`); }
   return { d: "M " + pts.join(" L "), ex, ey };
 }
-const Chart: React.FC<{ v: Pt; k: number; x: number; y: number; w: number; h: number; color: string; grid?: boolean; area?: boolean; sw?: number }> = ({ v, k, x, y, w, h, color, grid = true, area = true, sw = 7 }) => {
+export const Chart: React.FC<{ v: Pt; k: number; x: number; y: number; w: number; h: number; color: string; grid?: boolean; area?: boolean; sw?: number }> = ({ v, k, x, y, w, h, color, grid = true, area = true, sw = 7 }) => {
   const { d, ex, ey } = seriesPath(v, x, y, w, h, k);
   return (
     <g>
@@ -83,26 +83,26 @@ const Chart: React.FC<{ v: Pt; k: number; x: number; y: number; w: number; h: nu
   );
 };
 // a smooth, deterministic price walk shaped by control points [[x0..1, y0..1], ...]
-const walk = (ctrl: number[][], n = 120, noise = 0.02, seed = 1): Pt => Array.from({ length: n + 1 }, (_, i) => {
+export const walk = (ctrl: number[][], n = 120, noise = 0.02, seed = 1): Pt => Array.from({ length: n + 1 }, (_, i) => {
   const u = i / n; let j = 0; while (j < ctrl.length - 2 && u > ctrl[j + 1][0]) j++;
   const [x0, y0] = ctrl[j], [x1, y1] = ctrl[j + 1]; const f = Math.min(1, Math.max(0, (u - x0) / (x1 - x0)));
   const base = y0 + (y1 - y0) * (0.5 - 0.5 * Math.cos(f * Math.PI));
   return Math.min(1, Math.max(0, base + noise * (Math.sin(i * 1.7 + seed) * 0.6 + Math.sin(i * 4.3 + seed * 2) * 0.4)));
 });
-const Candles: React.FC<{ data: number[][]; k: number; x: number; y: number; w: number; h: number }> = ({ data, k, x, y, w, h }) => {
+export const Candles: React.FC<{ data: number[][]; k: number; x: number; y: number; w: number; h: number }> = ({ data, k, x, y, w, h }) => {
   const n = data.length, cw = w / n;
   return (<g>{data.map(([o, c, hi, lo], i) => { const a = iv(k * n, i, i + 1); if (a <= 0) return null; const up = c >= o;
     const Y = (v: number) => y + h - v * h, col = up ? C.green : C.red;
     return <g key={i} opacity={a}><line x1={x + i * cw + cw / 2} x2={x + i * cw + cw / 2} y1={Y(hi)} y2={Y(lo)} stroke={col} strokeWidth={4} />
       <rect x={x + i * cw + cw * 0.18} width={cw * 0.64} y={Y(Math.max(o, c))} height={Math.max(4, Math.abs(c - o) * h * a)} fill={col} rx={3} /></g>; })}</g>);
 };
-const Dust: React.FC<{ t: number; dir?: 1 | -1; n?: number; color?: string }> = ({ t, dir = 1, n = 70, color = "#dfe4ea" }) => (
+export const Dust: React.FC<{ t: number; dir?: 1 | -1; n?: number; color?: string }> = ({ t, dir = 1, n = 70, color = "#dfe4ea" }) => (
   <svg width={W} height={H} style={{ position: "absolute", inset: 0 }}>
     {Array.from({ length: n }, (_, i) => { const sp = 30 + rnd(i) * 90, y = ((rnd(i + 5) * H + dir * t * sp) % H + H) % H, x = rnd(i + 9) * W + Math.sin(t * 0.6 + i) * 18;
       return <circle key={i} cx={x} cy={y} r={1 + rnd(i + 3) * 3.2} fill={color} opacity={0.15 + rnd(i + 1) * 0.45} />; })}
   </svg>
 );
-const Title: React.FC<{ lt: number; lines: { t: string; at: number; big?: boolean; color?: string }[]; top?: number }> = ({ lt, lines, top = 200 }) => (
+export const Title: React.FC<{ lt: number; lines: { t: string; at: number; big?: boolean; color?: string }[]; top?: number }> = ({ lt, lines, top = 200 }) => (
   <div style={{ position: "absolute", left: 0, right: 0, top, textAlign: "center" }}>
     {lines.map((l, i) => { const k = iv(lt, l.at, l.at + 0.7, 0, 1, out); if (k <= 0) return null;
       const style: React.CSSProperties = l.big ? { fontFamily: EN, fontWeight: 800, fontSize: 92, lineHeight: 1.04, letterSpacing: 2 + 10 * (1 - k), backgroundImage: l.color ? undefined : SILVER, WebkitBackgroundClip: l.color ? undefined : "text", color: l.color ?? "transparent", filter: `blur(${(1 - k) * 8}px) drop-shadow(0 6px 16px rgba(0,0,0,.8))` }
@@ -110,12 +110,12 @@ const Title: React.FC<{ lt: number; lines: { t: string; at: number; big?: boolea
       return <div key={i} style={{ ...style, opacity: k, transform: `translateY(${(1 - k) * 24}px)` }}>{l.t}</div>; })}
   </div>
 );
-const Monitor: React.FC<{ x: number; y: number; w: number; h: number; children?: React.ReactNode; tint?: string }> = ({ x, y, w, h, children, tint = "#0b1016" }) => (
+export const Monitor: React.FC<{ x: number; y: number; w: number; h: number; children?: React.ReactNode; tint?: string }> = ({ x, y, w, h, children, tint = "#0b1016" }) => (
   <g><rect x={x - 10} y={y - 10} width={w + 20} height={h + 20} rx={14} fill="#1b1e23" stroke="#33373d" strokeWidth={3} /><rect x={x} y={y} width={w} height={h} rx={6} fill={tint} />{children}</g>
 );
 
 // ---- clips -------------------------------------------------------------------------------------
-const CRASH = walk([[0, .25], [.35, .55], [.55, .92], [.62, .78], [.75, .3], [1, .16]], 120, .025, 3);
+export const CRASH = walk([[0, .25], [.35, .55], [.55, .92], [.62, .78], [.75, .3], [1, .16]], 120, .025, 3);
 const PB = walk([[0, .2], [.5, .85], [.6, .9], [1, .35]], 90, .03, 5);
 const DOLLAR_DOWN = walk([[0, .8], [1, .25]], 60, .04, 7);
 const YIELD_UP = walk([[0, .2], [1, .85]], 60, .03, 2);
@@ -123,8 +123,8 @@ const MARGIN = walk([[0, .75], [.4, .6], [.7, .35], [1, .05]], 100, .03, 9);
 const H1980 = walk([[0, .08], [.45, .2], [.7, .9], [.76, .96], [.82, .35], [1, .2]], 120, .015, 4);
 const H2011 = walk([[0, .2], [.35, .92], [.45, .6], [.6, .4], [1, .3]], 120, .03, 6);
 const H2020 = walk([[0, .45], [.25, .4], [.35, .1], [.5, .3], [.75, .8], [1, .88]], 120, .02, 8);
-const STAB = walk([[0, .7], [.3, .25], [.55, .45], [.8, .4], [1, .48]], 100, .03, 1);
-const REC_C: number[][] = (() => {
+export const STAB = walk([[0, .7], [.3, .25], [.55, .45], [.8, .4], [1, .48]], 100, .03, 1);
+export const REC_C: number[][] = (() => {
   const shape = [.8, .72, .6, .5, .38, .3, .26, .34, .44, .4, .36, .42, .5, .58, .55, .64, .72, .8];
   return shape.map((c, i) => { const o = i ? shape[i - 1] : .85; return [o, c, Math.max(o, c) + .04, Math.min(o, c) - .04]; });
 })();
@@ -170,7 +170,7 @@ const C02: Clip = ({ lt, dur }) => {
   </>);
 };
 
-const Globe: React.FC<{ x: number; y: number; r: number; t: number }> = ({ x, y, r, t }) => (
+export const Globe: React.FC<{ x: number; y: number; r: number; t: number }> = ({ x, y, r, t }) => (
   <g transform={`translate(${x} ${y})`} stroke="#5c8fbf" fill="none" opacity={0.6}>
     <circle r={r} strokeWidth={3} />
     {Array.from({ length: 8 }, (_, i) => { const a = ((i / 8) * Math.PI + t * 0.25) % Math.PI; return <ellipse key={i} rx={Math.abs(Math.cos(a)) * r} ry={r} strokeWidth={1.5} />; })}
@@ -349,7 +349,7 @@ const C12: Clip = ({ lt, dur }) => {
   </>);
 };
 
-const Brand: React.FC<{ lt: number }> = ({ lt }) => {
+export const Brand: React.FC<{ lt: number }> = ({ lt }) => {
   const k = iv(lt, 0, 1.8, 0, 1, Easing.inOut(Easing.quad));
   const target = (i: number) => { const r = i % 3, c = Math.floor(i / 3) % 20; return [400 + c * 14, 820 + r * 20 + (c % 2) * 6]; };
   return (<>
