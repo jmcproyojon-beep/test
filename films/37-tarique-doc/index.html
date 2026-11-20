@@ -1,0 +1,210 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'Serif'; src: url('/demos/37-tarique-doc/assets/fonts/NotoSerifBengali-Bold.ttf'); font-weight: 700; }
+@font-face { font-family: 'Serif'; src: url('/demos/37-tarique-doc/assets/fonts/NotoSerifBengali-Regular.ttf'); font-weight: 400; }
+@font-face { font-family: 'Hind'; src: url('/demos/37-tarique-doc/assets/fonts/hind-siliguri-bengali-500-normal.woff2') format('woff2'); font-weight: 500; unicode-range: U+0964-0965, U+0980-09FE, U+200C-200D, U+25CC; }
+@font-face { font-family: 'Hind'; src: url('/demos/37-tarique-doc/assets/fonts/hind-siliguri-latin-500-normal.woff2') format('woff2'); font-weight: 500; }
+@font-face { font-family: 'Galada'; src: url('/demos/37-tarique-doc/assets/fonts/galada-bengali-400-normal.woff2') format('woff2'); }
+html,body{margin:0;width:1920px;height:1080px;background:#0b0806;overflow:hidden}
+#root{position:absolute;inset:0;overflow:hidden;background:#0b0806}
+#paper,#hand{position:absolute;left:-240px;top:-160px;width:2400px;height:1400px;will-change:transform}
+#paper{background:url('/demos/37-tarique-doc/assets/paper.jpg');background-size:cover}
+#stage{position:absolute;inset:0;perspective:1500px;perspective-origin:50% 45%}
+#world{position:absolute;left:960px;top:540px;width:0;height:0;transform-style:preserve-3d}
+.pane{position:absolute;left:0;top:0;transform-style:preserve-3d;padding:16px;background:linear-gradient(135deg,rgba(255,244,220,.13),rgba(255,244,220,.03));
+  border:1.5px solid rgba(255,236,200,.5);box-shadow:0 40px 80px rgba(0,0,0,.7),inset 0 0 30px rgba(255,240,210,.06);display:none;backface-visibility:hidden}
+.pane img{display:block;width:100%;outline:1px solid rgba(0,0,0,.6)}
+.pane .gl{position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,0) 30%,rgba(255,250,235,.20) 45%,rgba(255,255,255,0) 60%);background-size:300% 100%;mix-blend-mode:screen}
+.cut{position:absolute;left:0;top:0;display:none}
+.cut img{display:block;height:100%;filter:drop-shadow(0 30px 50px rgba(0,0,0,.8))}
+.glow{position:absolute;left:0;top:0;width:1300px;height:1300px;margin:-650px 0 0 -650px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,196,96,.45),rgba(255,160,60,.12) 55%,rgba(0,0,0,0));display:none}
+.shard{position:absolute;left:0;top:0;background:linear-gradient(118deg,rgba(255,255,255,.02) 0 46%,rgba(255,246,225,.42) 47% 47.6%,rgba(255,246,225,.10) 48%,rgba(255,255,255,.03) 80%,rgba(255,246,225,.30) 81% 81.4%,rgba(255,255,255,.02) 82%)}
+.txt{position:absolute;width:1000px;opacity:0}
+.txt.L{left:110px;text-align:left}.txt.R{right:110px;text-align:right}
+.ttl{font-family:Serif;font-weight:700;font-size:82px;line-height:1.25;color:#E9B847;
+  background:linear-gradient(180deg,#FFE7A6 0%,#E9B847 45%,#B9832A 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 18px rgba(233,170,60,.35)) drop-shadow(0 4px 6px rgba(0,0,0,.8))}
+.sub{font-family:Hind;font-weight:500;font-size:38px;line-height:1.35;color:#F3EADB;margin-top:10px;text-shadow:0 2px 8px rgba(0,0,0,.9)}
+.rule{height:2px;width:220px;margin:18px 0 6px;background:linear-gradient(90deg,#E9B847,rgba(233,184,71,0))}
+.R .rule{margin-left:auto;background:linear-gradient(270deg,#E9B847,rgba(233,184,71,0))}
+#fx{position:absolute;inset:0}
+</style></head><body><div id="root">
+<div id="paper"></div><canvas id="hand" width="2400" height="1400"></canvas>
+<div id="stage"><div id="world"></div></div>
+<div id="texts"></div>
+<canvas id="fx" width="1920" height="1080"></canvas>
+</div>
+<script type="module">
+// 37-tarique-doc — «শুভ জন্মদিন» a one-minute documentary tribute (vintage-history look from the client's reference):
+// dark grunge paper with faint handwriting, archive photos on floating glass plates in depth, gold serif headings with a
+// white line under them, dust, scratches, flicker and warm light leaks. The past is sepia; the present warms into colour.
+// Every scene starts on the narrator's line (assets/vo.wav; times measured from the voice).
+const W = 1920, H = 1080, FPS = 30, OFF = 1.2, DUR = 62.2, D = '/demos/37-tarique-doc/';
+window.DEMO = { width: W, height: H, fps: FPS, duration: DUR };
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x)), lerp = (a, b, u) => a + (b - a) * u;
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const eOut = x => 1 - Math.pow(1 - clamp(x), 3), eIn = x => Math.pow(clamp(x), 3), eIO = x => (x = clamp(x), x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const rnd = s => { s = (s * 2654435761) >>> 0; return () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
+
+// ------------------------------------------------------------------ the film: one scene per narrated line
+// panes: [photo, x, y, z, rotateY, width]   (x, y from screen centre; z toward camera)
+const SC = [
+  { v: 0.00, side: 'L', ttl: '২০ নভেম্বর, ১৯৬৫', sub: 'একটা সকাল।', panes: [['p41S', 400, -40, 0, -16, 560], ['p33S', 60, 140, -360, -8, 520]] },
+  { v: 4.02, side: 'R', ttl: 'একটা ইতিহাস', sub: 'বদলে দেওয়া ক্ষণ', panes: [['p42S', -380, -30, 0, 16, 640], ['p36S', -40, 150, -380, 10, 420]] },
+  { v: 6.70, side: 'L', ttl: 'তারই হাত ধরে', sub: 'বাংলাদেশের ভাগ্য এগিয়ে চলেছে তারই হাত ধরে', panes: [['p38S', 430, -70, 0, -18, 620], ['p39S', 60, 170, -320, -10, 470], ['p35S', 640, 250, -640, -24, 430]] },
+  { v: 12.27, side: 'R', ttl: 'এক কাপ চা আর হালকা আড্ডা', sub: 'আজকের কথাগুলো এমনই হোক।', panes: [['p40S', -430, -60, 0, 18, 640], ['p44S', -70, 170, -340, 12, 470]] },
+  { v: 17.10, side: 'L', ttl: 'দীর্ঘ সংগ্রামের স্মৃতি', sub: 'পেছনে তাকালে…', panes: [['p37S', 400, -50, 0, -16, 620], ['p30W', 60, 170, -360, -8, 520]] },
+  { v: 19.90, side: 'R', ttl: 'বাংলাদেশের ভবিষ্যৎ', sub: 'আর সামনে…', panes: [['p09W', -380, -40, 0, 14, 700], ['p11W', -40, 180, -380, 10, 520]] },
+  { v: 22.64, side: 'L', ttl: 'গতিশীল বর্তমান', sub: 'আর বর্তমান তার হাত ধরেই হয়ে উঠছে গতিশীল', panes: [['p31W', 400, -50, 0, -16, 660], ['p10W', 60, 180, -360, -10, 500]] },
+  { v: 26.06, side: 'R', ttl: 'এগিয়ে যাচ্ছে বাংলাদেশ', sub: 'তার আগমনে আমরা এগিয়ে যাচ্ছি', panes: [['p27W', -410, -60, 0, 16, 640], ['p12W', -60, 170, -330, 10, 460], ['p03W', -680, 250, -650, 22, 420]] },
+  { v: 30.61, side: 'L', ttl: 'কৃষক কার্ড · ফ্যামিলি কার্ড', sub: 'ভাবনা আর কাজের ছোঁয়ায়', panes: [['p19W', 420, -70, 0, -16, 640], ['p18W', 80, 160, -330, -10, 500], ['p15W', 640, 250, -640, -22, 400]] },
+  { v: 34.68, side: 'R', ttl: 'নতুন আশার আলো', sub: 'সাধারণ মানুষের জীবনেও এসেছে নতুন গতি', panes: [['p17W', -410, -50, 0, 16, 660], ['p04W', -60, 170, -350, 10, 480], ['p07W', -680, 250, -650, 22, 420]] },
+  { v: 39.59, side: 'L', ttl: 'মানুষের পাশে', sub: 'প্রিয়জনের মতোই তিনি আছেন সবসময়', panes: [['p13W', 400, -50, 0, -14, 560], ['p01W', 60, 170, -330, -8, 460], ['p21W', 650, 250, -640, -22, 420]] },
+  { v: 45.26, side: 'L', ttl: 'জনাব তারেক রহমান', sub: 'মাননীয় প্রধানমন্ত্রী', cut: [430, 980] },
+  { v: 49.18, side: 'R', ttl: 'আমাদের প্রধানমন্ত্রী', sub: 'জনাব তারেক রহমান', panes: [['p23W', -390, -40, 0, 14, 680], ['p02W', -50, 180, -350, 10, 500]] },
+  { v: 52.40, side: 'L', ttl: 'ভালো থাকুন, সুস্থ থাকুন', sub: 'আজকের এই দিনে, মন থেকে একটাই চাওয়া', panes: [['p14W', 410, -50, 0, -14, 600], ['p22W', 70, 170, -330, -8, 480], ['p06W', 660, 250, -640, -22, 420]] },
+  { v: 57.42, side: 'R', ttl: 'শুভ জন্মদিন', sub: '২০ নভেম্বর', cut: [-470, 1000], end: true },
+];
+SC.forEach((s, i) => { s.t0 = i ? s.v + OFF : 0; });
+SC.forEach((s, i) => { s.t1 = i + 1 < SC.length ? SC[i + 1].t0 : DUR; });
+
+// ------------------------------------------------------------------ build the DOM
+const loadImg = s => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => no(s); i.src = s; });
+const world = document.getElementById('world'), texts = document.getElementById('texts');
+const els = [];
+for (const s of SC) {
+  s.els = [];
+  if (s.panes) for (let [p, x, y, z, ry, w] of s.panes) {
+    const d = document.createElement('div'); d.className = 'pane'; w = Math.round(w * 1.2); d.style.width = w + 'px';
+    const im = await loadImg(D + 'assets/photos/' + p + '.jpg'); d.appendChild(im);
+    const g = document.createElement('div'); g.className = 'gl'; d.appendChild(g);
+    world.appendChild(d); const h = w * im.naturalHeight / im.naturalWidth + 32;
+    s.els.push({ d, g, x: x * 1.08, y: y + 50, z, ry, w: w + 32, h });
+  }
+  if (s.cut) {
+    const gl = document.createElement('div'); gl.className = 'glow'; world.appendChild(gl);
+    const d = document.createElement('div'); d.className = 'cut'; d.style.height = s.cut[1] + 'px';
+    const im = await loadImg(D + 'assets/photos/p28C.png'); d.appendChild(im); world.appendChild(d);
+    s.cutEl = { d, gl, x: s.cut[0], h: s.cut[1], w: s.cut[1] * im.naturalWidth / im.naturalHeight };
+  }
+  const t = document.createElement('div'); t.className = 'txt ' + s.side;
+  t.innerHTML = `<div class="ttl">${s.ttl}</div><div class="rule"></div><div class="sub">${s.sub}</div>`;
+  if (s.end) { t.querySelector('.ttl').style.fontSize = '180px'; t.querySelector('.sub').style.fontSize = '50px'; }
+  texts.appendChild(t); s.txt = t; s.ttlEl = t.querySelector('.ttl'); s.subEl = t.querySelector('.sub'); s.ruleEl = t.querySelector('.rule');
+}
+// glass shards drifting in the deep background
+const SH = [];
+{ const r = rnd(11);
+  for (let i = 0; i < 9; i++) {
+    const d = document.createElement('div'); d.className = 'shard';
+    const w = 300 + r() * 500, h = 300 + r() * 600; d.style.width = w + 'px'; d.style.height = h + 'px';
+    const pts = []; const n = 3 + (r() * 3 | 0); for (let k = 0; k < n; k++) { const a = k / n * 6.283 + r() * .8; pts.push(`${50 + 50 * Math.cos(a)}% ${50 + 50 * Math.sin(a)}%`); }
+    d.style.clipPath = `polygon(${pts.join(',')})`; world.prepend(d);
+    SH.push({ d, x: (r() - .5) * 2600, y: (r() - .5) * 1300, z: -900 - r() * 900, rx: r() * 40 - 20, ry: r() * 70 - 35, rz: r() * 360, sp: .4 + r(), w, h });
+  } }
+
+await document.fonts.load('700 80px Serif', 'শুভ জন্মদিন'); await document.fonts.load('500 40px Hind', 'শুভ জন্মদিন'); await document.fonts.load('40px Galada', 'শুভ জন্মদিন');
+await document.fonts.ready;
+
+// handwriting: lines of the narration in a hand script, faint ink on the paper
+{ const c = document.getElementById('hand').getContext('2d'); const r = rnd(5);
+  const L = ['একটা সকাল, বিশে নভেম্বর', 'এক কাপ চা আর হালকা আড্ডা', 'পেছনে তাকালে দীর্ঘ সংগ্রামের স্মৃতি', 'সামনে বাংলাদেশের ভবিষ্যৎ', 'এগিয়ে যাচ্ছে বাংলাদেশ',
+    'নতুন গতি, নতুন আশার আলো', 'মানুষের এতটা কাছে, এতটা পাশে', 'ভালো থাকুন, সুস্থ থাকুন', 'শুভ জন্মদিন', 'প্রিয়জনের মতোই', 'ইতিহাসকে বদলে দেওয়া ক্ষণ', '১৯৬৫'];
+  for (let k = 0; k < 4; k++) {               // four "pages", each a slightly rotated block of lines
+    c.save(); c.translate(200 + (k % 2) * 1150 + r() * 120, 120 + (k >> 1) * 650 + r() * 60); c.rotate((r() - .5) * .12);
+    for (let i = 0; i < 9; i++) {
+      c.font = `${38 + r() * 18 | 0}px Galada`; c.fillStyle = `rgba(232,208,160,${.05 + r() * .05})`;
+      c.fillText(L[(k * 5 + i) % L.length] + (r() < .5 ? ' — ' + L[(i * 3 + k) % L.length] : ''), r() * 60, i * 66);
+      c.strokeStyle = 'rgba(232,208,160,.03)'; c.beginPath(); c.moveTo(0, i * 66 + 14); c.lineTo(1000, i * 66 + 14); c.stroke();
+    }
+    c.restore();
+  } }
+
+// ------------------------------------------------------------------ per-frame
+const paper = document.getElementById('paper'), hand = document.getElementById('hand');
+const fx = document.getElementById('fx').getContext('2d');
+const tf = (x, y, z, rx, ry, rz = 0, s = 1) => `translate(-50%,-50%) translate3d(${x}px,${y}px,${z}px) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${s})`;
+
+function frameScene(s, t) {
+  const show = t > s.t0 - .05 && t < s.t1 + .75;
+  const inU = seg(t, s.t0, s.t1), life = t - s.t0, outU = seg(t, s.t1 - .15, s.t1 + .7);
+  s.els.forEach((e, k) => {
+    if (!show) { e.d.style.display = 'none'; return; }
+    const a = eOut(seg(life, k * .16, k * .16 + .9));                    // arrive from depth, staggered
+    const z = e.z - (1 - a) * 1100 + inU * 140 + eIn(outU) * 900;        // slow dolly, then fly past
+    const x = e.x + (1 - a) * (e.x > 0 ? 260 : -260) + inU * (e.x > 0 ? -30 : 30);
+    const ry = e.ry + (1 - a) * (e.ry < 0 ? -28 : 28) + inU * (e.ry < 0 ? 4 : -4);
+    e.d.style.display = 'block';
+    e.d.style.opacity = (a * (1 - eOut(seg(outU, .1, .8)))).toFixed(3);
+    e.d.style.transform = tf(x, e.y + Math.sin(t * .7 + k) * 6, z, 2 * Math.sin(t * .5 + k), ry);
+    e.g.style.backgroundPosition = `${lerp(110, -10, seg(life, k * .16 + .3, k * .16 + 1.8))}% 0`;
+  });
+  if (s.cutEl) {
+    const c = s.cutEl, a = eOut(seg(life, 0, 1.1)), o = show ? a * (1 - eOut(seg(outU, 0, .6))) : 0;
+    c.d.style.display = c.gl.style.display = o > 0 ? 'block' : 'none';
+    const y = 70 + (1 - a) * 160 - inU * 30, z = -60 + inU * 120 + eIn(outU) * 500;
+    c.d.style.opacity = o.toFixed(3); c.d.style.transform = tf(c.x, y, z, 0, (s.end ? 8 : -8) * (1 - a));
+    c.gl.style.opacity = (o * (.75 + .25 * Math.sin(t * 2))).toFixed(3); c.gl.style.transform = `translate3d(${c.x}px,${-40}px,${z - 300}px) scale(${1 + .05 * Math.sin(t)})`;
+  }
+  // text: gold title tracks in from a blur, the rule draws, the white line rises
+  const ta = seg(life, .25, 1.05), sa = seg(life, .7, 1.4), out = s.end ? seg(t, DUR - 1.2, DUR - .2) : seg(t, s.t1 - .35, s.t1 + .1);
+  const vis = show && t < s.t1 + .2;
+  s.txt.style.opacity = vis ? (1 - out).toFixed(3) : 0;
+  if (vis) {
+    const top = s.end ? 300 : (s.ttl.length > 18 ? 600 : 640);
+    s.txt.style.top = top + 'px';
+    s.ttlEl.style.opacity = eOut(ta).toFixed(3);
+    s.ttlEl.style.transform = `translateX(${(s.side === 'L' ? -1 : 1) * (1 - eOut(ta)) * -60}px) scale(${lerp(1.06, 1, eOut(ta)) + inU * .03})`;
+    s.ttlEl.style.transformOrigin = s.side === 'L' ? 'left center' : 'right center';
+    s.ttlEl.style.letterSpacing = `${(1 - eOut(ta)) * 18}px`;
+    s.ruleEl.style.width = (240 * eOut(seg(life, .5, 1.3))) + 'px';
+    s.subEl.style.opacity = eOut(sa).toFixed(3); s.subEl.style.transform = `translateY(${(1 - eOut(sa)) * 24}px)`;
+  }
+}
+
+window.renderAt = async t => {
+  t = clamp(t, 0, DUR - 1e-3);
+  const f = Math.round(t * FPS);
+  // background drift + parallax
+  paper.style.transform = `translate(${-80 * Math.sin(t * .05)}px,${-30 * t / DUR}px) scale(${1.02 + .04 * t / DUR})`;
+  hand.style.transform = `translate(${-140 * t / DUR}px,${20 * Math.sin(t * .11)}px)`;
+  hand.style.opacity = (.85 + .15 * Math.sin(t * .9)).toFixed(3);
+  for (const s of SH) s.d.style.transform = tf(s.x + Math.sin(t * .1 * s.sp) * 120, s.y + Math.cos(t * .08 * s.sp) * 60, Math.min(-800, s.z + t * 2 * s.sp), s.rx + t * 2 * s.sp, s.ry + t * 3 * s.sp, s.rz + t * 4 * s.sp);
+  for (const s of SC) frameScene(s, t);
+
+  // film surface: flash on each cut, light leak, flicker, dust, scratches, vignette
+  fx.clearRect(0, 0, W, H);
+  const r = rnd(f + 1);
+  let flash = 0; for (const s of SC) if (s.t0 > 0) flash = Math.max(flash, Math.exp(-Math.pow((t - s.t0) / .14, 2)));
+  if (flash > .01) { const g = fx.createRadialGradient(W * .5, H * .45, 0, W * .5, H * .45, W * .7); g.addColorStop(0, `rgba(255,214,150,${.32 * flash})`); g.addColorStop(1, 'rgba(255,170,90,0)'); fx.fillStyle = g; fx.fillRect(0, 0, W, H); }
+  fx.globalCompositeOperation = 'screen';
+  const lx = W * (.5 + .55 * Math.sin(t * .23)), ly = H * (.15 + .2 * Math.cos(t * .17));
+  const lg = fx.createRadialGradient(lx, ly, 0, lx, ly, 900); lg.addColorStop(0, `rgba(255,140,50,${.13 + .05 * Math.sin(t * 1.3)})`); lg.addColorStop(1, 'rgba(255,90,20,0)');
+  fx.fillStyle = lg; fx.fillRect(0, 0, W, H);
+  const end = SC[SC.length - 1];
+  if (t > end.t0) {                                        // golden bokeh for the birthday card
+    const k = eOut(seg(t, end.t0, end.t0 + 1.2)) * (1 - seg(t, DUR - 1, DUR - .1)); const br = rnd(99);
+    for (let i = 0; i < 46; i++) {
+      const bx = br() * W, by = (br() * H * 1.4 - (t - end.t0) * (30 + br() * 60)) % (H * 1.2), rr = 6 + br() * 26, a = k * (.15 + .35 * br()) * (.6 + .4 * Math.sin(t * 3 + i));
+      const g = fx.createRadialGradient(bx, by, 0, bx, by, rr); g.addColorStop(0, `rgba(255,220,140,${a})`); g.addColorStop(1, 'rgba(255,200,100,0)');
+      fx.fillStyle = g; fx.beginPath(); fx.arc(bx, by, rr, 0, 7); fx.fill();
+    }
+  }
+  fx.globalCompositeOperation = 'source-over';
+  fx.fillStyle = `rgba(10,6,2,${.05 + .06 * r()})`; fx.fillRect(0, 0, W, H);   // flicker
+  for (let i = 0; i < 26; i++) {                                                // dust
+    const x = r() * W, y = r() * H, s = r() * 2.6 + .4; fx.fillStyle = r() < .6 ? `rgba(240,225,190,${.25 + r() * .35})` : `rgba(0,0,0,${.35 + r() * .3})`;
+    fx.beginPath(); fx.ellipse(x, y, s, s * (.5 + r()), r() * 3, 0, 7); fx.fill();
+  }
+  if (r() < .5) { const x = r() * W; fx.strokeStyle = `rgba(235,220,190,${.10 + r() * .15})`; fx.lineWidth = .8 + r(); fx.beginPath(); fx.moveTo(x, 0); fx.lineTo(x + (r() - .5) * 30, H); fx.stroke(); }
+  const v = fx.createRadialGradient(W / 2, H / 2, H * .38, W / 2, H / 2, H * 1.05); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.78)');
+  fx.fillStyle = v; fx.fillRect(0, 0, W, H);
+  const fin = Math.max(1 - seg(t, 0, .8), seg(t, DUR - .7, DUR));                // fade in / out
+  if (fin > 0) { fx.fillStyle = `rgba(0,0,0,${fin})`; fx.fillRect(0, 0, W, H); }
+};
+await window.renderAt(0);
+window.__ready = true;
+</script>
+</body></html>
