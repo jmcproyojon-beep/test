@@ -30,11 +30,15 @@ html,body{margin:0;width:1920px;height:1080px;background:#0b0806;overflow:hidden
 .rule{height:2px;width:220px;margin:18px 0 6px;background:linear-gradient(90deg,#E9B847,rgba(233,184,71,0))}
 .R .rule{margin-left:auto;background:linear-gradient(270deg,#E9B847,rgba(233,184,71,0))}
 #fx{position:absolute;inset:0}
+#cap{position:absolute;left:0;right:0;bottom:46px;text-align:center;pointer-events:none}
+#cap span{display:inline-block;font-family:Hind;font-weight:500;font-size:44px;line-height:1.3;color:#FFF6E6;padding:8px 30px 4px;
+  background:linear-gradient(90deg,rgba(10,6,2,0),rgba(10,6,2,.62) 12%,rgba(10,6,2,.62) 88%,rgba(10,6,2,0));text-shadow:0 2px 6px rgba(0,0,0,.9)}
 </style></head><body><div id="root">
 <div id="paper"></div><canvas id="hand" width="2400" height="1400"></canvas>
 <div id="stage"><div id="world"></div></div>
 <div id="texts"></div>
 <canvas id="fx" width="1920" height="1080"></canvas>
+<div id="cap"><span></span></div>
 </div>
 <script type="module">
 // 37-tarique-doc — «শুভ জন্মদিন» a one-minute documentary tribute (vintage-history look from the client's reference):
@@ -164,6 +168,27 @@ function frameScene(s, t) {
   }
 }
 
+
+// subtitles: the client's script, timed to the client's recording (voice seconds; OFF is added)
+const CAPS = [[0.00, 0.92, 'একটা সকাল।'], [1.51, 3.66, '২০ নভেম্বর, ১৯৬৫।'], [4.42, 6.37, 'একটা ইতিহাসকে বদলে দেওয়া ক্ষণ।'],
+  [7.18, 9.34, 'আলাপটা খুব সহজ শব্দে হলেও'], [9.34, 12.31, 'বাংলাদেশের ভাগ্য এগিয়ে চলেছে তারই হাত ধরে।'],
+  [13.27, 14.86, 'এক কাপ চা আর হালকা আড্ডা—'], [15.28, 17.22, 'আজকের কথাগুলো এমনই হোক।'],
+  [17.97, 20.43, 'পেছনে তাকালে দীর্ঘ সংগ্রামের স্মৃতি'], [20.98, 23.12, 'আর সামনে বাংলাদেশের ভবিষ্যৎ।'],
+  [23.86, 27.14, 'আর বর্তমান তার হাত ধরেই হয়ে উঠছে গতিশীল।'], [27.97, 30.00, 'তার আগমনে আমরা এগিয়ে যাচ্ছি,'],
+  [30.39, 31.61, 'এগিয়ে যাচ্ছে বাংলাদেশ।'], [32.18, 34.70, 'কৃষক কার্ড, ফ্যামিলি কার্ডের মতো ভাবনা'],
+  [34.82, 38.00, 'আর কাজের ছোঁয়ায় সাধারণ মানুষের জীবনেও এসেছে'], [38.12, 40.56, 'একটা নতুন গতি, নতুন আশার আলো।'],
+  [41.41, 43.95, 'মানুষের এতটা কাছে, এতটা পাশে'], [44.04, 46.48, 'প্রিয়জনের মতোই তিনি আছেন সবসময়।'],
+  [47.34, 50.59, 'তিনি আমাদের মাননীয় প্রধানমন্ত্রী জনাব তারেক রহমান।'], [51.33, 53.60, 'আমাদের প্রধানমন্ত্রী জনাব তারেক রহমান।'],
+  [54.30, 56.67, 'আজকের এই দিনে, মন থেকে একটাই চাওয়া—'], [57.10, 59.30, 'ভালো থাকুন, সুস্থ থাকুন।']];
+const capBox = document.getElementById('cap'), capSpan = capBox.firstElementChild;
+function caption(t) {
+  const v = t - OFF; let c = null;
+  for (const k of CAPS) if (v >= k[0] - .08 && v < k[1] + .35) c = k;
+  if (!c) { capBox.style.opacity = 0; return; }
+  if (capSpan.textContent !== c[2]) capSpan.textContent = c[2];
+  const a = Math.min(seg(v, c[0] - .08, c[0] + .1), 1 - seg(v, c[1] + .15, c[1] + .35));
+  capBox.style.opacity = a.toFixed(3); capSpan.style.transform = `translateY(${(1 - eOut(seg(v, c[0] - .08, c[0] + .2))) * 10}px)`;
+}
 window.renderAt = async t => {
   t = clamp(t, 0, DUR - 1e-3);
   const f = Math.round(t * FPS);
@@ -173,6 +198,7 @@ window.renderAt = async t => {
   hand.style.opacity = (.85 + .15 * Math.sin(t * .9)).toFixed(3);
   for (const s of SH) s.d.style.transform = tf(s.x + Math.sin(t * .1 * s.sp) * 120, s.y + Math.cos(t * .08 * s.sp) * 60, Math.min(-800, s.z + t * 2 * s.sp), s.rx + t * 2 * s.sp, s.ry + t * 3 * s.sp, s.rz + t * 4 * s.sp);
   for (const s of SC) frameScene(s, t);
+  caption(t);
 
   // film surface: flash on each cut, light leak, flicker, dust, scratches, vignette
   fx.clearRect(0, 0, W, H);
