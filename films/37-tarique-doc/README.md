@@ -5,7 +5,7 @@ client's reference: dark grunge paper with faint Bangla handwriting, archive pho
 depth, gold serif headings over a white line, dust, scratches, flicker, warm light leaks. The past (1965, family
 photos) is sepia; the present warms into colour. The film ends on «শুভ জন্মদিন» with golden bokeh.
 
-- **Script:** the client's Bangla text, read in the client's own recording (assets/vo_user.wav; first cut used a vidIQ voice);
+- **Script:** the client's Bangla text, read in the client's own recording (assets/vo_user.wav, 56.8 s; scene cuts measured from its pauses);
   numbers were written out as words so they are read correctly. Each scene starts on its narrated line
   (timings measured from the voice with faster-whisper and silence detection).
 - **Photos:** the client's Google Drive folder (44 WhatsApp images). The zip pack had only source links, no images.
