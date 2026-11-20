@@ -33,6 +33,7 @@ const SHOTS: Shot[] = [
   A(1, "stack", { p: [13, 3] }),
   A(2, "hero", { p: [1] }),
   A(3, "stack", { p: [9, 2] }),
+  A(3, "stack", { off: 8.6, p: [10, 5] }),
   A(4, "hero", { p: [5], big: "শৈশব", small: "বাবার হাসি, মায়ের গান" }),
   A(5, "stack", { p: [6, 8] }),
   A(6, "card", { big: "১৯৮১", small: "বদলে গেল সব", p: [7] }),
@@ -60,6 +61,8 @@ const SHOTS: Shot[] = [
   A(27, "london", {}),
   A(28, "hero", { p: [21] }),
   A(29, "calendar", { from: 2020, to: 2025 }),
+  A(29, "london", { off: 5.2 }),
+  A(29, "card", { off: 15.5, big: "অপেক্ষা", small: "দূর থেকে দেশের দিকে", p: [15] }),
   A(30, "card", { big: "জানুয়ারি ২০১৫", small: "এলো শোকের খবর" }),
   A(31, "hero", { p: [9], big: "কোকো", small: "ছোট ভাই" }),
   A(32, "hero", { p: [2] }),
@@ -71,7 +74,7 @@ const SHOTS: Shot[] = [
   A(38, "plane", { big: "২৫ ডিসেম্বর ২০২৫", small: "ঘরে ফেরা", dir: -1 }),
   A(39, "full", { p: [22] }),
   A(40, "full", { p: [25] }),
-  A(40, "full", { off: 2.8, p: [26] }),
+  A(40, "full", { off: 1.7, p: [26] }),
   A(41, "stack", { p: [12, 28] }),
   A(42, "full", { p: [27] }),
   A(43, "card", { big: "৩০ ডিসেম্বর", small: "মা চলে গেলেন", p: [20] }),
@@ -86,12 +89,14 @@ const SHOTS: Shot[] = [
   A(51, "stack", { p: [37, 39] }),
   A(52, "stack", { p: [31, 29] }),
   A(53, "stack", { p: [34, 35, 41] }),
+  A(53, "full", { off: 8.6, p: [24] }),
   A(54, "full", { p: [38] }),
   A(55, "stack", { p: [36, 42] }),
   A(56, "title", { big: "ফিরে এসে কাকে ডাকি?", p: [28] }),
   A(57, "hero", { p: [32] }),
   A(58, "hero", { p: [15], big: "শুভ জন্মদিন" }),
   A(59, "hero", { p: [21] }),
+  { at: 59, off: 4.2, kind: "collage", big: "প্রার্থনা", p: [12, 22, 30, 33, 19, 38, 41, 25] },
   A(60, "card", { big: "২০ নভেম্বর", small: "আরেক সকাল", p: [4] }),
   A(61, "hero", { p: [19] }),
   A(62, "triptych", { p: [7, 3, 9] }),
@@ -229,7 +234,11 @@ const ShotView: React.FC<{ s: Shot; lt: number; dur: number; idx: number }> = ({
             {[[-90, 0, 60], [-20, -30, 80], [60, -10, 70], [120, 10, 50]].map(([cx, cy, r], k) => <circle key={k} cx={cx} cy={cy} r={r} fill="#f1e2c8" />)}</g>)}
           <defs><filter id="cb"><feGaussianBlur stdDeviation="14" /></filter></defs>
           <path d={`M0 ${H} L0 920 ${Array.from({ length: 30 }, (_, i) => `Q ${i * 66 + 33} ${860 - rnd(i) * 70} ${i * 66 + 66} ${915 - rnd(i + 9) * 20}`).join(" ")} L ${W} ${H} Z`} fill="#0b0805" opacity={0.92} />
-          {Array.from({ length: 6 }, (_, i) => <g key={"palm" + i} transform={`translate(${150 + i * 330 + rnd(i) * 80} 900)`} fill="#0b0805"><rect x={-5} y={-150} width={10} height={150} />{[-60, -25, 15, 50].map((r, k) => <ellipse key={k} cx={0} cy={-150} rx={70} ry={12} transform={`rotate(${r} 0 -150) translate(40 0)`} />)}</g>)}
+          {Array.from({ length: 6 }, (_, i) => { const hh = 140 + rnd(i) * 70, lean = (rnd(i + 3) - 0.5) * 30;
+            return <g key={"palm" + i} transform={`translate(${150 + i * 330 + rnd(i) * 80} 905)`}>
+              <path d={`M 0 0 Q ${lean * 0.3} ${-hh / 2} ${lean} ${-hh}`} stroke="#0b0805" strokeWidth={9} fill="none" />
+              {[[-1, 1.0], [-1, 0.55], [-1, 0.15], [1, 0.15], [1, 0.55], [1, 1.0]].map(([sd, droop], k) => <path key={k} d={`M ${lean} ${-hh} q ${sd * 40} ${-26 + droop * 10} ${sd * 85} ${-6 + droop * 40}`} stroke="#0b0805" strokeWidth={11 - k % 3 * 2} strokeLinecap="round" fill="none" />)}
+            </g>; })}
           {!dawn && <g transform={`translate(${300 + lt * 120} ${560 - lt * 40}) rotate(-12)`} opacity={iv(lt, 0.5, 1.2)}><path d="M -60 0 L 60 0 L 80 -6 L 60 -10 L -40 -10 Z M -10 -10 L 20 -40 L 30 -40 L 20 -10 Z M -50 -8 L -62 -26 L -54 -26 L -40 -10 Z" fill="#e6d3ad" /></g>}
         </svg>
         <div style={{ position: "absolute", left: 0, right: 0, top: 380, textAlign: "center", opacity: iv(lt, 0.6, 1.6) }}><GoldText text={s.big ?? ""} size={110} /></div>
@@ -287,7 +296,7 @@ const ShotView: React.FC<{ s: Shot; lt: number; dur: number; idx: number }> = ({
           {Array.from({ length: 14 }, (_, i) => <div key={i} style={{ position: "absolute", left: 30 + i * 40, top: -18, width: 14, height: 40, borderRadius: 7, background: "#3a2a1c" }} />)}
         </div>
         {/* the page being torn off */}
-        {frac > 0 && <div style={{ position: "absolute", left: W / 2 - 300, top: 340, width: 600, height: 440, background: "#e8dcc2", transformOrigin: "50% 0%", transform: `perspective(1200px) rotateX(${frac * 110}deg)`, opacity: 1 - frac * 0.9, boxShadow: "0 10px 20px rgba(0,0,0,.3)", filter: "sepia(.3)",
+        {frac > 0 && <div style={{ position: "absolute", left: W / 2 - 300, top: 340, width: 600, height: 440, background: "#e8dcc2", transformOrigin: "50% 0%", transform: `perspective(1200px) rotateX(${frac * 110}deg)`, backfaceVisibility: "hidden", opacity: frac > 0.8 ? 0 : 1 - frac * 0.6, boxShadow: "0 10px 20px rgba(0,0,0,.3)", filter: "sepia(.3)",
           textAlign: "center", fontFamily: BN, fontWeight: 800, fontSize: 210, color: "#2a1d12", paddingTop: 40 }}>{bn(y)}</div>}
         {s.big && <Caption big={s.big} lt={lt} x={140} y={160} />}
       </AbsoluteFill>);
