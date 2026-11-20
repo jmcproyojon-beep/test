@@ -18,14 +18,32 @@ S(sfx.ding('A6', kind='bell'), 55.38 + OFF, -10); S(sfx.ding('D7', kind='bell'),
 os.makedirs(D + 'out', exist_ok=True); out = D + 'out/music_sfx.wav'; m.export(out)
 mus, sr = sf.read(out, dtype='float32')
 tmp = tempfile.mkdtemp()
-subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', D + 'assets/vo_user.wav', '-ar', str(sr), '-ac', '2', f'{tmp}/vo.wav'], check=True)
-v, _ = sf.read(f'{tmp}/vo.wav', dtype='float32'); N = int(DUR * sr)
+# voice: clean low end, gentle 3:1 compression, levelled to -16 LUFS (it carries the film)
+subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', D + 'assets/vo_user.wav', '-af',
+                'highpass=f=75,acompressor=threshold=-22dB:ratio=3:attack=8:release=120:makeup=2,loudnorm=I=-16:TP=-2:LRA=7:linear=true',
+                '-ar', str(sr), '-ac', '2', f'{tmp}/vo.wav'], check=True)
+# music: soften the bright glass/bell top end so it never bites
+subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', out, '-af', 'highshelf=f=5500:g=-6,lowpass=f=12000',
+                f'{tmp}/mus.wav'], check=True)
+v, _ = sf.read(f'{tmp}/vo.wav', dtype='float32'); mus, _ = sf.read(f'{tmp}/mus.wav', dtype='float32'); N = int(DUR * sr)
 v = np.pad(v, ((int(OFF * sr), 0), (0, 0))); v = np.pad(v, ((0, max(0, N - len(v))), (0, 0)))[:N]
 mus = np.pad(mus, ((0, max(0, N - len(mus))), (0, 0)))[:N]
-env = np.abs(v).mean(1); k = int(.25 * sr); env = np.convolve(env, np.ones(k) / k, 'same')
-duck = 1 - .4 * np.clip(env / (np.percentile(env, 90) + 1e-9), 0, 1)
-mix = v * 1.0 + mus * duck[:, None] * 0.32
+# ducking: music sits ~20 dB under the voice while it speaks, rises softly (to ~-11 dB re voice) in the pauses
+env = np.abs(v).mean(1); k = int(.05 * sr); env = np.convolve(env, np.ones(k) / k, 'same')
+on = (env > np.percentile(env[env > 1e-4], 20) * .5).astype(np.float32)
+a_up, a_dn = np.exp(-1 / (.12 * sr)), np.exp(-1 / (.7 * sr))      # duck fast, release slowly
+from scipy.signal import lfilter
+g = np.empty_like(on); y = 0.0
+idx = np.flatnonzero(np.diff(np.r_[on[0] - 1, on]))                 # piecewise one-pole smoothing (fast down, slow up)
+bounds = list(idx) + [len(on)]
+for i in range(len(bounds) - 1):
+    a, b = bounds[i], bounds[i + 1]; tgt = on[a]; c = a_up if tgt > .5 else a_dn
+    n = np.arange(1, b - a + 1); g[a:b] = tgt + (y - tgt) * c ** n; y = g[b - 1]
+duck_db = -9.0 * g                                                    # extra dip while the voice speaks
+MUS_GAIN = 10 ** ((-27.0 - (-14.0)) / 20)                             # bed at -27 LUFS in the pauses (export is -14)
+mix = v + mus * MUS_GAIN * (10 ** (duck_db / 20))[:, None]
 sf.write(f'{tmp}/mix.wav', mix, sr, subtype='FLOAT')
-subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', f'{tmp}/mix.wav', '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11,alimiter=limit=0.84:level=disabled', '-ar', '48000',
-                '-c:a', 'pcm_s24le', D + 'out/audio.wav'], check=True)
+# master: no loudness pumping, just a fixed gain to about -15 LUFS and a gentle true-peak limiter
+subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', f'{tmp}/mix.wav', '-af', 'volume=1.5dB,alimiter=limit=0.85:attack=5:release=60:level=disabled',
+                '-ar', '48000', '-c:a', 'pcm_s24le', D + 'out/audio.wav'], check=True)
 print('out/audio.wav', DUR, 's')
