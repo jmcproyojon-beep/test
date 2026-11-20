@@ -38,7 +38,7 @@ html,body{margin:0;width:1920px;height:1080px;background:#0b0806;overflow:hidden
 <div id="stage"><div id="world"></div></div>
 <div id="texts"></div>
 <canvas id="fx" width="1920" height="1080"></canvas>
-<div id="cap"><span></span></div>
+<div id="cap" style="display:none"><span></span></div>
 </div>
 <script type="module">
 // 37-tarique-doc — «শুভ জন্মদিন» a one-minute documentary tribute (vintage-history look from the client's reference):
@@ -198,7 +198,7 @@ window.renderAt = async t => {
   hand.style.opacity = (.85 + .15 * Math.sin(t * .9)).toFixed(3);
   for (const s of SH) s.d.style.transform = tf(s.x + Math.sin(t * .1 * s.sp) * 120, s.y + Math.cos(t * .08 * s.sp) * 60, Math.min(-800, s.z + t * 2 * s.sp), s.rx + t * 2 * s.sp, s.ry + t * 3 * s.sp, s.rz + t * 4 * s.sp);
   for (const s of SC) frameScene(s, t);
-  caption(t);
+  // caption(t);   (subtitles off: the client asked for none)
 
   // film surface: flash on each cut, light leak, flicker, dust, scratches, vignette
   fx.clearRect(0, 0, W, H);
