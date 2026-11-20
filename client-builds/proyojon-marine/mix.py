@@ -1,10 +1,10 @@
-"""Soundtrack for the Proyojon Abashon Marine City reel: an uplifting cinematic bed plus cues.
+"""Soundtrack for the Proyojon Abashon Marine City reel: Bangla VO + an uplifting cinematic bed + cues.
 
     python3.13 -I mix.py   (in client-builds/proyojon-marine) -> audio/mix.wav
 
 Times mirror the T table in remotion-composer/src/marine/MarineReel.tsx.
 """
-import subprocess
+import json, subprocess
 from pathlib import Path
 import numpy as np, soundfile as sf
 from scipy.signal import butter, sosfilt
@@ -12,7 +12,13 @@ from scipy.signal import butter, sosfilt
 HERE = Path(__file__).parent; OUT = HERE / "audio"; OUT.mkdir(exist_ok=True)
 T = dict(plot=3.6, road=7.2, south=10.4, lake=12.6, build=15.4, rise0=16.2, rise1=21.0, flash=21.4, solid1=23.0,
          hero=23.4, studio=27.8, dusk=34.2, spec=38.6, logo=43.8, cta=47.8)
-TOTAL = 54.0; SR = 48000; N = int(TOTAL * SR); rng = np.random.default_rng(7)
+# canonical cue times (54 s timeline) -> video seconds, re-timed by the voiceover like warp() in the TSX
+V = json.loads((HERE.parents[1] / "remotion-composer/src/marine/vo.json").read_text())
+BEATS = [0, 3.6, 7.2, 10.4, 12.6, 15.4, 23.4, 27.8, 34.2, 38.6, 43.8, 47.8]
+ANCH = [(0 if i == 0 else V["lines"][i]["s"] - 0.2, c) for i, c in enumerate(BEATS)] + [(V["lines"][-1]["e"] + 2.5, 54.0)]
+vt = lambda c: float(np.interp(c, [a[1] for a in ANCH], [a[0] for a in ANCH]))
+T = {k: vt(c) for k, c in T.items()}
+TOTAL = ANCH[-1][0]; SR = 48000; N = int(TOTAL * SR); rng = np.random.default_rng(7)
 GH, FH, TOP = 3.6, 3.1, 3.6 + 9 * 3.1 + 4.2 + 0.5
 tt = lambda d: np.arange(int(d * SR)) / SR
 lp = lambda x, f: sosfilt(butter(2, f, "low", fs=SR, output="sos"), x)
@@ -93,7 +99,12 @@ put(sfx, shimmer(), T["logo"] + .1, .9); put(sfx, chime(1174.7), T["logo"] + 1.0
 put(sfx, impact(), T["cta"], .55)
 for k, d in enumerate((0.2, 0.5, 1.0, 1.4, 1.8)): put(sfx, pop(600 + 90 * k), T["cta"] + d, .45)
 
-mix = music * .5 + sfx * .5
+y, sr = sf.read(OUT / "vo.wav"); y = y if y.ndim == 1 else y.mean(1)
+idx = (np.arange(int(len(y) * SR / sr)) * sr / SR).astype(int); vo = np.zeros(N); n = min(N, len(idx)); vo[:n] = y[np.clip(idx[:n], 0, len(y) - 1)]
+vo = hp(vo, 80); vo = vo / (np.abs(vo).max() + 1e-9) * .92
+ev = np.sqrt(np.convolve(vo ** 2, np.ones(2400) / 2400, mode="same")); ev = np.clip(ev / (np.percentile(ev[ev > 1e-4], 90) + 1e-9), 0, 1)
+duck = 1 - .6 * np.convolve(ev, np.ones(14400) / 14400, mode="same")
+mix = vo + music * .3 * duck + sfx * .32 * (1 - .35 * (duck < .7))
 mix = np.tanh(mix * 1.1) / 1.1
 st = np.stack([mix, np.roll(mix, 24)], 1)                             # tiny width
 sf.write(OUT / "mix_raw.wav", st, SR)

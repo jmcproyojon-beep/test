@@ -12,8 +12,20 @@ import { Env, usePhotoCam, View, W, H, PY, PH, K, CX, CZ } from "./rig";
 import { Tower, TowerState, GH, FH, NF, ROOF_Y, TOP_Y, TW, TD } from "./Tower";
 import { groundAt, groundQuad, proj } from "./geo";
 
-export const MR_FPS = 30, MR_W = W, MR_H = H, MR_T = 54;
-export const MR_FRAMES = MR_T * MR_FPS;
+import VO from "./vo.json";
+// The animation is authored on a 54 s canonical timeline (BEATS). The voiceover's line starts re-time it:
+// beat i starts just before line i, and the end card holds until 2.5 s after the last word.
+const CT = 54;
+const BEATS = [0, 3.6, 7.2, 10.4, 12.6, 15.4, 23.4, 27.8, 34.2, 38.6, 43.8, 47.8];
+const VEND = VO.lines[VO.lines.length - 1].e + 2.5;
+export const ANCH: [number, number][] = [...BEATS.map((c, i) => [i === 0 ? 0 : VO.lines[i].s - 0.2, c] as [number, number]), [VEND, CT]];
+export const warp = (tv: number) => {
+  let i = 0; while (i < ANCH.length - 2 && tv > ANCH[i + 1][0]) i++;
+  const [a0, c0] = ANCH[i], [a1, c1] = ANCH[i + 1];
+  return c0 + (c1 - c0) * Math.min(1, Math.max(0, (tv - a0) / (a1 - a0)));
+};
+export const MR_FPS = 30, MR_W = W, MR_H = H, MR_T = VEND;
+export const MR_FRAMES = Math.ceil(MR_T * MR_FPS);
 
 // ---- timeline (seconds); mirrored in client-builds/proyojon-marine/mix.py
 export const T = { plot: 3.6, road: 7.2, south: 10.4, lake: 12.6, build: 15.4, rise0: 16.2, rise1: 21.0, flash: 21.4, solid1: 23.0,
@@ -339,7 +351,7 @@ const CTA: React.FC<{ t: number }> = ({ t }) => {
 export const MarineReel: React.FC = () => {
   const [h] = React.useState(() => delayRender("fonts"));
   React.useEffect(() => { Promise.all(["800 60px Anek", "600 40px Anek", "800 60px InterTight", "700 40px Inter"].map((f) => document.fonts.load(f, "অআ abc"))).then(() => continueRender(h), () => continueRender(h)); }, [h]);
-  const fr = useCurrentFrame(); const t = fr / MR_FPS;
+  const fr = useCurrentFrame(); const t = warp(fr / MR_FPS);
   const v = viewAt(t);
   const dusk = iv(t, T.dusk + 0.2, T.dusk + 2.0) * (t < T.logo + 0.5 ? 1 : 1);
   const st = towerAt(t); st.night = iv(t, T.dusk + 0.9, T.dusk + 2.6);
@@ -398,7 +410,7 @@ export const MarineReel: React.FC = () => {
       {t >= T.cta && <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 55%, rgba(0,0,0,.45) 100%)" }} />}
       <CTA t={t} />
       {flash > 0 && <AbsoluteFill style={{ background: "#fffbe6", opacity: flash }} />}
-      <AbsoluteFill style={{ background: "#000", opacity: 1 - iv(t, 0, 0.35) + iv(t, MR_T - 0.5, MR_T) }} />
+      <AbsoluteFill style={{ background: "#000", opacity: 1 - iv(t, 0, 0.35) + iv(t, CT - 0.4, CT) }} />
     </AbsoluteFill>
   );
 };
