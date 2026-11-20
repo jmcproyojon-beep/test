@@ -166,9 +166,9 @@ const ShotView: React.FC<{ s: Shot; lt: number; dur: number; idx: number }> = ({
       return (<AbsoluteFill>
         <BlurBg p={p[0]} lt={lt} />
         <div style={{ position: "absolute", inset: 0, transform: `scale(${push}) ${drift(1)}` }}>
-          <Frame p={p[0]} cx={W / 2 + side * 120} cy={500} w={w} rot={side * -2.2} k={iv(lt, 0, 1.0)} from={[side * -160, 40]} />
+          <Frame p={p[0]} cx={W / 2 + side * 120} cy={s.big || s.small ? 540 : 500} w={s.big || s.small ? w * 0.86 : w} rot={side * -2.2} k={iv(lt, 0, 1.0)} from={[side * -160, 40]} />
         </div>
-        <Caption big={s.big} small={s.small} lt={lt} x={side > 0 ? 120 : 1080} y={s.big ? 800 : 880} />
+        <Caption big={s.big} small={s.small} lt={lt} x={110} y={40} />
       </AbsoluteFill>);
     }
     case "stack": {
