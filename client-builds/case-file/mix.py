@@ -29,7 +29,7 @@ k, alt = 0.4, 0
 while k < CUT: put(tick, tk(2400 if alt % 2 else 2000), k, 1); k += 1.0; alt += 1
 def chalk(d):
     x = tt(d); n = rng.standard_normal(len(x)); g = (np.abs(np.sin(2 * np.pi * x * rng.uniform(5, 8))) > .35).astype(float)
-    return bp(n, 2500, 9000) * lp(g, 40) * .35 * np.minimum(1, (d - x) / .1)
+    return lp(bp(n, 1200, 4500), 3500) * lp(g, 25) * .12 * np.minimum(1, x / .08) * np.minimum(1, (d - x) / .15)
 def rip(): x = tt(.35); return bp(rng.standard_normal(len(x)), 800, 6000) * np.exp(-x * 9) * (1 + .5 * np.sin(2 * np.pi * 60 * x)) * .5
 def hum(d): x = tt(d); return (lp(rng.standard_normal(len(x)), 300) * .6 + np.sin(2 * np.pi * (70 + 10 * x / d) * x) * .3) * np.sin(np.pi * x / d)
 def whoosh(d=.8):
@@ -44,7 +44,7 @@ def shimmer(d=2.5):
 sfx = np.zeros(N)
 for at, d in [(Ls(0) + .4, 1.2), (Ls(1) + .6, .9), (Ls(1) + 1.6, 1.0), (Ls(2) + 1.0, 1.8), (Ls(3) + 1.4, 2.4), (Ls(4) + 1.0, 2.2), (Ls(5) + 1.2, 1.8), (Ls(6) + 1.4, 1.2),
               (Ls(7) + 1.9, 1.3), (Ls(8) + 2.2, 1.8), (Ls(9) + .4, .7), (Ls(9) + 1.2, .6), (Ls(9) + 1.9, .6), (Ls(10) + .5, 1.2)]: put(sfx, chalk(d), at, .9)
-for at in [0.0, Ls(1) + .2, Ls(2) + .2, Ls(3) + .2, Ls(3) + 2.7, Ls(4) + .2, Ls(4) + 2.2, Ls(5) + .2, Ls(6) + .2, Ls(9)]: put(sfx, rip(), at, .8)
+for at in [0.0, Ls(1) + .2, Ls(2) + .2, Ls(3) + .2, Ls(3) + 2.7, Ls(4) + .2, Ls(4) + 2.2, Ls(5) + .2, Ls(6) + .2, Ls(9)]: put(sfx, rip(), at, .45)
 put(sfx, hum(Ls(8) - Ls(7)), Ls(7) - .2, .9); put(sfx, whoosh(1.0), Ls(7) + .3, .5); put(sfx, whoosh(1.6), Ls(8), .5)
 for q in range(3): put(sfx, buzz(), Ls(10) - .2 + q * .6, .9)
 put(sfx, boom(), CUT, 1.0); put(sfx, shimmer(), CUT + .3, .8)
@@ -53,7 +53,8 @@ idx = (np.arange(int(len(y) * SR / sr)) * sr / SR).astype(int); vo = np.zeros(N)
 vo = hp(vo, 70); vo = vo / (np.abs(vo).max() + 1e-9) * .92
 ev = np.sqrt(np.convolve(vo ** 2, np.ones(2400) / 2400, mode="same")); ev = np.clip(ev / (np.percentile(ev[ev > 1e-4], 90) + 1e-9), 0, 1)
 duck = 1 - .5 * np.convolve(ev, np.ones(14400) / 14400, mode="same")
-mix = vo + (bed * .5 + pad + tick * .5) * .5 * duck + sfx * .35
+sduck = 1 - .75 * np.convolve(ev, np.ones(9600) / 9600, mode="same")
+mix = vo + (bed * .5 + pad + tick * .5) * .5 * duck + sfx * .35 * np.where(t < CUT, sduck, 1)
 mix = np.tanh(mix * 1.05) / 1.05 * np.minimum(1, (TOTAL - t) / 1.5)
 sf.write(OUT / "mix_raw.wav", np.stack([mix, mix], 1), SR)
 subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(OUT / "mix_raw.wav"), "-af", "loudnorm=I=-15:TP=-1.5:LRA=9", "-ar", str(SR), str(ROOT / "remotion-composer/public/casefile/mix.wav")], check=True)
