@@ -1,5 +1,4 @@
 import React from "react";
-import { loadFont } from "@remotion/fonts";
 import { staticFile } from "remotion";
 import { clamp, easeOut, lerp, ramp } from "../tuinei/lib";
 
@@ -14,9 +13,13 @@ export const PAL = {
 const BN = "U+0951-0952,U+0964-0965,U+0980-09FE,U+1CD0-1CF9,U+200C-200D,U+20B9,U+25CC,U+A8F1";
 const LAT = "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+2248,U+FEFF,U+FFFD";
 export const HEADF = "RRHead";
-export const fontsReady = Promise.all([
-  loadFont({ family: HEADF, url: staticFile("bw/inter-tight-latin-800-normal.woff2"), weight: "800", unicodeRange: LAT }),
-  loadFont({ family: HEADF, url: staticFile("bw/anek-bangla-bengali-800-normal.woff2"), weight: "800", unicodeRange: BN }),
+// plain @font-face (rendered by Journey) instead of @remotion/fonts: its per-font delayRender stalled under parallel tabs
+export const FONT_CSS = `
+@font-face { font-family: ${HEADF}; font-weight: 800; src: url(${staticFile("bw/inter-tight-latin-800-normal.woff2")}) format("woff2"); unicode-range: ${LAT}; }
+@font-face { font-family: ${HEADF}; font-weight: 800; src: url(${staticFile("bw/anek-bangla-bengali-800-normal.woff2")}) format("woff2"); unicode-range: ${BN}; }`;
+export const fontsReady = () => Promise.race([
+  Promise.all([document.fonts.load(`800 100px ${HEADF}`, "RAPAR"), document.fonts.load(`800 100px ${HEADF}`, "ঢাকা")]),
+  new Promise((r) => setTimeout(r, 12000)),
 ]);
 
 /** a chapter title: letters rise out of a mask one after another, hold, then lift away */
