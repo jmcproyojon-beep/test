@@ -1,0 +1,10 @@
+cinecode skill (MIT, Sarp Yıldız): https://github.com/sarpstar/cinecode @ c8a3e75 (2026-11-13)
+Installed as a project skill (copied without .git and docs/), so every session of this repo has it.
+
+Update: clone the repo again and copy it over this folder (keep this file), e.g.
+  git clone --depth 1 https://github.com/sarpstar/cinecode /tmp/cinecode && (cd /tmp/cinecode && tar cf - --exclude=./.git --exclude=./docs --exclude=./.github .) | (cd .claude/skills/cinecode && tar xf -)
+
+Cloud container setup (no GPU): capture.mjs finds /usr/bin/google-chrome first; give it WebGL2 on SwiftShader once per container:
+  printf '#!/bin/sh\n[ "$(id -u)" -ne 0 ] || set -- --no-sandbox "$@"\nexec /opt/pw-browsers/chromium --use-angle=swiftshader --enable-unsafe-swiftshader "$@"\n' > /usr/bin/google-chrome
+Check: node .claude/skills/cinecode/scripts/capture.mjs --url .claude/skills/cinecode/starter/index.html --probe
+Verified here: kit tests 231 passed (1 skipped), WebGL2 probe OK on SwiftShader, Quick starter rendered to MP4.
