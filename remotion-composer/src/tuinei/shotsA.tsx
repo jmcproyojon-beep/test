@@ -313,12 +313,9 @@ export const SHOTS_A: Shot[] = [
   } },
   { a: 86.24, b: 89.42, mem: true, draw: (t) => (
     <Street t={t} cam={{ x: 300, y: 40, z: 1.5 }} light="red">
-      <g transform="translate(0 0)">
-        <rect x={300} y={560} width={1400} height={80} fill="#2F6F73" stroke={INK} strokeWidth={6} />
-        <PersonAt who="rubel" X={-30} Z={170} floorY={260} vp={{ x: 1100, y: 300 }} legs="sit"
-          f={{ yaw: kf(t, [[86.3, 0.7], [87.2, 0.05]]), laugh: win(t, 87.0, 89.4, 0.3, 0.3), blink: blink(t, 3) }}
-          l={[-120, -300]} r={t < 87.4 ? [260, -720] : [120, -320]} />
-      </g>
+      {/* beside him on the rickshaw seat: he turns from the red light to the lens and laughs */}
+      <CU who="rubel" x={1180} y={540} s={1.4} t={t} f={{ yaw: kf(t, [[86.3, 0.75], [87.2, 0.05]]), laugh: win(t, 87.0, 89.4, 0.3, 0.3), smile: 0.6, blink: blink(t, 3) }}
+        r={t < 87.4 ? [300, -760] : undefined} />
     </Street>
   ) },
   { a: 89.42, b: 92.66, draw: (t) => (
