@@ -3,7 +3,7 @@ import { blink, clamp, ease, easeOut, kf, lerp, noise, ramp, rand, win } from ".
 import { INK, Person } from "../tuinei/chars";
 import { CU } from "../tuinei/shotsA";
 import { mouth } from "../tuinei/lips";
-import { projector, CITIES } from "../bhangariwala/map";
+import { projector, CITIES } from "./map";
 import { Glow, PAL, Tint, Title } from "./kit";
 
 // The sixteen scenes of the Rapar Rubel journey, cut to "তুই নেই" (0:00-1:53.6). t = song clock (s).
