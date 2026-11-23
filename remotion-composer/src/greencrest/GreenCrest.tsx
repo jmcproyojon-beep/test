@@ -256,3 +256,6 @@ export const GreenCrest: React.FC = () => {
     </AbsoluteFill>
   );
 };
+
+// shared with the vertical cut (GreenCrestV.tsx)
+export { G, SANS, HEAD, FONT_CSS, clamp, lerp, ease, easeOut, ramp, rise, Chip, Dot, Light, Icon, FEATS, BN_DIG };

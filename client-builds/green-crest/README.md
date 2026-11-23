@@ -19,6 +19,8 @@ For the website, YouTube, social and clients. Built only from the client's mater
 
 No voiceover. The music is an original synthesized piano and pad bed at -16 LUFS.
 
+**Vertical 9:16 cut** (`GreenCrestV`, 1080x1920): the same assets, music and section timing, re-laid-out for the tall frame, with key text inside y 220-1560. The landscape site clips fill the frame with a slow pan, and the client's vertical clip is used natively.
+
 ## Build
 1. Prepare the clips, photos and logo:
    ```bash
