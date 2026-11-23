@@ -146,8 +146,8 @@ const Location: React.FC<{ t: number }> = ({ t }) => {
 
 const SITE: { src: string; cap: string; capBn: string; len: number }[] = [
   { src: "site1", cap: "Foundation work in progress", capBn: "ফাউন্ডেশনের কাজ চলছে", len: 4.6 },
-  { src: "site4", cap: "Our team at work", capBn: "আমাদের টিম কাজ করছে", len: 4.4 },
-  { src: "site2", cap: "Materials on site", capBn: "সাইটে নির্মাণসামগ্রী", len: 4.4 },
+  { src: "site4", cap: "Materials on site", capBn: "সাইটে নির্মাণসামগ্রী", len: 4.4 },
+  { src: "site2", cap: "Our team at work", capBn: "আমাদের টিম কাজ করছে", len: 4.4 },
   { src: "site3", cap: "Bashundhara R/A, Block M", capBn: "নিজের চোখে দেখে যান", len: 4.6 },
 ];
 const SiteUpdate: React.FC<{ t: number; from: number }> = ({ t, from }) => {
