@@ -719,7 +719,7 @@ async function main() {
     }
   } else if (mode === 'video') {
     const workers = parseInt(args[0] || String(Math.max(2, os.cpus().length - 1)), 10);
-    const { frames, secs } = await renderRange(0, Math.round(DURATION * FPS), workers, VIDEO);
+    const { frames, secs } = await renderRange(0, Math.round(DURATION * FPS), workers, VIDEO, { crf: +(process.env.CRF || 14) });
     console.log(`out/${path.basename(VIDEO)} done in ${secs.toFixed(1)}s (${frames} frames verified${DRAFT ? ', draft: half resolution' : ''})`);
   }
 }
