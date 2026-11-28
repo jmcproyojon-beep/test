@@ -1,0 +1,275 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'Anek'; src: url('/demos/40-business-ideas/assets/fonts/anek.woff2') format('woff2'); font-weight: 100 900; }
+html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}
+</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script type="module">
+// 40-business-ideas — «৳২০,০০০-এর কমে ৫টা ব্যবসা» (9:16, ~65 s). A countdown explainer starring the client's own
+// character (his three pose atlases: present, walk, write; cut out and foot-anchored). Flat 2D Dhaka, taka-green for
+// numbers, gold for #1. Every scene starts on its voice-over line (times from the VO generator's per-line starts).
+const W = 1080, H = 1920, FPS = 30, D = '/demos/40-business-ideas/';
+const L = [0, 5.878, 10.162, 19.148, 29.336, 37.042, 44.199, 52.715, 59.873, 62.798];   // VO line starts (s)
+const OFF = 0.3, GAP = 0.5;                                    // VO starts at 0.3 s; 0.5 s of held breath before #1
+const ST = L.map((v, i) => OFF + v + (i >= 6 ? GAP : 0));     // scene starts in film time
+const DUR = ST[9] + 1.6;
+window.DEMO = { width: W, height: H, fps: FPS, duration: DUR };
+const cv = document.getElementById('c'), X = cv.getContext('2d');
+const loadImg = (s) => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => no(s); i.src = s; });
+const META = await (await fetch(D + 'assets/rafi/meta.json')).json();
+const SPR = {};
+for (const k of Object.keys(META)) SPR[k] = await loadImg(D + 'assets/rafi/' + k + '.png');
+for (const w of [500, 700, 800]) await document.fonts.load(`${w} 60px Anek`, '৳২০,০০০ ব্যবসা নম্বর ১২৩৪৫ AI');
+await document.fonts.ready;
+
+// ---------------------------------------------------------------- palette + helpers
+const GREEN = '#17A35B', GREEN_D = '#0E7A43', GOLD = '#F4B400', GOLD_D = '#C98A00', INK = '#1B1F2A', CREAM = '#FFF8EC', SKY1 = '#8FD3FF', SKY2 = '#DDF3FF', RED = '#E8473C', BLUE = '#2F7DE1';
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x)), lerp = (a, b, u) => a + (b - a) * u, seg = (t, a, b) => clamp((t - a) / (b - a));
+const eOut = (x) => 1 - Math.pow(1 - clamp(x), 3), eIn = (x) => Math.pow(clamp(x), 3), eIO = (x) => (x = clamp(x), x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const eBack = (x, s = 1.7) => { x = clamp(x); const c3 = s + 1; return 1 + c3 * Math.pow(x - 1, 3) + s * Math.pow(x - 1, 2); };
+const bounce = (x) => { x = clamp(x); const n = 7.5625, d = 2.75; if (x < 1 / d) return n * x * x; if (x < 2 / d) return n * (x -= 1.5 / d) * x + .75; if (x < 2.5 / d) return n * (x -= 2.25 / d) * x + .9375; return n * (x -= 2.625 / d) * x + .984375; };
+const hash = (i, j = 0) => { const s = Math.sin(i * 127.1 + j * 311.7) * 43758.5453; return s - Math.floor(s); };
+function rr(c, x, y, w, h, r, fill, stroke, lw = 6) { c.beginPath(); c.roundRect(x, y, w, h, r); if (fill) { c.fillStyle = fill; c.fill(); } if (stroke) { c.lineWidth = lw; c.strokeStyle = stroke; c.stroke(); } }
+function txt(c, s, x, y, { size = 60, w = 800, col = INK, align = 'center', a = 1, stroke, sw = 12 } = {}) {
+  c.save(); c.globalAlpha *= a; c.font = `${w} ${size}px Anek`; c.textAlign = align; c.textBaseline = 'middle';
+  if (stroke) { c.lineJoin = 'round'; c.lineWidth = sw; c.strokeStyle = stroke; c.strokeText(s, x, y); }
+  c.fillStyle = col; c.fillText(s, x, y); c.restore();
+}
+// the character: frame of a pose, feet at (x, y), height in px
+function rafi(c, pose, i, x, y, h, { flip = false, a = 1, rot = 0 } = {}) {
+  const k = pose + (((i % 8) + 8) % 8), m = META[k], s = h / 470;
+  c.save(); c.globalAlpha *= a; c.translate(x, y); c.rotate(rot); if (flip) c.scale(-1, 1);
+  c.fillStyle = 'rgba(0,0,0,0.18)'; c.beginPath(); c.ellipse(0, 0, m.w * s * 0.42, 16 * s, 0, 0, 7); c.fill();
+  c.drawImage(SPR[k], -m.fx * s, -m.h * s, m.w * s, m.h * s); c.restore();
+}
+const cyc = (t, fps) => Math.floor(t * fps);
+// a talking loop on the presenting atlas: rests on frame 0/7, gestures through 1-5
+const talk = (t, speed = 5) => [0, 1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 2, 1][cyc(t, speed) % 14];
+
+// ---------------------------------------------------------------- the world
+function sky(c, top = SKY1, bot = SKY2) { const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, top); g.addColorStop(1, bot); c.fillStyle = g; c.fillRect(0, 0, W, H); }
+function cloud(c, x, y, s) { c.fillStyle = '#FFFFFF'; for (const [dx, dy, r] of [[0, 0, 60], [60, -20, 70], [130, 0, 55], [65, 20, 60]]) { c.beginPath(); c.arc(x + dx * s, y + dy * s, r * s, 0, 7); c.fill(); } }
+const BLD = [['#F6C28B', 320], ['#9AD1C9', 440], ['#F49E9E', 360], ['#C9B6F2', 500], ['#F7DC86', 380], ['#A8D58A', 420], ['#F6C28B', 340]];
+function city(c, t, gy = 1460, scroll = 0) {
+  sky(c); cloud(c, 140 + (t * 12) % 1300 - 200, 380, 0.9); cloud(c, 700 - (t * 8) % 1300, 520, 0.7);
+  let x = -((scroll % 1260) + 1260) % 1260 - 80;
+  for (let k = 0; k < 14; k++) {
+    const [col, h] = BLD[k % BLD.length], w = 180;
+    rr(c, x, gy - h, w, h + 10, 10, col);
+    c.fillStyle = 'rgba(255,255,255,0.55)'; for (let r = 0; r < Math.floor(h / 90); r++) for (let q = 0; q < 2; q++) c.fillRect(x + 30 + q * 72, gy - h + 34 + r * 90, 48, 50);
+    x += w + 0;
+  }
+  c.fillStyle = '#5B6472'; c.fillRect(0, gy, W, H - gy); c.fillStyle = '#8C95A3'; c.fillRect(0, gy, W, 26);
+  c.fillStyle = '#F4F4F4'; for (let i = 0; i < 8; i++) c.fillRect(((i * 200 - scroll * 1.5) % 1400 + 1400) % 1400 - 160, gy + 170, 110, 14);
+}
+function rickshaw(c, x, y, s = 1, t = 0) {
+  c.save(); c.translate(x, y); c.scale(s, s);
+  for (const wx of [-90, 70]) { c.strokeStyle = INK; c.lineWidth = 8; c.beginPath(); c.arc(wx, -50, 48, 0, 7); c.stroke(); for (let k = 0; k < 6; k++) { const a = t * 6 + k; c.lineWidth = 3; c.beginPath(); c.moveTo(wx, -50); c.lineTo(wx + Math.cos(a) * 46, -50 + Math.sin(a) * 46); c.stroke(); } }
+  rr(c, 10, -230, 140, 150, 30, '#E8473C'); rr(c, 0, -250, 170, 40, 20, '#2F7DE1'); c.fillStyle = '#F4B400'; for (let k = 0; k < 4; k++) c.fillRect(20 + k * 34, -205, 22, 100);
+  c.strokeStyle = INK; c.lineWidth = 8; c.beginPath(); c.moveTo(-90, -50); c.lineTo(70, -50); c.lineTo(80, -100); c.moveTo(-90, -50); c.lineTo(-160, -150); c.stroke(); rr(c, -180, -165, 50, 16, 8, INK);
+  c.restore();
+}
+const SHOPS = [['কাপড়', '#E8473C', '👕'], ['রেস্টুরেন্ট', '#F08A24', '🍛'], ['সেলুন', '#9B59B6', '✂️'], ['ফার্মেসি', '#17A35B', '💊'], ['টিউশন', '#2F7DE1', '📚']];
+function shop(c, x, y, s, k, { glow = 0 } = {}) {
+  const [name, col] = SHOPS[k % SHOPS.length];
+  c.save(); c.translate(x, y); c.scale(s, s);
+  if (glow > 0) { const g = c.createRadialGradient(0, -110, 10, 0, -110, 220); g.addColorStop(0, `rgba(255,214,90,${0.7 * glow})`); g.addColorStop(1, 'rgba(255,214,90,0)'); c.fillStyle = g; c.fillRect(-230, -330, 460, 440); }
+  rr(c, -95, -190, 190, 190, 12, '#FFF8EC', INK, 6); rr(c, -60, -95, 52, 95, 6, '#8C6B4A'); rr(c, 8, -105, 62, 54, 6, '#BFE6FF', INK, 4);
+  for (let i = 0; i < 5; i++) { c.fillStyle = i % 2 ? '#FFFFFF' : col; c.beginPath(); c.moveTo(-105 + i * 42, -190); c.lineTo(-63 + i * 42, -190); c.lineTo(-63 + i * 42, -150); c.arc(-84 + i * 42, -150, 21, 0, Math.PI); c.fill(); }
+  rr(c, -100, -250, 200, 62, 12, col, INK, 6); txt(c, name, 0, -219, { size: 36, col: '#FFFFFF', w: 800 });
+  c.restore();
+}
+function taka(c, x, y, s, rot = 0, a = 1) {
+  c.save(); c.globalAlpha *= a; c.translate(x, y); c.rotate(rot); c.scale(s, s);
+  rr(c, -110, -55, 220, 110, 12, '#7BC98F', GREEN_D, 5); rr(c, -92, -40, 184, 80, 8, null, 'rgba(14,122,67,0.6)', 3);
+  c.fillStyle = GREEN_D; c.beginPath(); c.arc(0, 0, 30, 0, 7); c.fill(); txt(c, '৳', 0, 2, { size: 48, col: '#E9FFF0' }); c.restore();
+}
+function bundle(c, x, y, s, shake = 0) {
+  c.save(); c.translate(x + Math.sin(shake * 60) * 8 * shake, y); c.scale(s, s);
+  for (let i = 5; i >= 0; i--) taka(c, i * 3, -i * 12, 1.25, 0);
+  rr(c, -24, -110, 48, 130, 6, '#F4B400', GOLD_D, 4); txt(c, '২০,০০০', 0, -150, { size: 46, col: GREEN_D, stroke: '#FFFFFF', sw: 10 });
+  c.restore();
+}
+function boat(c, x, y, s, sink, rot = 0, label = true) {
+  c.save(); c.translate(x, y + sink * 120 * s); c.rotate(rot + sink * 0.5); c.scale(s, s);
+  c.fillStyle = '#FFFFFF'; c.strokeStyle = INK; c.lineWidth = 6; c.beginPath(); c.moveTo(-150, -30); c.lineTo(150, -30); c.lineTo(100, 40); c.lineTo(-100, 40); c.closePath(); c.fill(); c.stroke();
+  c.beginPath(); c.moveTo(0, -30); c.lineTo(0, -170); c.lineTo(110, -40); c.closePath(); c.fill(); c.stroke();
+  if (label) txt(c, 'ভুল', -50, 4, { size: 40, col: RED });
+  c.restore();
+}
+function water(c, y, t) { c.fillStyle = '#5DB8F0'; c.fillRect(0, y, W, H - y); c.strokeStyle = 'rgba(255,255,255,0.7)'; c.lineWidth = 6; for (let r = 0; r < 4; r++) { c.beginPath(); for (let x = -20; x <= W + 20; x += 20) c.lineTo(x, y + 30 + r * 70 + Math.sin(x * 0.02 + t * 3 + r) * 10); c.stroke(); } }
+function lock(c, x, y, s, open = 0) {
+  c.save(); c.translate(x, y); c.scale(s, s); c.strokeStyle = '#8A8F99'; c.lineWidth = 22; c.beginPath(); c.arc(0, -60 - open * 50, 62, Math.PI, 0); c.lineTo(62, -60 + (open > 0.5 ? -50 : 0)); c.stroke();
+  rr(c, -95, -70, 190, 150, 24, GOLD, GOLD_D, 6); c.fillStyle = INK; c.beginPath(); c.arc(0, -8, 18, 0, 7); c.fill(); c.fillRect(-8, -8, 16, 50); c.restore();
+}
+function phone(c, x, y, s, inner) { c.save(); c.translate(x, y); c.scale(s, s); rr(c, -110, -200, 220, 400, 34, INK); rr(c, -96, -182, 192, 364, 22, '#FFFFFF'); c.beginPath(); c.roundRect(-96, -182, 192, 364, 22); c.clip(); if (inner) inner(c); c.restore(); }
+function heartIcon(c, x, y, s, col = RED) { c.save(); c.translate(x, y); c.scale(s, s); c.fillStyle = col; c.beginPath(); c.moveTo(0, 12); c.bezierCurveTo(-34, -12, -18, -38, 0, -20); c.bezierCurveTo(18, -38, 34, -12, 0, 12); c.fill(); c.restore(); }
+function check(c, x, y, s, k) { if (k <= 0) return; c.save(); c.translate(x, y); c.scale(s * eBack(k), s * eBack(k)); c.fillStyle = GREEN; c.beginPath(); c.arc(0, 0, 70, 0, 7); c.fill(); c.strokeStyle = '#FFFFFF'; c.lineWidth = 18; c.lineCap = 'round'; c.beginPath(); c.moveTo(-32, 2); c.lineTo(-8, 28); c.lineTo(36, -26); c.stroke(); c.restore(); }
+function confetti(c, t, t0, n = 90) { const a = t - t0; if (a < 0 || a > 4) return; for (let i = 0; i < n; i++) { const x = W / 2 + (hash(i, 1) - 0.5) * 300 + (hash(i, 2) - 0.5) * 1400 * eOut(a / 1.2), y = 700 - 500 * eOut(a / 0.8) * hash(i, 3) + 900 * a * a * 0.25 * (0.5 + hash(i, 4)); c.save(); c.translate(x, y); c.rotate(a * 8 * (hash(i, 5) - 0.5)); c.globalAlpha = 1 - seg(a, 3, 4); c.fillStyle = [GOLD, GREEN, RED, BLUE, '#FFFFFF'][i % 5]; c.fillRect(-9, -5, 18, 10); c.restore(); } }
+// the big countdown number dropping in, with a dust ring on landing
+function bigNum(c, s, t, t0, { col = GREEN, y = 640, size = 420 } = {}) {
+  const a = t - t0; if (a < 0) return;
+  const k = bounce(clamp(a / 0.55)), yy = lerp(-300, y, k), sc = 1 + 0.12 * Math.exp(-a * 6) * Math.sin(a * 30);
+  if (a > 0.3 && a < 1.1) { c.save(); c.globalAlpha = 1 - seg(a, 0.3, 1.1); c.strokeStyle = col; c.lineWidth = 10; c.beginPath(); c.ellipse(W / 2, y + size * 0.42, 120 + (a - 0.3) * 500, 30 + (a - 0.3) * 60, 0, 0, 7); c.stroke(); c.restore(); }
+  const m = eIO(seg(a, 1.3, 1.8));                          // after the landing it shrinks into a corner badge
+  c.save(); c.translate(lerp(W / 2, 130, m), lerp(yy, 520, m)); c.scale(sc * lerp(1, 0.3, m), sc * lerp(1, 0.3, m)); txt(c, s, 0, 0, { size, col, stroke: '#FFFFFF', sw: 26 }); c.restore();
+}
+// the label card at the top: '#৫ হোম টিউশন' + a cost chip
+function label(c, t, t0, title, sub, { col = GREEN, y = 250 } = {}) {
+  const a = t - t0; if (a < 0) return; const k = eBack(clamp(a / 0.4));
+  c.save(); c.translate(W / 2, y); c.scale(k, k);
+  c.font = '800 76px Anek'; const tw = c.measureText(title).width; rr(c, -tw / 2 - 40, -62, tw + 80, 124, 30, col); txt(c, title, 0, 4, { size: 76, col: '#FFFFFF' });
+  if (sub) { c.font = '700 52px Anek'; const sw2 = c.measureText(sub).width; rr(c, -sw2 / 2 - 30, 78, sw2 + 60, 86, 24, '#FFFFFF', col, 5); txt(c, sub, 0, 123, { size: 52, w: 700, col: INK }); }
+  c.restore();
+}
+
+// ---------------------------------------------------------------- scenes (lt = time in scene)
+const SC = [];
+// 1 · hook: the ৳20,000 bundle bursts into five mini shops that land on a Dhaka street
+SC[0] = (c, t, lt) => {
+  city(c, t, 1460, lt * 30); rickshaw(c, 1180 - lt * 140, 1560, 0.8, t);
+  const burst = 0.55;
+  if (lt < burst + 0.1) bundle(c, W / 2, 1000, 1.3 * (1 + 0.15 * eBack(seg(lt, 0, 0.3))), seg(lt, 0.05, burst));
+  if (lt > burst) for (let i = 0; i < 4; i++) taka(c, W / 2 + (i - 1.5) * 260 * eOut((lt - burst) / 0.8), 1000 - 500 * Math.sin(Math.PI * clamp((lt - burst) / 1.2)) + 200 * (lt - burst), 0.8, (lt - burst) * (i - 1.5) * 3, 1 - seg(lt, burst + 0.6, burst + 1.3));
+  for (let i = 0; i < 5; i++) { const t0 = burst + 0.08 * i, k = clamp((lt - t0) / 0.7); if (k <= 0) continue; const x0 = W / 2, x1 = 120 + i * 210, y1 = 1450, x = lerp(x0, x1, k), y = lerp(1000, y1, k) - Math.sin(k * Math.PI) * 520; shop(c, x, y, 0.62 * (0.4 + 0.6 * k) * (k >= 1 ? 1 + 0.1 * Math.exp(-(lt - t0 - 0.7) * 8) : 1), i); }
+  const ra = seg(lt, 1.8, 2.3); if (ra > 0) rafi(c, 'present', talk(lt), lerp(1250, 790, eOut(ra)), 1440, 760);
+  if (lt > 0.4) label(c, t, ST[0] + 0.45, '৳২০,০০০ → ৫ ব্যবসা', null, { y: 300 });
+};
+// 2 · the open loop: a paper boat called ‘ভুল’ sinks; a padlock snaps over it
+SC[1] = (c, t, lt) => {
+  sky(c, '#BFE6FF', '#EAF7FF'); water(c, 1250, t);
+  boat(c, 560, 1260, 1.25, 0.35 * seg(lt, 0.2, 3.5), Math.sin(t * 2) * 0.05);
+  rafi(c, 'present', 1, 250, 1290, 640, { flip: false });
+  const lk = seg(lt, 1.4, 1.75); if (lk > 0) { c.save(); c.globalAlpha = lk; lock(c, 600, 1100, 1.1 * eBack(lk, 2.5)); c.restore(); }
+  label(c, t, ST[1] + 0.1, 'শেষের ভুলটা?', null, { col: RED, y: 300 });
+};
+// 3 · #5 home tuition: he writes at a table; two kids raise their hands; a book flips
+function kid(c, x, y, s, hand, col) { c.save(); c.translate(x, y); c.scale(s, s); rr(c, -45, -150, 90, 120, 26, col); c.fillStyle = '#C68A62'; c.beginPath(); c.arc(0, -190, 46, 0, 7); c.fill(); c.fillStyle = INK; c.beginPath(); c.arc(0, -205, 46, Math.PI, 0); c.fill(); c.beginPath(); c.arc(-15, -188, 5, 0, 7); c.arc(15, -188, 5, 0, 7); c.fill(); c.strokeStyle = '#C68A62'; c.lineWidth = 18; c.lineCap = 'round'; c.beginPath(); c.moveTo(35, -130); c.lineTo(70, -130 - 110 * hand); c.stroke(); rr(c, -40, -30, 30, 40, 8, '#33415C'); rr(c, 10, -30, 30, 40, 8, '#33415C'); c.restore(); }
+SC[2] = (c, t, lt) => {
+  sky(c, '#FFE9C7', '#FFF6E6'); c.fillStyle = '#E8C9A0'; c.fillRect(0, 1380, W, 540);
+  rr(c, 120, 1040, 840, 40, 12, '#B07A4A'); rr(c, 160, 1080, 30, 300, 6, '#8A5A33'); rr(c, 890, 1080, 30, 300, 6, '#8A5A33');
+  rafi(c, 'write', cyc(lt, 3), 330, 1390, 700);
+  for (let i = 0; i < 2; i++) kid(c, 700 + i * 170, 1390, 1.15, clamp(Math.sin((lt - 1.5 - i * 0.6) * 2.4) * 1.4), i ? '#F49E9E' : '#9AD1C9');
+  const fl = (lt * 1.6) % 1; rr(c, 480, 960, 180, 80, 8, '#FFFFFF', INK, 4); c.save(); c.translate(570, 1000); c.scale(Math.cos(fl * Math.PI), 1); rr(c, 0, -40, 90, 80, 6, '#FFF3CC', INK, 3); c.restore();
+  bigNum(c, '৫', t, ST[2] + 0.05);
+  label(c, t, ST[2] + 0.5, '#৫ হোম টিউশন', '৳২–৫ হাজার', { y: 260 });
+};
+// 4 · #4 rooftop plants: the grey roof turns green plant by plant; a post collects hearts
+SC[3] = (c, t, lt) => {
+  sky(c); c.fillStyle = '#9AA3AE'; c.fillRect(0, 1400, W, 520); c.fillStyle = '#7C8591'; c.fillRect(0, 1380, W, 30);
+  const wipe = seg(lt, 1.2, 4.5); c.save(); c.beginPath(); c.rect(0, 1380, W * wipe, 540); c.clip(); c.fillStyle = '#7CC97A'; c.fillRect(0, 1400, W, 520); c.fillStyle = '#5CAB5A'; c.fillRect(0, 1380, W, 30); c.restore();
+  for (let i = 0; i < 7; i++) { const x = 70 + i * 150, k = eBack(seg(lt, 1.2 + i * 0.45, 1.7 + i * 0.45), 2.4); rr(c, x - 45, 1390, 90, 80, 10, '#C8693D', INK, 4); if (k > 0) { c.save(); c.translate(x, 1395); c.scale(k, k); c.fillStyle = i % 3 === 0 ? '#3FA34D' : i % 3 === 1 ? '#5CC15A' : '#2E8B57'; for (let j = 0; j < 5; j++) { c.beginPath(); c.ellipse((j - 2) * 16, -60 - (j % 2) * 30, 22, 55, (j - 2) * 0.35, 0, 7); c.fill(); } if (i % 2) { c.fillStyle = '#FF7FA8'; c.beginPath(); c.arc(0, -120, 18, 0, 7); c.fill(); } c.restore(); } }
+  const wx = lerp(-200, 330, eOut(seg(lt, 0, 1.6)));
+  rafi(c, lt < 1.6 ? 'walk' : 'present', lt < 1.6 ? cyc(lt, 10) : talk(lt), wx, 1380, 720);
+  const pk = eBack(seg(lt, 4.6, 5.1)); if (pk > 0) { phone(c, 800, 1000, 0.95 * pk, (q) => { q.fillStyle = '#DFF5DF'; q.fillRect(-96, -182, 192, 250); q.fillStyle = '#3FA34D'; q.beginPath(); q.ellipse(0, -60, 50, 90, 0, 0, 7); q.fill(); txt(q, '❤ ' + Math.min(999, Math.floor(eOut(seg(lt, 5, 9)) * 999)), 0, 120, { size: 40, col: RED }); }); for (let i = 0; i < 6; i++) { const a = (lt - 5.2 - i * 0.4); if (a > 0 && a < 2) heartIcon(c, 820 + Math.sin(i * 2 + a * 3) * 60, 900 - a * 260, 1.6, RED); } }
+  bigNum(c, '৪', t, ST[3] + 0.05);
+  label(c, t, ST[3] + 0.5, '#৪ ছাদ বাগান', '৳৮–১৫ হাজার', { y: 260 });
+};
+// 5 · #3 tiffin: boxes stack themselves; a counter climbs to 10 regular customers; he walks it to the office
+function tiffin(c, x, y, s) { c.save(); c.translate(x, y); c.scale(s, s); for (let k = 0; k < 3; k++) rr(c, -70, -60 - k * 55, 140, 55, 14, '#D9DEE6', '#7C8591', 5); rr(c, -16, -250, 32, 80, 10, null, '#7C8591', 8); c.restore(); }
+SC[4] = (c, t, lt) => {
+  const scroll = Math.max(0, lt - 3.2) * 420; city(c, t, 1460, scroll);
+  if (lt > 3.2) { c.strokeStyle = 'rgba(255,255,255,0.8)'; c.lineWidth = 6; for (let i = 0; i < 7; i++) { const y = 1000 + i * 60, x = (hash(i, 9) * W + lt * 1600) % (W + 300) - 300; c.beginPath(); c.moveTo(W - x, y); c.lineTo(W - x + 160, y); c.stroke(); } }
+  for (let i = 0; i < 4; i++) { const k = bounce(seg(lt, 0.4 + i * 0.35, 0.9 + i * 0.35)); if (k > 0 && lt < 3.4) tiffin(c, 760 + (i % 2) * 170, lerp(400, 1440 - Math.floor(i / 2) * 210, k), 0.9); }
+  const walking = lt > 3.2; rafi(c, walking ? 'walk' : 'present', walking ? cyc(lt, 12) : talk(lt), walking ? 470 : 330, 1450, 720);
+  if (walking) { rr(c, 380, 1130, 120, 110, 16, '#F08A24', INK, 5); txt(c, '🍱', 440, 1185, { size: 60 }); }
+  const n = Math.min(10, Math.floor(eOut(seg(lt, 1.6, 5.2)) * 10.99));
+  rr(c, 690, 560, 330, 190, 30, '#FFFFFF', GREEN, 8); txt(c, String(n).replace(/\d/g, (d) => '০১২৩৪৫৬৭৮৯'[d]), 855, 630, { size: 110, col: GREEN }); txt(c, 'কাস্টমার', 855, 715, { size: 44, w: 700 });
+  bigNum(c, '৩', t, ST[4] + 0.05, { y: 640 });
+  label(c, t, ST[4] + 0.5, '#৩ ঘরের টিফিন', 'আগে ১০ কাস্টমার', { y: 260 });
+};
+// 6 · #2 pre-order page: split screen, orders first, buying after; the empty storeroom gets a tick
+SC[5] = (c, t, lt) => {
+  const sp = eOut(seg(lt, 0.3, 0.8));
+  c.fillStyle = '#E7F6EC'; c.fillRect(0, 0, W / 2, H); c.fillStyle = '#FFF3DF'; c.fillRect(W / 2, 0, W / 2, H);
+  c.fillStyle = INK; c.fillRect(W / 2 - 4, 380, 8, 1540 * sp);
+  txt(c, 'অর্ডার আগে', W / 4, 640, { size: 64, col: GREEN_D, a: sp }); txt(c, 'কেনা পরে', W * 0.75, 640, { size: 64, col: GOLD_D, a: sp });
+  phone(c, W / 4, 930, 1.0, (q) => { for (let i = 0; i < 6; i++) { const a = lt - 0.8 - i * 0.5; if (a < 0) continue; const y = -150 + i * 60 + 0 * eOut(a / 0.3); rr(q, -86, y, 172, 50, 12, '#E9F8EE', GREEN, 3); txt(q, 'নতুন অর্ডার ✓', 0, y + 26, { size: 26, w: 700, col: GREEN_D }); } });
+  rr(c, W / 2 + 70, 760, 400, 330, 16, '#FFFFFF', INK, 6); c.strokeStyle = '#C9CED6'; c.lineWidth = 6; for (let r = 0; r < 3; r++) { c.beginPath(); c.moveTo(W / 2 + 90, 860 + r * 90); c.lineTo(W / 2 + 450, 860 + r * 90); c.stroke(); }
+  const buy = seg(lt, 3.2, 4.2); for (let i = 0; i < 3; i++) if (buy * 3 > i) { rr(c, W / 2 + 110 + i * 110, 790, 90, 60, 10, ['#E8473C', '#2F7DE1', '#F4B400'][i], INK, 3); }
+  check(c, W * 0.75, 1180, 1, seg(lt, 4.4, 4.8));
+  rafi(c, 'present', talk(lt), W / 2, 1640, 600);
+  bigNum(c, '২', t, ST[5] + 0.05, { y: 640, col: GREEN });
+  label(c, t, ST[5] + 1.0, '#২ প্রি-অর্ডার পেজ', 'স্টকের ঝুঁকি কম', { y: 260 });
+};
+// 7 · #1: the freeze, then the gold ‘১’ slams down; his phone fires glowing posts onto four shop signs
+SC[6] = (c, t, lt) => {
+  city(c, t, 1500, 0);
+  const shops = [[180, 1500], [420, 1500], [660, 1500], [900, 1500]];
+  shops.forEach(([x, y], i) => shop(c, x, y, 0.68, i, { glow: seg(lt, 3.0 + i * 0.5, 3.5 + i * 0.5) * (0.6 + 0.4 * Math.sin(t * 6 + i)) }));
+  const R = rafi; R(c, 'present', lt < 1 ? 0 : talk(lt, 6), 830, 1600, 640, { flip: true });
+  // the phone glows in his hand and shoots post-cards to the shops
+  const ph = seg(lt, 2.2, 2.6); if (ph > 0) { c.save(); c.globalAlpha = ph; const g = c.createRadialGradient(700, 1270, 5, 700, 1270, 160); g.addColorStop(0, 'rgba(120,200,255,0.9)'); g.addColorStop(1, 'rgba(120,200,255,0)'); c.fillStyle = g; c.fillRect(540, 1110, 320, 320); rr(c, 670, 1210, 60, 110, 12, INK); rr(c, 677, 1218, 46, 94, 8, '#CDEBFF'); c.restore(); }
+  shops.forEach(([x, y], i) => { const a = seg(lt, 2.7 + i * 0.5, 3.2 + i * 0.5); if (a > 0 && a < 1) { const px = lerp(700, x, eIO(a)), py = lerp(1260, y - 260, eIO(a)) - Math.sin(a * Math.PI) * 220; rr(c, px - 50, py - 36, 100, 72, 12, '#FFFFFF', BLUE, 4); heartIcon(c, px - 20, py, 0.8); c.fillStyle = BLUE; c.fillRect(px + 2, py - 14, 34, 8); c.fillRect(px + 2, py + 4, 26, 8); } });
+  bigNum(c, '১', t, ST[6] + 0.0, { col: GOLD, y: 700, size: 470 });
+  confetti(c, t, ST[6] + 0.35);
+  label(c, t, ST[6] + 0.9, '#১ AI কনটেন্ট সার্ভিস', '৳৩–৬ হাজার', { col: GOLD_D, y: 250 });
+};
+// 8 · the mistake: the lock opens; spending everything sinks the boat; rewind; one test coin, and it floats
+function coin(c, x, y, s = 1) { c.save(); c.translate(x, y); c.scale(s, s); c.fillStyle = GOLD; c.beginPath(); c.arc(0, 0, 30, 0, 7); c.fill(); c.strokeStyle = GOLD_D; c.lineWidth = 5; c.stroke(); txt(c, '৳', 0, 2, { size: 34, col: GOLD_D }); c.restore(); }
+SC[7] = (c, t, lt) => {
+  sky(c, '#BFE6FF', '#EAF7FF'); water(c, 1250, t);
+  const A = 2.6, B = 3.4;                                  // sink until A, rewind until B, then the one-coin test
+  let sink; if (lt < A) sink = eIn(seg(lt, 0.8, A)); else if (lt < B) sink = 1 - eIO(seg(lt, A, B)); else sink = 0;
+  boat(c, 620, 1260, 1.25, sink * 2.2, Math.sin(t * 2) * 0.05, false);
+  if (lt < A) for (let i = 0; i < 14; i++) { const a = lt - 0.6 - i * 0.12; if (a > 0 && a < 1) coin(c, 620 + (hash(i) - 0.5) * 200, lerp(600, 1180, a * a) + sink * 120, 1); }
+  if (lt >= A && lt < B) { c.fillStyle = 'rgba(30,30,60,0.18)'; c.fillRect(0, 0, W, H); c.strokeStyle = 'rgba(255,255,255,0.35)'; c.lineWidth = 3; for (let y = (lt * 900) % 40; y < H; y += 40) { c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke(); } txt(c, '⏪', W - 150, 520, { size: 110 }); }
+  if (lt >= B) { const a = seg(lt, B + 0.2, B + 0.9); coin(c, 620, lerp(720, 1180, a * a), 1.1); if (a >= 1) { c.save(); c.globalAlpha = 1 - seg(lt, B + 0.9, B + 2); c.strokeStyle = '#FFFFFF'; c.lineWidth = 6; c.beginPath(); c.ellipse(620, 1250, 60 + (lt - B - 0.9) * 200, 14 + (lt - B - 0.9) * 30, 0, 0, 7); c.stroke(); c.restore(); } }
+  rafi(c, 'present', lt >= B ? 2 : talk(lt), 230, 1290, 640);
+  if (lt < 0.8) lock(c, 620, 1080, 1.1, seg(lt, 0.1, 0.5));
+  label(c, t, ST[7] + B, 'আগে টেস্ট, পরে টাকা', null, { y: 300, col: GREEN });
+  if (lt < B) label(c, t, ST[7] + 0.3, 'সব টাকা একবারে খরচ', null, { y: 300, col: RED });
+};
+// 9 · the call to action: five fingers, the shops fold back into the bundle (a loop to frame 1)
+SC[8] = (c, t, lt) => {
+  city(c, t, 1460, 0);
+  const fold = seg(lt, 1.6, 2.6);
+  for (let i = 0; i < 5; i++) { const k = 1 - fold; if (k <= 0) continue; shop(c, lerp(W / 2, 120 + i * 210, eIO(k)), lerp(1050, 1450, eIO(k)), 0.62 * (0.3 + 0.7 * k), i); }
+  if (fold > 0.6) bundle(c, W / 2, 1060, 1.1 * eBack(seg(fold, 0.6, 1)), 0);
+  rafi(c, 'present', talk(lt, 7), 830, 1600, 640);
+  label(c, t, ST[8] + 0.1, 'কমেন্টে নম্বর লিখুন 👇', null, { y: 300, col: GREEN });
+};
+
+// ---------------------------------------------------------------- captions (key word in green; #1 in gold)
+const CAPS = [
+  [0, ['[৫টা] ব্যবসা, পুঁজি [২০ হাজারের] কম']], [1, ['কোন [ভুলে] ব্যবসা ডোবে? শেষে বলছি']], [2, ['#৫ [হোম টিউশন] — ৳২–৫ হাজার']], [3, ['#৪ [ছাদ বাগান] — ৳৮–১৫ হাজার']],
+  [4, ['#৩ [ঘরের টিফিন] — আগে ১০ কাস্টমার']], [5, ['#২ [প্রি-অর্ডার] — অর্ডার আগে, কেনা পরে']], [6, ['#১ {AI কনটেন্ট} সার্ভিস — ৳৩–৬ হাজার']], [7, ['আগে [টেস্ট], তারপর টাকা']], [8, ['কোনটা? [কমেন্টে] নম্বর লিখুন']],
+];
+function caption(c, t) {
+  let i = 0; while (i + 1 < 9 && t >= ST[i + 1]) i++;
+  if (i === 6 && t < ST[6] + 0.3) return;
+  const line = CAPS[i][1][0], a = seg(t, ST[i], ST[i] + 0.2);
+  const parts = line.split(/(\[[^\]]+\]|\{[^}]+\})/).filter(Boolean);
+  c.save(); c.font = '700 50px Anek';
+  const ws = parts.map((p) => c.measureText(p.replace(/[[\]{}]/g, '')).width), tot = ws.reduce((s, v) => s + v, 0);
+  const y = 1690; rr(c, W / 2 - tot / 2 - 30, y - 48, tot + 60, 96, 24, 'rgba(20,24,33,0.82)');
+  let x = W / 2 - tot / 2; c.globalAlpha = a;
+  parts.forEach((p, k) => { const col = p.startsWith('[') ? '#5BE08F' : p.startsWith('{') ? GOLD : '#FFFFFF'; txt(c, p.replace(/[[\]{}]/g, ''), x, y + 2, { size: 50, w: 700, col, align: 'left' }); x += ws[k]; });
+  c.restore();
+  if (i >= 2 && i <= 6 || i === 8) txt(c, 'খরচ আনুমানিক, আয় নিশ্চিত নয়', W / 2, 1790, { size: 34, w: 600, col: 'rgba(255,255,255,0.95)', stroke: 'rgba(0,0,0,0.45)', sw: 8 });
+}
+
+// ---------------------------------------------------------------- compositor
+window.renderAt = async (t) => {
+  t = clamp(t, 0, DUR - 1e-3);
+  let i = 0; while (i + 1 < 9 && t >= ST[i + 1]) i++;
+  const freeze = t >= ST[6] - GAP && t < ST[6];                  // the held breath before #1: last frame of #2, desaturated
+  const tt = freeze ? ST[6] - GAP : t; const si = freeze ? 5 : i;
+  X.setTransform(1, 0, 0, 1, 0, 0); X.globalAlpha = 1; X.filter = 'none';
+  const st = si === 0 ? 0 : ST[si], lt = tt - st;
+  // zoom-punch on every cut
+  const punch = si > 0 && !freeze ? Math.exp(-lt * 9) * 0.08 : (si === 0 ? Math.exp(-tt * 5) * 0.1 : 0);
+  X.save(); X.translate(W / 2, H / 2); X.scale(1 + punch, 1 + punch); X.translate(-W / 2, -H / 2);
+  if (freeze) X.filter = 'grayscale(0.85) brightness(0.8)';
+  SC[si](X, tt, lt);
+  X.restore(); X.filter = 'none';
+  if (freeze) { X.fillStyle = 'rgba(0,0,0,0.25)'; X.fillRect(0, 0, W, H); }
+  // a white flash on the #1 slam
+  const fl = t - ST[6]; if (fl >= 0 && fl < 0.25) { X.fillStyle = `rgba(255,255,255,${0.8 * (1 - fl / 0.25)})`; X.fillRect(0, 0, W, H); }
+  if (!freeze) caption(X, t);
+  const fin = seg(t, DUR - 0.6, DUR); if (fin > 0) { X.fillStyle = `rgba(0,0,0,${fin})`; X.fillRect(0, 0, W, H); }
+};
+await window.renderAt(0);
+window.__ready = true;
+</script>
+</body></html>
