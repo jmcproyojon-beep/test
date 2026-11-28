@@ -11,13 +11,16 @@ from the brief.
 - **Countdown.** Each number drops with a thud and shrinks into a corner badge. Before #1 the picture freezes and the
   music cuts out for 0.5 s; then the gold ‘১’ slams down with confetti.
 - **Captions** carry the key word in green, and #1 in gold. «খরচ আনুমানিক, আয় নিশ্চিত নয়» stays on screen from #5 to the end.
-- **Voice.** Bangla voice-over (vidIQ voice ‘Ashwat’); each scene starts on its line, using the generator's per-line times.
+- **Voice.** v2 uses the client's own tagged recording (`assets/vo2.wav`, 67 s) with the client's SRT, retimed to it by
+  word timings. The first cut used a vidIQ voice.
+- **Social hooks (v2).** A countdown tracker (৫ ৪ ৩ ২ ১) at the top: each number flies into its slot, and #১ stays a
+  gold ‘?’ until it is revealed. Each idea also gets an info card: who buys, the first 3 steps, the main risk.
 - **Music and SFX** are synthesised in code (mgaudio, 120 BPM) and royalty-free.
 
 Costs in the script are planning estimates; check local prices before publishing.
 
 ## Rebuild (inside mg-styles-15, as demos/40-business-ideas)
 ```sh
-python3 demos/40-business-ideas/audio.py                     # needs assets/vo.wav (the voice-over, not in git)
+python3 demos/40-business-ideas/audio.py                     # needs assets/vo2.wav (the voice-over, not in git)
 MG_CPU=1 ../scripts/mg-render.sh demos/40-business-ideas --workers 6
 ```

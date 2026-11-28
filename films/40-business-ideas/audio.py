@@ -1,5 +1,5 @@
-"""Soundtrack for 40-business-ideas: the Bangla voice-over (assets/vo.wav, vidIQ voice 'Ashwat'), split so there is a
-0.5 s held breath before #1, over an upbeat 120 BPM bed (mgaudio, made in code, royalty-free) that cuts to silence
+"""Soundtrack for 40-business-ideas: the Bangla voice-over (assets/vo2.wav, the client's own tagged recording); its
+0.84 s pause before #1 is the held breath, over an upbeat 120 BPM bed (mgaudio, made in code, royalty-free) that cuts to silence
 for that breath and drops on the gold ‘১’. SFX sit on the picture's own events. Ducked under the voice, -14 LUFS.
 Run from the mg-styles-15 root: python3 demos/40-business-ideas/audio.py"""
 import os, sys, subprocess, tempfile
@@ -8,9 +8,10 @@ sys.path.insert(0, os.path.join(D, '../../lib/audio'))
 import numpy as np, soundfile as sf
 from mgaudio import sfx, recipes
 
-L = [0, 5.878, 10.162, 19.148, 29.336, 37.042, 44.199, 52.715, 59.873, 62.798]
-OFF, GAP = 0.3, 0.5
-ST = [OFF + v + (GAP if i >= 6 else 0) for i, v in enumerate(L)]
+L = [0, 5.94, 11.26, 21.10, 31.54, 39.88, 47.44, 55.76, 64.34, 67.12]   # scene starts in the client's VO (vo2.wav)
+OFF, GAP = 0.3, 0.84                                               # the VO's own pause before #1
+ST = [OFF + v for v in L]
+CARDS = [16.2, 25.54, 35.54, 43.18, 52.9]
 DUR = ST[9] + 1.6
 m = recipes.explainer(duration=DUR, bpm=120, key='C', mode='major', build=ST[6] - 4.0, drop=ST[6], outro=ST[8], music_level=-24.0, sfx_duck=3.0)
 S = lambda s, at, lv=0.0: m.sfx(s, at=at, gain=lv)
@@ -34,22 +35,20 @@ S(sfx.impact('cinematic', size=1.0), ST[6] + 0.25, 0); S(sfx.pop('mouth', pitch=
 for i in range(4): S(sfx.whoosh(0.35, kind='swish', seed=60 + i), ST[6] + 2.9 + i * 0.5, -10); S(sfx.ding('E6', kind='bell', dur=0.3), ST[6] + 3.2 + i * 0.5, -16)
 # the mistake: lock opens, coins pour, rewind, one coin, the boat floats (splash)
 S(sfx.click('soft'), ST[7] + 0.3, -2)
-for i in range(8): S(sfx.coin(), ST[7] + 0.9 + i * 0.12, -16)
-S(sfx.reverse_cymbal(0.8), ST[7] + 3.4, -10)
-S(sfx.splash(size=0.7), ST[7] + 3.4 + 0.9, -6)
+for c in CARDS: S(sfx.whoosh(0.45, kind='swoosh', seed=int(c)), OFF + c, -10); S(sfx.pop('mouth', pitch=1.2), OFF + c + 0.4, -14)
+for i in range(8): S(sfx.coin(), ST[7] + 0.9 + i * 0.15, -16)
+S(sfx.reverse_cymbal(0.8), ST[7] + 4.4, -10)
+S(sfx.splash(size=0.7), ST[7] + 4.4 + 0.9, -6)
 # CTA: the shops fold back into the bundle
 S(sfx.whoosh(0.6, kind='swoosh', seed=91), ST[8] + 1.7, -10); S(sfx.pop('mouth', pitch=1.1), ST[8] + 2.6, -6)
 os.makedirs(D + 'out', exist_ok=True); out = D + 'out/music_sfx.wav'; m.export(out)
 
 mus, sr = sf.read(out, dtype='float32')
 tmp = tempfile.mkdtemp()
-subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', D + 'assets/vo.wav', '-af', 'highpass=f=80,acompressor=threshold=-20dB:ratio=3:attack=8:release=120:makeup=2,loudnorm=I=-16:TP=-2:LRA=7:linear=true',
+subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', D + 'assets/vo2.wav', '-af', 'highpass=f=80,acompressor=threshold=-20dB:ratio=3:attack=8:release=120:makeup=2,loudnorm=I=-16:TP=-2:LRA=7:linear=true',
                 '-ar', str(sr), '-ac', '2', f'{tmp}/vo.wav'], check=True)
 vo, _ = sf.read(f'{tmp}/vo.wav', dtype='float32'); N = int(DUR * sr)
-cut = int(L[6] * sr)
-v = np.zeros((N, 2), np.float32)
-a0 = int(OFF * sr); v[a0:a0 + cut] += vo[:cut][: N - a0]
-b0 = int((OFF + L[6] + GAP) * sr); rest = vo[cut:]; v[b0:b0 + len(rest)] += rest[: N - b0]
+v = np.zeros((N, 2), np.float32); a0 = int(OFF * sr); v[a0:a0 + len(vo)] += vo[: N - a0]
 mus = np.pad(mus, ((0, max(0, N - len(mus))), (0, 0)))[:N]
 # the held breath: music and effects drop out for GAP before the slam
 g = np.ones(N, np.float32); s0, s1 = int((ST[6] - GAP) * sr), int(ST[6] * sr); g[s0:s1] = 0

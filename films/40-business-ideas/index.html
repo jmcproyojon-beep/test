@@ -9,9 +9,9 @@ html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}
 // character (his three pose atlases: present, walk, write; cut out and foot-anchored). Flat 2D Dhaka, taka-green for
 // numbers, gold for #1. Every scene starts on its voice-over line (times from the VO generator's per-line starts).
 const W = 1080, H = 1920, FPS = 30, D = '/demos/40-business-ideas/';
-const L = [0, 5.878, 10.162, 19.148, 29.336, 37.042, 44.199, 52.715, 59.873, 62.798];   // VO line starts (s)
-const OFF = 0.3, GAP = 0.5;                                    // VO starts at 0.3 s; 0.5 s of held breath before #1
-const ST = L.map((v, i) => OFF + v + (i >= 6 ? GAP : 0));     // scene starts in film time
+const L = [0, 5.94, 11.26, 21.10, 31.54, 39.88, 47.44, 55.76, 64.34, 67.12];        // scene starts in the client's VO (s)
+const OFF = 0.3, GAP = 0.84;                                   // VO starts at 0.3 s; the VO's own pause before #1 is the freeze
+const ST = L.map((v) => OFF + v);                             // scene starts in film time
 const DUR = ST[9] + 1.6;
 window.DEMO = { width: W, height: H, fps: FPS, duration: DUR };
 const cv = document.getElementById('c'), X = cv.getContext('2d');
@@ -111,9 +111,55 @@ function bigNum(c, s, t, t0, { col = GREEN, y = 640, size = 420 } = {}) {
   const a = t - t0; if (a < 0) return;
   const k = bounce(clamp(a / 0.55)), yy = lerp(-300, y, k), sc = 1 + 0.12 * Math.exp(-a * 6) * Math.sin(a * 30);
   if (a > 0.3 && a < 1.1) { c.save(); c.globalAlpha = 1 - seg(a, 0.3, 1.1); c.strokeStyle = col; c.lineWidth = 10; c.beginPath(); c.ellipse(W / 2, y + size * 0.42, 120 + (a - 0.3) * 500, 30 + (a - 0.3) * 60, 0, 0, 7); c.stroke(); c.restore(); }
-  const m = eIO(seg(a, 1.3, 1.8));                          // after the landing it shrinks into a corner badge
-  c.save(); c.translate(lerp(W / 2, 130, m), lerp(yy, 520, m)); c.scale(sc * lerp(1, 0.3, m), sc * lerp(1, 0.3, m)); txt(c, s, 0, 0, { size, col, stroke: '#FFFFFF', sw: 26 }); c.restore();
+  const m = eIO(seg(a, 1.3, 1.8)), slot = TRACK.indexOf(s);    // after the landing it flies into its slot on the tracker
+  if (m >= 1) return;
+  c.save(); c.translate(lerp(W / 2, trackX(slot), m), lerp(yy, TRACK_Y, m)); c.scale(sc * lerp(1, 0.16, m), sc * lerp(1, 0.16, m)); txt(c, s, 0, 0, { size, col, stroke: '#FFFFFF', sw: 26 }); c.restore();
 }
+// the countdown tracker: ৫ ৪ ৩ ২ ১ — each slot fills when its number lands; #১ stays a gold '?' until it is revealed
+const TRACK = ['৫', '৪', '৩', '২', '১'], TRACK_Y = 470, trackX = (k) => W / 2 + (k - 2) * 112;
+function tracker(c, t) {
+  if (t < ST[0] + 0.6 || t > ST[8] + 0.5) return;
+  const a = seg(t, ST[0] + 0.6, ST[0] + 1.0);
+  TRACK.forEach((d, k) => {
+    const t0 = ST[k + 2] + 1.8, done = t >= t0, cur = t >= ST[k + 2] && t < (k < 4 ? ST[k + 3] : ST[7]), gold = k === 4;
+    const x = trackX(k), pop = done ? 1 + 0.25 * Math.exp(-(t - t0) * 8) : 1;
+    c.save(); c.globalAlpha = a; c.translate(x, TRACK_Y); c.scale(pop, pop);
+    rr(c, -46, -40, 92, 80, 22, done ? (gold ? GOLD : GREEN) : 'rgba(255,255,255,0.92)', cur ? (gold ? GOLD_D : GREEN_D) : 'rgba(27,31,42,0.25)', cur ? 7 : 4);
+    txt(c, done || !gold ? d : '?', 0, 3, { size: 52, col: done ? '#FFFFFF' : (gold ? GOLD_D : 'rgba(27,31,42,0.45)') });
+    c.restore();
+  });
+}
+// the info card for each idea: who buys, the first three steps, the main risk (from the brief)
+const INFO = [
+  { who: 'স্কুল-ছাত্রছাত্রীর অভিভাবক', steps: ['জানা বিষয় ও ক্লাস বাছুন', '২০ জন অভিভাবককে জানান', '১টা ক্লাস ফ্রি দিন'], risk: 'পরীক্ষার মৌসুম-নির্ভর, প্রতিযোগিতা বেশি' },
+  { who: 'ফ্ল্যাটের মালিক, গিফট ক্রেতা, অফিস', steps: ['৩০–৫০টা সহজ গাছ দিয়ে শুরু', 'গাছের যত্নের রিলস বানান', 'গিফট সেট বিক্রি করুন'], risk: 'গরম-বৃষ্টিতে গাছ মরে, ডেলিভারিতে ক্ষতি' },
+  { who: 'অফিসকর্মী, ছাত্র, ব্যাচেলর', steps: ['১০ জনকে ১ সপ্তাহ টেস্ট মেনু', 'রোজ একই সময়ে ডেলিভারি', 'মাসিক প্ল্যান অফার করুন'], risk: 'খাবারের মান ও পরিচ্ছন্নতা, রোজকার খাটুনি' },
+  { who: 'ফেসবুক-ইনস্টাগ্রামের ক্রেতা', steps: ['একটা নিশ বাছুন', 'স্যাম্পল দেখিয়ে অগ্রিম অর্ডার', 'যা অর্ডার, শুধু তাই কিনুন'], risk: 'সাপ্লায়ারের দেরি, রিটার্ন, ফেক অর্ডার' },
+  { who: 'কাপড়ের দোকান, রেস্টুরেন্ট, সেলুন, ফার্মেসি', steps: ['১টা দোকানের জন্য ১০টা ফ্রি পোস্ট', 'মাসিক প্যাকেজ বিক্রি করুন', 'রিভিউ/টেস্টিমোনিয়াল নিন'], risk: 'AI-এর লেখা এডিট না করলে মান খারাপ' },
+];
+const CARD_T = [[16.2, 21.0], [25.54, 31.4], [35.54, 39.8], [43.18, 46.55], [52.9, 55.7]].map(([a, b]) => [OFF + a, OFF + b]);
+function infoCard(c, t) {
+  const k = CARD_T.findIndex(([a, b]) => t >= a && t < b + 0.35); if (k < 0) return;
+  const [a, b] = CARD_T[k], inn = eBack(seg(t, a, a + 0.45), 1.3), out = eIn(seg(t, b, b + 0.35)), gold = k === 4, col = gold ? GOLD_D : GREEN_D, d = INFO[k];
+  const y0 = lerp(H + 50, 600, inn) + out * 1400;
+  c.save(); c.fillStyle = `rgba(16,20,30,${0.35 * inn * (1 - out)})`; c.fillRect(0, 0, W, H);
+  c.translate(0, y0);
+  c.shadowColor = 'rgba(0,0,0,0.25)'; c.shadowBlur = 40; rr(c, 60, 0, W - 120, 940, 40, '#FFFFFF'); c.shadowBlur = 0;
+  rr(c, 60, 0, W - 120, 120, [40, 40, 0, 0], col); txt(c, ['#৫ হোম টিউশন', '#৪ ছাদ বাগান', '#৩ ঘরের টিফিন', '#২ প্রি-অর্ডার পেজ', '#১ AI কনটেন্ট সার্ভিস'][k], W / 2, 62, { size: 58, col: '#FFFFFF' });
+  const row = (i, icon, title, lines, tint) => {
+    const y = 160 + i * 0, ri = seg(t, a + 0.35 + i * 0.25, a + 0.6 + i * 0.25); if (ri <= 0) return;
+    c.save(); c.globalAlpha = ri; c.translate((1 - eOut(ri)) * 60, 0);
+    c.fillStyle = tint; c.beginPath(); c.arc(140, y + 50, 44, 0, 7); c.fill(); txt(c, icon, 140, y + 54, { size: 46 });
+    txt(c, title, 210, y + 30, { size: 40, w: 800, col, align: 'left' });
+    lines.forEach((ln, j) => txt(c, ln, 210, y + 86 + j * 56, { size: 40, w: 600, align: 'left' }));
+    c.restore();
+  };
+  c.save(); row(0, '👥', 'কে কিনবে', [d.who], '#E7F6EC'); c.restore();
+  c.save(); c.translate(0, 200); row(1, '🪜', 'প্রথম ৩ ধাপ', d.steps.map((q, j) => `${'১২৩'[j]}. ${q}`), '#FFF3D6'); c.restore();
+  c.save(); c.translate(0, 560); row(2, '⚠️', 'মূল ঝুঁকি', [d.risk], '#FDE7E5'); c.restore();
+  c.restore();
+}
+
 // the label card at the top: '#৫ হোম টিউশন' + a cost chip
 function label(c, t, t0, title, sub, { col = GREEN, y = 250 } = {}) {
   const a = t - t0; if (a < 0) return; const k = eBack(clamp(a / 0.4));
@@ -209,7 +255,7 @@ SC[6] = (c, t, lt) => {
 function coin(c, x, y, s = 1) { c.save(); c.translate(x, y); c.scale(s, s); c.fillStyle = GOLD; c.beginPath(); c.arc(0, 0, 30, 0, 7); c.fill(); c.strokeStyle = GOLD_D; c.lineWidth = 5; c.stroke(); txt(c, '৳', 0, 2, { size: 34, col: GOLD_D }); c.restore(); }
 SC[7] = (c, t, lt) => {
   sky(c, '#BFE6FF', '#EAF7FF'); water(c, 1250, t);
-  const A = 2.6, B = 3.4;                                  // sink until A, rewind until B, then the one-coin test
+  const A = 3.6, B = 4.4;                                  // sink until A, rewind until B, then the one-coin test
   let sink; if (lt < A) sink = eIn(seg(lt, 0.8, A)); else if (lt < B) sink = 1 - eIO(seg(lt, A, B)); else sink = 0;
   boat(c, 620, 1260, 1.25, sink * 2.2, Math.sin(t * 2) * 0.05, false);
   if (lt < A) for (let i = 0; i < 14; i++) { const a = lt - 0.6 - i * 0.12; if (a > 0 && a < 1) coin(c, 620 + (hash(i) - 0.5) * 200, lerp(600, 1180, a * a) + sink * 120, 1); }
@@ -231,22 +277,30 @@ SC[8] = (c, t, lt) => {
 };
 
 // ---------------------------------------------------------------- captions (key word in green; #1 in gold)
-const CAPS = [
-  [0, ['[৫টা] ব্যবসা, পুঁজি [২০ হাজারের] কম']], [1, ['কোন [ভুলে] ব্যবসা ডোবে? শেষে বলছি']], [2, ['#৫ [হোম টিউশন] — ৳২–৫ হাজার']], [3, ['#৪ [ছাদ বাগান] — ৳৮–১৫ হাজার']],
-  [4, ['#৩ [ঘরের টিফিন] — আগে ১০ কাস্টমার']], [5, ['#২ [প্রি-অর্ডার] — অর্ডার আগে, কেনা পরে']], [6, ['#১ {AI কনটেন্ট} সার্ভিস — ৳৩–৬ হাজার']], [7, ['আগে [টেস্ট], তারপর টাকা']], [8, ['কোনটা? [কমেন্টে] নম্বর লিখুন']],
-];
+const CAPS = [   // [start, end] in VO seconds, two lines each (from the client's SRT); [green] {gold}
+  [0.0, 3.1, '[৫টা ব্যবসা],', 'পুঁজি [২০ হাজারের] কম।'], [3.1, 5.9, 'নম্বর {১} দেখে', 'অবাক হবেন।'],
+  [5.94, 10.6, 'শেষে বলব, কোন [ভুলে]', 'যেকোনো ব্যবসা ডুবে যায়।'],
+  [11.26, 16.2, 'নম্বর ৫: [হোম টিউশন]।', 'পুঁজি মাত্র [২–৫ হাজার]।'], [16.2, 20.3, 'যে বিষয় জানেন, আশেপাশের ছাত্রছাত্রী —', '[শুরু আজই]।'],
+  [21.1, 25.5, 'নম্বর ৪: [ছাদ বাগানের]', 'গাছ আর সাকুলেন্ট।'], [25.54, 28.6, '[৮–১৫ হাজারে]', 'চারা, টব, মাটি।'], [28.74, 31.5, 'ফেসবুকে ছবি,', '[ঘরে ডেলিভারি]।'],
+  [31.54, 35.5, 'নম্বর ৩: অফিসের জন্য', '[ঘরের রান্না টিফিন]।'], [35.54, 39.85, 'আগে [১০ জন] নিয়মিত কাস্টমার,', 'তারপর বড় হন।'],
+  [39.88, 43.15, 'নম্বর ২:', '[প্রি-অর্ডার] কাপড়ের পেজ।'], [43.18, 46.55, 'আগে অর্ডার, পরে কেনা —', 'স্টকের [ঝুঁকি কম]।'],
+  [47.44, 52.85, 'নম্বর {১}: লোকাল দোকানের জন্য', '{AI দিয়ে সোশ্যাল মিডিয়া কনটেন্ট}।'], [52.9, 55.7, 'ফোন থাকলে পুঁজি', 'মাত্র {৩–৬ হাজার}।'],
+  [55.76, 60.55, 'সেই ভুল? কাস্টমার না পেয়েই', '[পুরো টাকা খরচ] করা।'], [60.58, 64.0, 'আগে [ছোট্ট টেস্ট],', 'তারপর টাকা।'],
+  [64.34, 67.12, 'কোনটা শুরু করবেন?', '[কমেন্টে] নম্বরটা লিখুন।'],
+].map(([a, b, l1, l2]) => [OFF + a, OFF + b, l1, l2]);
 function caption(c, t) {
-  let i = 0; while (i + 1 < 9 && t >= ST[i + 1]) i++;
-  if (i === 6 && t < ST[6] + 0.3) return;
-  const line = CAPS[i][1][0], a = seg(t, ST[i], ST[i] + 0.2);
-  const parts = line.split(/(\[[^\]]+\]|\{[^}]+\})/).filter(Boolean);
-  c.save(); c.font = '700 50px Anek';
-  const ws = parts.map((p) => c.measureText(p.replace(/[[\]{}]/g, '')).width), tot = ws.reduce((s, v) => s + v, 0);
-  const y = 1690; rr(c, W / 2 - tot / 2 - 30, y - 48, tot + 60, 96, 24, 'rgba(20,24,33,0.82)');
-  let x = W / 2 - tot / 2; c.globalAlpha = a;
-  parts.forEach((p, k) => { const col = p.startsWith('[') ? '#5BE08F' : p.startsWith('{') ? GOLD : '#FFFFFF'; txt(c, p.replace(/[[\]{}]/g, ''), x, y + 2, { size: 50, w: 700, col, align: 'left' }); x += ws[k]; });
+  const cap = CAPS.find(([a, b]) => t >= a - 0.05 && t < b + 0.15); if (!cap) return;
+  const [a0, , l1, l2] = cap, a = seg(t, a0 - 0.05, a0 + 0.12), pop = eBack(seg(t, a0 - 0.05, a0 + 0.2), 2);
+  c.save(); c.globalAlpha = a;
+  const lines = [l1, l2], y0 = 1640;
+  const meas = lines.map((ln) => { const parts = ln.split(/(\[[^\]]+\]|\{[^}]+\})/).filter(Boolean); c.font = '700 54px Anek'; const ws = parts.map((p) => c.measureText(p.replace(/[[\]{}]/g, '')).width); return { parts, ws, tot: ws.reduce((q, v) => q + v, 0) }; });
+  const bw = Math.max(...meas.map((m) => m.tot)) + 70;
+  c.translate(W / 2, y0 + 34); c.scale(0.92 + 0.08 * pop, 0.92 + 0.08 * pop); c.translate(-W / 2, -(y0 + 34));
+  rr(c, W / 2 - bw / 2, y0 - 46, bw, 162, 26, 'rgba(20,24,33,0.84)');
+  meas.forEach((m, i) => { let x = W / 2 - m.tot / 2; m.parts.forEach((p, k) => { const col = p.startsWith('[') ? '#5BE08F' : p.startsWith('{') ? GOLD : '#FFFFFF'; txt(c, p.replace(/[[\]{}]/g, ''), x, y0 + i * 70, { size: 54, w: 700, col, align: 'left' }); x += m.ws[k]; }); });
   c.restore();
-  if (i >= 2 && i <= 6 || i === 8) txt(c, 'খরচ আনুমানিক, আয় নিশ্চিত নয়', W / 2, 1790, { size: 34, w: 600, col: 'rgba(255,255,255,0.95)', stroke: 'rgba(0,0,0,0.45)', sw: 8 });
+  let si = 0; while (si + 1 < 9 && t >= ST[si + 1]) si++;
+  if ((si >= 2 && si <= 6) || si === 8) txt(c, 'খরচ আনুমানিক, আয় নিশ্চিত নয়', W / 2, 1838, { size: 32, w: 600, col: 'rgba(255,255,255,0.95)', stroke: 'rgba(0,0,0,0.45)', sw: 8 });
 }
 
 // ---------------------------------------------------------------- compositor
@@ -266,7 +320,7 @@ window.renderAt = async (t) => {
   if (freeze) { X.fillStyle = 'rgba(0,0,0,0.25)'; X.fillRect(0, 0, W, H); }
   // a white flash on the #1 slam
   const fl = t - ST[6]; if (fl >= 0 && fl < 0.25) { X.fillStyle = `rgba(255,255,255,${0.8 * (1 - fl / 0.25)})`; X.fillRect(0, 0, W, H); }
-  if (!freeze) caption(X, t);
+  if (!freeze) { tracker(X, t); infoCard(X, t); caption(X, t); }
   const fin = seg(t, DUR - 0.6, DUR); if (fin > 0) { X.fillStyle = `rgba(0,0,0,${fin})`; X.fillRect(0, 0, W, H); }
 };
 await window.renderAt(0);
